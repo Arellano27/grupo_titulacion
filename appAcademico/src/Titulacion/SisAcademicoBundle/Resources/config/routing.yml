@@ -1,0 +1,12 @@
+titulacion_sis_academico_homepage:
+    path:     /home
+    defaults: { _controller: TitulacionSisAcademicoBundle:Default:index }
+SisAcademico_home:
+    resource: "@TitulacionSisAcademicoBundle/Resources/config/home.yml"
+    prefix:   /home
+SisAcademico_estudiantes:
+    resource: "@TitulacionSisAcademicoBundle/Resources/config/estudiantes.yml"
+    prefix:   /estudiantes
+SisAcademico_docente:
+    resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
+    prefix:   /docentes

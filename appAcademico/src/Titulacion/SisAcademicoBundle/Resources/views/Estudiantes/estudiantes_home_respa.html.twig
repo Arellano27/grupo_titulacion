@@ -1,0 +1,867 @@
+{% extends 'SisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+	<div class="col-lg-9">
+		<div class="panel  panel-primary">
+			<!--<div class="panel-heading">
+				Collapsible Accordion Panel Group
+			</div>-->
+			<!-- .panel-heading -->
+			<div class="panel-body">
+                <h2 align="center"><b>Carreras en Curso</b></h2>
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						
+							
+                                {% for facultad in facultades %} 
+                                <div class="panel-heading">  
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#{{ facultad.Facultad }}">{{ facultad.Nombre }}</a>
+                                    </h4>
+                                </div>
+                                {% endfor %}   
+
+								
+						
+						<div id="collapseOne" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="table-responsive">
+                                        <!-- .panel-heading -->
+                                            <div class="panel-body">
+                                                <div class="panel-body">
+                                                    <!-- Nav tabs -->
+                                                    <ul class="nav nav-tabs">
+                                                        <li class="active"><a href="#home" data-toggle="tab"><b>Notas Actuales</b></a>
+                                                        </li>
+                                                        <li><a href="#profile" data-toggle="tab"><b>Historico de Notas</b></a>
+                                                        </li>
+                                                    </ul>
+                        
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+                                                                 <div class="tab-pane fade in active" id="home" style="width: 100% !important">
+                                                                       <br />
+                                                                       <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="5" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Notas Actuales Periodo Electivo 2015 Ciclo 2</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Suspenso</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Ingenieria de Software</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Compiladores</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                 </div>
+                                                                    
+                                                                <div class="tab-pane fade" id="profile" style="width: 100% !important">
+                                                                <br />
+                                                                      <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="8"  style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo Electivo 2015 Ciclo 2</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Supenso</th>
+                                        											<th style="text-align: center !important;">Promedio</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                        											<th style="text-align: center !important;"></th>
+                                        											<th style="text-align: center !important;"></th>
+                                                                                    <th style="text-align: center !important;"></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <br />
+                                                                         <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="8"  style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo Electivo 2015 Ciclo 1</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Supenso</th>
+                                        											<th style="text-align: center !important;">Promedio</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                        											<th style="text-align: center !important;"></th>
+                                        											<th style="text-align: center !important;"></th>
+                                                                                    <th style="text-align: center !important;"></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+								</div>
+								<!-- /.table-responsive -->
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Ingeniería Química</a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="table-responsive">
+									        <!-- .panel-heading -->
+                                            <div class="panel-body">
+                                                <div class="panel-body">
+                                                    <!-- Nav tabs -->
+                                                    <ul class="nav nav-tabs">
+                                                        <li class="active"><a href="#home2" data-toggle="tab"><b>Notas Actuales</b></a>
+                                                        </li>
+                                                        <li><a href="#profile2" data-toggle="tab"><b>Historico de Notas</b></a>
+                                                        </li>
+                                                    </ul>
+                        
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+                                                                 <div class="tab-pane fade in active" id="home2" style="width: 100% !important">
+                                                                       <br />
+                                                                       <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="5" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Notas Actuales Periodo Electivo 2015 Ciclo 2</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Suspenso</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Ingenieria de Software</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Compiladores</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                 </div>
+                                                                    
+                                                                <div class="tab-pane fade" id="profile2" style="width: 100% !important">
+                                                                <br />
+                                                                      <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="8"  style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo Electivo 2015 Ciclo 1</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Supenso</th>
+                                        											<th style="text-align: center !important;">Promedio</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                        											<th style="text-align: center !important;"></th>
+                                        											<th style="text-align: center !important;"></th>
+                                                                                    <th style="text-align: center !important;"></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <br />
+                                                                         <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="8"  style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo Electivo 2015 Ciclo 1</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Supenso</th>
+                                        											<th style="text-align: center !important;">Promedio</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                        											<th style="text-align: center !important;"></th>
+                                        											<th style="text-align: center !important;"></th>
+                                                                                    <th style="text-align: center !important;"></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+								</div>
+								<!-- /.table-responsive -->
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Ingeniería Civil</a>
+							</h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="table-responsive">
+								             <!-- .panel-heading -->
+                                            <div class="panel-body">
+                                                <div class="panel-body">
+                                                    <!-- Nav tabs -->
+                                                    <ul class="nav nav-tabs">
+                                                        <li class="active"><a href="#home3" data-toggle="tab"><b>Notas Actuales</b></a>
+                                                        </li>
+                                                        <li><a href="#profile3" data-toggle="tab"><b>Historico de Notas</b></a>
+                                                        </li>
+                                                    </ul>
+                        
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+                                                                 <div class="tab-pane fade in active" id="home3" style="width: 100% !important">
+                                                                       <br />
+                                                                       <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="5" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Notas Actuales Periodo Electivo 2015 Ciclo 2</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Suspenso</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Ingenieria de Software</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Compiladores</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                 </div>
+                                                                    
+                                                                <div class="tab-pane fade" id="profile3" style="width: 100% !important">
+                                                                <br />
+                                                                      <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="8"  style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo Electivo 2015 Ciclo 1</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Supenso</th>
+                                        											<th style="text-align: center !important;">Promedio</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                        											<th style="text-align: center !important;"></th>
+                                        											<th style="text-align: center !important;"></th>
+                                                                                    <th style="text-align: center !important;"></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <br />
+                                                                         <table class="table table-striped table-bordered">
+                                                                             <thead>
+                                                                                <tr>
+                                                                                    <th colspan="8"  style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo Electivo 2015 Ciclo 1</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Materia</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 1</th>
+                                                                                    <th style="text-align: center !important;" colspan="2">Parcial 2</th>
+                                                                                    <th style="text-align: center !important;">Supenso</th>
+                                        											<th style="text-align: center !important;">Promedio</th>
+                                        											<th style="text-align: center !important;">Estado</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                                                                    <th style="text-align: center !important;">Academico</th>
+                                                                                    <th style="text-align: center !important;">Examen</th>
+                                        											<th style="text-align: center !important;"></th>
+                                        											<th style="text-align: center !important;"></th>
+                                                                                    <th style="text-align: center !important;"></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                        										<tr>
+                                                                                    <td>Programacion</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">8</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Estructura de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                        										<tr>
+                                                                                    <td>Calculo</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">6</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>Base de Datos</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                                                                    <td align="center">8</td>
+                                                                                    <td align="center">5</td>
+                                                                                    <td align="center">7</td>
+                                        											<td align="center">Aprobado</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+								</div>
+								<!-- /.table-responsive -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	<!-- /.col-lg-9 -->
+    {% block menu_2 %}
+        {{ include( 'SisAcademicoBundle:Estudiantes:menu_estudiantes.html.twig' ) }}
+     {% endblock %}
+    <!-- /.col-lg-4 -->
+<script>
+	$(".asistenciaAlumnos").on('click', function(event){
+		event.preventDefault();
+		var optionSelect = $(this);
+		var jumpOption = $(this).attr("href");
+	
+		$.ajax({
+			url:   jumpOption,
+			type:  'post',
+			async: false,
+			beforeSend: function () {
+			  //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+			},
+			success:  function (dataResponse) {
+			  console.log(optionSelect.closest(".panel-body"));
+			  optionSelect.closest(".panel-body").html(dataResponse);
+			},
+			dataType:'html'
+		});
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+SisAcademico_Estudiantes_home:
+    path:     /
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:index }
+
+estudiantes_notas_actuales:
+    pattern:  /index
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:index}
+
+estudiantes_matriculacion:
+    pattern:  /matriculacion
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:Matriculacion}
+
+estudiantes_deudas:
+    pattern:  /deudas
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:Deudas}
+
+estudiantes_notas_historico:
+    pattern:  /historico
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:listarmaterias}
+estudiantes_menu_derecho:
+    pattern:  /menuderecho
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:menuderecho}
+
+SisAcademico_docentes:
+    resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
+    prefix:   /docentes

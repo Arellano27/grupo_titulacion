@@ -1,0 +1,47 @@
+SisAcademico_Docentes_home:
+    path:     /
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:index }
+
+docentes_listado_materias:
+    pattern:  /materias/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listadoMaterias }
+
+docentes_listado_alumnos_materia:
+    pattern:  /materias/alumnos/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria}
+
+docentes_notas_alumnos_materia:
+    pattern:  /materias/notas/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria }
+
+docentes_consulta_notas:
+    pattern:  /materias/notas/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:consultaNotas }
+    
+docentes_consulta_notas_materia:
+    pattern:  /materias/notas/listado
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listadoNotasAlumnosMateria }
+    
+docentes_vision_materia:
+    pattern:  /materias/visionGeneral/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria }
+    
+docentes_mostrar_alumnos:
+    pattern:  /alumnos/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:mostraralumnos }
+
+docentes_mostrar_alumnos2:
+    pattern:  /alumnos2/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:mostraralumnos2 }
+    
+docentes_mostrarAlumnoexamen:
+    pattern:  /alumnos3/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:mostraralumnos3 }
+    
+docentes_ingreso_notas:
+    pattern:  /notas/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresonotas }
+    
+docentes_ingreso_notas2:
+    pattern:  /notas2/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresonotas2 }

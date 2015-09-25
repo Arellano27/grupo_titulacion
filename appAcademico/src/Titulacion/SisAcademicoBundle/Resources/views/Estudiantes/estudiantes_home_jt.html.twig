@@ -1,0 +1,158 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+
+
+
+  <div class="col-lg-9">
+    <div class="panel  panel-primary">
+      <!--<div class="panel-heading">
+        Collapsible Accordion Panel Group
+      </div>-->
+      <!-- .panel-heading -->
+      <div class="panel-body">
+                <h2 align="center"><b>Carreras en Curso</b></h2>
+        <div class="panel-group" id="accordion">
+          
+            
+              
+                    {% for facultad in facultades %} 
+                        <div class="panel panel-default">
+                            <div class="panel-heading">  
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera' id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_f" >{{ facultad.Nombre }}</a>
+                                </h4>
+                            </div>
+
+                            <div id="{{ facultad.Carrera }}_{{ facultad.Facultad }}" class="panel-collapse collapse">
+                                   <div class="table-responsive">
+                                            <!-- .panel-heading -->
+                                                <!--div class="panel-body"-->
+                                                    <div class="panel-body" id ="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_tab">
+                                                        <!-- Nav tabs -->
+                                                        <ul class="nav nav-tabs" id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_tabs">
+                                                            <li class="active_a"><a data-toggle="tab" class='tabnotas' id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}"><b>Notas Actuales</b></a>
+                                                            </li>
+                                                            <li class='temporal'><a data-toggle="tab" class='tabnotas' id="nh_{{ facultad.Carrera }}_{{ facultad.Facultad }}"><b>Historico de Notas</b></a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <div class="tab-content">
+                                                                 <div class="tab-pane fade in active" id="ctn_{{ facultad.Carrera }}_{{ facultad.Facultad }}" style="width: 100% !important">
+                                                                    
+                                                                </div>
+
+                                                        </div>
+                                                    </div>
+                                                <!--/div-->
+                                        </div>
+                                    </div>
+                             
+                        </div>
+                    {% endfor %}   
+                </div>
+        </div>
+      </div>
+      <!-- .panel-body -->
+    </div>
+    <!-- /.panel -->
+  <!-- /.col-lg-9 -->
+   <div class='menu_derecho' id='div_derecho'>
+        {% block menu_2 %}
+            {{ include( 'TitulacionSisAcademicoBundle:Estudiantes:menu_estudiantes.html.twig' ) }}
+         {% endblock %}
+    </div>
+    <!-- /.col-lg-4 -->
+   <script>
+
+   // set click callback
+   var cuantos={{ cuantos }};
+    if (cuantos==1)
+    {
+       var obj="#na_"+{{ idCarrera }}+"_"+{{ idFacultad}}+"_f";
+       //alert(obj);
+        obj.click();
+    }
+
+    </script>
+
+
+<script>
+    $(".tabnotas, .tabscarrera").click(function(){
+      
+    var splitCarrera =$(this).attr('id').split('_'); 
+    console.log(splitCarrera);
+    var idIndica  = splitCarrera[0];
+     var idCarrera  = splitCarrera[1];
+     var idFacultad  = splitCarrera[2];
+     var indicaClase  = splitCarrera[3];
+     var idEstudiante  = {{idEstudiante}}; 
+     var tablaNotasa = $('#ctn_'+idCarrera+'_'+idFacultad);
+     if(indicaClase!=null )
+     {
+
+      $('.active_a').addClass('active');
+      $('.temporal').removeClass('active');
+     }
+     //console.log('#ctn_'+idCarrera);
+    var obj_data = {'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idIndica':idIndica,'idFacultad':idFacultad};
+       var jumpAction = '{{path('estudiantes_notas_historico')}}';
+        $.ajax({
+           url:   jumpAction,
+           data: obj_data,
+           type:  'post',
+           async: true,
+           beforeSend: function () {
+             tablaNotasa.html("Cargando, espere por favor...");
+			 //notificacionIndex = cargandoSitio(null, null, null);
+    
+           },
+           success:  function (dataResponse) {
+             //sitioCargado(notificacionIndex);
+             //console.log(optionSelect.closest(".panel-body"));
+             tablaNotasa.html(dataResponse);
+			 
+           },
+            error: function(dataResponse)
+            {
+                //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+				form="accordion";
+			    msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+								$( '#'+form ).append( msg_alert );
+								$('#modal-'+form).modal('show');
+            },
+   //         timeout: 50000
+           dataType:'html'
+        });
+        if (idIndica=='na')
+        {
+          // var menuderecho = $('#div_derecho');
+            var accion = '{{path('estudiantes_menu_derecho')}}';
+            $.ajax({
+               url:   accion,
+               data: obj_data,
+               type:  'post',
+               async: true,
+               beforeSend: function () {
+                 //menuderecho.html("Cargando, espere por favor...");
+               },
+               success:  function (dataResponse) {
+                 // sitioCargado(notificacionIndex);
+                 //console.log(optionSelect.closest(".panel-body"));
+                 //menuderecho.html(dataResponse);
+               },
+			    error: function(dataResponse)
+				{
+					//nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+					form="accordion";
+					msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+									$( '#'+form ).append( msg_alert );
+									$('#modal-'+form).modal('show');
+				},
+              // timeout: 50000
+               dataType:'html'
+            });
+            //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+        }
+    });
+</script>
+{% endblock %}

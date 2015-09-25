@@ -1,0 +1,86 @@
+
+<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>
+<form id="form-home" name="form-ingresonotas" method="post" action="{{ path('docentes_ingreso_notas') }}" >     
+
+                <div class="col-lg-12" >
+                    
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row" >
+                            <div class="col-lg-3">
+                                <label class="control-label" >Docente :</label>
+                                <input class="form-control"  name="combo1" type="text" value="apolinario" />
+                            </div>
+                            <div class="col-lg-3">
+                                <label>Periodo :</label>
+                                <input class="form-control" id="disabledInput" type="text" placeholder="Ciclo 2" disabled>
+                            </div>
+                            <div class="col-lg-3">
+                                <label  for="basic" class="control-label">Asignatura :</label>
+                                <select class="form-control">
+                                    <option>Finanzas</option>
+                                    <option>Moneda y Banca</option>
+                                    <option>Economia</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <label  for="basic" class="control-label">Curso : </label>
+                                <select class="form-control">
+                                    <option>S8A</option>
+                                    <option>S8N</option>
+                                    <option>S7K</option>
+                                </select>
+                            </div>
+                               
+                            
+                            <div class="col-lg-12" style="margin-bottom: 20px;">
+                                &nbsp;
+                            </div>
+                            <div class="dataTable_wrapper col-lg-8 center-block" style="text-align:center; margin-left: 15%;">
+                                <table class="table table-striped table-bordered table-hover " id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2">Codigo</th>
+                                            <th rowspan="2">Estudiante</th>
+                                            <th colspan="2" style="text-align: center">Nota Examen de Recuperacion</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Examen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <input type = "hidden" value = "nada" id = "hdservicio" name = "hdservicio" />
+                              {%for count ,alumnos in arr_datos %}
+                                       <tr class="odd gradeX">
+                                           <td width = "5%" >{{count+1}}</td>
+                                            <td>{{ alumnos.Nombrealm }} <input type = "hidden" value = "{{ alumnos.Nombrealm }}" name = "hdalumno_{{count+1}}" /></td>
+                                            
+                                            <td><input class="form-control" name="examen3_{{count+1}}" type="text" value=""/></td>
+                                        </tr>
+                                         <input type = "hidden" value = "{{count+1}}" name = "hdcount" />
+                                {% endfor %}
+                                   </tbody>
+                                </table>
+                            </div>
+                                    </div>
+                            <!-- /.table-responsive -->
+                            <div class="well">
+                                <h4>Nota :</h4>
+                                <p>Por su seguridad se recomienda verificar que las notas ingresadas sean las correctas</p>
+                                <div class="text-center">
+                                <button type="submit" onclick="send_form('ingresonotas')" class="btn btn-primary" >Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    <!-- /.panel -->
+                </div>
+            
+
+</form>
+                           
+
+                                   
+                                   
+
+

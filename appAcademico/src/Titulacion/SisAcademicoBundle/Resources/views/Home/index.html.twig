@@ -1,0 +1,49 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:base.html.twig' %}
+
+{% block menu_principal %}
+	{{ include( 'TitulacionSisAcademicoBundle:Home:menu_principal.html.twig' ) }}
+{% endblock%}
+
+{% block menu_lateral %}
+	{{ include( 'TitulacionSisAcademicoBundle:Home:menu_lateral.html.twig' ) }}
+{% endblock%}
+
+{% block titulo %}
+{#{ include( 'TitulacionSisAcademicoBundle:Home:titulo_pagina.html.twig' ) }#}
+{% endblock %}
+
+{% block contenido %}
+<div class="page-content">
+
+   <!-- /.modal -->
+   <div  class="tab-general">
+	  <div id="cargandoSitio" style="display:none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; background-color: #6f6e6e; z-index: 9999; opacity: 0.67;" class="col-xs-12">
+      <div id="loaderSitio"></div>
+	  </div>	
+      <div class="modal fade" id="myModalGeneral" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h4 id="modal-title-general" modal-body-generalclass="modal-title" id="myModalLabel"></h4>
+                 </div>
+                 <div id="modal-body-general" class="modal-body"></div>
+                 <div class="modal-footer">
+                     <button id="modal-button-general"  type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                 </div>
+             </div>
+             <!-- /.modal-content -->
+         </div>
+         <!-- /.modal-dialog -->
+      </div>
+      {% block home %}
+    {% endblock %}
+  </div>
+</div>    
+{% endblock %}
+{% block footer %}
+	{{ include( 'TitulacionSisAcademicoBundle:Home:footer.html.twig' ) }}
+{% endblock %}
+
+
+

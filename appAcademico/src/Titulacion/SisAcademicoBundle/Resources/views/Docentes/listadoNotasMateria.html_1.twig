@@ -1,0 +1,101 @@
+<div class="row">
+   <div class="col-xs-12 container">
+           <div class="panel panel-default">
+           <div class="panel-heading ">
+              LISTADO DE ALUMNOS - {{dataMateriaNotas.materia|upper}} [{{dataMateriaNotas.paralelo|upper}}]
+           </div>
+{% for dataEstudiante in dataMateriaNotas.estudiantes %}
+   {{dataEstudiante.estudiante|upper}}
+   {% for key, dataParciales in dataEstudiante.parciales %}  {#Parcial#}
+      {% for dataNotas in dataParciales %}    {#Notas#}
+         {% for dataNota in dataNotas %}  {#nota#}
+            {% for keyNota,dataPorParcial in dataNota %}
+               {%if keyNota=='tipoNota'%}
+                  {%set foo = dataPorParcial%}
+                  {{foo}}
+                  {#{{dump(keyNota)}}#}
+                  {#{{dump(dataPorParcial)}}#}
+                  {#{{dataPorParcial.tipoNota}}#}
+               {%endif%}
+               {#{{dump(dataPorParcial.tipoNota)}}#}
+    {#{% if dataNota.idTipoNota==5331 %}
+       <td class="parcial{{dataNota.idTipoNota}}" style="text-align: right; padding-right: 41px;"> {{dataNota.Nota}}</td>
+    {% endif %}
+    {% if dataNota.idTipoNota==52 %}
+       <td class="parcial{{dataNota.idTipoNota}}" style="text-align: right; padding-right: 41px;"> {{dataNota.Nota}}</td>
+    {% endif %}#}
+            {% endfor %}
+         {% endfor %}
+      {% endfor %}
+   {% endfor %}
+{% endfor %}
+
+           <!-- /.panel-heading -->
+           <div class="panel-body ">
+                   <div class="table-responsive ">
+                           <table class="table table-striped">
+                                   <thead>
+                                     <tr>
+                                           <th rowspan="2"> Alumno </th>
+                                           <th style="text-align:center; border-right-width:4px;" colspan="3"> Primer Parcial</th>
+                                           <th style="text-align:center; border-right-width:4px;" colspan="3"> Segundo Parcial </th>
+                                           <th style="text-align:center; border-right-width:4px;"> Mejoramiento</th>
+                                           <th style="text-align:center;" rowspan="2"> Resultado <br/>del<br/> Semestre</th>
+                                     </tr>
+                                     <tr>
+                                           <th style="text-align:center;"> Académicos</th>
+                                           <th style="text-align:center;"> Examen</th>
+                                           <th style="text-align:center; border-right-width:4px;"> Total<br/></th>
+                                           <th style="text-align:center;"> Académicos</th>
+                                           <th style="text-align:center;"> Examen</th>
+                                           <th style="text-align:center; border-right-width:4px;"> Total<br/></th>
+                                           <th style="text-align:center; border-right-width:4px;"> Examen</th>
+                                     </tr>
+                                   </thead>
+                                   <tbody>{#
+                                    {% for dataEstudiante in dataMateriaNotas.estudiantes %}
+                                       
+                                     <tr>
+                                           <td> <div style="float:left;">{{dataEstudiante.estudiante|upper}}</div><div style="float:right;"></td>
+                                           {% for dataParciales in dataEstudiante.parciales %}
+                                              {% for dataNotas in dataParciales.notas %}
+                                                 {% for keyNota, dataNota in dataNotas.nota %}
+                                                   {% if dataNota.idTipoNota==5331 %}
+                                                      <td class="parcial{{dataNota.idTipoNota}}" style="text-align: right; padding-right: 41px;"> {{dataNota.Nota}}</td>
+                                                   {% endif %}
+                                                   {% if dataNota.idTipoNota==52 %}
+                                                      <td class="parcial{{dataNota.idTipoNota}}" style="text-align: right; padding-right: 41px;"> {{dataNota.Nota}}</td>
+                                                   {% endif %}
+                                                 {% endfor %}  
+                                              {% endfor %}
+                                              <td class="totalParcial" style="text-align: right; padding-right: 16px; border-right-width:4px;"> 8.45</td>
+                                           {% endfor %}{#
+                                           <td style="text-align: right; padding-right: 41px;"> 4.00</td>
+                                           <td style="text-align: right; padding-right: 25px;"> 3.00</td>
+                                           <td style="text-align: right; padding-right: 16px; border-right-width:4px;"> 7.00</td>
+                                           <td style="text-align: right; padding-right: 59px; border-right-width:4px;"> ---</td>
+                                           <td style="text-align: center;"><button class="btn btn-success" type="button" style="cursor:default;">Aprobado</button></td>
+                                     </tr>
+                                    {% endfor %}#}
+                                    {# <tr>
+                                           <td> <div style="float:left;">QUIÑONEZ NUQUEZ Carlos</div></td>
+                                           <td style="text-align: right; padding-right: 41px;"> 3.50</td>
+                                           <td style="text-align: right; padding-right: 25px;"> 3.00</td>
+                                           <td style="text-align: right; padding-right: 16px; border-right-width:4px;"> 6.50</td>
+                                           <td style="text-align: right; padding-right: 41px;"> 1.00</td>
+                                           <td style="text-align: right; padding-right: 25px;"> 3.00</td>
+                                           <td style="text-align: right; padding-right: 16px; border-right-width:4px;"> 4.00</td>
+                                           <td style="text-align: right; padding-right: 59px; border-right-width:4px;"> 2.00</td>
+                                           <td style="text-align: center;"><button class="btn btn-danger" type="button" style="cursor:default;">Reprobado</button></td>
+                                     </tr>#}
+
+                                   </tbody>
+                             </table>
+                           </div>
+                           <!-- /.table-responsive -->
+                   </div>
+                   <!-- /.panel-body -->
+           </div>
+           <!-- /.panel -->
+   </div>
+</div>

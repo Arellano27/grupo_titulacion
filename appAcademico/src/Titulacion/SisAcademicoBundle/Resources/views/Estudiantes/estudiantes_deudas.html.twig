@@ -1,0 +1,21 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+	<div class="col-lg-9">
+		<div class="panel  panel-primary">
+			<!--<div class="panel-heading">
+				Collapsible Accordion Panel Group
+			</div>-->
+			<!-- .panel-heading -->
+			<div class="panel-body">
+                <h2 align="center"><b>Detalle de Deudas</b></h2>
+			</div>
+			<!-- .panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	<!-- /.col-lg-9 -->
+	{% block menu_2 %}
+        {{ include( 'TitulacionSisAcademicoBundle:Estudiantes:menu_estudiantes.html.twig' ) }}
+     {% endblock %}
+    <!-- /.col-lg-4 -->
+{% endblock %}

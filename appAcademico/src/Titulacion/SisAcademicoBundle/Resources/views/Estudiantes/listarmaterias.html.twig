@@ -1,0 +1,111 @@
+{% block listadoMaterias %}
+{% if(bolcorrecto==1) %}     
+        {% if(indica=='na') %}   
+            {% for dato in listaMaterias %} 
+            	<table class="table table-striped table-bordered" id ="">
+            	         <thead>
+            	            <tr>
+            	                <th colspan="8" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo {{dato.CicloAnio}} - Ciclo {{dato.Ciclo}}</th>
+            	            </tr>
+                            <tr>
+                                <th style="text-align: center !important;">Nivel</th>
+                                <th style="text-align: center !important;">Materias</th>
+                                <th style="text-align: center !important;">Veces</th>
+                               {% for par in dato.Parciales %} 
+                                            <th style="text-align: center !important;">Parcial {{par.Parcial}}</th>
+                               {% endfor %}
+                                <th style="text-align: center !important;">Suspenso</th>
+                                <th style="text-align: center !important;">Promedio</th>
+            	                <th style="text-align: center !important;">Estado</th>
+                            </tr>
+                            <!--tr>
+                                <th></th>
+                                <th></th-->
+                                {#% for det in dato.DetalleParciales %#} 
+                                    <!--th style="text-align: center !important;"-->{#{ det.NombreDetalle }#}<!--/th-->    
+                                {#% endfor %#}
+                                <!--th style="text-align: center !important;"></th>
+                                <th style="text-align: center !important;"></th>
+                                <th style="text-align: center !important;"></th-->     
+                            </tr>
+            	         </thead>
+            	            {% for mat in dato.Materias %}
+        	            	<tr>
+                                    <td align="center">{{ mat.Nivel }}</td>
+        	            			<td align="center">{{ mat.Materia }}</td>
+                                    <td align="center">{{ mat.Veces }}</td>
+                                     {% for par in mat.Parcial %}
+                                                {#% for cal in par.Calificacion %#}
+                                                    <!--td align="center"-->{#{ cal }#}<!--/td-->  
+                                                {#% endfor %#}
+                                                <td align="center">{{ par.Suma }}</td>  
+                                     {% endfor %}
+                                    <td align="center">{{ mat.Suspenso }}</td>
+                                    <td align="center">{{ mat.Promedio }}</td>
+                                    <td align="center">{{ mat.Estado }}</td>
+        	            	</tr>
+        	            {% endfor %}
+        	       
+        	   </table>
+        	{% endfor %}
+        {% endif %}   
+
+         {% if(indica=='nh') %} 
+              {% for dato in listaMaterias %} 
+              <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id ="">
+                                 <thead>
+                                    <tr>
+                                        <th colspan="12" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">{{dato.PeriodoCiclo}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align: center !important;">Nivel</th>
+                                        <th style="text-align: center !important;">Materias</th>
+                                        <th style="text-align: center !important;">Veces</th>
+                                        {% for par in dato.Parciales %} 
+                                            <th style="text-align: center !important;" colspan="3">Parcial {{par.Parcial}}</th>
+                                        {% endfor %}
+                                        <th style="text-align: center  !important; ">Supenso</th>
+                                        <th style="text-align: center !important;">Promedio</th>
+                                        <th style="text-align: center !important;">Estado</th>
+                                    </tr> 
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        {% for det in dato.DetalleParciales %} 
+                                            <th style="text-align: center !important;">{{ det.NombreDetalle }}</th>    
+                                        {% endfor %}
+                                        <th style="text-align: center !important;"></th>
+                                        <th style="text-align: center !important;"></th>
+                                        <th style="text-align: center !important;"></th>
+                                        
+                                    </tr>
+                                 </thead>
+                                    {% for mat in dato.Materias %}
+                                    <tr>
+                                            <td align="center">{{ mat.Nivel }}</td>
+                                            <td align="center">{{ mat.Materia }}</td>
+                                            <td align="center">{{ mat.Veces }}</td>
+                                             {% for par in mat.Parcial %}
+                                                {% for cal in par.calificacion %}
+                                                    <td align="center">{{ cal }}</td>  
+                                                {% endfor %}
+                                             {% endfor %}
+                                            
+                                            <td align="center">{{ mat.Suspenso }}</td>
+                                            <td align="center">{{ mat.Promedio }}</td>
+                                            <td align="center">{{ mat.Estado }}</td>
+                                    </tr>
+                                {% endfor %}
+                           
+                       </table>
+            </div>
+            {% endfor %}  
+         {% endif %}
+ {% endif %}
+ {% if(bolcorrecto==0) %}
+    <div class="panel panel-primary"> No se encontraron Registros de Notas</div>
+{% endif %}
+
+{% endblock %} 

@@ -1,0 +1,7 @@
+titulacion_sis_academico_ingresar:
+    path:     /index
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:ingresar }
+
+titulacion_sis_academico_logout:
+    path:     /logout
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:logout }

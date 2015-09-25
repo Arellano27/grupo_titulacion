@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datos>
+	<materias>
+		<Nombre>otra car1</Nombre>
+		<Nota1>5.5</Nota1> 
+		<Nota2>9</Nota2> 
+		<Promedio>6</Promedio> 
+		<Estado>Aprobado</Estado> 
+	</materias>
+	<materias>
+		<Nombre>otra car2</Nombre>
+		<Nota1>8</Nota1> 
+		<Nota2>7</Nota2> 
+		<Promedio>7.5</Promedio> 
+		<Estado>Aprobado</Estado> 
+	</materias>
+	<materias>
+		<Nombre>otra car3</Nombre>
+		<Nota1>5</Nota1> 
+		<Nota2>7</Nota2> 
+		<Promedio>6</Promedio> 
+		<Estado>Suspenso</Estado> 
+	</materias>
+    	<materias>
+		<Nombre>otra car4</Nombre>
+		<Nota1>5</Nota1> 
+		<Nota2>7</Nota2> 
+		<Promedio>6</Promedio> 
+		<Estado>Suspenso</Estado> 
+	</materias>
+    	<materias>
+		<Nombre>otra car5</Nombre>
+		<Nota1>5</Nota1> 
+		<Nota2>7</Nota2> 
+		<Promedio>6</Promedio> 
+		<Estado>Suspenso</Estado> 
+	</materias>
+	
+</datos>

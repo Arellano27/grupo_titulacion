@@ -1,0 +1,85 @@
+{% block home %}
+<!-- /.panel-heading -->
+<div class="panel-body">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs">
+    <li class="active"><a  data-toggle="tab" class="tabNotas" id="notas">Consulta de Notas</a></li>
+    <li><a data-toggle="tab" class="tabNotas"  id="ingreso">Ingreso Notas P#1</a></li>
+    <li><a data-toggle="tab" class="tabNotas"  id="ingreso2">Ingreso Notas P#2</a></li>
+    <li><a data-toggle="tab" class="tabNotas"  id="examen">Ingreso Examen</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane fade in active" id="content-notas"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+   $(document).ready(function() { 
+      var condition = '{{ condition }}';
+      if (condition == '') {
+         var obj_data = {"idParalelo" : "1"};
+         mostrarInfoTabsNotas('notas','{{ path('docentes_consulta_notas_materia') }}', obj_data);
+         //mostrarAlumnos('notas','{{ path('docentes_consulta_notas_materia') }}', null);
+      }
+      if (condition == 'ingresonotas'){
+         mostrarAlumnos('ingresonotas','{{ path('docentes_mostrar_alumnos') }}','2345');
+      }
+     {#mostrarAlumnos('alumnos3','{ path('docentes_mostrarAlumnoexamen') }','2345');#}
+   });
+
+   $(".tabNotas").click(function(){
+     var tabs =$(this).attr('id'); 
+     var idhtml="";
+
+     if(tabs === 'notas' ) {
+       idhtml='notas';
+       var obj_data = {"idParalelo" : "1"};
+       mostrarInfoTabsNotas('notas','{{ path('docentes_consulta_notas_materia') }}', obj_data);
+     }
+     if(tabs ==='ingreso'){
+       idhtml='ingresonotas';
+       mostrarAlumnos('notas','{{ path('docentes_mostrar_alumnos') }}','2345');
+     }
+     else if(tabs==='ingreso2'){
+       mostrarAlumnos('alumnos2','{{ path('docentes_mostrar_alumnos2') }}','2345');
+     }
+     else if(tabs==='examen'){
+       idhtml='alumnos3';
+       mostrarAlumnos('notas','{{ path('docentes_mostrarAlumnoexamen') }}','2345');
+     }
+   });
+   
+   function mostrarInfoTabsNotas(idContenedor,urlConsulta, parametros){
+      var obj_data = parametros;
+      $.ajax({
+         type: 'post',
+         url: urlConsulta,
+         data: obj_data,
+         dataType: "html",
+         beforeSend: function() { 
+            $( "#content-"+idContenedor ).html("Cargando, espere por favor...");
+            $( "#content-"+idContenedor ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+         },
+         error: function(){
+            //console.log("hay un error");
+            var mensajeErrorNotas   = "Lo sentimos. Se  presentó un error para cargar la consulta de las Notas."
+            $( "#content-"+idContenedor ).html(mensajeErrorNotas);
+         },
+         success: function(data) {
+            {#if(data.error === true){
+               $( "#loading-bar-spinner-relative" ).remove();
+               msg_alert = alert_bootstrap( id, 'Atenci&oacute;n', data.msg, 'sm', 'alert');
+               $( "#content-"+id ).append( msg_alert );
+               $('#modal-'+id).modal('show');
+            }else{
+               $( "#content-"+id ).html(data.html);
+            }#}
+            $("#menu-toggle").click();
+            $( "#content-"+idContenedor ).html(data);
+         }
+      });
+   }
+</script>
+{% endblock %}	

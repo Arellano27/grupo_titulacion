@@ -1,0 +1,108 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig' %}
+
+{% block home %}
+    <form action="" method=""> 
+     
+                <div class="col-lg-9">
+                    
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 align="center"><b>Formulario de Matriculación</b></h2>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="col-lg-3">
+                                <label class="control-label" >Estudiane :</label>
+                                <input   class="form-control" id="disabledInput" type="text" placeholder="{{ estudiante }}" disabled STYLE="color: #FFFFFF; font-family: Verdana; font-weight: bold; font-size: 15px; background-color: #0B2161;" >
+                            </div>
+                            <div class="col-lg-3">
+                                <label>Periodo :</label>
+                                <input class="form-control" id="disabledInput" type="text" placeholder="2015 - 2016 Ciclo 2" disabled STYLE="color: #FFFFFF; font-family: Verdana; font-weight: bold; font-size: 15px; background-color: #0B2161;">
+                            </div>
+                            <div class="col-lg-3">
+                                <label  for="basic" class="control-label">Facultades :</label>
+                                <select class="form-control" id="cbofacultad" onchange="lista(this.value)" >
+                                    <option value="000">Seleccione</option>
+                                    <option value="001">Matematicas y Fisicas</option>
+                                    <option value="002">Economia</option>
+                                    <option value="003">Industrial</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <label  for="basic" class="control-label">Carrera : </label>
+                                <select class="form-control" id="cbocarrera">
+                                </select>
+                            </div>
+                            <div class="col-lg-12" style="margin-bottom: 20px;">
+                                &nbsp;
+                            </div>
+                            <div class="col-lg-12">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Materias</th>
+                                            <th>#Registro</th>
+                                            <th>Cursos</th>
+                                             <th>Matricular</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            {% for disponibles in matricula_dis %}   
+                                             <tr class="odd gradeX">
+                                                <td>{{ disponibles.Nombre }}</td>
+                                                <td width="5%" >{{ disponibles.registro }}</td>
+                                                <td width="20%"> <select  name='cursos' index=1>
+                                                  <option value="0" selected> Sel.</option>
+                                                    {% for cursos in disponibles.cursos %} 
+                                                       <option value="1"> {{ cursos.cursos }} </option>
+                                                     {% endfor %}  
+                                                   </select >
+                                                 </td>
+                                                  <td width='10%'> <input type="checkbox" name="vehicle" value="Bike"></td>
+                                            </tr>
+
+                                        {% endfor %}  
+                                       
+                                    </tbody>
+                                
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                            <div class="well">
+                                <div class="text-center">
+                                <button type="button" class="btn btn-primary" >Matricular</button>
+                                <button type="resset" class="btn btn-primary" >Cancelar</button>
+                                <h4>Nota :</h4><p>Por su seguridad se recomienda verificar que las materias ingresadas sean las correctas</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+        </div>
+    </form>
+       <div class='menu_derecho' id='div_derecho'>
+        {% block menu_2 %}
+            {{ include( 'TitulacionSisAcademicoBundle:Estudiantes:menu_estudiantes.html.twig' ) }}
+         {% endblock %}
+    </div>
+
+
+       <script language="javascript">
+           function lista(facultad) {
+                $('#cbocarrera option').remove();
+                '{% for carreras_dis in carreras %} ' 
+
+                    if (facultad=='{{carreras_dis.Facultad}}' )
+                    {
+                        $('#cbocarrera').append('<option value="0" >  {{carreras_dis.Nombre}}  </option>');
+                    }
+
+                '{% endfor %} ' 
+                
+            } 
+            </script>
+            
+{% endblock %} 

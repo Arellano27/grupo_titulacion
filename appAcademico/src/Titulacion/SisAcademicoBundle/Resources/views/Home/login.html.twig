@@ -1,0 +1,136 @@
+<link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/growl/jquery.growl.css') }}" >
+
+<link rel="stylesheet" href="{{ asset('js/lib/iOS-Overlay/css/iosOverlay.css') }}">
+<link rel="stylesheet" href="{{ asset('js/lib/iOS-Overlay/css/prettify.css') }}">
+
+<script src="{{ asset('js/script/jquery-1.10.2.min.js') }}"></script>
+<script src="{{ asset('js/flavr/flavr.js') }}"></script>
+<script src="{{ asset('js/flavr/flavr.min.js') }}"></script>
+<script src="{{ asset('js/growl/jquery.growl.js') }}"></script>
+<script src="{{ asset('js/mensajes.js') }}"></script>
+
+<script src="{{ asset('js/lib/iOS-Overlay/js/iosOverlay.js') }}"></script>
+<script src="{{ asset('js/lib/iOS-Overlay/js/modernizr-2.0.6.min.js') }}"></script>
+<script src="{{ asset('js/lib/jquery-spin/spin.min.js') }}"></script>
+<script src="{{ asset('js/sistemau.functions.js') }}"></script>
+<script type="text/javascript"> 
+
+  $(document).ready(function(){
+    setTimeout('login();',1000);
+  });
+
+var btn_login = 0;           
+function login(){
+
+    
+    btn_login = btn_login +1*1;
+    if (btn_login == 1) {
+
+     $('.login-are').removeAttr('click');
+    var html =  
+        '   <div class="form-row">' +
+        '       <input id="username" type="text" name="username" ' +
+        '       placeholder="Username"  required /> <p class="help-block"></p>' +
+        '   </div>' +
+        '   <div class="form-row">' +
+        '       <input id="password" type="password" name="password" ' +
+        '       placeholder="Password" required /> <p class="help-block"></p>' +
+        '   </div>' +
+        '   <div class="form-row">' +
+        '   </div>';
+       
+    new $.flavr({                
+        title       : 'Ingresar',
+        iconPath    : '{{ asset('images/menu/')}}',
+        icon        : 'ug_logo.png',
+        content     : 'Universidad de Guayaquil',
+        dialog      : 'form',
+        form        : {  content: html, method: 'get'},
+        buttons : {
+        submit  : { text: 'Iniciar', style: 'danger', addClass: 'submit-btn', 
+                    action: function( $container, $second, $third ){
+                      if ($("#username").val() == '' || $("#password").val() == '') {
+                          mensaje_cisc( "error", "Ingrese el usuario y el password.");
+                      }else{
+
+                         $.ajax({
+                             url:   '{{path('titulacion_sis_academico_ingresar')}}',
+                             data: {'user': $("#username").val(),'pass':$("#password").val()},
+
+                             type:  'post',
+                             beforeSend: function () {
+                               // sitioCargado(notificacionIndex);
+                             },
+                             error:function(){
+                                  btn_login = 0;
+                                  mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
+                             },
+                             success:  function (dataResponse) {
+                                  
+                                  switch (dataResponse) {
+
+                                        case '{{perfilEst}}':
+                                            notificacionIndex = cargandoSitio(null, null, null);
+                                           sitioCargado(notificacionIndex);
+                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            location.href = '{{path('estudiantes_notas_actuales')}}';
+                                            break;
+                                        case '{{perfilDoc}}':
+                                            notificacionIndex = cargandoSitio(null, null, null);
+                                            sitioCargado(notificacionIndex);
+                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            location.href = '{{path('SisAcademico_Docentes_home')}}';
+                                            break;
+                                        case '{{perfilAdmin}}':
+                                            notificacionIndex = cargandoSitio(null, null, null);
+                                            sitioCargado(notificacionIndex);
+                                            $.growl.error({ message: "Perfil NO habilitado" });
+                                            //alertify.success("Bienvenido "+$("#username").val());
+                                            //location.href = '{#{path('dayscript_minisitio_login')}#}';
+                                            break;
+                                        case '{{perfilEstDoc}}':
+                                            notificacionIndex = cargandoSitio(null, null, null);
+                                            sitioCargado(notificacionIndex);
+                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            location.href = '{{path('estudiantes_notas_actuales')}}';
+                                            break;
+                                        case '{{perfilEstAdm}}':
+                                            notificacionIndex = cargandoSitio(null, null, null);
+                                            sitioCargado(notificacionIndex);
+                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            location.href = '{{path('estudiantes_notas_actuales')}}';
+                                            break;
+                                        case '{{perfilDocAdm}}':
+                                            notificacionIndex = cargandoSitio(null, null, null);
+                                            sitioCargado(notificacionIndex);
+                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            location.href = '{{path('SisAcademico_Docentes_home')}}';
+                                            break;
+                                        default:
+                                            
+                                            mensaje_cisc( "error", "Usuario o constraseña incorrecto/a.");
+                                            break;
+                                    }//end switch
+
+                             },
+                             dataType:'html'
+                          });
+                      }
+
+                        return false;
+                    }
+        },
+       
+    }       
+    
+       
+    });
+    }
+}
+
+
+
+</script>

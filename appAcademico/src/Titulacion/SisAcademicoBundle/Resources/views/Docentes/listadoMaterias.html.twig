@@ -1,0 +1,167 @@
+{% block listadoMaterias %}
+<div id="tablaMaterias_{{data.datosCarrera.idCarrera}}" class="table-responsive">
+
+{% if data.datosMaterias|length > 0 %}
+   <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+         <th> Materia </th>
+         <th> Paralelo</th>
+         <th> Horario</th>
+         <th> Inscritos</th>
+         <th class="td-actions">Opciones </th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for materias in data.datosMaterias %}
+        <tr>
+           <td>{{ materias.materia|upper }}</td>
+         <td>{{ materias.paralelo|upper }}</td>
+         <td>{{ materias.jornada|upper }}</td>
+         <td>{{ materias.cantidad }}</td>
+         <td class="td-actions">
+            <a id="materiaAsistencias-{{ materias.id_sa_materia_paralelo }}" href="" class="asistenciaAlumnos btn btn-primary btn-circle" title="Histórico de asistencia de Alumnos"><i class="fa fa-list"> </i></a>
+            <a id="materiasNotas-{{ materias.id_sa_materia_paralelo  }}" href="" class="notasAlumnos btn btn-primary btn-circle" title="Consultas de Notas de los Alumnos"><i class="fa fa-mortar-board"> </i></a>
+            <a id="materiasVision-{{ materias.id_sa_materia_paralelo  }}" href="" class="materiasVision btn btn-primary btn-circle" title="Consultar una vista general de la asignatura"><i class="fa fa-bar-chart-o"> </i></a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+   </table>
+{% else %}
+   <table class="table table-striped table-bordered">
+      <tbody>
+         <tr>
+            <td>No se encontraron materias registradas para usted en esta carrera.</td>
+         </tr>
+      </tbody>
+   </table>
+{% endif %}
+</div>
+<!-- /.table-responsive -->
+<script type="text/javascript">
+   $(document).ready(function(){
+      $(".asistenciaAlumnos").on('click', function(event){
+         event.preventDefault();
+         var materiaSplit  = $(this).attr("id").split("-");
+         var idMateria     = materiaSplit[1];
+         var idCarrera     = $("#carreraSeleccionada").val();
+         var obj_data = {'idMateria':idMateria};
+
+         var optionSelect = $(this);
+         var jumpOption = '{{path('docentes_listado_alumnos_materia')}}';
+
+         $.ajax({
+            url:  jumpOption,
+            type: 'post',
+            data: obj_data,
+            async: false,
+            beforeSend: function () {
+              //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+            },
+            error: function(){
+               //console.log("hay un error");
+               var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar el listado de asistencias."
+               lanzarModal('Listado de asistencias',mensajeErrorNotas,'Aceptar');//alert(mensajeErrorNotas);
+            },
+            success:  function (dataResponse) {
+              //console.log(optionSelect.closest(".panel-body"));
+              optionSelect.closest(".panel-body").html(dataResponse);
+            },
+            dataType:'html'
+         });
+
+         $("#panelInfoAdicional_headerlabel").html("Ingeniería de Software <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
+         $("#panelInfoAdicional .panel-body").children().hide();
+         $("#menuGeneralDocente").show();
+         $("#infoCalendarioDocente").show();
+         $("#chartAsistencias").show();
+         $("#chartAsistencias").children().show();
+         $("#img_demo").show();
+      });
+      
+      $(".notasAlumnos").on('click', function(event){
+         event.preventDefault();
+         var idSplit          = $(this).attr('id').split('-');
+         var nombreElemento   = idSplit[0]; 
+         var idMateria        = idSplit[1]; 
+         var idDocente        = 1;
+         var idCarrera        = $("#carreraSeleccionada").val();
+         
+         var optionSelect = $(this);
+         var jumpOption = '{{path('docentes_notas_alumnos_materia')}}';
+         
+         var obj_data = {'idDocente': idDocente,'idMateria':idMateria};
+
+         $.ajax({
+            url:   jumpOption,
+            type:  'post',
+            data: obj_data,
+            async: false,
+            beforeSend: function () {
+              //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+            },
+            error: function(){
+               //console.log("hay un error");
+               var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la consulta de notas."
+               lanzarModal('Consulta de Notas',mensajeErrorNotas,'Aceptar');//alert(mensajeErrorNotas);
+            },
+            success:  function (dataResponse) {
+              //console.log(optionSelect.closest(".panel-body"));
+              optionSelect.closest(".panel-body").html(dataResponse);
+            },
+            dataType:'html'
+         });
+
+         $("#panelInfoAdicional_headerlabel").html("Ingeniería de Software <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
+         $("#panelInfoAdicional .panel-body").children().hide();
+         $("#menuGeneralDocente").show();
+         $("#infoCalendarioDocente").show();
+         $("#chartAsistencias").show();
+         $("#chartAsistencias").children().show();
+         $("#img_demo").show();
+      });
+      
+      $(".materiasVision").on('click', function(event){
+         event.preventDefault();
+         var idSplit          = $(this).attr('id').split('-');
+         var nombreElemento   = idSplit[0]; 
+         var idMateria        = idSplit[1]; 
+         var idDocente        = 1;
+         var idCarrera        = $("#carreraSeleccionada").val();
+         
+         var optionSelect = $(this);
+         var jumpOption = '{{path('docentes_vision_materia')}}';
+         
+         var obj_data = {'idDocente': idDocente,'idMateria':idMateria};
+
+         $.ajax({
+            url:   jumpOption,
+            type:  'post',
+            data: obj_data,
+            async: false,
+            beforeSend: function () {
+              //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+            },
+            error: function(){
+               //console.log("hay un error");
+               var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la vista general de la materia."
+               lanzarModal('Vista General de la Materia',mensajeErrorNotas,'Aceptar');
+            },
+            success:  function (dataResponse) {
+              //console.log(optionSelect.closest(".panel-body"));
+              optionSelect.closest(".panel-body").html(dataResponse);
+            },
+            dataType:'html'
+         });
+
+         $("#panelInfoAdicional_headerlabel").html("Ingeniería de Software <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
+         $("#panelInfoAdicional .panel-body").children().hide();
+         $("#menuGeneralDocente").show();
+         $("#infoCalendarioDocente").show();
+         $("#chartAsistencias").show();
+         $("#chartAsistencias").children().show();
+         $("#img_demo").show();
+      });
+   });
+</script>
+{% endblock %}  

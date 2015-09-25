@@ -1,0 +1,114 @@
+/* 
+    Created on : 02/09/2015, 12:01:55
+    Author     : Diego
+*/
+.profile {
+    display: inline-block;
+}
+
+.badge-green, .label-green {
+    background-color: #488c6c !important;
+}
+
+.label {
+    border-radius: 0 !important;
+    font-size: 11px;
+    font-weight: 300;
+}
+
+.mrs, .mhs, .mas {
+    margin-right: 5px !important;
+}
+
+.emphasis {
+    border-top: 4px solid transparent;
+    padding-top: 15px;
+}
+
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.profile .divider {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.col-sm-4 {
+    width: 33.3333%;
+}
+
+/*.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+    float: left;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+}*/
+
+.btn-yellow {
+    background-color: #f2994b;
+    border-color: #f19441;
+    color: #ffffff;
+}
+
+.btn-blue {
+    background-color: #0a819c;
+    border-color: #097992;
+    color: #ffffff;
+}
+
+.btn-orange {
+    background-color: #e9662c;
+    border-color: #e85f23;
+    color: #ffffff;
+}
+
+.btn_profile {
+    border-radius: 0 !important;
+    outline: medium none !important;
+}
+.btn-block {
+    display: block;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+}
+.btn_profile {
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+
+/*Login Superior*/
+ul.navbar-top-links li {
+    display: inline-block;
+}
+li#profile_small.topbar-user a {
+    padding: 12px 15px 11px;
+}
+li#profile_small.topbar-user a img {
+    margin-right: 5px;
+}
+li#profile_small > a img {
+    display: inline-block;
+    height: 25px;
+    position: relative;
+    width: 25px;
+}

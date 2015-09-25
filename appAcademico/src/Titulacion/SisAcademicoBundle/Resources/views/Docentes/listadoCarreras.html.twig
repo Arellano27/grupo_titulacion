@@ -1,0 +1,440 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+   {#<link type="text/css" rel="stylesheet" href="{{ asset('css/profile.css') }}">#}
+   
+   <input id="carreraSeleccionada" value="" type="hidden" >
+   <!-- espacio para el cuadro de perfil - inicio --
+   <div class="col-lg-12">
+      <div class="col-lg-3">
+         <div class="panel">
+             <div class="panel-body">
+                 <div class="profile">
+                     <div style="margin-bottom: 15px" class="row">
+                         <div class="col-xs-12 col-sm-8">
+                             <h2>
+                                 John Doe</h2>
+                             <p>
+                                 <strong>About:</strong> Web Designer / UI.</p>
+                             <p>
+                                 <strong>Hobbies:</strong> Read, out with friends, listen to music, draw and learn
+                                 new things.</p>
+                             <p>
+                                 <strong class="mrs">Skills:</strong><span class="label label-green mrs">html5</span><span
+                                     class="label label-green mrs">css3</span><span class="label label-green mrs">jquery</span></p>
+                         </div>
+                         <div class="col-xs-12 col-sm-4 text-center">
+                             <figure><img src="{{ asset('images/avatar/128.jpg') }}" alt="" style="display: inline-block" class="img-responsive img-circle"/>
+                             <!-- <figcaption class="ratings"><p><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star-o"></span></a></p></figcaption> --
+                         </figure>
+                         </div>
+                     </div>
+                     <div class="row text-center divider">
+                        <div class="col-xs-12 col-sm-4 emphasis" style="padding-left: 8px; padding-right: 0px;">
+                             <h2>
+                                 <strong>20,7K</strong></h2>
+                             <p>
+                                 <small>Followers</small>
+                             </p>
+                             <button class="btn_profile btn-yellow btn-block">
+                                 <span class="fa fa-plus-circle"></span>&nbsp; Follow
+                             </button>
+                         </div>
+                         <div class="col-xs-12 col-sm-4 emphasis" style="padding-left: 8px; padding-right: 0px;">
+                             <h2>
+                                 <strong>245</strong></h2>
+                             <p>
+                                 <small>Following</small>
+                             </p>
+                             <button class="btn_profile btn-blue btn-block">
+                                 <span class="fa fa-user"></span>&nbsp; Profile
+                             </button>
+                         </div>
+                         <div class="col-xs-12 col-sm-4 emphasis" style="padding-left: 8px; padding-right: 0px;">
+                             <h2>
+                                 <strong>43</strong></h2>
+                             <p>
+                                 <small>Snippets</small>
+                             </p>
+                             <div class="btn-group dropup">
+                                 <button type="button" data-toggle="dropdown" class="btn_profile btn-orange dropdown-toggle">
+                                     <span class="fa fa-gear"></span>&nbsp; Options
+                                 </button>
+                                 <ul role="menu" class="dropdown-menu pull-right text-left">
+                                     <li><a href="#"><span class="fa fa-envelope"></span>&nbsp; Send an email</a></li>
+                                     <li><a href="#"><span class="fa fa-list"></span>&nbsp; Add or remove from a list</a></li>
+                                     <li class="divider"></li>
+                                     <li><a href="#"><span class="fa fa-warning"></span>&nbsp; Report this user for spam</a></li>
+                                     <li class="divider"></li>
+                                     <li><a href="#" role="button" class="btn disabled">Unfollow</a></li>
+                                 </ul>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+   </div>
+   -- espacio para el cuadro de perfil - fin -->
+   <div class="col-lg-9">
+		<div class="panel  panel-primary">
+			<!--<div class="panel-heading">
+				Collapsible Accordion Panel Group
+			</div>-->
+			<!-- .panel-heading -->
+			<div class="panel-body">
+				<div class="panel-group" id="accordionCarreras">
+               {% if data.datosCarreras=='error'%} Se presentó un problema para presentar las carreras. Por favor contacte e soporte técnico. {% endif %}
+               {% for countCarreras, datosCarrera in data.datosCarreras %}
+                  <div id="panelCentralCarrera-{{datosCarrera.id_sa_carrera}}" class="panel panel-default">
+                     <div class="panel-heading">
+                        <h4 class="panel-title">
+                           <a id="idCarrera-{{datosCarrera.id_sa_carrera}}" class="linkCarreras" data-toggle="collapse" data-parent="#accordionCarreras" href="#collapse{{countCarreras+1}}">{{datosCarrera.nombre}}</a>
+                           <div style="float:right; margin-top: -7px;">
+                              <button id="homeCarrera-{{datosCarrera.id_sa_carrera}}" class="btn btn-default btn-circle" type="button" style="font-size: 16px; padding: 2px 0;">
+                                 <i class="fa fa-home"></i>
+                              </button>
+                           </div>
+                        </h4>
+                     </div>
+                     <div id="collapse{{countCarreras+1}}" class="panel-collapse collapse">
+                        <div  id="panelCarrera-{{datosCarrera.id_sa_carrera}}" class="panel-body"></div>
+                     </div>
+                  </div>
+               {% endfor %}
+				</div>
+			</div>
+			<!-- .panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	<!-- /.col-lg-9 -->
+	<div id="panelInfoAdicional" class="col-lg-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading" id="panelInfoAdicional_headerlabel">
+                <!-- Primary Panel-->
+            </div>
+            <div class="panel-body">
+                <!-- aqui va todo -->
+                <div id="menuGeneralDocente" class="col-lg-12 col-md-6" style="display:none;">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <button class="btn btn-default btn-circle btn-lg listaAsistenciasMateria" type="button" title="Histórico de asistencia de Alumnos">
+                                        <i class="fa fa-list"></i>
+                                    </button>
+                                </div>
+                                <div class="col-xs-4">
+                                    <button class="btn btn-default btn-circle btn-lg listaNotasMateria" title="Histórico de asistencia de Alumnos" type="button">
+                                        <i class="fa fa-mortar-board"></i>
+                                    </button>
+                                </div>
+                                <div class="col-xs-4">
+                                    <button class="btn btn-default btn-circle btn-lg visionMateria" type="button" title="Vista General de la Materia">
+                                        <i class="fa fa-bar-chart-o"></i>
+                                    </button>
+                                </div>
+                                {#<div class="col-xs-3">
+                                    <button class="btn btn-default btn-circle btn-lg" type="button">
+                                        <i class="fa fa-briefcase "></i>
+                                    </button>
+                                </div>#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="infoCalendarioDocente" class="col-lg-12 col-md-6" style="display:none;">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa fa-calendar fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">Calendario</div>
+                                    <div>de clases de la materia</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">Ver en detalle</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {#<div id="chartAsistencias" class="col-lg-12 col-md-6" style="display:none;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Asistencias - Vista General
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <img id="img_demo" src="{{ asset('images/chart_demo.png') }}" width="251" />
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>#}
+                <div id="panelMaterias_1" class="col-lg-12 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-comments fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">26</div>
+                                    <div>New Comments!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div id="panelMaterias_2" class="col-lg-12 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">12</div>
+                                    <div>New Tasks!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div id="panelMaterias_3" class="col-lg-12 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">124</div>
+                                    <div>New Orders!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- aqui termina todo -->
+            </div>
+            <div class="panel-footer">
+                <!--Panel Footer-->
+            </div>
+        </div>
+    </div>
+    <!-- /.col-lg-4 -->
+	<script type="text/javascript">
+      $(document).ready(function(){
+         $(".listaAsistenciasMateria").on('click', function(event){
+            event.preventDefault();
+            
+            var idCarrera  = $("#idCarreradeMateriaSelected").val();
+            var idMateria  = $("#idMateriaSelected").val();
+            
+            var obj_data = {'idMateria':idMateria};
+            var optionSelect = $("#panelCarrera-"+idCarrera);
+            var jumpOption = '{{path('docentes_listado_alumnos_materia')}}';
+
+            if($("#idCarreradeMateriaSelected").val() !== $("#carreraSeleccionada").val()) {
+               $("div[id^='collapse']").removeClass("in");
+               setTimeout(function(){
+                  $("#panelCentralCarrera-"+idCarrera+" div[id^='collapse']").collapse('show');
+               }, 10);
+            }
+            
+            $.ajax({
+               url:  jumpOption,
+               type: 'post',
+               data: obj_data,
+               async: false,
+               beforeSend: function () {
+                 //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+               },
+               error: function(){
+                  //console.log("hay un error");
+                  var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar el listado de asistencias."
+                  lanzarModal('Listado de asistencias',mensajeErrorNotas,'Aceptar');//alert(mensajeErrorNotas);
+               },
+               success:  function (dataResponse) {
+                 //console.log(optionSelect.closest(".panel-body"));
+                 optionSelect .html(dataResponse);
+               },
+               dataType:'html'
+            });
+         });
+
+         $(".listaNotasMateria").on('click', function(event){
+            event.preventDefault();
+            
+            var idCarrera  = $("#idCarreradeMateriaSelected").val();
+            var idMateria  = $("#idMateriaSelected").val();
+            
+            var obj_data = {'idMateria':idMateria};
+            var optionSelect = $("#panelCarrera-"+idCarrera);
+            var jumpOption = '{{path('docentes_notas_alumnos_materia')}}';
+
+            /*$("div[id^='collapse']").collapse('hide');
+            $("#panelCentralCarrera-"+idCarrera+" div[id^='collapse']").collapse('show');*/
+            
+            if($("#idCarreradeMateriaSelected").val() !== $("#carreraSeleccionada").val()) {
+               $("div[id^='collapse']").removeClass("in");
+               setTimeout(function(){
+                  $("#panelCentralCarrera-"+idCarrera+" div[id^='collapse']").collapse('show');
+               }, 10);
+            }
+
+            $.ajax({
+               url:  jumpOption,
+               type: 'post',
+               data: obj_data,
+               async: false,
+               beforeSend: function () {
+                 //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+               },
+               error: function(){
+                  //console.log("hay un error");
+                  var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la consulta de notas."
+                  lanzarModal('Consulta de Notas',mensajeErrorNotas,'Aceptar');//alert(mensajeErrorNotas);
+               },
+               success:  function (dataResponse) {
+                 //console.log(optionSelect.closest(".panel-body"));
+                 optionSelect .html(dataResponse);
+               },
+               dataType:'html'
+            });
+         });
+
+
+         $(".visionMateria").on('click', function(event){
+            event.preventDefault();
+            
+            var idCarrera  = $("#idCarreradeMateriaSelected").val();
+            var idMateria  = $("#idMateriaSelected").val();
+            
+            var obj_data = {'idMateria':idMateria};
+            var optionSelect = $("#panelCarrera-"+idCarrera);
+            var jumpOption = '{{path('docentes_vision_materia')}}';
+
+            /*$("div[id^='collapse']").collapse('hide');
+            $("#panelCentralCarrera-"+idCarrera+" div[id^='collapse']").collapse('show');*/
+            
+            if($("#idCarreradeMateriaSelected").val() !== $("#carreraSeleccionada").val()) {
+               $("div[id^='collapse']").removeClass("in");
+               setTimeout(function(){
+                  $("#panelCentralCarrera-"+idCarrera+" div[id^='collapse']").collapse('show');
+               }, 10);
+            }
+
+            $.ajax({
+               url:  jumpOption,
+               type: 'post',
+               data: obj_data,
+               async: false,
+               beforeSend: function () {
+                 //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+               },
+               error: function(){
+                  //console.log("hay un error");
+                  var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la vista general de la materia."
+                  lanzarModal('Vista General de la Materia',mensajeErrorNotas,'Aceptar');
+               },
+               success:  function (dataResponse) {
+                 //console.log(optionSelect.closest(".panel-body"));
+                 optionSelect .html(dataResponse);
+               },
+               dataType:'html'
+            });
+         });
+         
+         
+         $(".linkCarreras, button[id^='homeCarrera-']").on('click', function(){
+            
+            var idSplit          = $(this).attr('id').split('-');
+            var nombreElemento   = idSplit[0]; 
+            var idCarrera        = idSplit[1]; 
+            var idDocente        = 1; 
+            var tablaMaterias    = $('#panelCarrera-'+idCarrera);
+
+            $("#carreraSeleccionada").val(idCarrera);
+            
+            var obj_data = {'idDocente': idDocente,'idCarrera':idCarrera};
+            var jumpAction = '{{path('docentes_listado_materias')}}';
+            if(tablaMaterias.is(':empty') || nombreElemento.indexOf("homeCarrera")>=0 ) {
+              // notificacionIndex = cargandoSitio(null, null, null);
+               if(nombreElemento.indexOf("homeCarrera")>=0) {
+                  var divMostrarMaterias  = tablaMaterias.parent("div[id^='collapse']");//.attr("id");
+                  //$("div[id^='collapse']").removeClass("in");
+                  //divMostrarMaterias.addClass("in");
+                 
+                  $("div[id^='collapse']").removeClass("in");
+                  setTimeout(function(){
+                     divMostrarMaterias.collapse('show');
+                  }, 10);
+         
+         
+         
+                  $("#panelInfoAdicional_headerlabel").html("");
+                  $("#panelInfoAdicional .panel-body").children().hide();
+                  $("#panelMaterias_1").show();
+                  $("#panelMaterias_2").show();
+                  $("#panelMaterias_3").show();
+                  /*$("#menuGeneralDocente").show();
+                  $("#infoCalendarioDocente").show();
+                  $("#chartAsistencias").show();
+                  $("#chartAsistencias").children().show();
+                  $("#img_demo").show();*/
+               }
+               $.ajax({
+                  url:   jumpAction,
+                  data: obj_data,
+                  type:  'post',
+                  async: false,
+                  beforeSend: function () {
+                     tablaMaterias.html("Cargando, espere por favor...");
+                  },
+                  error: function(){
+                     var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar el listado de materias."
+                     tablaMaterias.html("");
+                     lanzarModal('Listado de Materias',mensajeErrorNotas,'Aceptar');
+                  },
+                  success:  function (dataResponse) {
+                   // sitioCargado(notificacionIndex);
+                    tablaMaterias.html(dataResponse);
+                  },
+                  dataType:'html'
+               });
+            }
+         });
+      });
+	</script>
+{% endblock %}

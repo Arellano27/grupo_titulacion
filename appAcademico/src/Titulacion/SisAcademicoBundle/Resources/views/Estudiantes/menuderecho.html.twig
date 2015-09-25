@@ -1,0 +1,136 @@
+{% if (bolCorrecto==1) %}
+<div id="panelInfoAdicional" class="col-lg-3">
+    
+    <div class="panel panel-primary" align='center'>
+        
+        <div class="panel-heading">
+              <a href="{{path('estudiantes_matriculacion')}}">
+                  <div class='btn btn-warning btn-circle btn-xl' >
+                        <i class='fa fa-list' title="Matriculación"></i>
+                  </div>
+             </a>
+             <a  href="{{path('estudiantes_deudas')}}">
+                <div class='btn btn-success btn-circle btn-xl' >
+                        <i class='fa fa-money' title="Deudas"></i>
+                </div>
+             </a>
+             <a  href="{{path('estudiantes_notas_actuales')}}">
+                <div class='btn btn-info btn-circle btn-xl' >
+                        <i class='fa fa-table' title="Notas"></i>
+                </div>
+             </a>
+        </div>
+
+        <div class="panel-body">
+            <script src="http://code.highcharts.com/highcharts.js"></script>
+            <script src="http://code.highcharts.com/modules/exporting.js"></script>
+              {% if (indica=='na') %}
+                <div id="container" class="panel panel-primary"></div>
+              {% endif %}
+    
+             <script>
+                  var indica='{{indica}}';
+                  if (indica=='na')
+                  {
+                    $(function () {
+                          var mySeries = [];
+                          var arrData = '{{asistencia|json_encode|raw}}';
+                          $.each(JSON.parse(arrData), function(idx, obj) {
+                             mySeries.push( [obj.Materia, obj.Asistencia]);
+                          });
+                                $('#container').highcharts({
+    
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: 'Estadisticas de Asistencias'
+                                    },
+                                    subtitle: {
+                                        text: ' <a href="http://en.wikipedia.org/wiki/List_of_cities_proper_by_population"></a>'
+                                    },
+                                    xAxis: {
+                                        type: 'category',
+                                        labels: {
+                                            rotation: -65,
+                                            style: {
+                                                fontSize: '11px',
+                                                fontFamily: 'Verdana, sans-serif'
+                                            }
+                                        }
+                                    },
+                                    yAxis: {
+                                        min: 0,
+                                        title: {
+                                            text: 'Porcentajes de Asistencias %'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    tooltip: {
+                                        pointFormat: ''
+                                    },
+                                    series: [{
+                                        name: 'Materias',
+                                        data: mySeries ,
+                                        dataLabels: {
+                                            enabled: true,
+                                            rotation: -50,
+                                            color: 'black',
+                                            align: 'center',
+                                            format: '{point.y}', // one decimal
+                                            y: 5, // 10 pixels down from the top
+                                            style: {
+                                                fontSize: '12px',
+                                                fontFamily: 'Verdana, sans-serif'
+                                            }
+                                        }
+                                    }]
+                                });
+                            });
+              }
+              </script>
+
+        </div>   
+    </div>
+</div>
+{% endif %}
+{% if (bolCorrecto==0) %}
+    <div id="panelInfoAdicional" class="col-lg-3">
+    
+    <div class="panel panel-primary" align='center'>
+        
+        <div class="panel-heading">
+              <a href="{{path('estudiantes_matriculacion')}}">
+                  <div class='btn btn-warning btn-circle btn-xl' >
+                        <i class='fa fa-list' title="Matriculación"></i>
+                  </div>
+             </a>
+             <a  href="{{path('estudiantes_deudas')}}">
+                <div class='btn btn-success btn-circle btn-xl' >
+                        <i class='fa fa-money' title="Deudas"></i>
+                </div>
+             </a>
+             <a  href="{{path('estudiantes_notas_actuales')}}">
+                <div class='btn btn-info btn-circle btn-xl' >
+                        <i class='fa fa-table' title="Notas"></i>
+                </div>
+             </a>
+        </div>
+
+        <div class="panel-body">
+            <script src="http://code.highcharts.com/highcharts.js"></script>
+            <script src="http://code.highcharts.com/modules/exporting.js"></script>
+              {% if (indica=='na') %}
+                <div id="container" class="panel panel-primary"> No se Econtraron Registros de Asistencias</div>
+              {% endif %}
+    
+        </div>   
+    </div>
+</div>
+{% endif %}
+        
+        
+
+    

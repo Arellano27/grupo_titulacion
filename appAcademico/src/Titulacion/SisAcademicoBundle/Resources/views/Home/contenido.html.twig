@@ -1,0 +1,25 @@
+   <link href="{{ asset('css/main.css')}}" type="text/css" rel="stylesheet"/>
+   <div id="cargandoSitio" style="display:none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; background-color: #6f6e6e; z-index: 9999; opacity: 0.67;" class="col-xs-12">
+      <div id="loaderSitio"></div>
+   </div>
+   <!-- /.modal -->
+   <div  style="margin-top: 100px;" class="col-xs-12">
+      <div class="modal fade" id="myModalGeneral" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h4 id="modal-title-general" modal-body-generalclass="modal-title" id="myModalLabel"></h4>
+                 </div>
+                 <div id="modal-body-general" class="modal-body"></div>
+                 <div class="modal-footer">
+                     <button id="modal-button-general"  type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                 </div>
+             </div>
+             <!-- /.modal-content -->
+         </div>
+         <!-- /.modal-dialog -->
+      </div>
+      {% block home %}
+	  {% endblock %}
+	</div>
