@@ -32,8 +32,8 @@
                           //$idEstudiante=3;
                           $idEstudiante=$session->get("id_user");
                           //$idEstudiante=3;
-                          //$idRol=1;
-                          $idRol=$session->get("perfil");
+                          $idRol=1;
+                          //$idRol=$session->get("perfil");
                           $Carreras = array();
                           $UgServices = new UgServices;
                           $xml = $UgServices->getConsultaCarreras($idEstudiante,$idRol);
