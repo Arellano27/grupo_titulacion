@@ -65,8 +65,10 @@
 		
 		
     public function listadoMateriasAction(Request $request)
-      {
-         $idDocente  = $request->request->get('idDocente');
+      {	 
+	 $session=$request->getSession();
+         $idDocente  = $session->get('id_user');
+	 //$idDocente  = $request->request->get('idDocente');
          $idCarrera  = $request->request->get('idCarrera');
          
          $datosDocente	= array( 'idDocente' => $idDocente );
@@ -100,15 +102,16 @@
 		
       public function listadoAlumnosMateriaAction(Request $request)
       {
-         //$session=$request->getSession();                    
-         //$idDocente  = $session->get('idUsuario');
-         $idDocente= 7;
+         $session=$request->getSession();
+         $idDocente  = $session->get('id_user');
+         //$idDocente= 7;
          $idMateria  = $request->request->get('idMateria');
          $idParalelo = $request->request->get('idParalelo');
-         
+	 $idCarrera = $request->request->get('idCarrera');
          $datosConsulta	= array( 'idMateria' => $idMateria,
                                  'idParalelo' => $idParalelo,
-                                 'idDocente' => $idDocente);
+                                 'idDocente' => $idDocente,
+				 'idCarrera' => $idCarrera);
          $UgServices    = new UgServices;
          $datosAsistenciasXML  = $UgServices->Docentes_getAsistenciasMaterias($datosConsulta);
          
