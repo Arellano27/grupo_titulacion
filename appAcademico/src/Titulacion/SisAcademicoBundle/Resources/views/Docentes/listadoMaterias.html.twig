@@ -45,7 +45,7 @@
          var materiaSplit  = $(this).attr("id").split("-");
          var idMateria     = materiaSplit[1];
          var idCarrera     = $("#carreraSeleccionada").val();
-         var obj_data = {'idMateria':idMateria};
+         var obj_data = {'idMateria':idMateria,'idCarrera':idCarrera};
 
          var optionSelect = $(this);
          var jumpOption = '{{path('docentes_listado_alumnos_materia')}}';

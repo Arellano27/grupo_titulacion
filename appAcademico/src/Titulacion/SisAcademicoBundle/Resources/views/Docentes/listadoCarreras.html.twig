@@ -260,9 +260,9 @@
             
             var idCarrera  = $("#idCarreradeMateriaSelected").val();
             var idMateria  = $("#idMateriaSelected").val();
-            
-            var obj_data = {'idMateria':idMateria};
-            var optionSelect = $("#panelCarrera-"+idCarrera);
+            var obj_data = {'idMateria':idMateria,'idCarrera':idCarrera};
+	    var optionSelect = $("#panelCarrera-"+idCarrera);
+	    
             var jumpOption = '{{path('docentes_listado_alumnos_materia')}}';
 
             if($("#idCarreradeMateriaSelected").val() !== $("#carreraSeleccionada").val()) {
