@@ -49,7 +49,7 @@
 	<div class="col-lg-12">
 		<div class="panel panel-primary" style="border-radius: 0px;">
 		<div class="panel-heading" style="border-radius: 0px;">
-			LISTADO DE ALUMNOS - INGENIERIA DE SOFTWARE
+         LISTADO DE ALUMNOS - <span id="nombreCarreraMostrar_{{dataMateria.idMateria}}"></span>
 		</div>
 		<!-- /.panel-heading -->
 		<div class="panel-body">
@@ -58,9 +58,9 @@
             <div id="selectorFechasAsistencia" class="col-lg-12">
                <div class="col-lg-12">
                   <div class="col-lg-3" style="padding-top: 5px;">Seleccionar Fechas:</div>
-                  <div class="col-lg-2"><input id="fechasAsistenciasDesde" style="width: 96px;" class="input-sm" type="text"/></div>
+                  <div class="col-lg-2"><input id="fechasAsistenciasDesde" style="width: 96px;" class="input-sm" type="text" value="" /></div>
                   <div class="col-lg-1" style="padding-top: 5px;">hasta</div>
-                  <div class="col-lg-2"><input id="fechasAsistenciasHasta" style="width: 96px;" class="input-sm" type="text"/></div>
+                  <div class="col-lg-2"><input id="fechasAsistenciasHasta" style="width: 96px;" class="input-sm" type="text" value="" /></div>
                   <div class="col-lg-2"><button id="consultaAsistencia" class="btn btn-primary" type="button">Consultar</button></div>
                </div>
             </div>                  
@@ -112,8 +112,12 @@
             numberOfMonths: 3,
             onClose: function( selectedDate ) {
               $( "#fechasAsistenciasHasta" ).datepicker( "option", "minDate", selectedDate );
+              
             }
          });
+         $( "#fechasAsistenciasDesde" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
+         $( "#fechasAsistenciasDesde" ).val('{{dataMateria.fechaInicio}}');
+            
          $( "#fechasAsistenciasHasta" ).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
@@ -121,6 +125,52 @@
             onClose: function( selectedDate ) {
               $( "#fechasAsistenciasDesde" ).datepicker( "option", "maxDate", selectedDate );
             }
+         });
+         $( "#fechasAsistenciasHasta" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
+         $( "#fechasAsistenciasHasta" ).val('{{dataMateria.fechaFin}}');
+         
+         $(document).ready(function(){
+            var carreraSeleccionada = $("#carreraSeleccionada").val();
+            var nombreCarreraSelecc = $("#nombreMateriaSeleccionada-Carrera_"+carreraSeleccionada).val();
+            $("#nombreCarreraMostrar_{{dataMateria.idMateria}}").html(nombreCarreraSelecc);
+            
+            $("#consultaAsistencia").on('click', function(){
+               var idCarreraConsulta   = $("#carreraSeleccionada").val();
+               var idMateriaConsulta   = $("#materiaSeleccionada-Carrera_"+idCarreraConsulta).val();
+               var fechaInicio         = $("#fechasAsistenciasDesde").val();
+               var fechaFin            = $("#fechasAsistenciasHasta").val();
+               
+               var obj_data            = {'idMateria':idMateriaConsulta,'idCarrera':idCarreraConsulta, 'fechaInicio':fechaInicio, 'fechaFin':fechaFin};
+               var jumpOption          = '{{path('docentes_listado_alumnos_materia')}}';
+               if(fechaInicio!='' && fechaFin!=''){
+                  $.ajax({
+                     url:  jumpOption,
+                     type: 'post',
+                     data: obj_data,
+                     async: false,
+                     beforeSend: function () {
+                       //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+                     },
+                     error: function(){
+                        //console.log("hay un error");
+                        var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar el listado de asistencias en el nuevo rango de fechas seleccionado."
+                        lanzarModal('Listado de asistencias',mensajeErrorNotas,'Aceptar');//alert(mensajeErrorNotas);
+                     },
+                     success:  function (dataResponse) {
+                       //console.log(optionSelect.closest(".panel-body"));
+                       {#$("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
+                       $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(tituloPanelMateria);
+                       optionSelect.closest(".panel-body").html(dataResponse);#}
+                       $("#panelCarrera-"+idCarreraConsulta).html(dataResponse);
+                     },
+                     dataType:'html'
+                  });
+               }
+               else {
+                  var mensajeAdvertenciaNotas   = "Para poder hacer una consulta de asistencias, seleccione una fecha inicial y final.";
+                  lanzarModal('Listado de asistencias',mensajeAdvertenciaNotas,'Aceptar');
+               }
+            });
          });
       </script>
 	</div>
