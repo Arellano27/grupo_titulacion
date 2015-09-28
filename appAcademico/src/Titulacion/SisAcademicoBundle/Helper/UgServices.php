@@ -27,7 +27,7 @@ class UgServices
 //      $this->source        = "jdbc/saugProcTmp";
 //      $this->url           = "http://192.168.100.11:8080/";
 //      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//      $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
 //      $this->urlWS         = "";
 //      $this->host          = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
@@ -35,10 +35,10 @@ class UgServices
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
       $this->usuario       = "CapaVisualPhp";
       $this->clave         = "12CvP2015";
-      $this->source        = "jdbc/procedimientosSaug";
+      $this->source        = "jdbc/saugProcTmp";
       $this->url           = "http://186.101.66.2:8080/";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
       $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
@@ -48,8 +48,8 @@ class UgServices
       $tipo       = "3";
       $usuario    = "abc";
       $clave      = "123";
-      $source     = "jdbc/procedimientosSaug";
-      $url        = "http://186.101.66.2:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
+      $source     = "jdbc/saugProcTmp";
+      $url        = "http://186.101.66.2:8080/WSObjetosUgPre/ServicioWebObjetos?wsdl";
       $host       = "186.101.66.2:8080";
       $trama      = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
       $response=$ws->doRequestSreReceptaTransacionProcedimientos($trama,$source,$tipo,$usuario,$clave,$url,$host);
@@ -63,8 +63,8 @@ class UgServices
       $tipo       = "3";
       $usuario    = "abc";
       $clave      = "123";
-      $source     = "jdbc/procedimientosSaug";
-      $url        = "http://192.168.100.11:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
+      $source     = "jdbc/saugProcTmp";
+      $url        = "http://192.168.100.11:8080/WSObjetosUgPre/ServicioWebObjetos?wsdl";
       $host       = "192.168.100.11:8080";
       $trama      = "<usuario>0924393861</usuario><contrasena>sinclave</contrasena>";
       $response=$ws->doRequestSreReceptaTransacionConsultas($trama,$source,$tipo,$usuario,$clave,$url,$host);
@@ -74,7 +74,7 @@ class UgServices
    
    public function Docentes_getCarreras($idDocente){
       $this->tipo    = "3";
-      $this->source  = "jdbc/consultasSaug";
+      $this->source  = "jdbc/saugConsTmp";
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama      = "<usuario>".$idDocente."</usuario><rol>2</rol>";
       $XML        = NULL;
@@ -91,7 +91,7 @@ class UgServices
       /*informacion quemada - fin*/
       
       $this->tipo    = "5";
-      $this->source  = "jdbc/consultasSaug";
+      $this->source  = "jdbc/saugConsTmp";
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama         = "<usuario>".$idDocente."</usuario><carrera>".$idCarrera."</carrera>";
       $XML           = NULL;
@@ -103,39 +103,40 @@ class UgServices
    
    public function Docentes_getAsistenciasMaterias($datosConsulta){
       $this->tipo    = "9";
-      $this->source  = "jdbc/procedimientosSaug";
+      $this->source  = "jdbc/saugProcTmp";
       
       if( !isset($datosConsulta["fechaInicio"]) || !isset($datosConsulta["fechaFin"]) ){
-         $day                          = date('w')-1;
-         $datosConsulta["fechaInicio"] = date('d-m-Y', strtotime('-'.$day.' days'));
-         $datosConsulta["fechaFin"]    = date('d-m-Y', strtotime('+'.(6-$day).' days'));
+         date_default_timezone_set ( "America/Guayaquil" );
+         $day                          = date('w');   //date('w')-1;
+         $datosConsulta["fechaFin"]    = date('d-m-Y', strtotime('-'.$day.' days'));
+         $datosConsulta["fechaInicio"] = date('d-m-Y', strtotime('-'.(6-$day).' days'));
+         $datosConsulta["anio"]        = date('o');
       }
-
       /*informacion quemada - inicio*/
-      // $this->source                 = "jdbc/saugProcTmp";
-      // $this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      // $datosConsulta["fechaInicio"] = '15/09/2015';
-      // $datosConsulta["fechaFin"]    = '20/09/2015';
-      // $datosConsulta["idDocente"]   = 31;
-      // $datosConsulta["idMateria"]   = 51;
-      // $datosConsulta["idParalelo"]  = 7;
-      // $datosConsulta["anio"]        = 2015;
-      // $datosConsulta["ciclo"]       = 4;
+       $this->source                 = "jdbc/saugProcTmp";
+       $this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+       //$datosConsulta["fechaInicio"] = '15/09/2015';
+       //$datosConsulta["fechaFin"]    = '20/09/2015';
+       //$datosConsulta["idDocente"]   = 31;
+       //$datosConsulta["idMateria"]   = 51;
+       //$datosConsulta["idParalelo"]  = 7;
+       //$datosConsulta["anio"]        = 2015;
       /*informacion quemada - fin*/
-
+       $datosConsulta["idParalelo"]  = 0;  /* ES NECESARIO PARA LA TRAMA ACTUAL */
+       $datosConsulta["ciclo"]       = $datosConsulta["idCarrera"];  /* ESTE REEMPLAZO ES NECESARIO*/
       $this->urlWS   = $this->url.$this->urlProcedim;
       
       $trama         =  "<fechaInicio>".$datosConsulta["fechaInicio"]."</fechaInicio><fechaFin>".$datosConsulta["fechaFin"]."</fechaFin>".
                         "<idProfesor>".$datosConsulta["idDocente"]."</idProfesor><idMateria>".$datosConsulta["idMateria"]."</idMateria><idParalelo>".$datosConsulta["idParalelo"]."</idParalelo>".
-                        "<anio>".$datosConsulta["anio"]."</anio><ciclo>".$datosConsulta["ciclo"]."</ciclo>";
+                        "<anio>".$datosConsulta["anio"]."</anio><ciclo>".$datosConsulta["ciclo"]."</ciclo><idCarrera>".$datosConsulta["idCarrera"]."</idCarrera>";
       $XML           = NULL;
-      
+
       $xmlData["XML_test"] = $XML;
       $xmlData["bloqueRegistros"]   = 'asistencia';
       $xmlData["bloqueSalida"]      = 'px_salida';
 
       $response=$this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
-
+      
       return $response;
    }#end function Docentes_getAsistenciasMaterias()
    
@@ -143,7 +144,7 @@ class UgServices
    
    public function Docentes_getNotasMaterias($datosConsulta){
       $this->tipo    = "12";
-      $this->source  = "jdbc/procedimientosSaug";
+      $this->source  = "jdbc/saugProcTmp";
       
       //quemado - inicio
       // $this->source              = "jdbc/saugProcTmp";
@@ -178,8 +179,8 @@ class UgServices
            $tipo       = "3";
            $usuario    = "abc";
            $clave      = "123";
-           $source     = "jdbc/procedimientosSaug";
-           $url        = "http://192.168.100.11:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
+           $source     = "jdbc/saugProcTmp";
+           $url        = "http://192.168.100.11:8080/WSObjetosUgPre/ServicioWebObjetos?wsdl";
            $host       = "192.168.100.11:8080";
            $trama      = "<idDocente>".$idDocente."</idDocente>";
            
@@ -249,8 +250,8 @@ public function getConsultaCarreras($idEstudiante,$idRol){
         $tipo       = "3";
         $usuario    = "CapaVisualPhp";
         $clave      = "12CvP2015";
-        $source     = "jdbc/consultasSaug";
-        $url        = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
+        $source     = "jdbc/saugConsTmp";
+        $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
         $host       = "186.101.66.2:8080";
         $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
         $response=$ws->doRequestSreReceptaTransacionCarreras($trama,$source,$tipo,$usuario,$clave,$url,$host);
@@ -278,7 +279,7 @@ public function getConsultaNotas_nh($idFacultad,$idCarrera,$idEstudiante){
         $tipo       = "11";
         $usuario    = "abc";
         $clave      = "123";
-        //$source     = "jdbc/procedimientosSaug";
+        //$source     = "jdbc/saugProcTmp";
         $source     = "jdbc/saugProcTmp";
        // $url        = "http://186.101.66.2:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
         $url        = "http://186.101.66.2:8080/WSObjetosUgPre/ServicioWebObjetos";
