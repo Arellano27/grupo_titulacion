@@ -21,7 +21,7 @@
             $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
         
-           if ($session->has("perfil")) 
+           if (time ()  -  $session->getMetadataBag()->getLastUsed()  <  7500) 
            {
                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
                {
@@ -88,6 +88,7 @@
                }
                else
                {
+                  $session->clear();
                   $this->get('session')->getFlashBag()->add(
                                 'mensaje',
                                 'Los datos ingresados no son válidos'
@@ -97,6 +98,7 @@
            }
            else
            {
+                $session->clear();
                 $this->get('session')->getFlashBag()->add(
                                       'mensaje',
                                       'Los datos ingresados no son válidos'

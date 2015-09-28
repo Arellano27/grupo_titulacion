@@ -5,3 +5,5 @@
     Order deny,allow
     Deny from all
 </IfModule>
+ini_set("session.cookie_lifetime","7500");
+ini_set("session.gc_maxlifetime","7500");

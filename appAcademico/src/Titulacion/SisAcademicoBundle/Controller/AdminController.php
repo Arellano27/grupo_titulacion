@@ -10,12 +10,10 @@ namespace Titulacion\SisAcademicoBundle\Controller;
 
 class AdminController extends Controller
 {
-    public function indexAction()
-    {
-        return $this->render('.html.twig');
-    }
 
-    public function calendario_carrera(){
+
+    public function calendario_carreraAction(){
+
     	return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
     }
 }
