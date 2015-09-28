@@ -20,7 +20,10 @@
             $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
             $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
-        
+
+            ini_set("session.cookie_lifetime","7500");
+            ini_set("session.gc_maxlifetime","7500");
+
            if (time ()  -  $session->getMetadataBag()->getLastUsed()  <  7500) 
            {
                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
