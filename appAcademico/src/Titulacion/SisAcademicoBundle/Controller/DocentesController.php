@@ -105,13 +105,17 @@
          $session=$request->getSession();
          $idDocente  = $session->get('id_user');
          //$idDocente= 7;
-         $idMateria  = $request->request->get('idMateria');
-         $idParalelo = $request->request->get('idParalelo');
-	 $idCarrera = $request->request->get('idCarrera');
-         $datosConsulta	= array( 'idMateria' => $idMateria,
-                                 'idParalelo' => $idParalelo,
+         $idMateria     = $request->request->get('idMateria');
+         $idParalelo    = $request->request->get('idParalelo');
+         $idCarrera     = $request->request->get('idCarrera');
+         $anioConsulta  = date('o');
+         $datosConsulta	= array( 
                                  'idDocente' => $idDocente,
-				 'idCarrera' => $idCarrera);
+                                 'idMateria' => $idMateria,
+                                 'idParalelo' => $idParalelo,
+                                 'anio' => $anioConsulta,
+                                 'idCarrera' => $idCarrera
+                                 );
          $UgServices    = new UgServices;
          $datosAsistenciasXML  = $UgServices->Docentes_getAsistenciasMaterias($datosConsulta);
          
@@ -122,7 +126,8 @@
             //PARA OBTENER EL ARREGLO DE FECHAS
             foreach($datosAsistenciasXML["alumno"][0] as $keyFecha => $valueFecha){
                //var_dump($keyFecha);
-               $regExp = "/(f)([0-9]{2}\\-[0-9]{2}\\-[0-9]{4})/";
+               //$regExp = "/(f)([0-9]{2}\\-[0-9]{2}\\-[0-9]{4})/";
+               $regExp = "/(f)([0-9]{4}\\-[0-9]{2}\\-[0-9]{2})/";
                $tempFecha['diaVal'] = '';
                $tempFecha['diaNom'] = '';
                if(preg_match($regExp, $keyFecha, $matchesFecha)){
@@ -139,7 +144,8 @@
                $dataAsistenciaReg['fechas']    = array();
                //Para procesar las fechas que me han llegado, son dinamicas
                foreach($dataAlumno as $keyFecha => $valueFecha){
-                  $regExp = "/(f)([0-9]{2}\\-[0-9]{2}\\-[0-9]{4})/";
+                  //$regExp = "/(f)([0-9]{2}\\-[0-9]{2}\\-[0-9]{4})/";
+                  $regExp = "/(f)([0-9]{4}\\-[0-9]{2}\\-[0-9]{2})/";
                   if(preg_match($regExp, $keyFecha, $matchesFecha)){
                      array_push($dataAsistenciaReg['fechas'], $valueFecha);
                   }

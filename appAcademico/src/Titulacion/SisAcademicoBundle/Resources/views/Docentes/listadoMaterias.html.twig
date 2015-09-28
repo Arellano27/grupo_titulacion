@@ -15,10 +15,10 @@
       <tbody>
       {% for materias in data.datosMaterias %}
         <tr>
-           <td>{{ materias.materia|upper }}</td>
-         <td>{{ materias.paralelo|upper }}</td>
-         <td>{{ materias.jornada|upper }}</td>
-         <td>{{ materias.cantidad }}</td>
+         <td id="nombreMateria_{{ materias.id_sa_materia_paralelo }}">{{ materias.materia|upper }}</td>
+         <td id="paraleloMateria_{{ materias.id_sa_materia_paralelo }}">{{ materias.paralelo|upper }}</td>
+         <td id="jornadaMateria_{{ materias.id_sa_materia_paralelo }}">{{ materias.jornada|upper }}</td>
+         <td id="alumnosMateria_{{ materias.id_sa_materia_paralelo }}">{{ materias.cantidad }}</td>
          <td class="td-actions">
             <a id="materiaAsistencias-{{ materias.id_sa_materia_paralelo }}" href="" class="asistenciaAlumnos btn btn-primary btn-circle" title="Histórico de asistencia de Alumnos"><i class="fa fa-list"> </i></a>
             <a id="materiasNotas-{{ materias.id_sa_materia_paralelo  }}" href="" class="notasAlumnos btn btn-primary btn-circle" title="Consultas de Notas de los Alumnos"><i class="fa fa-mortar-board"> </i></a>
@@ -45,11 +45,12 @@
          var materiaSplit  = $(this).attr("id").split("-");
          var idMateria     = materiaSplit[1];
          var idCarrera     = $("#carreraSeleccionada").val();
-         var obj_data = {'idMateria':idMateria,'idCarrera':idCarrera};
+         var obj_data      = {'idMateria':idMateria,'idCarrera':idCarrera};
 
-         var optionSelect = $(this);
-         var jumpOption = '{{path('docentes_listado_alumnos_materia')}}';
-
+         var optionSelect        = $(this);
+         var jumpOption          = '{{path('docentes_listado_alumnos_materia')}}';
+         var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";;
+         
          $.ajax({
             url:  jumpOption,
             type: 'post',
@@ -65,12 +66,13 @@
             },
             success:  function (dataResponse) {
               //console.log(optionSelect.closest(".panel-body"));
+              $("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
               optionSelect.closest(".panel-body").html(dataResponse);
             },
             dataType:'html'
          });
-
-         $("#panelInfoAdicional_headerlabel").html("Ingeniería de Software <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
+         
+         $("#panelInfoAdicional_headerlabel").html(tituloPanelMateria+" <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
          $("#panelInfoAdicional .panel-body").children().hide();
          $("#menuGeneralDocente").show();
          $("#infoCalendarioDocente").show();

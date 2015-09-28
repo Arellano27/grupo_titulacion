@@ -106,37 +106,37 @@ class UgServices
       $this->source  = "jdbc/saugProcTmp";
       
       if( !isset($datosConsulta["fechaInicio"]) || !isset($datosConsulta["fechaFin"]) ){
-         $day                          = date('w')-1;
-         $datosConsulta["fechaInicio"] = date('d-m-Y', strtotime('-'.$day.' days'));
-         $datosConsulta["fechaFin"]    = date('d-m-Y', strtotime('+'.(6-$day).' days'));
-	 $datosConsulta["anio"]        = date('o');
+         date_default_timezone_set ( "America/Guayaquil" );
+         $day                          = date('w');   //date('w')-1;
+         $datosConsulta["fechaFin"]    = date('d-m-Y', strtotime('-'.$day.' days'));
+         $datosConsulta["fechaInicio"] = date('d-m-Y', strtotime('-'.(6-$day).' days'));
+         $datosConsulta["anio"]        = date('o');
       }
-
       /*informacion quemada - inicio*/
-      // $this->source                 = "jdbc/saugProcTmp";
-      // $this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      // $datosConsulta["fechaInicio"] = '15/09/2015';
-      // $datosConsulta["fechaFin"]    = '20/09/2015';
-      // $datosConsulta["idDocente"]   = 31;
-      // $datosConsulta["idMateria"]   = 51;
-      // $datosConsulta["idParalelo"]  = 7;
-      // $datosConsulta["anio"]        = 2015;
-      // $datosConsulta["ciclo"]       = 4;
+       $this->source                 = "jdbc/saugProcTmp";
+       $this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+       //$datosConsulta["fechaInicio"] = '15/09/2015';
+       //$datosConsulta["fechaFin"]    = '20/09/2015';
+       //$datosConsulta["idDocente"]   = 31;
+       //$datosConsulta["idMateria"]   = 51;
+       //$datosConsulta["idParalelo"]  = 7;
+       //$datosConsulta["anio"]        = 2015;
       /*informacion quemada - fin*/
-
+       $datosConsulta["idParalelo"]  = 0;  /* ES NECESARIO PARA LA TRAMA ACTUAL */
+       $datosConsulta["ciclo"]       = $datosConsulta["idCarrera"];  /* ESTE REEMPLAZO ES NECESARIO*/
       $this->urlWS   = $this->url.$this->urlProcedim;
       
       $trama         =  "<fechaInicio>".$datosConsulta["fechaInicio"]."</fechaInicio><fechaFin>".$datosConsulta["fechaFin"]."</fechaFin>".
                         "<idProfesor>".$datosConsulta["idDocente"]."</idProfesor><idMateria>".$datosConsulta["idMateria"]."</idMateria><idParalelo>".$datosConsulta["idParalelo"]."</idParalelo>".
                         "<anio>".$datosConsulta["anio"]."</anio><ciclo>".$datosConsulta["ciclo"]."</ciclo><idCarrera>".$datosConsulta["idCarrera"]."</idCarrera>";
       $XML           = NULL;
-      
+
       $xmlData["XML_test"] = $XML;
       $xmlData["bloqueRegistros"]   = 'asistencia';
       $xmlData["bloqueSalida"]      = 'px_salida';
 
       $response=$this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
-
+      
       return $response;
    }#end function Docentes_getAsistenciasMaterias()
    
