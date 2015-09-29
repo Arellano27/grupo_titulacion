@@ -142,7 +142,7 @@ class UgServices
       //quemado - inicio
       // $this->source              = "jdbc/saugProcTmp";
       // $this->urlProcedim         = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-//       $datosConsulta["ciclo"]    = 18;
+       $datosConsulta["ciclo"]    = 0;    /* ES NECESARIO PARA LA TRAMA ACTUAL */
 //       $datosConsulta["idDocente"]= 3;
 //       $datosConsulta["idMateria"]= 54;
       //quemado - fin 

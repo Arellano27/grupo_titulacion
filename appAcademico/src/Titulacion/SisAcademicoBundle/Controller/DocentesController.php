@@ -187,10 +187,12 @@
 		
 		public function notasAlumnosMateriaAction(Request $request)
       {
+         $idMateria  = $request->request->get('idMateria');
        //Menu de Notas por Materia para Profesor
        return $this->render('TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria.html.twig',
                          array(
-                               'condition' => ''
+                               'condition' => '',
+                               'idMateria' => $idMateria
                              )
                       );
       }
@@ -199,18 +201,20 @@
       
       public function listadoNotasAlumnosMateriaAction(Request $request)
       {
-         $idDocente  = $request->request->get('idDocente');
+         $session=$request->getSession();
+         $idDocente  = $session->get('id_user');
          $idMateria  = $request->request->get('idMateria');
          //$idParalelo  = $request->request->get('idParalelo');
-         $idParalelo  = 1;
+         //$idParalelo  = 1;
 
          $datosConsulta	= array( 'idMateria' => $idMateria,
-                                 'idParalelo' => $idParalelo,
                                  'idDocente' => $idDocente);
          
          $UgServices       = new UgServices;
          $datosNotasArray  = $UgServices->Docentes_getNotasMaterias($datosConsulta);
-         
+         //echo "<pre>";
+         //var_dump($datosNotasArray["registro"]);
+         //echo "</pre>";
          $dataProcesar = $datosNotasArray["registro"];
          
          $datosGeneralesListado["notaMinima"]	= $dataProcesar["notaMinima"];

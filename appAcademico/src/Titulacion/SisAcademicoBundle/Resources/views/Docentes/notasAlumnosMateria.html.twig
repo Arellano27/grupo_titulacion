@@ -19,7 +19,7 @@
    $(document).ready(function() { 
       var condition = '{{ condition }}';
       if (condition == '') {
-         var obj_data = {"idParalelo" : "1"};
+         var obj_data = {"idMateria" : "{{idMateria}}"};
          mostrarInfoTabsNotas('notas','{{ path('docentes_consulta_notas_materia') }}', obj_data);
          //mostrarAlumnos('notas','{{ path('docentes_consulta_notas_materia') }}', null);
       }
@@ -35,7 +35,7 @@
 
      if(tabs === 'notas' ) {
        idhtml='notas';
-       var obj_data = {"idParalelo" : "1"};
+       var obj_data = {"idMateria" : "{{idMateria}}"};
        mostrarInfoTabsNotas('notas','{{ path('docentes_consulta_notas_materia') }}', obj_data);
      }
      if(tabs ==='ingreso'){
