@@ -5,7 +5,9 @@
             	<table class="table table-striped table-bordered" id ="">
             	         <thead>
             	            <tr>
-            	                <th colspan="8" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo {{dato.CicloAnio}} - Ciclo {{dato.Ciclo}}</th>
+            	                 {% for numpar in dato.CantidadParcial %} 
+                                    <th colspan="{{ numpar }}" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo {{dato.CicloAnio}} - Ciclo {{dato.Ciclo}}</th>
+                                {% endfor %}
             	            </tr>
                             <tr>
                                 <th style="text-align: center !important;">Nivel</th>
@@ -56,14 +58,18 @@
                         <table class="table table-striped table-bordered" id ="">
                                  <thead>
                                     <tr>
-                                        <th colspan="12" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">{{dato.PeriodoCiclo}}</th>
+                                       {% for numpar in dato.CantidadParcial %} 
+                                            <th colspan="{{numpar}}" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">{{dato.PeriodoCiclo}}</th>
+                                        {% endfor %}
                                     </tr>
                                     <tr>
                                         <th style="text-align: center !important;">Nivel</th>
                                         <th style="text-align: center !important;">Materias</th>
                                         <th style="text-align: center !important;">Veces</th>
                                         {% for par in dato.Parciales %} 
-                                            <th style="text-align: center !important;" colspan="3">Parcial {{par.Parcial}}</th>
+                                            {% for numdet in dato.CantidadParcial %} 
+                                                <th style="text-align: center !important;" colspan="{{numdet}}">Parcial {{par.Parcial}}</th>
+                                            {% endfor %}
                                         {% endfor %}
                                         <th style="text-align: center  !important; ">Supenso</th>
                                         <th style="text-align: center !important;">Promedio</th>

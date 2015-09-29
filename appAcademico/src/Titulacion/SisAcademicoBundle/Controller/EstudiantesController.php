@@ -227,8 +227,8 @@
                      if ($idIndica=='nh')
                      {   
                           
-                          //$idEstudiante  = 17;
-                          //$idCarrera  = 4;
+                          $idEstudiante  = 17;
+                          $idCarrera  = 4;
                            $xml1 = $UgServices->getConsultaNotas_nh($idFacultad,$idCarrera,$idEstudiante);
                             
                           if ( is_object($xml1))
@@ -242,9 +242,12 @@
                                           'PeriodoCiclo' => $PeriodoCiclo,
                                            'Materias'=>array(),
                                            'Parciales'=>array(),
-                                           'DetalleParciales'=>array()
+                                           'DetalleParciales'=>array(),
+                                           'CantidadParcial'=>array(),
+                                           'CantidadDetalle'=>array() 
                                     ); 
                                         //ENCABEZADO-PARCIALES
+                                       $lnCuantos=array();
                                foreach($Periodo->materias->materia->parciales->parcial as $parciales) 
                                {
                                       $NombreParcial=$parciales->parcial;  
@@ -259,6 +262,12 @@
                                                                     'NombreDetalle'=> $NombreDetalle
                                                                    );
                                           array_push($materiaObject["DetalleParciales"],$lsparcialesdetalle);
+                                          if (in_array($NombreDetalle, $lnCuantos)) {
+                                                }
+                                          else
+                                          {
+                                            array_push($lnCuantos,(string) $NombreDetalle);
+                                          }
                                        }
                                }
                                     /* No Borrar
@@ -269,7 +278,19 @@
                                      array_push($materiaObject["CantidadParcial"],$cuentaparcial);
                                      array_push($materiaObject["CantidadDetalle"],$cuentadetalle);
           */
-                              
+                                    
+                                  $lnCuantos=count($lnCuantos); // Cantidad de Deatlle
+                                  
+
+                                  $lnParciales=count($materiaObject["Parciales"]); // Cantidad de Parciales 
+                                  $lnParciales=$lnParciales*$lnCuantos;
+                                  $lnParciales=$lnParciales+6;
+                                  
+                                     array_push($materiaObject["CantidadParcial"],$lnParciales);
+                                     array_push($materiaObject["CantidadDetalle"],$lnCuantos);
+
+                                     
+                            
                                        
                                        $lscursos=array();
                                       foreach($Periodo->materias->materia as $inscripcion) {
@@ -356,10 +377,12 @@
                                                                         'Ciclo' => $ciclo,
                                                                         'Materias'=>array(),
                                                                         'Parciales'=>array(),
-                                                                        'DetalleParciales'=>array()
+                                                                        'DetalleParciales'=>array(),
+                                                                        'CantidadParcial'=>array(),
+                                                                        'CantidadDetalle'=>array() 
                                                                       );
                                                 //ENCABEZADO-PARCIALES
-
+                                                 $lnCuantos=array();
                                                foreach($actual->materia->parciales->parcial as $parciales) 
                                                {
                                                       $NombreParcial=$parciales->parcial;  
@@ -370,10 +393,22 @@
                                                                   $NombreDetalle=$detalleparciales->nombre; 
                                                                   $lsparcialesdetalle=array('NombreDetalle'=> $NombreDetalle);
                                                                   array_push($materiaObject["DetalleParciales"],$lsparcialesdetalle);
+                                                                  if (in_array($NombreDetalle, $lnCuantos)) {
+                                                                        }
+                                                                  else
+                                                                  {
+                                                                    array_push($lnCuantos,$NombreDetalle);
+                                                                  }
                                                        }
                                                        
                                                }
 
+                                                $lnCuantos=count($lnCuantos)+6;
+                                                $lnParciales=count($materiaObject["Parciales"])+6;
+
+                                           
+                                                 array_push($materiaObject["CantidadParcial"],$lnParciales);
+                                                 array_push($materiaObject["CantidadDetalle"],$lnCuantos);
 
 
 
