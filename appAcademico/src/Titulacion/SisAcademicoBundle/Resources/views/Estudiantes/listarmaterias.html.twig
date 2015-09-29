@@ -67,7 +67,7 @@
                                         <th style="text-align: center !important;">Materias</th>
                                         <th style="text-align: center !important;">Veces</th>
                                         {% for par in dato.Parciales %} 
-                                            {% for numdet in dato.CantidadParcial %} 
+                                            {% for numdet in dato.CantidadDetalle %} 
                                                 <th style="text-align: center !important;" colspan="{{numdet}}">Parcial {{par.Parcial}}</th>
                                             {% endfor %}
                                         {% endfor %}

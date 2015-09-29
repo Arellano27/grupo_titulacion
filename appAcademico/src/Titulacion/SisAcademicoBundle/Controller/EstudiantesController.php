@@ -20,11 +20,8 @@
             $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
             $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
-
-            ini_set("session.cookie_lifetime","2000");
-            ini_set("session.gc_maxlifetime","2000");
-
-           if (time ()  -  $session->getMetadataBag()->getLastUsed()  <  2000) 
+        
+           if ($session->has("perfil")) 
            {
                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
                {
@@ -35,7 +32,8 @@
                           //$idEstudiante=3;
                           $idEstudiante=$session->get("id_user");
                           //$idEstudiante=3;
-                          $idRol=1;
+                          $idRol=$perfilEst;
+                          
                           //$idRol=$session->get("perfil");
                           $Carreras = array();
                           $UgServices = new UgServices;
@@ -91,7 +89,6 @@
                }
                else
                {
-                  $session->clear();
                   $this->get('session')->getFlashBag()->add(
                                 'mensaje',
                                 'Los datos ingresados no son válidos'
@@ -101,7 +98,6 @@
            }
            else
            {
-                $session->clear();
                 $this->get('session')->getFlashBag()->add(
                                       'mensaje',
                                       'Los datos ingresados no son válidos'
@@ -232,8 +228,8 @@
                      if ($idIndica=='nh')
                      {   
                           
-                          $idEstudiante  = 17;
-                          $idCarrera  = 4;
+                         // $idEstudiante  = 17;
+                         // $idCarrera  = 4;
                            $xml1 = $UgServices->getConsultaNotas_nh($idFacultad,$idCarrera,$idEstudiante);
                             
                           if ( is_object($xml1))
@@ -283,13 +279,15 @@
                                      array_push($materiaObject["CantidadParcial"],$cuentaparcial);
                                      array_push($materiaObject["CantidadDetalle"],$cuentadetalle);
           */
-                                    
                                   $lnCuantos=count($lnCuantos); // Cantidad de Deatlle
                                   
 
                                   $lnParciales=count($materiaObject["Parciales"]); // Cantidad de Parciales 
+
+
                                   $lnParciales=$lnParciales*$lnCuantos;
                                   $lnParciales=$lnParciales+6;
+
                                   
                                      array_push($materiaObject["CantidadParcial"],$lnParciales);
                                      array_push($materiaObject["CantidadDetalle"],$lnCuantos);
@@ -402,7 +400,7 @@
                                                                         }
                                                                   else
                                                                   {
-                                                                    array_push($lnCuantos,$NombreDetalle);
+                                                                    array_push($lnCuantos,(string) $NombreDetalle);
                                                                   }
                                                        }
                                                        
