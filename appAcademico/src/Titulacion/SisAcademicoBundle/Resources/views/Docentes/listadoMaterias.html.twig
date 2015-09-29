@@ -67,6 +67,7 @@
             success:  function (dataResponse) {
               //console.log(optionSelect.closest(".panel-body"));
               $("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
+              $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(tituloPanelMateria);
               optionSelect.closest(".panel-body").html(dataResponse);
             },
             dataType:'html'
@@ -88,6 +89,7 @@
          var idMateria        = idSplit[1]; 
          var idDocente        = 1;
          var idCarrera        = $("#carreraSeleccionada").val();
+         var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";;
          
          var optionSelect = $(this);
          var jumpOption = '{{path('docentes_notas_alumnos_materia')}}';
@@ -114,7 +116,7 @@
             dataType:'html'
          });
 
-         $("#panelInfoAdicional_headerlabel").html("Ingeniería de Software <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
+         $("#panelInfoAdicional_headerlabel").html(tituloPanelMateria+" <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
          $("#panelInfoAdicional .panel-body").children().hide();
          $("#menuGeneralDocente").show();
          $("#infoCalendarioDocente").show();
@@ -156,7 +158,7 @@
             dataType:'html'
          });
 
-         $("#panelInfoAdicional_headerlabel").html("Ingeniería de Software <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
+         $("#panelInfoAdicional_headerlabel").html(tituloPanelMateria+" <input id='idMateriaSelected' type='hidden' value='"+idMateria+"'> <input id='idCarreradeMateriaSelected' type='hidden' value='"+idCarrera+"'>");
          $("#panelInfoAdicional .panel-body").children().hide();
          $("#menuGeneralDocente").show();
          $("#infoCalendarioDocente").show();

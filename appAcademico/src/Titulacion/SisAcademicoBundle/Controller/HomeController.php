@@ -34,7 +34,7 @@ class HomeController extends Controller
                 $login_act     =array();
                 $perfilUsuario = null;
                 $count         = count($data);
-    
+
                 if($count == 1){
                     $perfil        = $data[0]['idrol'];
                     $idUsuario     = $data[0]['usuario'];

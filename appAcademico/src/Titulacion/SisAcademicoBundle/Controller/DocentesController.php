@@ -108,8 +108,24 @@
          $idMateria     = $request->request->get('idMateria');
          $idParalelo    = $request->request->get('idParalelo');
          $idCarrera     = $request->request->get('idCarrera');
+         $fechaInicio   = $request->request->get('fechaInicio');
+         $fechaFin      = $request->request->get('fechaFin');
+         
+         if( !isset($fechaInicio) || !isset($fechaFin) ){
+            date_default_timezone_set ( "America/Guayaquil" );
+            $day           = date('w');
+            $fechaFin      = date('d-m-Y', strtotime('-'.$day.' days'));
+            $fechaInicio   = date('d-m-Y', strtotime('-'.(6-$day).' days'));
+         }
+         else {
+            $fechaFin      = str_replace("/","-",$fechaFin);
+            $fechaInicio   = str_replace("/","-",$fechaInicio);
+         }
          $anioConsulta  = date('o');
+         
          $datosConsulta	= array( 
+                                 'fechaInicio' => $fechaInicio,
+                                 'fechaFin' => $fechaFin,
                                  'idDocente' => $idDocente,
                                  'idMateria' => $idMateria,
                                  'idParalelo' => $idParalelo,
@@ -132,7 +148,9 @@
                $tempFecha['diaNom'] = '';
                if(preg_match($regExp, $keyFecha, $matchesFecha)){
                   $tempFecha['diaVal'] = substr($keyFecha, 1);
-                  $tempFecha['diaNom'] = $this->nombresDias( date('l', strtotime($tempFecha['diaVal']) ) );
+                  //$tempFecha['diaVal'] =  date("d/m/Y",strtotime($tempFecha['diaVal']));     //Cambio de formato
+                  $tempFecha['diaNom'] = $this->nombresDias( date('l', strtotime($tempFecha['diaVal'])) );
+                  $tempFecha['diaVal'] =  date("d/m/Y",strtotime($tempFecha['diaVal']));     //Cambio de formato
                   array_push($arregloFechas, $tempFecha);
                }
             }
@@ -154,11 +172,15 @@
                array_push($dataAsistencia, $dataAsistenciaReg);
             }
          }
-         
+
          return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria.html.twig',
                          array(
                                'dataMateria' => array('fechasAsistencia' => $arregloFechas,
-                                                      'datosAsistencia' => $dataAsistencia)
+                                                      'datosAsistencia' => $dataAsistencia,
+                                                      'fechaInicio'  => date("d/m/Y",strtotime($fechaInicio)),
+                                                      'fechaFin'  => date("d/m/Y",strtotime($fechaFin)),
+                                                      'idMateria' => $idMateria
+                                                     )
                              )
                       );
       }
@@ -188,7 +210,6 @@
          
          $UgServices       = new UgServices;
          $datosNotasArray  = $UgServices->Docentes_getNotasMaterias($datosConsulta);
-         //var_dump($datosNotasArray);
          
          $dataProcesar = $datosNotasArray["registro"];
          
