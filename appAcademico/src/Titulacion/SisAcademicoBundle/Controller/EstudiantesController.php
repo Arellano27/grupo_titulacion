@@ -20,8 +20,11 @@
             $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
             $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
-        
-           if ($session->has("perfil")) 
+
+            ini_set("session.cookie_lifetime","2000");
+            ini_set("session.gc_maxlifetime","2000");
+
+           if (time ()  -  $session->getMetadataBag()->getLastUsed()  <  2000) 
            {
                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
                {
@@ -32,8 +35,8 @@
                           //$idEstudiante=3;
                           $idEstudiante=$session->get("id_user");
                           //$idEstudiante=3;
-                          //$idRol=1;
-                          $idRol=$session->get("perfil");
+                          $idRol=1;
+                          //$idRol=$session->get("perfil");
                           $Carreras = array();
                           $UgServices = new UgServices;
                           $xml = $UgServices->getConsultaCarreras($idEstudiante,$idRol);
@@ -88,6 +91,7 @@
                }
                else
                {
+                  $session->clear();
                   $this->get('session')->getFlashBag()->add(
                                 'mensaje',
                                 'Los datos ingresados no son válidos'
@@ -97,6 +101,7 @@
            }
            else
            {
+                $session->clear();
                 $this->get('session')->getFlashBag()->add(
                                       'mensaje',
                                       'Los datos ingresados no son válidos'
