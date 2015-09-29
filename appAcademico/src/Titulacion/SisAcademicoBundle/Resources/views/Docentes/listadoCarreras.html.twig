@@ -14,7 +14,8 @@
 				<div class="panel-group" id="accordionCarreras">
                {% if data.datosCarreras=='error'%} Se presentó un problema para presentar las carreras. Por favor contacte e soporte técnico. {% endif %}
                {% for countCarreras, datosCarrera in data.datosCarreras %}
-                  <input id="materiaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >                  
+                  <input id="materiaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >
+                  <input id="nombreMateriaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >
                   <div id="panelCentralCarrera-{{datosCarrera.id_sa_carrera}}" class="panel panel-default">
                      <div class="panel-heading">
                         <h4 class="panel-title">
@@ -322,7 +323,8 @@
             if(tablaMaterias.is(':empty') || nombreElemento.indexOf("homeCarrera")>=0 ) {
               // notificacionIndex = cargandoSitio(null, null, null);
                if(nombreElemento.indexOf("homeCarrera")>=0) {
-                  $("#materiaSeleccionada-Carrera_"+idCarrera).val(''); //Para limpiar la materia seleccionada dentro de la carrera
+                  $("#materiaSeleccionada-Carrera_"+idCarrera).val(''); //Para limpiar el ID de la materia seleccionada dentro de la carrera
+                  $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(''); //Para limpiar el nombre de la materia seleccionada dentro de la carrera
                   var divMostrarMaterias  = tablaMaterias.parent("div[id^='collapse']");//.attr("id");
                   //$("div[id^='collapse']").removeClass("in");
                   //divMostrarMaterias.addClass("in");
