@@ -38,7 +38,7 @@
                           $Carreras = array();
                           $UgServices = new UgServices;
                           $xml = $UgServices->getConsultaCarreras($idEstudiante,$idRol);
-                            
+                              
                             if ( is_object($xml))
                             {
                               foreach($xml->registros->registro as $lcCarreras) 
