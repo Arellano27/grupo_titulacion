@@ -153,29 +153,29 @@ class UgServices
                         <PI_ID_USUARIO_PROFESOR>".$datosConsulta["idDocente"]."</PI_ID_USUARIO_PROFESOR>
                         <PI_ID_MATERIA>".$datosConsulta["idMateria"]."</PI_ID_MATERIA>";
       $XML           = NULL;
-$XML        = <<<XML
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-         <return>
-            <codigoRespuesta>0</codigoRespuesta>
-            <estado>F</estado>
-            <idHistorico>30334</idHistorico>
-            <mensajeRespuesta>ok</mensajeRespuesta>
-            <resultadoObjeto>
-               <parametrosSalida>
-                  <PX_SALIDA><![CDATA[&lt;registros&gt;&lt;registro&gt;&lt;cantParciales&gt;2&lt;/cantParciales&gt;&lt;notaMinima&gt;6.50&lt;/notaMinima&gt;&lt;periodos&gt;&lt;periodo&gt;&lt;parcial&gt;1&lt;/parcial&gt;&lt;totalizar&gt;SI&lt;/totalizar&gt;&lt;componentePeriodo&gt;&lt;idNota&gt;51&lt;/idNota&gt;&lt;componente&gt;GESTIÓNFORMATIVA&lt;/componente&gt;&lt;idNota&gt;52&lt;/idNota&gt;&lt;componente&gt;GESTIÓNPRÁCTICA&lt;/componente&gt;&lt;idNota&gt;53&lt;/idNota&gt;&lt;componente&gt;ACREDITACIÓN&lt;/componente&gt;&lt;/componentePeriodo&gt;&lt;/periodo&gt;&lt;periodo&gt;&lt;parcial&gt;2&lt;/parcial&gt;&lt;totalizar&gt;SI&lt;/totalizar&gt;&lt;componentePeriodo&gt;&lt;idNota&gt;51&lt;/idNota&gt;&lt;componente&gt;GESTIÓNFORMATIVA&lt;/componente&gt;&lt;idNota&gt;52&lt;/idNota&gt;&lt;componente&gt;GESTIÓNPRÁCTICA&lt;/componente&gt;&lt;idNota&gt;53&lt;/idNota&gt;&lt;componente&gt;ACREDITACIÓN&lt;/componente&gt;&lt;/componentePeriodo&gt;&lt;/periodo&gt;&lt;/periodos&gt;&lt;idProfesor&gt;31&lt;/idProfesor&gt;&lt;profesor&gt;ACOSTAZAMBRANONANCYLENIS&lt;/profesor&gt;&lt;idMateria&gt;1&lt;/idMateria&gt;&lt;materia&gt;Matemática1&lt;/materia&gt;&lt;idParalelo&gt;1&lt;/idParalelo&gt;&lt;paralelo&gt;S1A&lt;/paralelo&gt;&lt;estudiantes&gt;&lt;estudiante&gt;&lt;idEstudiante&gt;17&lt;/idEstudiante&gt;&lt;estudiante&gt;MORAXAVIER&lt;/estudiante&gt;&lt;promedio&gt;9.50&lt;/promedio&gt;&lt;ciclo&gt;9&lt;/ciclo&gt;&lt;parciales&gt;&lt;Parcial&gt;1&lt;/Parcial&gt;&lt;total&gt;10.00&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;4.00&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;parciales&gt;&lt;Parcial&gt;2&lt;/Parcial&gt;&lt;total&gt;10.00&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;4.00&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;estadoCiclo&gt;A&lt;/estadoCiclo&gt;&lt;/estudiante&gt;&lt;estudiante&gt;&lt;idEstudiante&gt;6&lt;/idEstudiante&gt;&lt;estudiante&gt;FERNANDEZPALOMINOWILSONALBERTO&lt;/estudiante&gt;&lt;promedio&gt;7.00&lt;/promedio&gt;&lt;ciclo&gt;9&lt;/ciclo&gt;&lt;parciales&gt;&lt;Parcial&gt;1&lt;/Parcial&gt;&lt;total&gt;7.30&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;2.30&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;1.20&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;3.80&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;parciales&gt;&lt;Parcial&gt;2&lt;/Parcial&gt;&lt;total&gt;6.60&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;2.50&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.20&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;0.90&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;estadoCiclo&gt;A&lt;/estadoCiclo&gt;&lt;/estudiante&gt;&lt;/estudiantes&gt;&lt;/registro&gt;&lt;/registros&gt;]]></PX_SALIDA>
-                  <PI_ESTADO>1</PI_ESTADO>
-                  <PV_MENSAJE>CONSULTA CON DATOS</PV_MENSAJE>
-                  <PV_CODTRANS>7</PV_CODTRANS>
-                  <PV_MENSAJE_TECNICO/>
-               </parametrosSalida>
-            </resultadoObjeto>
-         </return>
-      </ns2:ejecucionObjetoResponse>
-   </soap:Body>
-</soap:Envelope>
-XML;
+//$XML        = <<<XML
+//<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//   <soap:Body>
+//      <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//         <return>
+//            <codigoRespuesta>0</codigoRespuesta>
+//            <estado>F</estado>
+//            <idHistorico>30334</idHistorico>
+//            <mensajeRespuesta>ok</mensajeRespuesta>
+//            <resultadoObjeto>
+//               <parametrosSalida>
+//                  <PX_SALIDA><![CDATA[&lt;registros&gt;&lt;registro&gt;&lt;cantParciales&gt;2&lt;/cantParciales&gt;&lt;notaMinima&gt;6.50&lt;/notaMinima&gt;&lt;periodos&gt;&lt;periodo&gt;&lt;parcial&gt;1&lt;/parcial&gt;&lt;totalizar&gt;SI&lt;/totalizar&gt;&lt;componentePeriodo&gt;&lt;idNota&gt;51&lt;/idNota&gt;&lt;componente&gt;GESTIÓNFORMATIVA&lt;/componente&gt;&lt;idNota&gt;52&lt;/idNota&gt;&lt;componente&gt;GESTIÓNPRÁCTICA&lt;/componente&gt;&lt;idNota&gt;53&lt;/idNota&gt;&lt;componente&gt;ACREDITACIÓN&lt;/componente&gt;&lt;/componentePeriodo&gt;&lt;/periodo&gt;&lt;periodo&gt;&lt;parcial&gt;2&lt;/parcial&gt;&lt;totalizar&gt;SI&lt;/totalizar&gt;&lt;componentePeriodo&gt;&lt;idNota&gt;51&lt;/idNota&gt;&lt;componente&gt;GESTIÓNFORMATIVA&lt;/componente&gt;&lt;idNota&gt;52&lt;/idNota&gt;&lt;componente&gt;GESTIÓNPRÁCTICA&lt;/componente&gt;&lt;idNota&gt;53&lt;/idNota&gt;&lt;componente&gt;ACREDITACIÓN&lt;/componente&gt;&lt;/componentePeriodo&gt;&lt;/periodo&gt;&lt;/periodos&gt;&lt;idProfesor&gt;31&lt;/idProfesor&gt;&lt;profesor&gt;ACOSTAZAMBRANONANCYLENIS&lt;/profesor&gt;&lt;idMateria&gt;1&lt;/idMateria&gt;&lt;materia&gt;Matemática1&lt;/materia&gt;&lt;idParalelo&gt;1&lt;/idParalelo&gt;&lt;paralelo&gt;S1A&lt;/paralelo&gt;&lt;estudiantes&gt;&lt;estudiante&gt;&lt;idEstudiante&gt;17&lt;/idEstudiante&gt;&lt;estudiante&gt;MORAXAVIER&lt;/estudiante&gt;&lt;promedio&gt;9.50&lt;/promedio&gt;&lt;ciclo&gt;9&lt;/ciclo&gt;&lt;parciales&gt;&lt;Parcial&gt;1&lt;/Parcial&gt;&lt;total&gt;10.00&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;4.00&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;parciales&gt;&lt;Parcial&gt;2&lt;/Parcial&gt;&lt;total&gt;10.00&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;4.00&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;estadoCiclo&gt;A&lt;/estadoCiclo&gt;&lt;/estudiante&gt;&lt;estudiante&gt;&lt;idEstudiante&gt;6&lt;/idEstudiante&gt;&lt;estudiante&gt;FERNANDEZPALOMINOWILSONALBERTO&lt;/estudiante&gt;&lt;promedio&gt;7.00&lt;/promedio&gt;&lt;ciclo&gt;9&lt;/ciclo&gt;&lt;parciales&gt;&lt;Parcial&gt;1&lt;/Parcial&gt;&lt;total&gt;7.30&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;2.30&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;1.20&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;3.80&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;parciales&gt;&lt;Parcial&gt;2&lt;/Parcial&gt;&lt;total&gt;6.60&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;2.50&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.20&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;0.90&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;estadoCiclo&gt;A&lt;/estadoCiclo&gt;&lt;/estudiante&gt;&lt;/estudiantes&gt;&lt;/registro&gt;&lt;/registros&gt;]]></PX_SALIDA>
+//                  <PI_ESTADO>1</PI_ESTADO>
+//                  <PV_MENSAJE>CONSULTA CON DATOS</PV_MENSAJE>
+//                  <PV_CODTRANS>7</PV_CODTRANS>
+//                  <PV_MENSAJE_TECNICO/>
+//               </parametrosSalida>
+//            </resultadoObjeto>
+//         </return>
+//      </ns2:ejecucionObjetoResponse>
+//   </soap:Body>
+//</soap:Envelope>
+//XML;
           
       $xmlData["XML_test"]          = $XML;
       $xmlData["bloqueRegistros"]   = 'registros';
