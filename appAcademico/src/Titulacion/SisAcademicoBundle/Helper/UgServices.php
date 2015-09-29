@@ -48,9 +48,9 @@ class UgServices
       $tipo       = "3";
       $usuario    = "abc";
       $clave      = "123";
-      $source     = "jdbc/saugProcTmp";
-      $url        = "http://186.101.66.2:8080/WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      $host       = "186.101.66.2:8080";
+      $source     = $this->source;
+      $url        = $this->url.$this->urlProcedim;
+      $host       = $this->host;
       $trama      = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
       $response=$ws->doRequestSreReceptaTransacionProcedimientos($trama,$source,$tipo,$usuario,$clave,$url,$host);
        //pruebas
