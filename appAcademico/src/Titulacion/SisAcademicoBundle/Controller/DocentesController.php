@@ -212,10 +212,8 @@
          
          $UgServices       = new UgServices;
          $datosNotasArray  = $UgServices->Docentes_getNotasMaterias($datosConsulta);
-         //echo "<pre>";
-         //var_dump($datosNotasArray["registro"]);
-         //echo "</pre>";
-         $dataProcesar = $datosNotasArray["registro"];
+         
+         $dataProcesar = $datosNotasArray["registro"][0];
          
          $datosGeneralesListado["notaMinima"]	= $dataProcesar["notaMinima"];
          $datosGeneralesListado["idProfesor"]	= $dataProcesar["idProfesor"];
