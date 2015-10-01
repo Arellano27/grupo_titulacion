@@ -114,7 +114,8 @@
          if( !isset($fechaInicio) || !isset($fechaFin) ){
             date_default_timezone_set ( "America/Guayaquil" );
             $day           = date('w');
-            $fechaFin      = date('d-m-Y', strtotime('-'.$day.' days'));
+            $fechaFin      = date('d-m-Y');
+            $day++;
             $fechaInicio   = date('d-m-Y', strtotime('-'.(6-$day).' days'));
          }
          else {
