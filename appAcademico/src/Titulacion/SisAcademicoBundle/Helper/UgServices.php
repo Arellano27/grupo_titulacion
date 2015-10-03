@@ -182,7 +182,6 @@ class UgServices
       $xmlData["bloqueSalida"]      = 'px_salida';
 
       $response   =  $this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
-
       return $response;
    }#end function Docentes_getNotasMaterias()
    
