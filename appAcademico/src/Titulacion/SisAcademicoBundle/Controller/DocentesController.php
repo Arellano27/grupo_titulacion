@@ -115,6 +115,7 @@
             date_default_timezone_set ( "America/Guayaquil" );
             $day           = date('w');
             $fechaFin      = date('d-m-Y');
+            if($day == 0){ $day = 7; }	//Esto es para el domingo
             $day--;
             $fechaInicio   = date('d-m-Y', strtotime('-'.($day).' days'));
          }
