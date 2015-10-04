@@ -23,7 +23,7 @@ class HomeController extends Controller
         ->setSubject('Activación Password')
         ->setFrom('titulacion.php@gmail.com')
         ->setTo('stalin_cmoran@hotmail.com')
-        ->setBody("hola mundi");
+        ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig'),'text/html', 'utf8');
         $resp = $this->get('mailer')->send($message);
         // 
 
