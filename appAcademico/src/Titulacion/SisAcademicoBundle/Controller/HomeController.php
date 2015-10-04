@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Titulacion\SisAcademicoBundle\Controller;
 
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -8,10 +8,34 @@ namespace Titulacion\SisAcademicoBundle\Controller;
     use Titulacion\SisAcademicoBundle\Helper\UgServices;
 
 /**
-* 
+*
 */
 class HomeController extends Controller
 {
+    public function enviarmailAction(Request $request){
+        $user = $request->request->get('user');
+        #recepto desde la base el correo
+        $email = "scaichemoran@gmail.com"; #quemado por el momento
+
+        $mailer = $this->container->get('mailer');
+        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                ->setUsername("xxxxxxx@gmail.com")
+                ->setPassword("xxxxxx");
+        $mailer = \Swift_Mailer::newInstance($transport);
+        $message = \Swift_Message::newInstance("Test")
+                ->setSubject("Hola mundo")
+                ->setFrom('token.stalin.caiche@gmail.com')
+                ->setTo($email)
+                ->setBody("hola mundo");
+
+     
+        $this->get('mailer')->send($message);
+        // 
+
+
+        echo 'envie mail'; exit();
+    }
+
 	public function ingresarAction(Request $request)
     {
 
@@ -75,14 +99,14 @@ class HomeController extends Controller
                 return new Response('05');
             }
 
-               
+
 
 
         }else{
 
         return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
         }
-        
+
     }#end function
 
 
@@ -97,10 +121,10 @@ class HomeController extends Controller
 
             $perfilEst    = $this->container->getParameter('perfilEst');
             $perfilDoc    = $this->container->getParameter('perfilDoc');
-            $perfilAdmin  = $this->container->getParameter('perfilAdmin'); 
-            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
-            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
-            $perfilDocAdm = $this->container->getParameter('perfilDocAdm'); 
+            $perfilAdmin  = $this->container->getParameter('perfilAdmin');
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc');
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm');
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
 
             if ($session->has("perfil")) {
                 if($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilDocAdm){#docente
@@ -109,10 +133,10 @@ class HomeController extends Controller
                                           array( 'idCarrera' => '135', 'nombreCarrera'=>'Ingeniería en Sistemas Computaciones', 'order'=>'One' ),
                                           array( 'idCarrera' => '246', 'nombreCarrera'=>'Ingeniería Química', 'order'=>'Two' ),
                                           array( 'idCarrera' => '789', 'nombreCarrera'=>'Ingeniería Civil', 'order'=>'Three' )
-                                       );         
+                                       );
                      $datosDocente  = array( 'idDocente' => $idDocente );
-                     
-                     
+
+
 
 
                      return $this->render('SisAcademicoBundle:Docentes:listadoCarreras.html.twig',

@@ -5,3 +5,6 @@ titulacion_sis_academico_ingresar:
 titulacion_sis_academico_logout:
     path:     /logout
     defaults: { _controller: TitulacionSisAcademicoBundle:Home:logout }
+titulacion_sis_academico_mail:
+    path:     /sendmail
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:enviarmail }
