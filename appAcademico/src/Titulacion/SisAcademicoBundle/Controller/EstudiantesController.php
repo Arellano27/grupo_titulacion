@@ -120,61 +120,51 @@
            if ($session->has("perfil")) {
                if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
                      $matricula_dis=array();
-                     $estudiante='Jeferson Bohorquez';
-                      $carrerras = array(
-                        array(
-                            'Facultad' => '001',
-                             'Carrera'=>'001',
-                              'Nombre'=>'Matematicas' 
-                        ),
-                        array(
-                            'Facultad' => '001',
-                             'Carrera'=>'001',
-                              'Nombre'=>'Networking'  
-                        ),
-                        array(
-                            'Facultad' => '002',
-                             'Carrera'=>'001',
-                              'Nombre'=>'Sistemas'  
-                        ),
-                        array(
-                            'Facultad' => '002',
-                             'Carrera'=>'002',
-                              'Nombre'=>'Economia'  
-                        )
-                        );
+                     
+                   
+                 try
+                {
+                     $estudiante  = $session->get('nom_usuario');
+                     $idEstudiante=$session->get('id_user');
+                      $lcFacultad="";
+                      $lcCarrera="";
+                       $Carreras_inscribir = array();
+                       $idRol=$perfilEst;
+                       //$estudiante='Jeferson Bohorquez';
+                        $UgServices = new UgServices;
+                        $xml = $UgServices->getConsultaCarreras_Matricula($idEstudiante,$idRol);
+                        if ( is_object($xml))
+                        {
+                          foreach($xml->registros->registro as $lcCarreras) 
+                            {
+                                  $lcFacultad=$lcCarreras->id_sa_facultad;
+                                  $lcCarrera=$lcCarreras->id_sa_carrera;
 
+                                 $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                             'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                             'Carrera'=>$lcCarreras->id_sa_carrera
+                                                            );
 
-
-                    $xml = simplexml_load_file("pruebas.xml");
-                    foreach($xml->materias as $materias) {
-                        $lcMaterias=$materias->Nombre;
-                        $lcregistro=$materias->registro;
-
-                         $materiaObject = array(
-                            'Nombre' => $lcMaterias,
-                             'cursos'=>array(),
-                             'registro' => $lcregistro,
-                        );
-
-                         $lscursos=array();
-                        foreach($materias->cursos as $curso) {
-                           $lscursos=array('cursos'=> $curso->curso);
-                          // var_dump($lscursos);
-                             //array_push($materiaObject, $lscursos);
-                            array_push($materiaObject["cursos"], $lscursos);
+                                  array_push($Carreras_inscribir, $materiaObject); 
+                              }
+                            }
+                          else
+                          {
+                            throw new \Exception('Un error');
+                          }
+                          
+                    }catch (\Exception $e)
+                        {
+                         
+                          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
                         }
-                        
-                        
 
-                        array_push($matricula_dis, $materiaObject);
-                    } 
 
                    
-                   return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_matriculacion.html.twig',array(
-                                                    'matricula_dis' =>  $matricula_dis,
-                                                    'estudiante' => $estudiante,
-                                                    'carreras'=> $carrerras 
+                   return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_carrerasmatricula.html.twig',array(
+                                                    'nomEstudiante' =>  $estudiante,
+                                                    'idEstudiante' => $idEstudiante,
+                                                    'carreras_inscribir'=>$Carreras_inscribir
 
                                                  ));
 
@@ -586,6 +576,238 @@
                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
          }
        }
+
+ //Proceso de Matriculacion 
+       public function procesomatriculaAction(Request $request)
+        {
+             
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $idEstudiante  = $request->request->get('idEstudiante');
+            $idCarrera  = $request->request->get('idCarrera');
+
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
+                     $matricula_dis=array();
+
+                   /* $xml = simplexml_load_file("pruebas.xml");
+                    foreach($xml->materias as $materias) {
+                        $lcMaterias=$materias->Nombre;
+                        $lcregistro=$materias->registro;
+
+                         $materiaObject = array(
+                            'Nombre' => $lcMaterias,
+                             'cursos'=>array(),
+                             'registro' => $lcregistro,
+                        );
+
+                         $lscursos=array();
+                        foreach($materias->cursos as $curso) {
+                           $lscursos=array('cursos'=> $curso->curso);
+                          // var_dump($lscursos);
+                             //array_push($materiaObject, $lscursos);
+                            array_push($materiaObject["cursos"], $lscursos);
+                        }
+                        
+                        
+
+                        array_push($matricula_dis, $materiaObject);
+                    } 
+*/
+                   
+                 try
+                {
+                     $estudiante  = $session->get('nom_usuario');
+
+                      $banderaMatricula=1;
+                      $lcFacultad="";
+                      $lcCarrera="";
+                      $Materias_inscribir = array();
+                     // $materiaObject = array(); 
+                      $idRol=$perfilEst;
+                       //$idEstudiante=1;
+                       //$estudiante='Jeferson Bohorquez';
+                       $UgServices = new UgServices;
+
+                        $xml1 = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idRol,$idCarrera);
+
+                        //obtenet el ciclo de matriculacion del XML
+                        $CicloMatricula='2015 Ciclo 2';
+                           
+                        
+                         if ( is_object($xml1))
+                                  {
+                                      foreach($xml1->PX_Salida as $xml)
+                                       {  
+
+                                        foreach($xml->registros as $lsciclo) 
+                                          {
+
+                                             // $CicloMatricula=$lsciclo->nombre;
+                                              //$materiaObject = array( 'materia' => array());                                                                 );
+                                            foreach($lsciclo->registro as $lsdetallematerias) 
+                                            {
+                                                $Nombre=$lsdetallematerias->nombre;
+                                                $Veces=$lsdetallematerias->veces;
+                                                $IdMateria=$lsdetallematerias->id_sa_materia;
+                                                $Nivel=$lsdetallematerias->nivel;
+                                                $materiaObject=array('Nombre'=>$Nombre,
+                                                                        'Veces'=>$Veces,
+                                                                        'IdMateria'=>$IdMateria,
+                                                                        'Cursos'=>array());
+                                                foreach($lsdetallematerias->Paralelos->Paralelo as $cursos) 
+                                                  {
+
+                                                    $Nombrecurso=$cursos->curso;
+                                                    $Idcurso=$cursos->curso;
+                                                    $Registrados=$cursos->cuposRegistrados;
+                                                    $Maximo=$cursos->cupoMaximo;
+
+                                                    $arrcurso=array('Curso'=>$Nombrecurso,
+                                                                    'Registrados'=>$Registrados,
+                                                                    'Maximo'=>$Maximo,
+                                                                    'Idcurso'=>$Idcurso);
+                                                    
+                                                     array_push($materiaObject['Cursos'], $arrcurso);
+                                                  }
+                                                   
+
+                                                 // array_push($materiaObject, $arrlistamateria); 
+                                                  array_push($Materias_inscribir, $materiaObject); 
+                                                }
+                                            }
+                                            
+
+                                          }
+                                           /*echo "<pre>";
+                                            print_r($Materias_inscribir);
+                                            echo "</pre>";
+                                            exit();*/
+                            }
+                          else
+                          {
+                            throw new \Exception('Un error');
+                          }
+                          
+                    }catch (\Exception $e)
+                        {
+                         $banderaMatricula=0;
+                          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                        }
+                     
+                   
+                   return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_matriculacion2.html.twig',array(
+                                                    'matricula_dis' =>  $matricula_dis,
+                                                    'estudiante' => $estudiante,
+                                                    'idEstudiante' => $idEstudiante,
+                                                    'idCarrera' => $idCarrera,
+                                                    'banderaMatricula'=> $banderaMatricula ,
+                                                    'Materias_inscribir'=>$Materias_inscribir,
+                                                    'cicloencurso'=>$CicloMatricula
+
+                                                 ));
+
+             }else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }
+                                
+        }
+
+
+  public function estudiantes_grabar_matriculaAction(Request $request)
+        {
+           
+           $respuesta= new Response("",200);
+           $materias  = $request->request->get('arrMaterias');
+
+           $idEstudiante  = $request->request->get('idEstudiante');
+           $idCarrera  = $request->request->get('idCarrera');
+            
+
+          $datosCuenta=""; 
+         foreach ($materias as $key => $value) {
+              $datosCuenta = "<id_materia_paralelo>" . $value['Curso'] . "</id_materia_paralelo>"; 
+          }
+            $xmlFinal="
+                      <matricula>
+                         <matriculacion>
+                             <idEstudiante>".$idEstudiante."</idEstudiante>
+                             <idCarrera>".$idCarrera."</idCarrera>
+                             <parametrosObjeto>
+                                <parametros>
+                                   ".$datosCuenta." 
+                              </parametros>
+                             </parametrosObjeto>
+                          <matriculacion>
+                       </matricula>";
+
+
+
+           $UgServices = new UgServices;
+            $xml1 = $UgServices->setMatricula_Estudiante($xmlFinal);
+
+            $arrayProceso=array();
+            $arrayProceso['codigo_error']=0;
+            $arrayProceso['mensaje']='Proceso existoso';
+            $jarray=json_encode($arrayProceso);
+            
+            //exit();
+
+          // $serializer = $this->container->get('jms_serializer');
+           //$response = $serializer->serialize($data["title"], 'json');
+            //$idCarrera  = $request->request->get('idCarrera');
+            
+
+           // $respuesta="SI";
+
+            //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_deudas.html.twig',compact("notas_act"));
+           //return $jarray;
+            $respuesta->setContent($jarray);
+            return $respuesta;
+        }
+
+  public function presenta_matriculaAction(Request $request)
+    {         
+           $inscripcion=array();
+           $respuesta= new Response("",200);
+           $materias  = $request->request->get('arrMaterias');
+           foreach ($materias as $key => $value) {
+             $arrayProceso=array();
+             $arrayProceso['Curso']=$value['Curso']; 
+             $arrayProceso['Idcurso']=$value['Idcurso']; 
+             $arrayProceso['Materia']=$value['Materia']; 
+             $arrayProceso['Idmateria']=$value['idMateria']; 
+             $arrayProceso['Veces']=$value['Veces']; 
+             array_push($inscripcion, $arrayProceso); 
+
+          }
+
+
+          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:listarmatricula.html.twig',
+                                          array('listaMaterias'=>$inscripcion));
+           
+           // $jarray=json_encode($arrayProceso);
+
+           // $respuesta->setContent($jarray);
+            //return $respuesta;
+    }#end function
 
 
         

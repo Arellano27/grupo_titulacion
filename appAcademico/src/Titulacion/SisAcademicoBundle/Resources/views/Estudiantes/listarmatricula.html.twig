@@ -1,0 +1,28 @@
+{% block listadoMaterias %}
+  
+            
+            	<table class="table table-striped table-bordered" id ="">
+            	         <thead>
+            	            <tr>
+                                    <th colspan="5" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo  </th>
+            	            </tr>
+                            <tr>
+                                <th style="text-align: center !important;">Nivel</th>
+                                <th style="text-align: center !important;">Id Materias</th>
+                                <th style="text-align: center !important;">Nombre Materias</th>
+                                <th style="text-align: center !important;">Veces</th>
+                                <th style="text-align: center !important;">Curso</th> 
+                            </tr>
+                            {% for dato in listaMaterias %} 
+                                <tr>
+                                    <td align="center"></td>
+                                    <td align="center">{{ dato.Idmateria }}</td>
+                                    <td align="center">{{ dato.Materia }}</td>
+                                    <td align="center">{{ dato.Veces }}</td>
+                                    <td align="center">{{ dato.Curso }}</td>
+                                </tr>
+                            {% endfor %}
+                            
+        	       
+        	   </table>
+{% endblock %} 

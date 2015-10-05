@@ -324,6 +324,47 @@ public function getConsultaAlumno_Asistencia($idEstudiante,$idCarrera,$ciclo,$an
         return $response;
 
 }
+public function getConsultaCarreras_Matricula($idEstudiante,$idRol){
+        $ws=new AcademicoSoap();
+        $tipo       = "3";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = "jdbc/saugConsTmp";
+        //$url        = "http://192.168.100.11:8080/consultas/ServicioWebConsultas?wsdl";
+        //$host       = "192.168.100.11";
+        $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
+        $host       = "186.101.66.2:8080";
+        $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+        $response=$ws->doRequestSreReceptaTransacionCarreras($trama,$source,$tipo,$usuario,$clave,$url,$host);
+         
+        return $response;     
+}#end function
+
+public function getConsultaDatos_Matricula($idEstudiante,$idRol,$idCarrera){
+        $ws=new AcademicoSoap();
+        $tipo       = "3";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = "jdbc/saugConsTmp";
+        $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
+        $host       = "186.101.66.2:8080";
+        $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+        $response=$ws->doRequestSreReceptaTransacion_matriculacion($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        return $response;     
+}#end function
+
+public function setMatricula_Estudiante($trama){
+        $ws=new AcademicoSoap();
+        $tipo       = "3";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = "jdbc/saugConsTmp";
+        $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
+        $host       = "186.101.66.2:8080";
+        //$trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+        $response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        return $response;     
+}#end function
 
 }#end class
      

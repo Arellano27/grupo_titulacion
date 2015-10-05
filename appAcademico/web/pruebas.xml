@@ -1,80 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<ciclos>
+<ciclo> 
+	<nombre> 2015 Ciclo 2 </nombre>
+	<idciclo> 2 </idciclo>
 <materias_cursos>
 	<materias>
 		<Nombre>Programacion</Nombre>
-		<registro>1</registro>
-		<cursos>
-			<curso> s5g </curso>
-		</cursos>
-		<cursos>
-			<curso> s5t </curso>
-		</cursos>
-		<cursos>
-			<curso> s5a </curso>
-		</cursos>
-		<cursos>
-			<curso> s5k </curso>
-		</cursos>
+		<veces>1</veces>
+		<idMateria>1</idMateria>
+		<detallecursos>
+			<cursos>
+				<curso> s5g </curso>
+				<idCurso> 2 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5t </curso>
+				<idCurso> 3 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5a </curso>
+				<idCurso> 4 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5k </curso>
+				<idCurso> 5 </idCurso>
+			</cursos>
+		</detallecursos>
 	</materias>
 	<materias>
-		<Nombre>Calculo</Nombre>
-		<registro>2</registro>
-		<cursos>
-			<curso> s5f </curso>
-		</cursos>
-		<cursos>
-			<curso> s5h </curso>
-		</cursos>
+		<Nombre>Programacion</Nombre>
+		<veces>1</veces>
+		<idMateria>1</idMateria>
+		<detallecursos>
+			<cursos>
+				<curso> s5g </curso>
+				<idCurso> 2 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5t </curso>
+				<idCurso> 3 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5a </curso>
+				<idCurso> 4 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5k </curso>
+				<idCurso> 5 </idCurso>
+			</cursos>
+		</detallecursos>
+	</materias>
 
+<materias>
+		<Nombre>Programacion</Nombre>
+		<veces>1</veces>
+		<idMateria>1</idMateria>
+		<detallecursos>
+			<cursos>
+				<curso> s5g </curso>
+				<idCurso> 2 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5t </curso>
+				<idCurso> 3 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5a </curso>
+				<idCurso> 4 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5k </curso>
+				<idCurso> 5 </idCurso>
+			</cursos>
+		</detallecursos>
 	</materias>
 	<materias>
-		<Nombre>Metodos Numericos</Nombre>
-		<registro>2</registro>
-		<cursos>
-			<curso> s5g </curso>
-		</cursos>
-		<cursos>
-			<curso> s5t </curso>
-		</cursos>
-		<cursos>
-			<curso> s5a </curso>
-		</cursos>
-		<cursos>
-			<curso> s5k </curso>
-		</cursos>
+		<Nombre>Programacion</Nombre>
+		<veces>1</veces>
+		<idMateria>1</idMateria>
+		<detallecursos>
+			<cursos>
+				<curso> s5g </curso>
+				<idCurso> 2 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5t </curso>
+				<idCurso> 3 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5a </curso>
+				<idCurso> 4 </idCurso>
+			</cursos>
+			<cursos>
+				<curso> s5k </curso>
+				<idCurso> 5 </idCurso>
+			</cursos>
+		</detallecursos>
 	</materias>
-	<materias>
-		<Nombre>Moneda y Banca</Nombre>
-		<registro>3</registro>
-		<cursos>
-			<curso> s5g </curso>
-		</cursos>
-		<cursos>
-			<curso> s5t </curso>
-		</cursos>
-		<cursos>
-			<curso> s5a </curso>
-		</cursos>
-		<cursos>
-			<curso> s5k </curso>
-		</cursos>
-	</materias>
-	<materias>
-		<Nombre>Redes</Nombre>
-		<cursos>
-			<curso> s5g </curso>
-		</cursos>
-		<cursos>
-			<curso> s5t </curso>
-		</cursos>
-		<cursos>
-			<curso> s5a </curso>
-		</cursos>
-		<cursos>
-			<curso> s5k </curso>
-		</cursos>
-	</materias>
-	
+
 </materias_cursos>
-
+</ciclo>
+</ciclos>
 
