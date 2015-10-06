@@ -22,25 +22,25 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-//      $this->usuario       = "abc";
-//      $this->clave         = "123";
-//      $this->source        = "jdbc/saugProcTmp";
-//      $this->url           = "http://192.168.100.11:8080/";
-//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-//      $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-//      $this->urlWS         = "";
-//      $this->host          = "192.168.100.11:8080";
+     $this->usuario       = "abc";
+     $this->clave         = "123";
+     $this->source        = "jdbc/procedimientosSaug";
+     $this->url           = "http://192.168.100.11:8080/";
+     $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+     $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+     $this->urlWS         = "";
+     $this->host          = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
-      
+
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "CapaVisualPhp";
-      $this->clave         = "12CvP2015";
-      $this->source        = "jdbc/saugProcTmp";
-      $this->url           = "http://186.101.66.2:8080/";
-      $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      $this->urlWS         = "";
-      $this->host          = "186.101.66.2:8080";
+      // $this->usuario       = "CapaVisualPhp";
+      // $this->clave         = "12CvP2015";
+      // $this->source        = "jdbc/saugProcTmp";
+      // $this->url           = "http://186.101.66.2:8080/";
+      // $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
+      // $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+      // $this->urlWS         = "";
+      // $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
    public function getLogin($username,$password){
