@@ -17,23 +17,18 @@ class HomeController extends Controller
         #recepto desde la base el correo
         $email = "scaichemoran@gmail.com"; #quemado por el momento
 
-        $mailer = $this->container->get('mailer');
-        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-                ->setUsername("xxxxxxx@gmail.com")
-                ->setPassword("xxxxxx");
-        $mailer = \Swift_Mailer::newInstance($transport);
-        $message = \Swift_Message::newInstance("Test")
-                ->setSubject("Hola mundo")
-                ->setFrom('token.stalin.caiche@gmail.com')
-                ->setTo($email)
-                ->setBody("hola mundo");
 
-     
-        $this->get('mailer')->send($message);
+
+       $message = \Swift_Message::newInstance()
+        ->setSubject('Activación Password')
+        ->setFrom('titulacion.php@gmail.com')
+        ->setTo('stalin_cmoran@hotmail.com')
+        ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig'),'text/html', 'utf8');
+        $resp = $this->get('mailer')->send($message);
         // 
 
 
-        echo 'envie mail'; exit();
+        echo $resp; exit();
     }
 
 	public function ingresarAction(Request $request)

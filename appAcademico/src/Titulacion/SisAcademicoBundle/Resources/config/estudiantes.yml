@@ -20,7 +20,15 @@ estudiantes_notas_historico:
 estudiantes_menu_derecho:
     pattern:  /menuderecho
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:menuderecho}
-
+estudiantes_proceso_matricula:
+    pattern:  /procesomatricula
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:procesomatricula}
+estudiantes_grabar_matricula:
+    pattern:  /grabarmatricula
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:estudiantes_grabar_matricula}
+estudiantes_presenta_matricula:
+    pattern:  /presentarmatricula
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:presenta_matricula}
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes
