@@ -12,7 +12,7 @@
     {
 	
     public function indexAction(Request $request)
-    {      
+    {
            $session=$request->getSession();
             $perfilEst   = $this->container->getParameter('perfilEst');
             $perfilDoc   = $this->container->getParameter('perfilDoc');

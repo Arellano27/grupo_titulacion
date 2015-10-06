@@ -1,0 +1,3 @@
+admin_academico_home:
+    path:     /calendario
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:calendario_carrera }

@@ -87,14 +87,15 @@
          var idSplit          = $(this).attr('id').split('-');
          var nombreElemento   = idSplit[0]; 
          var idMateria        = idSplit[1]; 
-         var idDocente        = 1;
+         //var idDocente        = 1;
          var idCarrera        = $("#carreraSeleccionada").val();
          var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";;
          
          var optionSelect = $(this);
          var jumpOption = '{{path('docentes_notas_alumnos_materia')}}';
          
-         var obj_data = {'idDocente': idDocente,'idMateria':idMateria};
+         //var obj_data = {'idDocente': idDocente,'idMateria':idMateria};
+         var obj_data = {'idMateria':idMateria};
 
          $.ajax({
             url:   jumpOption,

@@ -142,7 +142,7 @@ class UgServices
       //quemado - inicio
       // $this->source              = "jdbc/saugProcTmp";
       // $this->urlProcedim         = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-//       $datosConsulta["ciclo"]    = 18;
+       $datosConsulta["ciclo"]    = 0;    /* ES NECESARIO PARA LA TRAMA ACTUAL */
 //       $datosConsulta["idDocente"]= 3;
 //       $datosConsulta["idMateria"]= 54;
       //quemado - fin 
@@ -182,7 +182,6 @@ class UgServices
       $xmlData["bloqueSalida"]      = 'px_salida';
 
       $response   =  $this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
-
       return $response;
    }#end function Docentes_getNotasMaterias()
    

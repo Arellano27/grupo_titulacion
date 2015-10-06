@@ -114,8 +114,9 @@
          if( !isset($fechaInicio) || !isset($fechaFin) ){
             date_default_timezone_set ( "America/Guayaquil" );
             $day           = date('w');
-            $fechaFin      = date('d-m-Y', strtotime('-'.$day.' days'));
-            $fechaInicio   = date('d-m-Y', strtotime('-'.(6-$day).' days'));
+            $fechaFin      = date('d-m-Y');
+            $day--;
+            $fechaInicio   = date('d-m-Y', strtotime('-'.($day).' days'));
          }
          else {
             $fechaFin      = str_replace("/","-",$fechaFin);
@@ -187,10 +188,12 @@
 		
 		public function notasAlumnosMateriaAction(Request $request)
       {
+         $idMateria  = $request->request->get('idMateria');
        //Menu de Notas por Materia para Profesor
        return $this->render('TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria.html.twig',
                          array(
-                               'condition' => ''
+                               'condition' => '',
+                               'idMateria' => $idMateria
                              )
                       );
       }
@@ -199,19 +202,19 @@
       
       public function listadoNotasAlumnosMateriaAction(Request $request)
       {
-         $idDocente  = $request->request->get('idDocente');
+         $session=$request->getSession();
+         $idDocente  = $session->get('id_user');
          $idMateria  = $request->request->get('idMateria');
          //$idParalelo  = $request->request->get('idParalelo');
-         $idParalelo  = 1;
+         //$idParalelo  = 1;
 
          $datosConsulta	= array( 'idMateria' => $idMateria,
-                                 'idParalelo' => $idParalelo,
                                  'idDocente' => $idDocente);
          
          $UgServices       = new UgServices;
          $datosNotasArray  = $UgServices->Docentes_getNotasMaterias($datosConsulta);
          
-         $dataProcesar = $datosNotasArray["registro"];
+         $dataProcesar = $datosNotasArray["registro"][0];
          
          $datosGeneralesListado["notaMinima"]	= $dataProcesar["notaMinima"];
          $datosGeneralesListado["idProfesor"]	= $dataProcesar["idProfesor"];
