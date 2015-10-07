@@ -1,6 +1,6 @@
 <?php
 namespace Titulacion\SisAcademicoBundle\Helper;
-
+#purueba de git
 include ('XmlParsero.php');
 
 class AcademicoSoap {
