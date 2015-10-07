@@ -16,4 +16,8 @@ class AdminController extends Controller
 
     	return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
     }
+
+    public function cambio_passwordAction(){
+    	return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
+    }
 }

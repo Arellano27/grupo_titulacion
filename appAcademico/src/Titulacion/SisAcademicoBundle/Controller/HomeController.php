@@ -28,7 +28,7 @@ class HomeController extends Controller
        $message = \Swift_Message::newInstance()
         ->setSubject('Activación Password')
         ->setFrom('titulacion.php@gmail.com')
-        ->setTo('arellano.torres27@gmail.com')
+        ->setTo('stalin.caiche@gmail.com')
         ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig'),'text/html', 'utf8');
         $resp = $this->get('mailer')->send($message);
         // 
