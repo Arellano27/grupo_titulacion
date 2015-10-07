@@ -45,7 +45,7 @@ class UgServices
    }
    public function getLogin($username,$password){
       $ws=new AcademicoSoap();
-      $tipo       = "3";
+      $tipo       = "8";
       $usuario    = "abc";
       $clave      = "123";
       $source     = $this->source;
@@ -53,6 +53,7 @@ class UgServices
       $host       = $this->host;
       $trama      = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
       $response=$ws->doRequestSreReceptaTransacionProcedimientos($trama,$source,$tipo,$usuario,$clave,$url,$host);
+      // echo '<pre>'; var_dump($response); exit();
        //pruebas
       return $response;
 
