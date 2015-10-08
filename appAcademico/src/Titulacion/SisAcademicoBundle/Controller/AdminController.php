@@ -20,4 +20,13 @@ class AdminController extends Controller
     public function cambio_passwordAction(){
     	return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
     }
+
+    public function ingreso_nuevo_passAction(Request $request){
+        #obtenemos los datos enviados por get
+            $username    = $request->request->get('user');
+            $username    = $request->request->get('pass1');
+            $password    = $request->request->get('pass2');
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+    }
 }

@@ -31,7 +31,7 @@ class HomeController extends Controller
         ->setTo('stalin.caiche@gmail.com')
         ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig'),'text/html', 'utf8');
         $resp = $this->get('mailer')->send($message);
-        // 
+        //
 
 
         echo $resp; exit();
@@ -53,7 +53,7 @@ class HomeController extends Controller
             $password    = $request->request->get('pass');
             #$contrasenia = $request->request->get('pass');
             #$password    = encriptarContrasenia($contrasenia);
-            
+
             #llamamos a la consulta del webservice
             $UgServices = new UgServices;
             $data = $UgServices->getLogin($username,$password);
