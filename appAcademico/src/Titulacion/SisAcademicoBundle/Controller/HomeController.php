@@ -49,9 +49,14 @@ class HomeController extends Controller
             $perfilAdmin = $this->container->getParameter("perfilAdmin");
             #obtenemos los datos enviados por get
             $username    = $request->request->get('user');
-            $password    = $request->request->get('pass');
-            #$contrasenia = $request->request->get('pass');
-            #$password    = encriptarContrasenia($contrasenia);
+            #$password    = $request->request->get('pass');
+            $contrasenia = $request->request->get('pass');
+            //$password    = encriptarContrasenia($contrasenia);
+
+            $salt    = "µ≈α|⊥ε¢ʟ@δσ";
+            $password = password_hash($contrasenia, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+            //return new Response($password);
+
 
             #llamamos a la consulta del webservice
             $UgServices = new UgServices;
@@ -100,6 +105,7 @@ class HomeController extends Controller
             }else{
                 $perfil = 5;# error usuario y contraseña no
                 return new Response('05');
+                // return new Response($password);
             }
 
 
