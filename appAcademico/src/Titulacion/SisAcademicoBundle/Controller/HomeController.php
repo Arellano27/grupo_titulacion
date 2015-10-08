@@ -14,7 +14,6 @@ class HomeController extends Controller
 {
     function encriptarContrasenia($password) {
         $salt    = "µ≈α|⊥ε¢ʟ@δσ";
-
         $hash = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
         return $hash;
     }
@@ -22,13 +21,13 @@ class HomeController extends Controller
     public function enviarmailAction(Request $request){
         $user = $request->request->get('user');
         #recepto desde la base el correo
-        $email = "scaichemoran@gmail.com"; #quemado por el momento
+        $email = "arellano.torres27@gmail.com"; #quemado por el momento
 
 
        $message = \Swift_Message::newInstance()
         ->setSubject('Activación Password')
         ->setFrom('titulacion.php@gmail.com')
-        ->setTo('stalin.caiche@gmail.com')
+        ->setTo('arellano.torres27@gmail.com')
         ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig'),'text/html', 'utf8');
         $resp = $this->get('mailer')->send($message);
         //
