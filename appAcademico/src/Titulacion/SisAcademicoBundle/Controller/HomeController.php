@@ -49,13 +49,13 @@ class HomeController extends Controller
             $perfilAdmin = $this->container->getParameter("perfilAdmin");
             #obtenemos los datos enviados por get
             $username    = $request->request->get('user');
-            #$password    = $request->request->get('pass');
-            $contrasenia = $request->request->get('pass');
-            //$password    = encriptarContrasenia($contrasenia);
+            $password    = $request->request->get('pass');
+            //$contrasenia = $request->request->get('pass');
+            
 
-            $salt    = "µ≈α|⊥ε¢ʟ@δσ";
-            $password = password_hash($contrasenia, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
-            //return new Response($password);
+            //$salt    = "µ≈α|⊥ε¢ʟ@δσ";
+            //$password = password_hash($contrasenia, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+            
 
 
             #llamamos a la consulta del webservice
@@ -72,7 +72,7 @@ class HomeController extends Controller
                     $idUsuario     = $data[0]['usuario'];
                     $nombreUsuario = $data[0]['nombreusuario'];
                     $cedula        = $data[0]['cedula'];
-                    $mail          = $data[0]['mail'];
+                    //$mail          = $data[0]['mail'];
                     $descRol       = $data[0]['descrol'];
                 }else{
 
@@ -81,7 +81,7 @@ class HomeController extends Controller
                         $idUsuario     = $login['usuario'];
                         $nombreUsuario = $login['nombreusuario'];
                         $cedula        = $login['cedula'];
-                        $mail          = $login['mail'];
+                        //$mail          = $login['mail'];
                         $descRol       = $login['descrol'];
 
                         if ($login['idrol'] == $perfilAdmin) {
@@ -98,7 +98,7 @@ class HomeController extends Controller
                 $session->set("perfil",$perfil); //idrol
                 $session->set("nom_usuario",$nombreUsuario);
                 $session->set("cedula",$cedula);
-                $session->set("mail",$mail);
+                //$session->set("mail",$mail);
                 $session->set("descRol",$descRol);//nombre rol
 
                 return new Response($perfil);
