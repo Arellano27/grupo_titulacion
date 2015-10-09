@@ -1,7 +1,7 @@
 <?php
 namespace Titulacion\SisAcademicoBundle\Helper;
 include ('AcademicoSoap.php');
-
+ 
 class UgServices
 {
 
