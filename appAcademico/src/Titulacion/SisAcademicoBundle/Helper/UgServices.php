@@ -370,5 +370,33 @@ public function setMatricula_Estudiante($trama){
      
 	
 	
-	
+	public function getConsultaCorreo($login){
+      $this->tipo    = "10";
+      $this->source  = "jdbc/saugConsTmp";
+      $this->urlWS   = $this->url.$this->urlConsulta;
+      $trama      = "<usuario>".$login."</usuario>";
+      $XML        = NULL;
+
+      $response=$this->ws->doRequestSreReceptaTransacionConsultasCorreo($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $XML);
+      return $response;
+   }#end function para obtener el correo del usuario()
+
+
+ 
+
+     public function mantenimientoUsuario($opcion,$username,$password,$nuevoPassword){
+      $ws=new AcademicoSoap();
+      $tipo       = "8";
+      $usuario    = "abc";
+      $clave      = "123";
+      $source     = $this->source;
+      $url        = $this->url.$this->urlProcedim;
+      $host       = $this->host;
+      $trama      = "<opcion>".$opcion."</opcion><usuario>".$username."</usuario><contrasena>".$password."</contrasena><nuevacontrasena>".$nuevoPassword."</nuevacontrasena>";
+      $response=$ws->doRequestSreReceptaTransacionMantUsuario($trama,$source,$tipo,$usuario,$clave,$url,$host);
+      // echo '<pre>'; var_dump($response); exit();
+       //pruebas
+      return $response;
+
+   }#end function
 	

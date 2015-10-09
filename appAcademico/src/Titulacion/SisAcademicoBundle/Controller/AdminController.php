@@ -23,10 +23,33 @@ class AdminController extends Controller
 
     public function ingreso_nuevo_passAction(Request $request){
         #obtenemos los datos enviados por get
-            $username    = $request->request->get('user');
-            $username    = $request->request->get('pass1');
-            $password    = $request->request->get('pass2');
-        #llamamos a la consulta del webservice
-        $UgServices = new UgServices;
+            $username     = $request->request->get('user');
+            $password    = $request->request->get('pass');
+            $password1    = $request->request->get('pass1');
+            
+            $UgServices = new UgServices;
+             $salt    = "µ≈α|⊥ε¢ʟ@δσ";
+             $passwordEncr = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+            
+             $passwordNuevoEncr = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+
+              $dataMant = $UgServices->mantenimientoUsuario("A",$username,$password,$password1);
+
+                   if ($dataMant) {
+
+                        $countMant  = count($dataMant);
+                        if($count == 1){
+                         $estado   = $dataMant[0]['pi_estado'];
+                         $message   = $dataMant[0]['pv_mensaje'];
+                        }
+                    }
+
+            $respuesta = array(
+               "Codigo" => $estado ,
+               "Mensaje" => $message,
+            );
+            
+          return new Response(json_encode($respuesta));
+            
     }
 }

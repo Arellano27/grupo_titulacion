@@ -48,13 +48,25 @@ function iniciar_sesion () {
 
 function enviar_mail (user) {
 
+$("#username").val($.trim($("#username").val()));
+if($("#username").val() == '')
+{
+   mensaje_cisc( "error", "Debe ingresar el usuario.");
+
+}else{
+
+
  $.post('{{path('titulacion_sis_academico_mail')}}', {user: user}, function(data) {
-   if (data == 1 ) {
-      mensaje_cisc( "notice", "Se envio un enlace a su correo electrónico.");
-   }else{
-     mensaje_cisc( "error", "Problemas de conexión al enviar correo electrónico.");
-   }
+    switch(data){
+
+      case '1' :  mensaje_cisc( "notice", "Su nueva contraseña ha sido enviada al correo electrónico."); break;
+      case '2' :   mensaje_cisc( "error", "No tiene posee correos registrados."); break;
+      default :   mensaje_cisc( "error", "Problemas de conexión al enviar correo electrónico."); break;
+      
+
+    }
  });
+  }
 }
 
 function login(){

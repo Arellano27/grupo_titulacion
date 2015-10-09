@@ -21,19 +21,76 @@ class HomeController extends Controller
     public function enviarmailAction(Request $request){
         $user = $request->request->get('user');
         #recepto desde la base el correo
-        $email = "arellano.torres27@gmail.com"; #quemado por el momento
+        $UgServices = new UgServices;
+        $data = $UgServices->getConsultaCorreo($user);
+
+        $email = '';
+
+         if ($data) {
+
+              $count  = count($data);
+               if($count == 1){
+                   $email   = $data[0]['correo'];
+              }
+         }
+
+        $email = "arellano.torres27gmail.com"; #quemado por el momento
+           
+          if($email != '')
+          {
+                $source = 'abcdefghijklmnopqrstuvwxyz';
+                $source .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $source .= '1234567890';
+                $source .= '$%*&';
+
+                $rstr = "";
+                $source = str_split($source,1);
+                for($i=1; $i<=8; $i++){
+                    mt_srand((double)microtime() * 1000000);
+                    $num = mt_rand(1,count($source));
+                    $rstr .= $source[$num-1];
+                }
+         
+           
+
+               $message = \Swift_Message::newInstance()
+                ->setSubject('Activación Password')
+                ->setFrom('titulacion.php@gmail.com')
+                ->setTo($email)
+                ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig',  array('clave' => $rstr)),'text/html', 'utf8');
+                $resp = $this->get('mailer')->send($message);
+         
+                if( $resp  == 1){
+
+                    $salt    = "µ≈α|⊥ε¢ʟ@δσ";
+                    $password = password_hash($rstr, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+
+                    $dataMant = $UgServices->mantenimientoUsuario("O",$user,"",$password);
+
+                   if ($dataMant) {
+
+                        $countMant  = count($dataMant);
+                        if($count == 1){
+                         $estado   = $dataMant[0]['pi_estado'];
+                         $message   = $dataMant[0]['pv_mensaje'];
+                        }
+                    }
+                }
+
+                echo $resp; exit();
+            }else{
+                echo '2' ; exit();
+
+            }
 
 
-       $message = \Swift_Message::newInstance()
-        ->setSubject('Activación Password')
-        ->setFrom('titulacion.php@gmail.com')
-        ->setTo('arellano.torres27@gmail.com')
-        ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig'),'text/html', 'utf8');
-        $resp = $this->get('mailer')->send($message);
-        //
+          // $respuesta = array(
+          //      "Codigo" => $estado ,
+          //      "Mensaje" => $message,
+          //   );
+            
+          // return new Response(json_encode($respuesta));
 
-
-        echo $resp; exit();
     }
 
 	public function ingresarAction(Request $request)
