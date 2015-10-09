@@ -69,12 +69,12 @@ class NotificacionesController extends Controller
                    // if($i==0){
                     $mailer    = $this->container->get('mailer');
                     $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-                                ->setUsername('ugacademico@gmail.com')
-                                ->setPassword('SisAcademico2015');
+                                ->setUsername('titulacion.php@gmail.com')
+                                ->setPassword('sc123456');
                    //$mailer  = \Swift_Mailer($transport);
                     $message = \Swift_Message::newInstance('test')
                                 ->setSubject($Asunto)
-                                ->setFrom('ugacademico@gmail.com',$Emisor)
+                                ->setFrom('titulacion.php@gmail.com',$Emisor)
                                 ->setTo('gabrielhuayamabe@hotmail.com')
                                 ->setBody($mensaje);
                     $this->get('mailer')->send($message);

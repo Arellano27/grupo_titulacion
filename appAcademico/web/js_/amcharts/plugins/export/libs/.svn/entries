@@ -1,80 +1,0 @@
-10
-
-dir
-147
-https://192.168.1.210/svn/SLN_GS_ADQUISICIONES/GS.ADQUISICIONES/GS.ADQUISICIONES/js/amcharts/plugins/export/libs
-https://192.168.1.210/svn/SLN_GS_ADQUISICIONES
-
-
-
-2015-09-18T20:15:32.446113Z
-140
-darwin
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-9cbc26a8-12fb-ad40-ad7f-c7db43a93da4
-
-jszip
-dir
-
-.DS_Store
-file
-
-
-
-
-2015-09-16T22:09:10.000000Z
-a410dd9d14713b72663d1328870f894c
-2015-09-18T20:15:32.446113Z
-140
-darwin
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-6148
-
-fabric.js
-dir
-
-pdfmake
-dir
-
-blob.js
-dir
-
-FileSaver.js
-dir
-
-xlsx
-dir
-
