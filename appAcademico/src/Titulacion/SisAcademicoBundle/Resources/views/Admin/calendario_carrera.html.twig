@@ -1,13 +1,7 @@
 {% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
 {% block home %}
 
- <!-- fullCalendar 2.2.5-->
-    <link rel="stylesheet" href="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/plugins/fullcalendar/fullcalendar.print.css') }}" media="print">
-    <link rel="stylesheet" href="{{ asset('css/skins/_all-skins.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/dist/css/AdminLTE.min.css') }}">
+
 
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
@@ -80,12 +74,10 @@
           </div><!-- /.row -->
         </section><!-- /.content -->
 
-        <!-- fullCalendar 2.2.5 -->
-    <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
     <script src="{{ asset('js/flavr/flavr.js') }}"></script>
     <script src="{{ asset('js/flavr/flavr.min.js') }}"></script>
-    <script>
+    
+       <script>
       $(function () {
 
         function ini_events(ele) {
@@ -184,27 +176,27 @@
           editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
                  events: function (start, end, timezone, callback) {
-            $.ajax({
-                url: 'static-calendar-events.json',
-                type: "GET",
-                datatype: 'json',
-                success: function (doc) {
-                    var events = [];
-                    if ($(doc) != undefined && $(doc).Events.length > 0) {
-                        $(doc).Events.forEach(function (Obj) {
-                            events.push({
-                                title: Obj.Title,
-                                start: Obj.Start,
-                                end: Obj.End
-                            });
+            // $.ajax({
+            //     url: '#',
+            //     type: "GET",
+            //     datatype: 'json',
+            //     success: function (doc) {
+            //         var events = [];
+            //         if ($(doc) != undefined && $(doc).Events.length > 0) {
+            //             $(doc).Events.forEach(function (Obj) {
+            //                 events.push({
+            //                     title: Obj.Title,
+            //                     start: Obj.Start,
+            //                     end: Obj.End
+            //                 });
 
-                        });
-                    }
-                    callback(events);
-                },error: function (err) {
-                    alert('Error in fetching data');
-                }
-            });
+            //             });
+            //         }
+            //         callback(events);
+            //     },error: function (err) {
+            //         alert('Error in fetching data');
+            //     }
+            // });
         },
           drop: function (date, allDay) { // this function is called when something is dropped (evento cuando se deja caer un evento al calendario)
 
@@ -313,5 +305,4 @@
         });
       });
     </script>
-       
 {% endblock %}

@@ -1,6 +1,6 @@
 <?php
 namespace Titulacion\SisAcademicoBundle\Helper;
-
+#purueba de git
 include ('XmlParsero.php');
 
 class AcademicoSoap {
@@ -51,8 +51,8 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
             $result = curl_exec($soap_do);
 
 
-//$result =  <<<XML
-//<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+// $result =  <<<XML
+// <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 //    <soap:Body>
 //       <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
 //          <return>
@@ -65,14 +65,14 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
 //                   <pi_estado>1</pi_estado>
 //                   <pv_mensaje>USUARIO CORRECTO</pv_mensaje>
 //                   <pv_codTrans>1</pv_codTrans>
-//                   <px_salida><![CDATA[<registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>1</idRol><descRol>ESTUDIANTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros><registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>2</idRol><descRol>DOCENTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros>]]></px_salida>
+//                   <px_salida><![CDATA[<registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>3</idRol><descRol>ESTUDIANTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros><registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>2</idRol><descRol>DOCENTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros>]]></px_salida>
 //                </parametrosSalida>
 //             </resultadoObjeto>
 //          </return>
 //       </ns2:ejecucionObjetoResponse>
 //    </soap:Body>
 // </soap:Envelope>
-//XML;
+// XML;
 
 
 
