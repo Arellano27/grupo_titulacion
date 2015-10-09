@@ -1241,7 +1241,7 @@ XML;
 
 
 
-}#end function
+}#end function   
 
 
 function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
