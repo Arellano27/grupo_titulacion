@@ -1,6 +1,7 @@
 {% block listadoMaterias %}
   
-            
+            <div class="col-lg-9">
+                <b>{{ estudiante }}</b> Usted se encuentra matriculado en las siguientes materias:
             	<table class="table table-striped table-bordered" id ="">
             	         <thead>
             	            <tr>
@@ -15,7 +16,7 @@
                             </tr>
                             {% for dato in listaMaterias %} 
                                 <tr>
-                                    <td align="center"></td>
+                                    <td align="center">{{ dato.Nivel }}</td>
                                     <td align="center">{{ dato.Idmateria }}</td>
                                     <td align="center">{{ dato.Materia }}</td>
                                     <td align="center">{{ dato.Veces }}</td>
@@ -25,4 +26,5 @@
                             
         	       
         	   </table>
+            </div>
 {% endblock %} 
