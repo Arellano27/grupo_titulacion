@@ -43,14 +43,14 @@ class UgServices
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
 
 
-      $this->usuario       = "CapaVisualPhp";
-      $this->clave         = "12CvP2015";
-      $this->source        = "jdbc/saugProcTmp";
-      $this->url           = "http://186.101.66.2:8080/";
-      $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      $this->urlWS         = "";
-      $this->host          = "186.101.66.2:8080";
+      // $this->usuario       = "CapaVisualPhp";
+      // $this->clave         = "12CvP2015";
+      // $this->source        = "jdbc/saugProcTmp";
+      // $this->url           = "http://186.101.66.2:8080/";
+      // $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
+      // $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+      // $this->urlWS         = "";
+      // $this->host          = "186.101.66.2:8080";
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
@@ -281,6 +281,7 @@ public function getConsultaCarreras($idEstudiante,$idRol){
         $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
         $host       = "186.101.66.2:8080";
         $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+
         $response=$ws->doRequestSreReceptaTransacionCarreras($trama,$source,$tipo,$usuario,$clave,$url,$host);
         return $response;     
 }#end function

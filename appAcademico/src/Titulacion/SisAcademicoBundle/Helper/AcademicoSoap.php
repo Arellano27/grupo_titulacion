@@ -1079,32 +1079,32 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
         curl_setopt($soap_do, CURLOPT_POST, true);
         curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-       // $result = curl_exec($soap_do);
+        $result = curl_exec($soap_do);
 
- $result =  <<<XML
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-      <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-          <return>
-             <codigoRespuesta>0</codigoRespuesta>
-             <estado>F</estado>
-            <idHistorico>1079</idHistorico>
-            <mensajeRespuesta>ok</mensajeRespuesta>
-           <respuestaConsulta>
-               <registros>
-                  <registro>
-                      <id_sa_carrera>3</id_sa_carrera>
-                     <nombreCarrera>CARRERA DE INGENIERIA EN SISTEMAS</nombreCarrera>
-                     <id_sa_facultad>3</id_sa_facultad>
-                   </registro>
+//  $result =  <<<XML
+// <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//     <soap:Body>
+//       <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//           <return>
+//              <codigoRespuesta>0</codigoRespuesta>
+//              <estado>F</estado>
+//             <idHistorico>1079</idHistorico>
+//             <mensajeRespuesta>ok</mensajeRespuesta>
+//            <respuestaConsulta>
+//                <registros>
+//                   <registro>
+//                       <id_sa_carrera>3</id_sa_carrera>
+//                      <nombreCarrera>CARRERA DE INGENIERIA EN SISTEMAS</nombreCarrera>
+//                      <id_sa_facultad>3</id_sa_facultad>
+//                    </registro>
                   
-                </registros>
-             </respuestaConsulta>
-          </return>
-       </ns2:ejecucionConsultaResponse>
-    </soap:Body>
-</soap:Envelope>
-XML;
+//                 </registros>
+//              </respuestaConsulta>
+//           </return>
+//        </ns2:ejecucionConsultaResponse>
+//     </soap:Body>
+// </soap:Envelope>
+// XML;
 
 
 

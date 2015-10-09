@@ -140,9 +140,10 @@
                           foreach($xml->registros->registro as $lcCarreras) 
                             {
                                   //$lcFacultad=$lcCarreras->id_sa_facultad;
-                                  $lcCarrera=$lcCarreras->id_sa_carrera;
+                                  $lcCarrera=$lcCarreras->idCarrera;
                                   $nombreCarrera=$lcCarreras->nombreCarrera;
                                   //$nombreCarrera=$lcCarreras->nombre; // cambiar 
+                                  
 
                                  $materiaObject = array( 'Nombre' => $nombreCarrera,
                                                              'Facultad'=>"",
@@ -160,7 +161,7 @@
                     }catch (\Exception $e)
                         {
                          
-                          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                          //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
                         }
 
 
@@ -598,15 +599,19 @@
                  try
                 {
                      $estudiante  = $session->get('nom_usuario');
-                     $banderaMatricula=5;
+                     $banderaMatricula=0;
                       $UgServices = new UgServices;
                       $Mensaje="";
                       $Idciclo="";
                       $CicloMatricula="";
+                      //$idEstudiante=12;
+                      //$idCarrera=4;
                       $anio="";
                       $xml2 = $UgServices->getConsultaDatos_Turno($idEstudiante,$idCarrera);
                       $ciclo="";
-                      $idEstudiante=12;
+
+                      //$idEstudiante=12;
+                      var_dump($idEstudiante);
                       $Materias_inscribir = array();
 
                        if ( is_object($xml2))
@@ -621,6 +626,9 @@
                                }
                               
                           }
+
+
+
                           
                       $lcFacultad="";
                       
@@ -634,15 +642,19 @@
                        //$estudiante='Jeferson Bohorquez';
                       $CicloMatricula=$anio." - Ciclo ".$ciclo; //'2015 Ciclo 2';
                       //$Mensaje.=$CicloMatricula;
+
+
                      
                       if ($banderaMatricula==1)
                       {
                          $UgServices = new UgServices;
 
                           $xml1 = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idCarrera,$ciclo);
+
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
+
                                         foreach($xml1->PX_SALIDA as $xml)
                                          {  
 
