@@ -49,12 +49,12 @@ class HomeController extends Controller
             $perfilAdmin = $this->container->getParameter("perfilAdmin");
             #obtenemos los datos enviados por get
             $username    = $request->request->get('user');
-            $password    = $request->request->get('pass');
-            //$contrasenia = $request->request->get('pass');
+            //$password    = $request->request->get('pass');
+            $contrasenia = $request->request->get('pass');
             
 
-            //$salt    = "µ≈α|⊥ε¢ʟ@δσ";
-            //$password = password_hash($contrasenia, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+            $salt    = "µ≈α|⊥ε¢ʟ@δσ";
+            $password = password_hash($contrasenia, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
             
 
 
