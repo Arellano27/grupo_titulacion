@@ -611,7 +611,7 @@
                       $ciclo="";
 
                       //$idEstudiante=12;
-                      var_dump($idEstudiante);
+                      // var_dump($idEstudiante);
                       $Materias_inscribir = array();
 
                        if ( is_object($xml2))
