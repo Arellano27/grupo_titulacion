@@ -365,6 +365,59 @@ public function setMatricula_Estudiante($trama){
         return $response;     
 }#end function
 
+
+public function Mensajes_Enviados($idUsuario){
+           $ws         = new AcademicoSoap();
+           $tipo       = "3";
+           $usuario    = "abc";
+           $clave      = "123";
+           $source     = "jdbc/procedimientosSaug";
+//           $url        = "http://192.168.100.11:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
+//           $host       = "192.168.100.11:8080";
+           $url  = "";
+           $host = "";
+           $trama      = "<idDocente>".$idUsuario."</idDocente>";
+           
+          
+               $XML        = <<<XML
+<soap:Envelope
+xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<ns2:ejecucionConsultaResponse
+xmlns:ns2="http://servicios.ug.edu.ec/">
+<return>
+    <codigoRespuesta>0</codigoRespuesta>
+    <estado>F</estado>
+    <idHistorico>1089</idHistorico>
+    <mensajeRespuesta>ok</mensajeRespuesta>
+    <respuestaConsulta>
+        <Mensajes>
+            <Tipo>
+                    Mensaje
+            </Tipo>
+            <Asunto>
+                   Semestre Ciclo 1
+            </Asunto>
+            <Detalle>
+                    Empiezan Clases
+            </Detalle>
+            <Fecha>
+                    12/12/12
+            </Fecha>            
+        </Mensajes>
+    </respuestaConsulta>
+</return>
+</ns2:ejecucionConsultaResponse>
+</soap:Body>
+</soap:Envelope>
+XML;
+         
+           $response=$ws->doRequestSreReceptaTransacionConsultas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
+
+           return $response;
+   }#end function
+
+
 }#end class
      
 	

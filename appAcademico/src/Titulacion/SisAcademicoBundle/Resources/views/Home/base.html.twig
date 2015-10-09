@@ -22,6 +22,12 @@
     <link rel="stylesheet" href="{{ asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') }}">
 
+    <link rel="stylesheet" type="text/css" href="{{ asset('js_/datatables/plugins/bootstrap/dataTables.bootstrap.css') }}"/>  
+    <link rel="stylesheet" type="text/css" href="{{ asset('js_/datatables/extensions/Scroller/css/dataTables.scroller.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('js_/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('js_/datatables/plugins/bootstrap/dataTables.bootstrap.css') }}"/> 
+
+   
     <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
   </head>
 
@@ -80,13 +86,23 @@
     <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
 
-   
+     <!-- ./Notificaciones -->
+<script type="text/javascript" src="{{ asset('js_/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js_/datatables/extensions/TableTools/js/dataTables.tableTools.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js_/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js_/datatables/extensions/Scroller/js/dataTables.scroller.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js_/datatables/plugins/bootstrap/dataTables.bootstrap.js') }}"></script>
+
+<script src="{{ asset('scripts_/table-advanced.js') }}"></script>
+
 
 <script type="text/javascript">
   $(function () {
-// !IMPORTANT -- FIX ERROR SIDEBAR MENU IN CHARTS-DYNAMIC PAGE
+           
+// !IMPORTANT -- FIX ERROR SIDEBAR MENU IN CHARTS-DYNAMIC PAGE   stalin
     $(".page-content").height("1200px");
     $("#master-detail-chart").parent().height("400px");
+     
     });  
 </script>
     {% endblock %}
