@@ -11,9 +11,9 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{path('SisAcademico_Docentes_home')}}"><i class="fa fa-circle-o"></i> Datos Generales</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Asistencia de Alumnos</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Ingreso de Notas</a></li>
-          <li><a href="#"><i class="fa fa-circle-o"></i> Vista por Asignatura</a></li>
+          <li><a id="menuizqDoc_asistencia" href="#"><i class="fa fa-circle-o"></i> Asistencia de Alumnos</a></li>
+          <li><a id="menuizqDoc_listadonotas" href="#"><i class="fa fa-circle-o"></i> Listado de Notas</a></li>
+          <li><a id="menuizqDoc_vistageneral" href="#"><i class="fa fa-circle-o"></i> Vista por Asignatura</a></li>
         </ul>
       </li>
       {% endif %}
@@ -45,3 +45,92 @@
     </ul>
   </section>
 </aside>
+
+<script type="text/javascript">
+   $('a[id^="menuizqDoc_"]').on('click', function(event){
+      event.preventDefault();
+      var carreraSeleccionada  = $("#carreraSeleccionada").val();
+      if(carreraSeleccionada==''){
+         var modelessMenuIzq = new $.flavr({
+            modal   : true,
+            //title       : 'Alerta del Sistema',
+            content : '<div class="mensajeError">Por favor, seleccione una carrera y luego una materia para usar esta opción.',
+            buttons : {
+                  primary : { text: 'Acceptar', style: 'primary' }
+            }
+         });
+      }
+      else {
+         var materiaSeleccionada = $("#materiaSeleccionada-Carrera_"+carreraSeleccionada).val();
+         if(materiaSeleccionada =='') {
+            var modelessMenuIzq = new $.flavr({
+               modal   : true,
+               //title       : 'Alerta del Sistema',
+               content : '<div class="mensajeError">Por favor, seleccione una materia para usar esta opción.',
+               buttons : {
+                     primary : { text: 'Aceptar', style: 'primary' }
+               }
+            });
+         }
+         else {
+            var idOpcionMateria     = $(this).attr("id");
+            var idCarrera           = $("#carreraSeleccionada").val();
+            var idMateria           = $("#materiaSeleccionada-Carrera_"+idCarrera).val();
+            var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";
+            var inicioCiclo         = $("#inicioCiclo-Carrera_"+idCarrera).val();
+            var finCiclo            = $("#finCiclo-Carrera_"+idCarrera).val();
+            
+            if(idOpcionMateria.indexOf("asistencia")>0){
+               var jumpOption                = '{{path('docentes_listado_alumnos_materia')}}';
+               var obj_data                  = {'idMateria':idMateria,'idCarrera':idCarrera, 'inicioCiclo':inicioCiclo, 'finCiclo':finCiclo};
+               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentó un problema para cargar el listado de asistencias.";
+            }
+            else if(idOpcionMateria.indexOf("listadonotas")>0){
+               var jumpOption                = '{{path('docentes_notas_alumnos_materia')}}';
+               var obj_data                  = {'idMateria':idMateria};
+               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentó un problema para cargar la consulta de notas.";
+            }
+            else if(idOpcionMateria.indexOf("vistageneral")>0){
+               var idDocente                 = 1;
+               var jumpOption                = '{{path('docentes_vision_materia')}}';
+               var obj_data                  = {'idDocente': idDocente,'idMateria':idMateria};
+               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentó un problema para cargar la vista general de la materia."
+            }
+            
+            if(jumpOption!=null){
+               $.ajax({
+                  url:   jumpOption,
+                  type:  'post',
+                  data: obj_data,
+                  async: false,
+                  beforeSend: function () {
+                    modelessOpciones = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
+                  },
+                  error: function(){
+                     modelessOpciones.close();
+                     modelessOpciones = new $.flavr({
+                                                modal   : true,
+                                                content : mensajeErrorOptMaterias,
+                                                buttons     : {
+                                                   primary : { text: 'Aceptar', style: 'primary' }
+                                                }
+                                             });
+                  },
+                  success:  function (dataResponse) {
+                    modelessOpciones.close();
+                    $("#panelCarrera-"+idCarrera).closest(".panel-body").html(dataResponse);
+                  },
+                  dataType:'html'
+               });
+            }
+            
+         }
+      }
+
+
+   });
+</script>

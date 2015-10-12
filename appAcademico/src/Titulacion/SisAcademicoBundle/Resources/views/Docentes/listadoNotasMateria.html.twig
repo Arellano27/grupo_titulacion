@@ -1,3 +1,13 @@
+<style type="text/css">
+   #colAlumno {
+      vertical-align: middle;
+   }
+   
+   table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after {
+      top: 36px;
+   }
+</style>
+
 <div class="row">
    <div class="col-xs-12 container">
            <div class="panel panel-default">
@@ -8,25 +18,25 @@
            <!-- /.panel-heading -->
            <div class="panel-body ">
                    <div class="table-responsive ">
-                           <table class="table table-striped">
+                           <table id="listadoNotasMateria_{{datosGenerales.idMateria}}" class="table table-striped">
                                    <thead>
                                      <tr>
-                                           <th rowspan="2"> ALUMNO </th>
+                                        <th id="colAlumno" rowspan="2"> ALUMNO </th>
                                            {% for nombreParcial,componentesParcial in periodosMostrar %}
                                              {% set colspan = componentesParcial.cantComponentes %}
-                                           <th style="text-align:center; border-right-width:4px;" colspan="{{colspan}}"> {{nombreParcial|upper|replace({'_': ' '})}} </th>
+                                           <th class="no-sort" style="text-align:center; border-right-width:4px;" colspan="{{colspan}}"> {{nombreParcial|upper|replace({'_': ' '})}} </th>
                                            {% endfor %}
-                                           <th style="text-align:center;" rowspan="2"> Resultado <br/>del<br/> Semestre</th>
+                                           <th class="no-sort" style="text-align:center;" rowspan="2"> Resultado <br/>del<br/> Semestre</th>
                                      </tr>
                                      
                                      <tr>
                                           {% for nombreParcial,componentesParcial in periodosMostrar %}
                                              {% if componentesParcial.componente is iterable %}
                                                 {% for componente in componentesParcial.componente %}
-                                              <th style="text-align:center;"> {{componente|upper}}</th>
+                                              <th class="no-sort" style="text-align:center;"> {{componente|upper}}</th>
                                                 {% endfor %}
                                              {% else %}
-                                              <th style="text-align:center;"> {{componentesParcial.componente|upper}}</th>
+                                              <th class="no-sort" style="text-align:center;"> {{componentesParcial.componente|upper}}</th>
                                              {% endif %}
                                           {% endfor %}
                                      </tr>
@@ -111,3 +121,42 @@
            <!-- /.panel -->
    </div>
 </div>
+<script type="text/javascript">
+   $(document).ready(function(){
+      $('#listadoNotasMateria_{{datosGenerales.idMateria}}').DataTable({
+         "paging": false,
+         "lengthChange": false,
+         "searching": true,
+         "ordering": true,
+         "info": true,
+         "autoWidth": false,
+         columnDefs: [
+            { targets: 'no-sort', orderable: false }
+         ],
+         "language": {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar _MENU_ registros",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+      });
+   });
+</script>

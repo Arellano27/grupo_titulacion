@@ -85,7 +85,7 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
         $body = $xml->xpath('//soapBody')[0];
         $return = $xml->xpath('//return')[0];
 
-        $resultadoObjeto = $xml->xpath('//px_salida')[0];
+        $resultadoObjeto = $xml->xpath('//PX_SALIDA')[0];
         $resultadoObjeto = $this->Response("<elements>".$resultadoObjeto."</elements>");
         // $cabecera   = new Cabeceras();
         // $respuesta  = $cabecera->eliminaCabecerasRespuesta($result);
@@ -190,14 +190,13 @@ function doRequestSreReceptaTransacionConsultasdoc($datosCuenta,$source,$tipo,$u
    curl_setopt($soap_do, CURLOPT_POST, true);
    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-   
    if($XML==NULL){
       $result = curl_exec($soap_do);
    }
    else {
       $result = $XML;
    }
-   
+
    if(!$result){
         return "error";
    }else{
