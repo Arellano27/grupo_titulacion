@@ -553,6 +553,704 @@
                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
          }
        }
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+        //  ANULACIONES
+    public function anulacion_materiasAction(Request $request)
+    {
+           $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+        
+           if ($session->has("perfil")) 
+           {
+               if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+               {
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          //$idEstudiante=3;
+                          $idEstudiante=$session->get("id_user");
+                          //$idEstudiante=3;
+                          $idRol=$perfilEst;
+                          
+                          //$idRol=$session->get("perfil");
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarreras($idEstudiante,$idRol);
+                              
+                            if ( is_object($xml))
+                            {
+                              foreach($xml->registros->registro as $lcCarreras) 
+                              {
+                                      $lcFacultad=$lcCarreras->id_sa_facultad;
+                                      $lcCarrera=$lcCarreras->id_sa_carrera;
+                                      $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                 'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                 'Carrera'=>$lcCarreras->id_sa_carrera
+                                                                );
+                                      array_push($Carreras, $materiaObject); 
+                              } 
+                              $bolCorrecto=1;
+                              $cuantos=count($Carreras);
+                              if ($cuantos==0)
+                              {
+                                $bolCorrecto=0;
+                              }
+                              return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_anulacion_materias.html.twig',array(
+                                                      'facultades' =>  $Carreras,
+                                                      'idEstudiante'=>$idEstudiante,
+                                                      'idFacultad'=>$lcFacultad,
+                                                      'idCarrera'=>$lcCarrera,
+                                                      'cuantos'=>$cuantos,
+                                                      'bolcorrecto'=>$bolCorrecto
+                                                   ));
+                            }
+                            else
+                            {
+                              throw new \Exception('Un error');
+                            }    
+                     }
+                     catch (\Exception $e)
+                     {
+                            $bolCorrecto=0;
+                            $cuantos=0;
+                            return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_anulacion_materias.html.twig',array(
+                                                      'facultades' =>  $Carreras,
+                                                      'idEstudiante'=>$idEstudiante,
+                                                      'idFacultad'=>$lcFacultad,
+                                                      'idCarrera'=>$lcCarrera,
+                                                      'cuantos'=>$cuantos,
+                                                      'bolcorrecto'=>$bolCorrecto
+                                                   ));
+
+                            //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                     }
+               }
+               else
+               {
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }
+           else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+        }
+        
+        public function anulacion_materias_2Action(Request $request)
+        {
+             
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $idEstudiante  = $request->request->get('idEstudiante');
+            $idCarrera  = $request->request->get('idCarrera');
+
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
+                     $matricula_dis=array();
+                                                               
+                 try
+                {
+                     $estudiante  = $session->get('nom_usuario');
+                     $banderaMatricula=0;
+                      $UgServices = new UgServices;
+                      $Mensaje="";
+                      $Idciclo="";
+                      $CicloMatricula="";
+                      $anio="";
+                      $xml2 = $UgServices->getConsultaDatos_Turno($idEstudiante,$idCarrera);
+                      $ciclo="";
+
+                    
+                      $Materias_inscribir = array();
+
+                       if ( is_object($xml2))
+                          {
+                              foreach($xml2->registros->registro as $datos)
+                               {  
+                                  //$banderaMatricula=(int) $datos->valor;
+                                  $banderaMatricula=5;
+                                  $Mensaje=(string) $datos->mensaje;
+                                  $Idciclo=(string) $datos->id_ciclo;
+                                  $ciclo=(string) $datos->ciclo_descripcion;
+                                  $anio=(string) $datos->anio;
+                               }
+                              
+                          }
+
+                      $lcFacultad="";
+                      $lcCarrera="";
+                      
+                      $idRol=$perfilEst;
+
+                      $CicloMatricula=$anio." - Ciclo ".$ciclo; 
+                     
+
+                        if ($banderaMatricula==5)
+                        {
+
+
+                            $UgServices = new UgServices;
+
+                            $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$ciclo);
+                          //obtenet el ciclo de matriculacion del XML
+                           if ( is_object($xml1))
+                              {
+                                        foreach($xml1->PX_SALIDA as $xml)
+                                         {  
+
+                                              foreach($xml->registros as $lsciclo) 
+                                                {
+                                                      foreach($lsciclo->registro as $lsdetallematerias) 
+                                                      {
+                                                              $Nombre=$lsdetallematerias->nombre;
+                                                              $Veces=$lsdetallematerias->veces;
+                                                              $IdMateria=$lsdetallematerias->id_sa_materia;
+                                                              $Nivel=$lsdetallematerias->nivel;
+                                                              $Curso=$lsdetallematerias->curso;
+                                                              $materiaObject=array('Nombre'=>$Nombre,
+                                                                                      'Veces'=>$Veces,
+                                                                                      'IdMateria'=>$IdMateria,
+                                                                                      'Nivel'=>$Nivel,
+                                                                                      'Curso'=>$Curso);
+                                                              
+                                                                array_push($Materias_inscribir, $materiaObject); 
+                                                        }
+                                                }
+                                          }
+                              }
+
+
+                        }
+                        
+                          
+                    }catch (\Exception $e)
+                        {
+                         $banderaMatricula=0;
+                          //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                        }
+                     
+                   
+                   return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_anulacion_materias2.html.twig',array(
+                                                    'matricula_dis' =>  $matricula_dis,
+                                                    'estudiante' => $estudiante,
+                                                    'idEstudiante' => $idEstudiante,
+                                                    'idCarrera' => $idCarrera,
+                                                    'banderaMatricula'=> $banderaMatricula ,
+                                                    'Mensaje'=>$Mensaje,
+                                                    'Materias_inscribir'=>$Materias_inscribir,
+                                                    'cicloencurso'=>$CicloMatricula,
+                                                    'idciclo'=>$Idciclo
+
+                                                 ));
+
+             }else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }
+                                
+        }
+        
+         public function anulacion_materias_3Action(Request $request)
+        {
+             
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $idEstudiante  = $request->request->get('idEstudiante');
+            $idCarrera  = $request->request->get('idCarrera');
+            $idCiclo  = $request->request->get('idCiclo');
+            $idMateria  = $request->request->get('idMateria');
+
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
+                     $matricula_dis=array();
+                     
+                 try
+                {
+                     $estudiante  = $session->get('nom_usuario');
+                      $Mensaje="";
+                      $UgServices = new UgServices;
+                      $xml2 = $UgServices->getConsultaDatos_Anulacion($idEstudiante,$idCarrera,$idCiclo,$idMateria);
+
+                  
+                      $Materias_inscribir = array();
+
+                       if ( is_object($xml2))
+                          {
+                              foreach($xml2->PX_SALIDA->registro as $datos)
+                               {  
+                                  $Mensaje=(string) $datos->mensaje;
+                               }
+                              
+                          }
+                        
+                          
+                    }catch (\Exception $e)
+                        {
+                         $banderaMatricula=0;
+                          //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                        }
+                     
+                   
+                   return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_anulacion_materias3.html.twig',array(
+                                                    'estudiante' => $estudiante,
+                                                    'idEstudiante' => $idEstudiante,
+                                                    'idCarrera' => $idCarrera,
+                                                    'Mensaje'=>$Mensaje
+                                                 ));
+
+             }else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }
+                                
+        }  
 
 
         
