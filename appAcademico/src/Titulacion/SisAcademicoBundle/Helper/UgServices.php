@@ -22,38 +22,36 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-//      $this->usuario       = "abc";
-//      $this->clave         = "123";
-//      $this->source        = "jdbc/saugProcTmp";
-//      $this->url           = "http://192.168.100.11:8080/";
-//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-//      $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-//      $this->urlWS         = "";
-//      $this->host          = "192.168.100.11:8080";
+//      $this->usuario          = "abc";
+//      $this->clave            = "123";
+//      $this->source           = "jdbc/procedimientosSaug"; 
+//      $this->sourceConsultas  = "jdbc/consultasSaug";
+//      $this->url              = "http://192.168.100.11:8080/";
+//      $this->urlConsulta      = "consultas/ServicioWebConsultas?wsdl";
+//      $this->urlProcedim      = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//      $this->urlWS            = "";
+//      $this->host             = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
       
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
       $this->usuario       = "CapaVisualPhp";
       $this->clave         = "12CvP2015";
       $this->source        = "jdbc/saugProcTmp";
+      $this->sourceConsultas  = "jdbc/saugConsTmp";
       $this->url           = "http://186.101.66.2:8080/";
-      $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
       $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
+   
    public function getLogin($username,$password){
-      $ws=new AcademicoSoap();
-      $tipo       = "3";
-      $usuario    = "abc";
-      $clave      = "123";
-      $source     = $this->source;
-      $url        = $this->url.$this->urlProcedim;
-      $host       = $this->host;
-      $trama      = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
-      $response=$ws->doRequestSreReceptaTransacionProcedimientos($trama,$source,$tipo,$usuario,$clave,$url,$host);
-       //pruebas
+      $this->tipo    = "8";
+      $this->urlWS   = $this->url.$this->urlProcedim;
+      $trama         = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
+      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+
       return $response;
 
    }#end function
@@ -74,12 +72,11 @@ class UgServices
    
    public function Docentes_getCarreras($idDocente){
       $this->tipo    = "3";
-      $this->source  = "jdbc/saugConsTmp";
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama      = "<usuario>".$idDocente."</usuario><rol>2</rol>";
       $XML        = NULL;
 
-      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $XML);
+      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $XML);
       return $response;
    }#end function Docentes_getCarreras()
    
@@ -91,23 +88,23 @@ class UgServices
       /*informacion quemada - fin*/
       
       $this->tipo    = "5";
-      $this->source  = "jdbc/saugConsTmp";
+      //$this->source  = "jdbc/saugConsTmp";
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama         = "<usuario>".$idDocente."</usuario><carrera>".$idCarrera."</carrera>";
       $XML           = NULL;
     
-      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
            
       return $response;
    }#end function Docentes_getMaterias()
    
    public function Docentes_getAsistenciasMaterias($datosConsulta){
       $this->tipo    = "9";
-      $this->source  = "jdbc/saugProcTmp";
+      //$this->source  = "jdbc/saugProcTmp";
       
       /*informacion quemada - inicio*/
-       $this->source                 = "jdbc/saugProcTmp";
-       $this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+       //$this->source                 = "jdbc/saugProcTmp";
+       //$this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
        //$datosConsulta["fechaInicio"] = '15/09/2015';
        //$datosConsulta["fechaFin"]    = '20/09/2015';
        //$datosConsulta["idDocente"]   = 31;
