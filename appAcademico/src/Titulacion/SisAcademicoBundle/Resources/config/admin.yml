@@ -1,3 +1,12 @@
 admin_academico_home:
     path:     /calendario
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:calendario_carrera }
+admin_academico_cambio_pass:
+    path:     /restablecer_pass
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cambio_password }
+admin_academico_ingreso_nuevo_pass:
+    path:     /nuevo_pass
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:ingreso_nuevo_pass }
+admin_academico_cargar_eventos:
+    path:     /nuevo_pass
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos }

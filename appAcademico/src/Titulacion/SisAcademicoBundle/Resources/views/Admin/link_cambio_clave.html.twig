@@ -1,18 +1,32 @@
+<meta charset="utf-8">
 
-{% block home %}
+<div style="
+		background-color: #00c0ef;
+		width: 750px; 
+		font-family: monospace;
+    	font-size: 15px;
+	    border-radius: 2px;
+	    position: relative;
+	    display: block;
+	    margin-bottom: 20px;
+	    box-shadow: 0 1px 1px rgba(0,0,0,0.1);">
 
-<html>
-		<head>
- 			<title>Restablece tu contraseña</title>
-		</head>
-		<body>
- 			<p>Hemos recibido una petición para restablecer la contraseña de tu cuenta.</p>
- 			<p>Si hiciste esta petición, haz clic en el siguiente enlace, si no hiciste esta petición puedes ignorar este correo.</p>
- 			<p>
- 				<strong>Enlace para restablecer tu contraseña</strong><br>
- 				<a href="#"> Restablecer contraseña </a>
- 			</p>
-		</body>
-</html>
+	<div style="padding: 2%;">
+		Usted se ha contactado con soporte para su cuenta de UG. Academico, Por favor proceda al siguiente enlace para que pueda restaurar su contraseña.
+		</br>
+		</br>
+		Si ud. no realizo esta peticion, haga caso omiso al correo y podra continuar con su clave actual.
+	</div>
 
-{% endblock %}
+	<a href="http://localhost{{path('admin_academico_cambio_pass')}}" style="
+		position: relative;
+	    text-align: center;
+	    padding: 10px 0;
+	    color: #fff;
+	    color: rgba(255,255,255,0.8);
+	    display: block;
+	    z-index: 10;
+	    background: rgba(0,0,0,0.1);
+	    text-decoration: none;
+	    font-weight: bold;">Restablecer contraseña</a>
+</div>

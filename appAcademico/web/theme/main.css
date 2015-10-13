@@ -24,3 +24,14 @@
 .mensajeError {
    margin: 40px;
 }
+/* amarillo -- 		#f0ad4e */
+/* verde 	--    	#5cb85c */
+/* azul 	--		#337ab7 */
+/* rojo 	--		#d9534f */
+
+.panel-green>.panel-heading {color: #fff;background-color: #5cb85c;border-color: #5cb85c;}
+.panel-green {border-color: #5cb85c;}
+.panel-yellow>.panel-heading {color: #fff;background-color: #f0ad4e;border-color: #f0ad4e;}
+.panel-yellow {border-color: #f0ad4e;}
+.fa-5x {font-size: 3em !important;}
+.h3, h3 {font-size: 130%;margin-top: 10px;margin-bottom: 10px;}

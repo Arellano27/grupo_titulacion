@@ -4,12 +4,8 @@
 
         <script>
             function onFinishCallback() {
-               // $('#wizard').smartWizard('showMessage', 'Finish Clicked');
                 alert('Finish Clicked');
             }
-
-
-
 
 
             $("#btninscribe").on("click",function(event){
@@ -17,10 +13,12 @@
                     var elemento = document.getElementById("seleccion");
                     if (elemento.className == "selected") 
                     {
+                        var idCiclo = {{idciclo}} 
                         var elementochk = document.getElementsByName("matricular_select"); 
                         var elecmentocombo = document.getElementsByName("cursos_select"); 
-                        var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso;
+                        var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso,Nivel;
                         var myArray = {};
+                        var indicasel=0;
                             $("#table-matricula tbody tr").each(function (index) 
                             {
                                 //console.log(elecmentocombo[index].options[elecmentocombo[index].selectedIndex].text);
@@ -29,9 +27,12 @@
                                 var indice=elecmentocombo[index].options.selectedIndex;
                                 Curso =elecmentocombo[index].options[indice].text;
                                 IdCurso =elecmentocombo[index].options[indice].value;
+                                 if (elementochk[index].checked && IdCurso=='')
+                                 {
+                                        indicasel=indicasel+1;
+                                 }
 
-
-                                if (elementochk[index].checked)
+                                if (elementochk[index].checked && IdCurso!='')
                                 {
                                     valida=0;
 
@@ -55,6 +56,9 @@
                                             case "veces": Veces = $(this).text() 
                                                     //alert("ve"+Veces);
                                                      break;
+                                             case "nivel": Nivel = $(this).text() 
+                                                    //alert("ve"+Veces);
+                                                     break;
                                         }
                                          
                                     })
@@ -64,6 +68,7 @@
                                      arrValores["Curso"]=Curso;
                                      arrValores["Idcurso"]=IdCurso;
                                      arrValores["Veces"]=Veces;
+                                     arrValores["Nivel"]=Nivel;
                                      myArray[index]=arrValores;
                                 }
                                
@@ -73,24 +78,31 @@
 
                             var estado;
                             estado=0;
-                            if(Object.keys(myArray).length==0)
+                            if(Object.keys(myArray).length==0 || indicasel>0 )
                             {
-                                alert("Debe Seleccionar las Materias a Inscribir");
+                                //alert("Debe Seleccionar las Materias a Inscribir");
+                                modelessMateriasInscribir= new $.flavr({
+                                                   modal   : true,
+                                                   content : 'Sr. Estudiante, debe realizar la selccion de cursos de manera correcta',
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', style: 'primary' }
+                                                   }
+                                                });
+
                                   $('.botonMatriculaSig').addClass('buttonDisabled');
-                                  //$('.botonMatriculaSig').removeClass('btn btn-success');
-                               // event.preventDefault();
                                $("#btninscribe").attr("disabled", false);
                             }
 
                             else
                             {
+
                                 $('.botonMatriculaSig').removeClass('buttonDisabled');
                                 //alert("aqui estoy");
                                 var idEstudiante='{{idEstudiante}}';
                                 var idCarrera='{{idCarrera}}';
                                 //alert(idCarrera);
 
-                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera};
+                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo};
                                 // console.log(obj_data);
 
                                  var jumpAction = '{{path('estudiantes_grabar_matricula')}}';
@@ -109,7 +121,7 @@
                                         console.log(dataResponse);
                                        var respuesta=jQuery.parseJSON(dataResponse);
                                        $("#div_respuesta").html(respuesta.mensaje);
-                                       if (respuesta.codigo_error==1)
+                                       if (respuesta.codigo_error!=0)
                                        {
                                             $('.botonMatriculaSig').addClass('buttonDisabled');
                                             $('.botonAnterior').removeClass('buttonDisabled');
@@ -118,6 +130,7 @@
                                        else
                                        {
                                         $('.botonAnterior').addClass('buttonDisabled');
+                                        $("#btninscribe").remove();
                                        }
                                      },
                                       error: function(dataResponse)
@@ -150,7 +163,7 @@
                             {
                                     var elementochk = document.getElementsByName("matricular_select"); 
                                     var elecmentocombo = document.getElementsByName("cursos_select"); 
-                                    var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso;
+                                    var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso,Nivel;
                                     var myArray = {};
                                         $("#table-matricula tbody tr").each(function (index) 
                                         {
@@ -183,6 +196,9 @@
                                                         case "veces": Veces = $(this).text() 
                                                                 //alert("ve"+Veces);
                                                                  break;
+                                                         case "nivel": Nivel = $(this).text() 
+                                                                //alert("ve"+Veces);
+                                                                 break;
                                                     }
                                                      
                                                 })
@@ -192,6 +208,7 @@
                                                  arrValores["Curso"]=Curso;
                                                  arrValores["Idcurso"]=IdCurso;
                                                  arrValores["Veces"]=Veces;
+                                                 arrValores["Nivel"]=Nivel;
                                                  myArray[index]=arrValores;
                                             }
                                            
@@ -224,12 +241,6 @@
                                  dataType:'text'
                               });
                         }
-                    else
-                    {
-                        
-                        //$('.botonMatriculaSig').addClass('btn btn-success');
-                        //$('.botonMatriculaSig').removeClass('buttonDisabled');
-                    }
                         
                 });
 
@@ -306,6 +317,7 @@
                                                         <table class="table table-striped table-bordered" id="table-matricula">
                                                             <thead>
                                                                 <tr>
+                                                                    <th>Nivel</th>
                                                                     <th>ID Materia</th>
                                                                     <th align="center">Materias</th>
                                                                     <th>Veces</th>
@@ -314,8 +326,10 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+
                                                                     {% for disponibles in Materias_inscribir %}   
                                                                      <tr class="odd gradeX">
+                                                                        <td width='5%' id="nivel_{{ disponibles.Nivel }}">{{ disponibles.Nivel }}</td>
                                                                         <td width='5%' id="id_{{ disponibles.IdMateria }}">{{ disponibles.IdMateria }}</td>
                                                                         <td id="nombre_{{ disponibles.IdMateria }}">{{ disponibles.Nombre }}</td>
                                                                         <td width="5%" id="veces_{{ disponibles.IdMateria }}" >{{ disponibles.Veces }}</td>
@@ -323,11 +337,11 @@
                                                                         <select  name="cursos_select" index=1>
                                                                           <option value=""  selected> Sel.</option>
                                                                             {% for cursos in disponibles.Cursos %} 
-                                                                               <option value="{{cursos.Idcurso}}" > {{ cursos.Curso }} </option>
+                                                                               <option value="{{cursos.Idmatpar}}" > {{ cursos.Curso }} </option>
                                                                              {% endfor %}  
                                                                            </select >
                                                                          </td>
-                                                                          <td width='10%' id="sel_{{ disponibles.IdMateria }}"> <input type="checkbox" name="matricular_select"></td>
+                                                                          <td width='10%' id="sel_{{ disponibles.IdMateria }}"> <input type="checkbox" name="matricular_select" value=""></td>
                                                                     </tr>
 
                                                                 {% endfor %}  
@@ -360,7 +374,7 @@
                         
                         <div id="step-3">
                             <div class="tabresumen" id="tabresumen_2">
-                                     <b>{{ estudiante }}</b> Usted se encuentra matriculado en las siguientes materias:                               
+                                                                    
                             </div>
                            
                         </div>
@@ -391,9 +405,117 @@
     </script>
 
 {% endif %}
-{% if (banderaMatricula==0)%}
 
-    <h2>Turno no disponible </h2>
+{% if (banderaMatricula==5 )%}
+
+    <div class="col-lg-9">
+            <b>{{ estudiante }}</b> Usted se encuentra matriculado en las siguientes materias:
+            <table class="table table-striped table-bordered" id ="">
+                     <thead>
+                        <tr>
+                                <th colspan="5" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo  </th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center !important;">Nivel</th>
+                            <th style="text-align: center !important;">Id Materias</th>
+                            <th style="text-align: center !important;">Nombre Materias</th>
+                            <th style="text-align: center !important;">Veces</th>
+                            <th style="text-align: center !important;">Curso</th> 
+                        </tr>
+                        {% for dato in Materias_inscribir %} 
+                            <tr>
+                                <td align="center">{{ dato.Nivel }}</td>
+                                <td align="center">{{ dato.IdMateria }}</td>
+                                <td align="center">{{ dato.Nombre }}</td>
+                                <td align="center">{{ dato.Veces }}</td>
+                                <td align="center">{{ dato.Curso }}</td>
+                            </tr>
+                        {% endfor %}
+                <tfoot>
+                    <tr>
+                        <td colspan=5 align="right">
+                            <input type="submit" name="Generapdf" id="btngenpdfmat" value="Imprimir Documento"></td>
+                        </td>
+                    </tr>
+                </tfoot>
+               
+           </table>
+        </div>
+
+
+        <script>
+            $("#btngenpdfmat").on("click",function(event){
+                   alert("GenerarPdf");
+                    var myArray = '{{Materias_inscribir|json_encode|raw}}';
+                    var arrData = {};
+                    var arrValores = {};
+                    $.each(JSON.parse(myArray), function(idx, obj) {
+                             arrValores["Materia"]=obj.Nombre;
+                             arrValores["Curso"]=obj.Curso;
+                             arrValores["Veces"]=obj.Veces;
+                             arrValores["Nivel"]=obj.Nivel;
+                             arrData[idx]=arrValores;
+                             //arrData.push( [obj.Nombre, obj.Veces,obj.Curso,obj.Nivel]);
+                          });
+                    console.log(arrData);
+
+                    var idEstudiante='{{idEstudiante}}';
+                    var idCarrera='{{idCarrera}}';
+                    //alert(idCarrera);
+
+                     var obj_data = {'arrMaterias': arrData,'idEstudiante': idEstudiante,'idCarrera':idCarrera};
+                    // console.log(obj_data);
+
+                     var jumpAction = '{{path('estudiantes_pdf_matricula')}}';
+                      $.ajax({
+                         url:   jumpAction,
+                         data: obj_data,
+                         type:  'post',
+                         async: true,
+                         beforeSend: function () {
+                           // alert("dentro");
+                           //tablaNotasa.html("Cargando, espere por favor...");
+                         //notificacionIndex = cargandoSitio(null, null, null);
+                  
+                         },
+                         success:  function (dataResponse) {
+                            console.log(dataResponse);
+                           var respuesta=jQuery.parseJSON(dataResponse);
+                           
+                         },
+                          error: function(dataResponse)
+                          {
+                              //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                              //tablaNotasa.html("No fue posible conectar con el Servidor");
+                            form="accordion";
+                            msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                            $( '#'+form ).append( msg_alert );
+                                            $('#modal-'+form).modal('show');
+                          },
+                
+
+                         dataType:'html'
+                      });
+
+
+
+                     var doc = new jsPDF();
+                     doc.text(20, 20, 'Hello world!');
+                     doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
+                     doc.addPage();
+                     doc.text(20, 20, 'Do you like that?');
+
+                         // Output as Data URI
+                         doc.output('datauri');
+
+               }); 
+        </script>
+
+{% endif %}
+
+{% if (banderaMatricula!=5 and banderaMatricula!=1)%}
+
+    <h2>{{Mensaje}} </h2>
 
 {% endif %}
 
