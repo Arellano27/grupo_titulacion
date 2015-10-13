@@ -13,7 +13,7 @@
                     var elemento = document.getElementById("seleccion");
                     if (elemento.className == "selected") 
                     {
-                        var idCiclo = {{idciclo}} 
+                        var idCiclo = '{{idciclo}}'; 
                         var elementochk = document.getElementsByName("matricular_select"); 
                         var elecmentocombo = document.getElementsByName("cursos_select"); 
                         var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso,Nivel;
@@ -100,6 +100,7 @@
                                 //alert("aqui estoy");
                                 var idEstudiante='{{idEstudiante}}';
                                 var idCarrera='{{idCarrera}}';
+                                var carrera = '{{carrera}}';
                                 //alert(idCarrera);
 
                                  var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo};
@@ -121,7 +122,7 @@
                                         console.log(dataResponse);
                                        var respuesta=jQuery.parseJSON(dataResponse);
                                        $("#div_respuesta").html(respuesta.mensaje);
-                                       if (respuesta.codigo_error!=0)
+                                       if (respuesta.codigo_error!=1)
                                        {
                                             $('.botonMatriculaSig').addClass('buttonDisabled');
                                             $('.botonAnterior').removeClass('buttonDisabled');
@@ -165,6 +166,7 @@
                                     var elecmentocombo = document.getElementsByName("cursos_select"); 
                                     var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso,Nivel;
                                     var myArray = {};
+
                                         $("#table-matricula tbody tr").each(function (index) 
                                         {
                                              var indice=elecmentocombo[index].options.selectedIndex;
@@ -214,7 +216,11 @@
                                            
                                         })
                                }
-                                var obj_data = {'arrMaterias': myArray};
+                                var idEstudiante='{{idEstudiante}}';
+                                var idCarrera='{{idCarrera}}';
+                                var carrera = '{{carrera}}';
+                                var idCiclo = '{{idciclo}}';
+                                var obj_data = {'arrMaterias': myArray,'idEstudiante':idEstudiante,'idCarrera':idCarrera,'idCiclo':idCiclo,'carrera':carrera};
                                 var tablamatricula = $('#tabresumen_2');
                                   var jumpAction = '{{path('estudiantes_presenta_matricula')}}'; //cambiar por la ruta nueva; porfa revisa q puede ser porq no me  coge la nueva rut me sale q no existe y ya esat declara y he borrado cahce y nada sale q no existe de ahi ya funciona
                                   $.ajax({
@@ -406,114 +412,52 @@
 
 {% endif %}
 
-{% if (banderaMatricula==5 )%}
+{% if (banderaMatricula==4 )%}
 
-    <div class="col-lg-9">
-            <b>{{ estudiante }}</b> Usted se encuentra matriculado en las siguientes materias:
-            <table class="table table-striped table-bordered" id ="">
-                     <thead>
-                        <tr>
-                                <th colspan="5" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo  </th>
-                        </tr>
-                        <tr>
-                            <th style="text-align: center !important;">Nivel</th>
-                            <th style="text-align: center !important;">Id Materias</th>
-                            <th style="text-align: center !important;">Nombre Materias</th>
-                            <th style="text-align: center !important;">Veces</th>
-                            <th style="text-align: center !important;">Curso</th> 
-                        </tr>
-                        {% for dato in Materias_inscribir %} 
+            <div class="col-lg-12">
+                    <b>{{ estudiante }}</b> Usted se encuentra matriculado en las siguientes materias:
+                    <table class="table table-striped table-bordered" id ="">
+                             <thead>
+                                <tr>
+                                        <th colspan="5" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo  </th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: center !important;">Nivel</th>
+                                    <th style="text-align: center !important;">Id Materias</th>
+                                    <th style="text-align: center !important;">Nombre Materias</th>
+                                    <th style="text-align: center !important;">Veces</th>
+                                    <th style="text-align: center !important;">Curso</th> 
+                                </tr>
+                                {% for dato in Materias_inscribir %} 
+                                    <tr>
+                                        <td align="center">{{ dato.Nivel }}</td>
+                                        <td align="center">{{ dato.IdMateria }}</td>
+                                        <td align="center">{{ dato.Nombre }}</td>
+                                        <td align="center">{{ dato.Veces }}</td>
+                                        <td align="center">{{ dato.Curso }}</td>
+                                    </tr>
+
+                                {% endfor %}
+                        <tfoot>
                             <tr>
-                                <td align="center">{{ dato.Nivel }}</td>
-                                <td align="center">{{ dato.IdMateria }}</td>
-                                <td align="center">{{ dato.Nombre }}</td>
-                                <td align="center">{{ dato.Veces }}</td>
-                                <td align="center">{{ dato.Curso }}</td>
+                                <td colspan=5 align="right">
+                                     <a class="btn btn-success" href="{{ path('estudiantes_pdf_matricula',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank">Imprimir Documento</a>
+                                </td>
                             </tr>
-                        {% endfor %}
-                <tfoot>
-                    <tr>
-                        <td colspan=5 align="right">
-                            <input type="submit" name="Generapdf" id="btngenpdfmat" value="Imprimir Documento"></td>
-                        </td>
-                    </tr>
-                </tfoot>
-               
-           </table>
-        </div>
+                        </tfoot>
+                       
+                   </table>
+                </div>
+            
 
 
         <script>
-            $("#btngenpdfmat").on("click",function(event){
-                   alert("GenerarPdf");
-                    var myArray = '{{Materias_inscribir|json_encode|raw}}';
-                    var arrData = {};
-                    var arrValores = {};
-                    $.each(JSON.parse(myArray), function(idx, obj) {
-                             arrValores["Materia"]=obj.Nombre;
-                             arrValores["Curso"]=obj.Curso;
-                             arrValores["Veces"]=obj.Veces;
-                             arrValores["Nivel"]=obj.Nivel;
-                             arrData[idx]=arrValores;
-                             //arrData.push( [obj.Nombre, obj.Veces,obj.Curso,obj.Nivel]);
-                          });
-                    console.log(arrData);
-
-                    var idEstudiante='{{idEstudiante}}';
-                    var idCarrera='{{idCarrera}}';
-                    //alert(idCarrera);
-
-                     var obj_data = {'arrMaterias': arrData,'idEstudiante': idEstudiante,'idCarrera':idCarrera};
-                    // console.log(obj_data);
-
-                     var jumpAction = '{{path('estudiantes_pdf_matricula')}}';
-                      $.ajax({
-                         url:   jumpAction,
-                         data: obj_data,
-                         type:  'post',
-                         async: true,
-                         beforeSend: function () {
-                           // alert("dentro");
-                           //tablaNotasa.html("Cargando, espere por favor...");
-                         //notificacionIndex = cargandoSitio(null, null, null);
-                  
-                         },
-                         success:  function (dataResponse) {
-                            console.log(dataResponse);
-                           var respuesta=jQuery.parseJSON(dataResponse);
-                           
-                         },
-                          error: function(dataResponse)
-                          {
-                              //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
-                              //tablaNotasa.html("No fue posible conectar con el Servidor");
-                            form="accordion";
-                            msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
-                                            $( '#'+form ).append( msg_alert );
-                                            $('#modal-'+form).modal('show');
-                          },
-                
-
-                         dataType:'html'
-                      });
-
-
-
-                     var doc = new jsPDF();
-                     doc.text(20, 20, 'Hello world!');
-                     doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
-                     doc.addPage();
-                     doc.text(20, 20, 'Do you like that?');
-
-                         // Output as Data URI
-                         doc.output('datauri');
-
-               }); 
+           
         </script>
 
 {% endif %}
 
-{% if (banderaMatricula!=5 and banderaMatricula!=1)%}
+{% if (banderaMatricula!=4 and banderaMatricula!=1)%}
 
     <h2>{{Mensaje}} </h2>
 

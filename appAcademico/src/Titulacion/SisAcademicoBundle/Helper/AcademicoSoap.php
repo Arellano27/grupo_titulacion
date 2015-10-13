@@ -926,6 +926,111 @@ function doRequestSreReceptaTransacion_matriculacion($datosCuenta,$source,$tipo,
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
 
+// $result =  <<<XML
+//  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//     <soap:Body>
+//         <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//             <return>
+//                 <codigoRespuesta>0</codigoRespuesta>
+//                 <estado>F</estado>
+//                 <idHistorico>58</idHistorico>
+//                 <mensajeRespuesta>ok</mensajeRespuesta>
+//                 <resultadoObjeto>
+//                     <parametrosSalida>
+//                         <PX_SALIDA>
+//                             <registros>
+//                               <registro>
+//                                 <id_sa_materia>40</id_sa_materia>
+//                                 <nombre>Sistemas Operativos</nombre>
+//                                 <veces>1</veces>
+//                                 <nivel>6</nivel>
+//                                 <Paralelos>
+//                                   <Paralelo>
+//                                     <cuposRegistrados>15</cuposRegistrados>
+//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <curso>S1B</curso>
+//                                     <idMateriaParalelo>901</idMateriaParalelo>
+//                                   </Paralelo>
+//                                   <Paralelo>
+//                                     <cuposRegistrados>14</cuposRegistrados>
+//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <curso>S1C</curso>
+//                                     <idMateriaParalelo>902</idMateriaParalelo>
+//                                   </Paralelo>
+//                                 </Paralelos>    
+//                               </registro>
+//                               <registro>
+//                                 <id_sa_materia>50</id_sa_materia>
+//                                 <nombre>Programacion</nombre>
+//                                 <veces>1</veces>
+//                                 <nivel>6</nivel>
+//                                 <Paralelos>
+//                                   <Paralelo>
+//                                     <cuposRegistrados>15</cuposRegistrados>
+//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <curso>S1B</curso>
+//                                     <idMateriaParalelo>903</idMateriaParalelo>
+//                                   </Paralelo>
+//                                   <Paralelo>
+//                                     <cuposRegistrados>14</cuposRegistrados>
+//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <curso>S1C</curso>
+//                                     <idMateriaParalelo>904</idMateriaParalelo>
+//                                   </Paralelo>
+//                                 </Paralelos>    
+//                               </registro>
+//                               <registro>
+//                                 <id_sa_materia>60</id_sa_materia>
+//                                 <nombre>Financiero</nombre>
+//                                 <veces>1</veces>
+//                                 <nivel>6</nivel>
+//                                 <Paralelos>
+//                                   <Paralelo>
+//                                     <cuposRegistrados>15</cuposRegistrados>
+//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <curso>S1B</curso>
+//                                     <idMateriaParalelo>905</idMateriaParalelo>
+//                                   </Paralelo>
+//                                   <Paralelo>
+//                                     <cuposRegistrados>14</cuposRegistrados>
+//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <curso>S1C</curso>
+//                                     <idMateriaParalelo>906</idMateriaParalelo>
+//                                   </Paralelo>
+//                                 </Paralelos>    
+//                               </registro>
+//                               <registro>
+//                                 <id_sa_materia>70</id_sa_materia>
+//                                 <nombre>Informatica</nombre>
+//                                 <veces>1</veces>
+//                                 <nivel>6</nivel>
+//                                 <Paralelos>
+//                                   <Paralelo>
+//                                     <cuposRegistrados>15</cuposRegistrados>
+//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <curso>S1B</curso>
+//                                     <idMateriaParalelo>907</idMateriaParalelo>
+//                                   </Paralelo>
+//                                   <Paralelo>
+//                                     <cuposRegistrados>14</cuposRegistrados>
+//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <curso>S1C</curso>
+//                                     <idMateriaParalelo>908</idMateriaParalelo>
+//                                   </Paralelo>
+//                                 </Paralelos>    
+//                               </registro>
+//                             </registros>
+//                         </PX_SALIDA>
+//                     </parametrosSalida>
+//                 </resultadoObjeto>
+//             </return>
+//         </ns2:ejecucionObjetoResponse>
+//     </soap:Body>
+// </soap:Envelope>
+// XML;
+
+
+
 
 
     if(!$result)
@@ -1159,66 +1264,66 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
                     curl_setopt($soap_do, CURLOPT_POST, true);
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-                    //$result = curl_exec($soap_do);
+                    $result = curl_exec($soap_do);
 
-$result =  <<<XML
- <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-        <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-            <return>
-                <codigoRespuesta>0</codigoRespuesta>
-                <estado>F</estado>
-                <idHistorico>58</idHistorico>
-                <mensajeRespuesta>ok</mensajeRespuesta>
-                <resultadoObjeto>
-                    <parametrosSalida>
-                        <PX_SALIDA>
-                            <registros>
-                              <registro>
-                                <id_sa_materia>40</id_sa_materia>
-                                <nombre>Sistemas Operativos</nombre>
-                                <veces>1</veces>
-                                <nivel>6</nivel>
+// $result =  <<<XML
+//  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//     <soap:Body>
+//         <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//             <return>
+//                 <codigoRespuesta>0</codigoRespuesta>
+//                 <estado>F</estado>
+//                 <idHistorico>58</idHistorico>
+//                 <mensajeRespuesta>ok</mensajeRespuesta>
+//                 <resultadoObjeto>
+//                     <parametrosSalida>
+//                         <PX_SALIDA>
+//                             <registros>
+//                               <registro>
+//                                 <id_sa_materia>40</id_sa_materia>
+//                                 <nombre>Sistemas Operativos</nombre>
+//                                 <veces>1</veces>
+//                                 <nivel>6</nivel>
 
-                                <curso>S1B</curso> 
+//                                 <curso>S1B</curso> 
 
-                              </registro>
-                              <registro>
-                                <id_sa_materia>50</id_sa_materia>
-                                <nombre>Programacion</nombre>
-                                <veces>1</veces>
-                                <nivel>6</nivel>
+//                               </registro>
+//                               <registro>
+//                                 <id_sa_materia>50</id_sa_materia>
+//                                 <nombre>Programacion</nombre>
+//                                 <veces>1</veces>
+//                                 <nivel>6</nivel>
 
-                                <curso>S1C</curso>
+//                                 <curso>S1C</curso>
 
-                              </registro>
-                              <registro>
-                                <id_sa_materia>60</id_sa_materia>
-                                <nombre>Financiero</nombre>
-                                <veces>1</veces>
-                                <nivel>6</nivel>
+//                               </registro>
+//                               <registro>
+//                                 <id_sa_materia>60</id_sa_materia>
+//                                 <nombre>Financiero</nombre>
+//                                 <veces>1</veces>
+//                                 <nivel>6</nivel>
 
-                                <curso>S1B</curso>
+//                                 <curso>S1B</curso>
 
-                              </registro>
-                              <registro>
-                                <id_sa_materia>70</id_sa_materia>
-                                <nombre>Informatica</nombre>
-                                <veces>1</veces>
-                                <nivel>6</nivel>
+//                               </registro>
+//                               <registro>
+//                                 <id_sa_materia>70</id_sa_materia>
+//                                 <nombre>Informatica</nombre>
+//                                 <veces>1</veces>
+//                                 <nivel>6</nivel>
 
-                                <curso>S1C</curso>
+//                                 <curso>S1C</curso>
 
-                              </registro>
-                            </registros>
-                        </PX_SALIDA>
-                    </parametrosSalida>
-                </resultadoObjeto>
-            </return>
-        </ns2:ejecucionObjetoResponse>
-    </soap:Body>
-</soap:Envelope>
-XML;
+//                               </registro>
+//                             </registros>
+//                         </PX_SALIDA>
+//                     </parametrosSalida>
+//                 </resultadoObjeto>
+//             </return>
+//         </ns2:ejecucionObjetoResponse>
+//     </soap:Body>
+// </soap:Envelope>
+// XML;
 
 
 

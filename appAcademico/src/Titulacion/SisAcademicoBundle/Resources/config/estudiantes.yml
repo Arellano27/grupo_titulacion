@@ -30,7 +30,7 @@ estudiantes_presenta_matricula:
     pattern:  /presentarmatricula
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:presenta_matricula}
 estudiantes_pdf_matricula:
-    pattern:  /pdfmatricula
+    pattern:  /pdfmatricula/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfmatricula}
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
