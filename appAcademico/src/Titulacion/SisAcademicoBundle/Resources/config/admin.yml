@@ -10,3 +10,6 @@ admin_academico_ingreso_nuevo_pass:
 admin_academico_cargar_eventos:
     path:     /nuevo_pass
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos }
+admin_academico_cargar_eventos_user:
+    path:     /nuevo_pass
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos_carrera_user }
