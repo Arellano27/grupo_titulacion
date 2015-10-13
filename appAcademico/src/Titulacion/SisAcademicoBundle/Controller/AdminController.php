@@ -29,4 +29,12 @@ class AdminController extends Controller
         #llamamos a la consulta del webservice
         $UgServices = new UgServices;
     }
+
+    public function cargar_eventosAction(Request $request)
+    {
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+
+        
+    }
 }
