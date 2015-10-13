@@ -35,37 +35,28 @@ class UgServices
      $this->host          = "192.168.100.11:8080";
      $this->sourceConsultas= "jdbc/consultasSaug";
 
+
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-
-
       // $this->usuario       = "CapaVisualPhp";
       // $this->clave         = "12CvP2015";
       // $this->source        = "jdbc/saugProcTmp";
+      // $this->sourceConsultas  = "jdbc/saugConsTmp";
       // $this->url           = "http://186.101.66.2:8080/";
-      // $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
-      // $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       // $this->urlWS         = "";
       // $this->host          = "186.101.66.2:8080";
-
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
+   
    public function getLogin($username,$password){
-      /*$ws=new AcademicoSoap();
-      $tipo       = "8";
-      $usuario    = "abc";
-      $clave      = "123";
-      $source     = $this->source;
-      $url        = $this->url.$this->urlProcedim;
-      $host       = $this->host;*/
-       $this->tipo    = "8";
-      $this->urlWS   = $this->url.$this->urlProcedim;
-      $trama      = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
-      //$response=$ws->doRequestSreReceptaTransacionProcedimientos($trama,$source,$tipo,$usuario,$clave,$url,$host);
-      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-      // echo '<pre>'; var_dump($response); exit();
-       //pruebas
-      return $response;
 
+      $this->tipo    = "8";
+      $this->urlWS   = $this->url.$this->urlProcedim;
+      $trama         = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
+      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+
+      return $response;
    }#end function
 
    public function getConsultaNotas($servicio=""){
@@ -95,11 +86,10 @@ class UgServices
       /*informacion quemada - fin*/
 
       $this->tipo    = "5";
-      $this->source  = "jdbc/saugConsTmp";
+      //$this->source  = "jdbc/saugConsTmp";
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama         = "<usuario>".$idDocente."</usuario><carrera>".$idCarrera."</carrera>";
       $XML           = NULL;
-
       $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
 
       return $response;
@@ -108,6 +98,18 @@ class UgServices
    public function Docentes_getAsistenciasMaterias($datosConsulta){
       $this->tipo    = "9";
       $this->urlWS   = $this->url.$this->urlProcedim;
+      //$this->source  = "jdbc/saugProcTmp";
+
+      /*informacion quemada - inicio*/
+       //$this->source                 = "jdbc/saugProcTmp";
+       //$this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+       //$datosConsulta["fechaInicio"] = '15/09/2015';
+       //$datosConsulta["fechaFin"]    = '20/09/2015';
+       //$datosConsulta["idDocente"]   = 31;
+       //$datosConsulta["idMateria"]   = 51;
+       //$datosConsulta["idParalelo"]  = 7;
+       //$datosConsulta["anio"]        = 2015;
+      /*informacion quemada - fin*/
       $datosConsulta["idParalelo"]  = 0;  /* ES NECESARIO PARA LA TRAMA ACTUAL */
       $datosConsulta["ciclo"]       = $datosConsulta["idCarrera"];  /* ESTE REEMPLAZO ES NECESARIO*/
       
@@ -373,7 +375,6 @@ public function getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$idCiclo)
             
 }#end function
 }#end class
-
 
 
 

@@ -2,67 +2,13 @@
 {% block home %}
 
 
-
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
 
 <section class="content">
           <div class="row">
-            <div class="col-md-3">
-              <div class="box box-solid">
-                <div class="box-header with-border">
-                  <h4 class="box-title">Eventos Académicos</h4>
-                </div>
-                <div class="box-body">
-                  <!-- the events -->
-                  <div id="external-events">
-                    <!-- <div class="external-event bg-green">Lunch</div>
-                    <div class="external-event bg-yellow">Go home</div>
-                    <div class="external-event bg-aqua">Do homework</div>
-                    <div class="external-event bg-light-blue">Work on UI design</div>
-                    <div class="external-event bg-red">Sleep tight</div> -->
-                    <div class="checkbox">
-                      <label for="drop-remove">
-                        <input type="checkbox" id="drop-remove">
-                        Remover evento
-                      </label>
-                    </div>
-                  </div>
-                </div><!-- /.box-body -->
-              </div><!-- /. box -->
-              <div class="box box-solid">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Create Event</h3>
-                </div>
-                <div class="box-body">
-                  <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                    <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
-                    <ul class="fc-color-picker" id="color-chooser">
-                      <li><a class="text-aqua" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-blue" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-light-blue" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-teal" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-yellow" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-orange" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-green" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-lime" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-red" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-purple" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-fuchsia" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-muted" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-navy" href="#"><i class="fa fa-square"></i></a></li>
-                    </ul>
-                  </div><!-- /btn-group -->
-                  <div class="input-group">
-                    <input id="new-event" type="text" class="form-control" placeholder="Event Title">
-                    <div class="input-group-btn">
-                      <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Add</button>
-                    </div><!-- /btn-group -->
-                  </div><!-- /input-group -->
-                </div>
-              </div>
-            </div><!-- /.col -->
+            
             <div class="col-md-9">
               <div class="box box-primary">
                 <div class="box-body no-padding">
@@ -80,14 +26,13 @@
        <script>
       $(function () {
 
-        function ini_events(ele,url) {
-          ele.each(function (url) {
+        function ini_events(ele) {
+          ele.each(function () {
 
             // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
             // it doesn't need to have a start or end
             var eventObject = {
-              title: $.trim($(this).text()), // use the element's text as the event title
-              url: url
+              title: $.trim($(this).text()) // use the element's text as the event title
             };
 
             // store the Event Object in the DOM element so we can get to it later
@@ -173,15 +118,15 @@
           //     borderColor: "#3c8dbc" //Primary (light-blue)
           //   }
           // ],
-          editable: true,
+          editable: false,
           droppable: true, // this allows things to be dropped onto the calendar !!!
                  events: function (start, end, timezone, callback) {
 
                   var events = [];
                   events.push({
                     title: 'hola',
-                    start: new Date('2015-10-12'),
-                    end:  new Date('2015-10-13')
+                    start:  new Date('2015-10-12'),
+                    end:   new Date('2015-10-13')
                   });
                   callback(events);
             // $.ajax({
@@ -205,9 +150,6 @@
             //         alert('Error in fetching data');
             //     }
             // });
-        },
-        eventDrop: function(date, allDay){
-            alert("drop");
         },
           drop: function (date, allDay) { // this function is called when something is dropped (evento cuando se deja caer un evento al calendario)
 
@@ -239,47 +181,6 @@
             alert("poppúp");
           },
 
-          eventClick: function (calEvent, jsEvent, view){
-
-            var html =                '   <div class="form-row">' +
-                '       <input type="text" name="username" ' +
-                '       placeholder="Título" />' +
-                '   </div>' +
-                '   <div class="form-row">' +
-                '       <input type="password" name="password" ' +
-                '       placeholder="Descripción" />' +
-                '   </div>' +
-                '   <div class="form-row">' +
-                '   </div>';
-
-                var select = $(this).parent().siblings('.demo-select');
-                var entrance = select.find('.animate-entrance :selected').text();
-                var closing = select.find('.animate-closing :selected').text();
-
-
-                new $.flavr({
-                    title       : 'Editar Evento',
-                    content     : '',
-                    dialog      : 'form',
-                    form        : { content: html, method: 'post' },
-                    onSubmit    : function( $container, $form ){
-                         $.ajax({
-                            url: '',
-                            data: 'type=changetitle&title='+title+'&eventid='+event.id,
-                            type: 'POST',
-                            dataType: 'json',
-                            success: function(response){
-                              if(response.status == 'success')
-                                      $('#calendar').fullCalendar('updateEvent',event);
-                            },
-                            error: function(e){
-                              alert('Error processing your request: '+e.responseText);
-                            }
-                          });
-                        return false;
-                    }
-                });
-          }
         });
 
         /* ADDING EVENTS */
@@ -306,11 +207,10 @@
           var event = $("<div />");
           event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
           event.html(val);
-          
           $('#external-events').prepend(event);
 
           //Add draggable funtionality
-          ini_events(event,'www.google.com');
+          ini_events(event);
 
           //Remove event from text input
           $("#new-event").val("");
