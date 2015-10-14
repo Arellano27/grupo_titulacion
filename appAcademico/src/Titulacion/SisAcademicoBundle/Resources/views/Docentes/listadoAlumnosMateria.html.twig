@@ -1,10 +1,52 @@
 {% block listaNotasAlumnos %}
+   <script type="text/javascript">
+      var inicioCicloCarrera  = '{{dataMateria.inicioCiclo}}';
+      var finCicloCarrera     = '{{dataMateria.finCiclo}}';
+      var inicioConsultaAsist;
+      var finConsultaAsist;
+      var delayTrigger  = 0;
+            
+      function getMonday(d) {
+        d = new Date(d);
+        var day = d.getDay(),
+            diff = d.getDate() - day + (day == 0 ? -6:1); // Ajusta el numero cuando es domingo
+        return new Date(d.setDate(diff));
+      }
+
+      function formatDiaAsistencias(varDate) {
+        var dayFormat;
+        var mesFormat;
+        var anioFormat;
+        var fechaFormat;
+
+        dayFormat = varDate.getDate() < 10 ? "0"+varDate.getDate() : varDate.getDate();
+        mesFormat = varDate.getMonth()+1;
+        mesFormat = mesFormat < 10 ? "0"+mesFormat : mesFormat;
+        anioFormat = varDate.getFullYear();
+
+        var fechaFormat = dayFormat+"/"+mesFormat+"/"+anioFormat;
+
+        return fechaFormat;
+
+      }
+      
+      /*fecha hoy - START*/
+      var fechaHoy = formatDiaAsistencias( new Date() ); // Mon Nov 08 2010
+      /*fecha hoy - END*/
+   </script>
    <link rel="stylesheet" href="{{ asset('theme/plugins/datepicker/datepicker3.css') }}">
    <script src="{{ asset('theme/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
    <link rel="stylesheet" href="{{ asset('theme/plugins/daterangepicker/daterangepicker-bs3.css') }}">
    <script src="{{ asset('theme/plugins/daterangepicker/daterangepicker.js') }}"></script>
    
    <style type="text/css">
+      #colAlumno {
+         vertical-align: middle;
+      }
+      
+      table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after {
+         top: 17px;
+      }
       #listadoAsistenciaMateria_filter {
         float:right;
       }
@@ -54,6 +96,11 @@
          padding-left: 0px;
          padding-right: 0px;
       }
+      
+      /*dataTables*/
+      #listadoAsistenciaMateria_wrapper {
+         width: 98%;
+      }
    </style>
 	<div class="col-lg-12">
 		<div class="panel panel-primary" style="border-radius: 0px;">
@@ -76,15 +123,16 @@
                         <option value="">Selec. Rango</option>
                         <option value="semanaActual">Semana Actual</option>
                         <option value="mesActual">Mes Actual</option>
-                        <option value="mesActual">Ciclo Actual</option>
+                        <option value="cicloActual">Ciclo Actual</option>
                      </select>
                   </div>
+                  <div class="col-lg-2 botonesExport"></div>
                </div>
             </div>                  
-				<table id="listadoAsistenciaMateria" class="table table-striped table-bordered">
+				<table id="listadoAsistenciaMateria_{{dataMateria.idMateria}}" class="table table-striped table-bordered">
 					<thead>
 					  <tr>
-						<th> Alumno </th>
+						<th id="colAlumno"> Alumno </th>
                   {% for fechasAsist in dataMateria.fechasAsistencia %}
                   <th style="text-align:center;" class="no-sort"> {{ fechasAsist.diaNom|capitalize }}<br/>{{ fechasAsist.diaVal }}<br/>{#<button class="btn btn-info" type="button">Editar</button>#}</th>
                   {% endfor %}
@@ -131,6 +179,39 @@
          $( "#fechasAsistenciasHasta" ).val('{{dataMateria.fechaFin}}');
          $( "#fechasAsistenciasHasta" ).datepicker('update');
          
+         $("#periodosSelectAsistencia").on("change", function(){
+            var opcionRango = $(this).val();
+            if(opcionRango!=''){
+              switch(opcionRango) {
+                case 'semanaActual':
+                    inicioConsultaAsist   = formatDiaAsistencias( getMonday(new Date()) );
+                    finConsultaAsist      = fechaHoy;
+                    delayTrigger          = 0;
+                    break;
+                case 'mesActual':
+                    var date = new Date();
+                    var inicioConsultaAsist = formatDiaAsistencias( new Date(date.getFullYear(), date.getMonth(), 1) );
+                    var finConsultaAsist = formatDiaAsistencias( new Date(date.getFullYear(), date.getMonth() + 1, 0) );
+                    delayTrigger          = 0;
+                    break;
+                case 'cicloActual':
+                    var inicioConsultaAsist  = inicioCicloCarrera;
+                    var finConsultaAsist     = finCicloCarrera;
+                    delayTrigger             = 0;
+                    break;
+              }
+              $( "#fechasAsistenciasDesde" ).val(inicioConsultaAsist);
+              $( "#fechasAsistenciasDesde" ).datepicker('update');
+              $( "#fechasAsistenciasHasta" ).val(finConsultaAsist);
+              $( "#fechasAsistenciasHasta" ).datepicker('update');
+              
+              setTimeout(function(){ 
+                 $("#consultaAsistencia").trigger('click');
+              }, delayTrigger);
+              
+            }
+         });
+
          $(document).ready(function(){
             var carreraSeleccionada = $("#carreraSeleccionada").val();
             var nombreCarreraSelecc = $("#nombreMateriaSeleccionada-Carrera_"+carreraSeleccionada).val();
@@ -142,7 +223,7 @@
                var fechaInicio         = $("#fechasAsistenciasDesde").val();
                var fechaFin            = $("#fechasAsistenciasHasta").val();
                
-               var obj_data            = {'idMateria':idMateriaConsulta,'idCarrera':idCarreraConsulta, 'fechaInicio':fechaInicio, 'fechaFin':fechaFin};
+               var obj_data            = {'idMateria':idMateriaConsulta,'idCarrera':idCarreraConsulta, 'fechaInicio':fechaInicio, 'fechaFin':fechaFin, 'inicioCiclo':inicioCicloCarrera, 'finCiclo':finCicloCarrera};
                var jumpOption          = '{{path('docentes_listado_alumnos_materia')}}';
                if(fechaInicio!='' && fechaFin!=''){
                   $.ajax({
@@ -173,6 +254,43 @@
                   lanzarModal('Listado de asistencias',mensajeAdvertenciaNotas,'Aceptar');
                }
             });
+            
+            var tableASistencias  = $('#listadoAsistenciaMateria_{{dataMateria.idMateria}}').DataTable({
+                                       "paging": false,
+                                       "lengthChange": false,
+                                       "searching": true,
+                                       "ordering": true,
+                                       //"info": true,
+                                       //"autoWidth": true,
+                                       "sScrollX": '100%',
+                                       columnDefs: [
+                                          { targets: 'no-sort', orderable: false }
+                                       ],
+                                       "language": {
+                                          "sProcessing":     "Procesando...",
+                                          "sLengthMenu":     "Mostrar _MENU_ registros",
+                                          "sZeroRecords":    "No se encontraron resultados",
+                                          "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                                          "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                          "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                          "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                                          "sInfoPostFix":    "",
+                                          "sSearch":         "Buscar:",
+                                          "sUrl":            "",
+                                          "sInfoThousands":  ",",
+                                          "sLoadingRecords": "Cargando...",
+                                          "oPaginate": {
+                                              "sFirst":    "Primero",
+                                              "sLast":     "Último",
+                                              "sNext":     "Siguiente",
+                                              "sPrevious": "Anterior"
+                                          },
+                                          "oAria": {
+                                              "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                              "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                          }
+                                      }
+                                    });
          });
       </script>
 	</div>

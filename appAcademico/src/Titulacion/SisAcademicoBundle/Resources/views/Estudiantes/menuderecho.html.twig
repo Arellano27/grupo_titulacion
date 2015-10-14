@@ -22,14 +22,15 @@
         </div>
 
         <div class="panel-body">
-            <script src="http://code.highcharts.com/highcharts.js"></script>
-            <script src="http://code.highcharts.com/modules/exporting.js"></script>
+              <script src="{{ asset('js/hichart/highcharts.js') }}"></script>
+              <script src="{{ asset('js/hichart/modules/exporting.js') }}"></script>
               {% if (indica=='na') %}
                 <div id="container" class="panel panel-primary"></div>
               {% endif %}
     
              <script>
                   var indica='{{indica}}';
+                 // alert(indica);
                   if (indica=='na')
                   {
                     $(function () {
@@ -37,6 +38,9 @@
                           var arrData = '{{asistencia|json_encode|raw}}';
                           $.each(JSON.parse(arrData), function(idx, obj) {
                              mySeries.push( [obj.Materia, obj.Asistencia]);
+                             //mySeries.push( ['pruebas',2.0]);
+                             //mySeries.push( [obj.Materia, 2]);
+                             //alert(obj.Materia);
                           });
                                 $('#container').highcharts({
     
@@ -120,8 +124,8 @@
         </div>
 
         <div class="panel-body">
-            <script src="http://code.highcharts.com/highcharts.js"></script>
-            <script src="http://code.highcharts.com/modules/exporting.js"></script>
+            <script src="{{ asset('js/hichart/highcharts.js') }}"></script>
+            <script src="{{ asset('js/hichart/modules/exporting.js') }}"></script>
               {% if (indica=='na') %}
                 <div id="container" class="panel panel-primary"> No se Econtraron Registros de Asistencias</div>
               {% endif %}

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 namespace Titulacion\SisAcademicoBundle\Controller;
 
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -130,6 +130,7 @@ class HomeController extends Controller
                     $nombreUsuario = $data[0]['nombreusuario'];
                     $cedula        = $data[0]['cedula'];
                     //$mail          = $data[0]['mail'];
+
                     $descRol       = $data[0]['descrol'];
                 }else{
 
@@ -139,6 +140,7 @@ class HomeController extends Controller
                         $nombreUsuario = $login['nombreusuario'];
                         $cedula        = $login['cedula'];
                         //$mail          = $login['mail'];
+
                         $descRol       = $login['descrol'];
 
                         if ($login['idrol'] == $perfilAdmin) {
@@ -156,6 +158,7 @@ class HomeController extends Controller
                 $session->set("nom_usuario",$nombreUsuario);
                 $session->set("cedula",$cedula);
                 //$session->set("mail",$mail);
+
                 $session->set("descRol",$descRol);//nombre rol
 
                 return new Response($perfil);

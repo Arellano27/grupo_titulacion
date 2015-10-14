@@ -1,12 +1,33 @@
+.panel-group .panel .panel-title {
+    font-size: 85% !important;
+    font-weight: bold !important;
+}
+
+.sidebar-menu .treeview-menu>li>a {
+    font-size: 13px !important;
+}
+
+.main-header {
+    z-index: 999 !important;
+}
+
+
+.flavr-container .flavr-fixer .flavr-outer {
+   background: #F9FAFC none repeat scroll 0 0 padding-box;
+}
+.flavr-container .flavr-fixer .flavr-outer .flavr-content {
+   color: #333;
+   font-size: 14px;
+   padding: 7px 5px 2px;
+}
+
+.mensajeError {
+   margin: 40px;
+}
 /* amarillo -- 		#f0ad4e */
 /* verde 	--    	#5cb85c */
 /* azul 	--		#337ab7 */
 /* rojo 	--		#d9534f */
-
-
-.panel-group .panel .panel-title {font-size: 85% !important;font-weight: bold !important;}
-
-.sidebar-menu .treeview-menu>li>a {font-size: 13px !important;}
 
 .panel-green>.panel-heading {color: #fff;background-color: #5cb85c;border-color: #5cb85c;}
 .panel-green {border-color: #5cb85c;}

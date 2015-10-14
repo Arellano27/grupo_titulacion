@@ -1,7 +1,7 @@
 <?php
 
 namespace Titulacion\SisAcademicoBundle\Controller;
-
+//prueba git<
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,8 @@ class AdminController extends Controller
 
     public function calendario_carreraAction(){
 
-    	return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
+        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
+
     }
 
     public function cambio_passwordAction(){
@@ -51,5 +52,18 @@ class AdminController extends Controller
             
           return new Response(json_encode($respuesta));
             
+    }
+
+    public function cargar_eventosAction(Request $request)
+    {
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+
+
+    }
+
+    public function cargar_eventos_carrera_userAction(Request $request)
+    {
+        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_academico_carrera_user.html.twig', array());
     }
 }

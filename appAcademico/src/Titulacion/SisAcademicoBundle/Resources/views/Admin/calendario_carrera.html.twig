@@ -76,17 +76,18 @@
 
     <script src="{{ asset('js/flavr/flavr.js') }}"></script>
     <script src="{{ asset('js/flavr/flavr.min.js') }}"></script>
-    
+
        <script>
       $(function () {
 
-        function ini_events(ele) {
-          ele.each(function () {
+        function ini_events(ele,url) {
+          ele.each(function (url) {
 
             // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
             // it doesn't need to have a start or end
             var eventObject = {
-              title: $.trim($(this).text()) // use the element's text as the event title
+              title: $.trim($(this).text()), // use the element's text as the event title
+              url: url
             };
 
             // store the Event Object in the DOM element so we can get to it later
@@ -172,12 +173,19 @@
           //     borderColor: "#3c8dbc" //Primary (light-blue)
           //   }
           // ],
-
           editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
                  events: function (start, end, timezone, callback) {
+
+                  var events = [];
+                  events.push({
+                    title: 'hola',
+                    start: new Date('2015-10-12'),
+                    end:  new Date('2015-10-13')
+                  });
+                  callback(events);
             // $.ajax({
-            //     url: '#',
+            //     url: '{{path('admin_academico_cargar_eventos')}}',
             //     type: "GET",
             //     datatype: 'json',
             //     success: function (doc) {
@@ -197,6 +205,9 @@
             //         alert('Error in fetching data');
             //     }
             // });
+        },
+        eventDrop: function(date, allDay){
+            alert("drop");
         },
           drop: function (date, allDay) { // this function is called when something is dropped (evento cuando se deja caer un evento al calendario)
 
@@ -257,7 +268,7 @@
                             data: 'type=changetitle&title='+title+'&eventid='+event.id,
                             type: 'POST',
                             dataType: 'json',
-                            success: function(response){  
+                            success: function(response){
                               if(response.status == 'success')
                                       $('#calendar').fullCalendar('updateEvent',event);
                             },
@@ -295,10 +306,11 @@
           var event = $("<div />");
           event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
           event.html(val);
+          
           $('#external-events').prepend(event);
 
           //Add draggable funtionality
-          ini_events(event);
+          ini_events(event,'www.google.com');
 
           //Remove event from text input
           $("#new-event").val("");
