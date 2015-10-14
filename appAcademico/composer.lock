@@ -5,7 +5,6 @@
         "This file is @generated automatically"
     ],
     "hash": "9bca0309bfb02f10e91a55186224b282",
-    "content-hash": "e3114cf6d6bf74c0d06e5294f74b6672",
     "packages": [
         {
             "name": "doctrine/annotations",
