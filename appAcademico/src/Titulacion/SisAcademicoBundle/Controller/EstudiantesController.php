@@ -1108,13 +1108,13 @@
 
                     
                       $Materias_inscribir = array();
-
+                       
                        if ( is_object($xml2))
                           {
                               foreach($xml2->registros->registro as $datos)
                                {  
-                                  //$banderaMatricula=(int) $datos->valor;
-                                  $banderaMatricula=5;
+                                  $banderaMatricula=(int) $datos->valor;
+                                  //$banderaMatricula=5;
                                   $Mensaje=(string) $datos->mensaje;
                                   $Idciclo=(string) $datos->id_ciclo;
                                   $ciclo=(string) $datos->ciclo_descripcion;
@@ -1131,13 +1131,14 @@
                       $CicloMatricula=$anio." - Ciclo ".$ciclo; 
                      
 
-                        if ($banderaMatricula==5)
+                        if ($banderaMatricula==4)
                         {
 
 
                             $UgServices = new UgServices;
 
-                            $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$ciclo);
+                             $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$Idciclo);
+                            
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
@@ -1398,6 +1399,7 @@
                             $UgServices = new UgServices;
                             
                             $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$Idciclo);
+                       
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
