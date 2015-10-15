@@ -35,12 +35,37 @@ class AdminController extends Controller
     {
         #llamamos a la consulta del webservice
         $UgServices = new UgServices;
+        // $data = $UgServices->getEventos($start,$end);
+//         $data = array(
+//   "id"=>
+//   "1",
+//   "title"=>
+//    "hola",
+//   "content"=>
+//    "mundo",
+//   "start_date"=>
+//   "2015-09-28 22:00:00",
+//   "end_date"=>
+//    "2015-09-29 22:00:00",
+//   "access_url_id"=>
+//   "1",
+//   "all_day"=>
+//    "0"
+// );
+
+        echo '<pre>'; var_dump($data); exit();
 
 
     }
 
     public function cargar_eventos_carrera_userAction(Request $request)
     {
+
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+
+
+
         return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_academico_carrera_user.html.twig', array());
     }
 }

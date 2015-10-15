@@ -180,10 +180,31 @@
                   var events = [];
                   events.push({
                     title: 'hola',
+                    url: 'www.google.com',
                     start: new Date('2015-10-12'),
                     end:  new Date('2015-10-13')
                   });
                   callback(events);
+
+$.post('{{path('admin_academico_cargar_eventos')}}', {start: 'value1', end: 'end'}, function(data) {
+  /*optional stuff to do after success */
+  alert(data);
+});
+                  // $.ajax({
+                  //   url: '{{path('admin_academico_cargar_eventos')}}',
+                  //   data: 'type=changetitle&title='+title+'&eventid='+event.id,
+                  //   type: 'POST',
+                  //   dataType: 'json',
+                  //   success: function(response){
+                  //   if(response.status == 'success')
+                  //     $('#calendar').fullCalendar('updateEvent',event);
+                  //   },
+                  //   error: function(e){
+                  //     alert('Error processing your request: '+e.responseText);
+                  //   }
+                  // });
+
+
             // $.ajax({
             //     url: '{{path('admin_academico_cargar_eventos')}}',
             //     type: "GET",
