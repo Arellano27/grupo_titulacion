@@ -1,7 +1,7 @@
 <?php
 
 namespace Titulacion\SisAcademicoBundle\Controller;
-
+//prueba git<
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +14,58 @@ class AdminController extends Controller
 
     public function calendario_carreraAction(){
 
-    	return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
+        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
+
+    }
+
+    public function cambio_passwordAction(){
+    	return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
+    }
+
+    public function ingreso_nuevo_passAction(Request $request){
+        #obtenemos los datos enviados por get
+            $username    = $request->request->get('user');
+            $username    = $request->request->get('pass1');
+            $password    = $request->request->get('pass2');
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+    }
+
+    public function cargar_eventosAction(Request $request)
+    {
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+        // $data = $UgServices->getEventos($start,$end);
+//         $data = array(
+//   "id"=>
+//   "1",
+//   "title"=>
+//    "hola",
+//   "content"=>
+//    "mundo",
+//   "start_date"=>
+//   "2015-09-28 22:00:00",
+//   "end_date"=>
+//    "2015-09-29 22:00:00",
+//   "access_url_id"=>
+//   "1",
+//   "all_day"=>
+//    "0"
+// );
+
+        echo '<pre>'; var_dump($data); exit();
+
+
+    }
+
+    public function cargar_eventos_carrera_userAction(Request $request)
+    {
+
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+
+
+
+        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_academico_carrera_user.html.twig', array());
     }
 }

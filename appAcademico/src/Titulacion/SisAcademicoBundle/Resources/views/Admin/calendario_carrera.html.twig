@@ -1,13 +1,7 @@
 {% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
 {% block home %}
 
- <!-- fullCalendar 2.2.5-->
-    <link rel="stylesheet" href="{{ asset('css/fullcalendar/fullcalendar.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fullcalendar/fullcalendar.print.css') }}" media="print">
-    <link rel="stylesheet" href="{{ asset('css/skins/_all-skins.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fullcalendar/AdminLTE.min.css') }}">
+
 
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
@@ -80,23 +74,20 @@
           </div><!-- /.row -->
         </section><!-- /.content -->
 
-        <!-- fullCalendar 2.2.5 -->
-    <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
-    <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
     <script src="{{ asset('js/flavr/flavr.js') }}"></script>
     <script src="{{ asset('js/flavr/flavr.min.js') }}"></script>
-    <script>
+
+       <script>
       $(function () {
 
-        /* initialize the external events
-         -----------------------------------------------------------------*/
-        function ini_events(ele) {
-          ele.each(function () {
+        function ini_events(ele,url) {
+          ele.each(function (url) {
 
             // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
             // it doesn't need to have a start or end
             var eventObject = {
-              title: $.trim($(this).text()) // use the element's text as the event title
+              title: $.trim($(this).text()), // use the element's text as the event title
+              url: url
             };
 
             // store the Event Object in the DOM element so we can get to it later
@@ -111,15 +102,18 @@
 
           });
         }
+
         ini_events($('#external-events div.external-event'));
+
 
         /* initialize the calendar
          -----------------------------------------------------------------*/
         //Date for the calendar events (dummy data)
-        var date = new Date();
-        var d = date.getDate(),
-                m = date.getMonth(),
-                y = date.getFullYear();
+            var date = new Date();
+            var d    = date.getDate(),
+                m    = date.getMonth(),
+                y    = date.getFullYear();
+
         $('#calendar').fullCalendar({
           header: {
             left: 'prev,next today',
@@ -181,7 +175,63 @@
           // ],
           editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
-          drop: function (date, allDay) { // this function is called when something is dropped
+                 events: function (start, end, timezone, callback) {
+
+                  var events = [];
+                  events.push({
+                    title: 'hola',
+                    url: 'www.google.com',
+                    start: new Date('2015-10-12'),
+                    end:  new Date('2015-10-13')
+                  });
+                  callback(events);
+
+$.post('{{path('admin_academico_cargar_eventos')}}', {start: 'value1', end: 'end'}, function(data) {
+  /*optional stuff to do after success */
+  alert(data);
+});
+                  // $.ajax({
+                  //   url: '{{path('admin_academico_cargar_eventos')}}',
+                  //   data: 'type=changetitle&title='+title+'&eventid='+event.id,
+                  //   type: 'POST',
+                  //   dataType: 'json',
+                  //   success: function(response){
+                  //   if(response.status == 'success')
+                  //     $('#calendar').fullCalendar('updateEvent',event);
+                  //   },
+                  //   error: function(e){
+                  //     alert('Error processing your request: '+e.responseText);
+                  //   }
+                  // });
+
+
+            // $.ajax({
+            //     url: '{{path('admin_academico_cargar_eventos')}}',
+            //     type: "GET",
+            //     datatype: 'json',
+            //     success: function (doc) {
+            //         var events = [];
+            //         if ($(doc) != undefined && $(doc).Events.length > 0) {
+            //             $(doc).Events.forEach(function (Obj) {
+            //                 events.push({
+            //                     title: Obj.Title,
+            //                     start: Obj.Start,
+            //                     end: Obj.End
+            //                 });
+
+            //             });
+            //         }
+            //         callback(events);
+            //     },error: function (err) {
+            //         alert('Error in fetching data');
+            //     }
+            // });
+        },
+        eventDrop: function(date, allDay){
+          // location.href = '{#{path('estudiantes_notas_actuales')}#}';
+            alert("drop");
+        },
+          drop: function (date, allDay) { // this function is called when something is dropped (evento cuando se deja caer un evento al calendario)
 
             // retrieve the dropped element's stored Event Object
             var originalEventObject = $(this).data('eventObject');
@@ -206,9 +256,11 @@
             }
 
           },
+
           select: function (start, end, allDay){
             alert("poppúp");
           },
+
           eventClick: function (calEvent, jsEvent, view){
 
             var html =                '   <div class="form-row">' +
@@ -229,13 +281,23 @@
 
                 new $.flavr({
                     title       : 'Editar Evento',
-                    iconPath    : '#',
-                    icon        : '#',
                     content     : '',
                     dialog      : 'form',
                     form        : { content: html, method: 'post' },
                     onSubmit    : function( $container, $form ){
-                        // alert( $form.serialize() );
+                         $.ajax({
+                            url: '',
+                            data: 'type=changetitle&title='+title+'&eventid='+event.id,
+                            type: 'POST',
+                            dataType: 'json',
+                            success: function(response){
+                              if(response.status == 'success')
+                                      $('#calendar').fullCalendar('updateEvent',event);
+                            },
+                            error: function(e){
+                              alert('Error processing your request: '+e.responseText);
+                            }
+                          });
                         return false;
                     }
                 });
@@ -253,6 +315,7 @@
           //Add color effect to button
           $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
         });
+
         $("#add-new-event").click(function (e) {
           e.preventDefault();
           //Get value and make sure it is not null
@@ -265,15 +328,15 @@
           var event = $("<div />");
           event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
           event.html(val);
+          
           $('#external-events').prepend(event);
 
           //Add draggable funtionality
-          ini_events(event);
+          ini_events(event,'www.google.com');
 
           //Remove event from text input
           $("#new-event").val("");
         });
       });
     </script>
-       
 {% endblock %}

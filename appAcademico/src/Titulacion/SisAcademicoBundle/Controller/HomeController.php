@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Titulacion\SisAcademicoBundle\Controller;
 
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -8,10 +8,34 @@ namespace Titulacion\SisAcademicoBundle\Controller;
     use Titulacion\SisAcademicoBundle\Helper\UgServices;
 
 /**
-* 
+*
 */
 class HomeController extends Controller
 {
+    function encriptarContrasenia($password) {
+        $salt    = "µ≈α|⊥ε¢ʟ@δσ";
+        $hash = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+        return $hash;
+    }
+
+    public function enviarmailAction(Request $request){
+        $user = $request->request->get('user');
+        #recepto desde la base el correo
+        $email = "arellano.torres27@gmail.com"; #quemado por el momento
+
+
+       $message = \Swift_Message::newInstance()
+        ->setSubject('Activación Password')
+        ->setFrom('titulacion.php@gmail.com')
+        ->setTo('arellano.torres27@gmail.com')
+        ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig'),'text/html', 'utf8');
+        $resp = $this->get('mailer')->send($message);
+        //
+
+
+        echo $resp; exit();
+    }
+
 	public function ingresarAction(Request $request)
     {
 
@@ -26,6 +50,9 @@ class HomeController extends Controller
             #obtenemos los datos enviados por get
             $username    = $request->request->get('user');
             $password    = $request->request->get('pass');
+            #$contrasenia = $request->request->get('pass');
+            #$password    = encriptarContrasenia($contrasenia);
+
             #llamamos a la consulta del webservice
             $UgServices = new UgServices;
             $data = $UgServices->getLogin($username,$password);
@@ -34,13 +61,15 @@ class HomeController extends Controller
                 $login_act     =array();
                 $perfilUsuario = null;
                 $count         = count($data);
-    
+
                 if($count == 1){
                     $perfil        = $data[0]['idrol'];
                     $idUsuario     = $data[0]['usuario'];
                     $nombreUsuario = $data[0]['nombreusuario'];
                     $cedula        = $data[0]['cedula'];
-                    $mail          = $data[0]['mail'];
+
+                    //$mail          = $data[0]['mail'];
+
                     $descRol       = $data[0]['descrol'];
                 }else{
 
@@ -49,7 +78,9 @@ class HomeController extends Controller
                         $idUsuario     = $login['usuario'];
                         $nombreUsuario = $login['nombreusuario'];
                         $cedula        = $login['cedula'];
-                        $mail          = $login['mail'];
+
+                       // $mail          = $login['mail'];
+
                         $descRol       = $login['descrol'];
 
                         if ($login['idrol'] == $perfilAdmin) {
@@ -66,7 +97,9 @@ class HomeController extends Controller
                 $session->set("perfil",$perfil); //idrol
                 $session->set("nom_usuario",$nombreUsuario);
                 $session->set("cedula",$cedula);
-                $session->set("mail",$mail);
+
+                //$session->set("mail",$mail);
+
                 $session->set("descRol",$descRol);//nombre rol
 
                 return new Response($perfil);
@@ -75,14 +108,14 @@ class HomeController extends Controller
                 return new Response('05');
             }
 
-               
+
 
 
         }else{
 
         return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
         }
-        
+
     }#end function
 
 
@@ -97,10 +130,10 @@ class HomeController extends Controller
 
             $perfilEst    = $this->container->getParameter('perfilEst');
             $perfilDoc    = $this->container->getParameter('perfilDoc');
-            $perfilAdmin  = $this->container->getParameter('perfilAdmin'); 
-            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
-            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
-            $perfilDocAdm = $this->container->getParameter('perfilDocAdm'); 
+            $perfilAdmin  = $this->container->getParameter('perfilAdmin');
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc');
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm');
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
 
             if ($session->has("perfil")) {
                 if($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilDocAdm){#docente
@@ -109,10 +142,10 @@ class HomeController extends Controller
                                           array( 'idCarrera' => '135', 'nombreCarrera'=>'Ingeniería en Sistemas Computaciones', 'order'=>'One' ),
                                           array( 'idCarrera' => '246', 'nombreCarrera'=>'Ingeniería Química', 'order'=>'Two' ),
                                           array( 'idCarrera' => '789', 'nombreCarrera'=>'Ingeniería Civil', 'order'=>'Three' )
-                                       );         
+                                       );
                      $datosDocente  = array( 'idDocente' => $idDocente );
-                     
-                     
+
+
 
 
                      return $this->render('SisAcademicoBundle:Docentes:listadoCarreras.html.twig',

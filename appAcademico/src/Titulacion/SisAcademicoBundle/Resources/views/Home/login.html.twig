@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{{ asset('js/lib/iOS-Overlay/css/iosOverlay.css') }}">
 <link rel="stylesheet" href="{{ asset('js/lib/iOS-Overlay/css/prettify.css') }}">
+<link rel="icon" type="image/x-icon" href="{{ asset('images/menu/ug_logo.png') }}" />
 
 <script src="{{ asset('js/script/jquery-1.10.2.min.js') }}"></script>
 <script src="{{ asset('js/flavr/flavr.js') }}"></script>
@@ -16,21 +17,54 @@
 <script src="{{ asset('js/lib/iOS-Overlay/js/modernizr-2.0.6.min.js') }}"></script>
 <script src="{{ asset('js/lib/jquery-spin/spin.min.js') }}"></script>
 <script src="{{ asset('js/sistemau.functions.js') }}"></script>
-<script type="text/javascript"> 
+<script type="text/javascript">
 
   $(document).ready(function(){
     setTimeout('login();',1000);
+
+
   });
 
-var btn_login = 0;           
+var btn_login = 0;
+
+function recordar_pass () {
+    $("#password").hide();
+    $("#iniciar").show();
+    $("#recordar_link").hide();
+    $("#btn_iniciar").hide();
+    $("#enviar_mail").show();
+
+}
+
+function iniciar_sesion () {
+  $("#password").show();
+  $("#btn_iniciar").show();
+  $("#iniciar").hide();
+  $("#enviar_mail").hide();
+  $("#recordar_link").show();
+
+
+}
+
+function enviar_mail (user) {
+
+ $.post('{{path('titulacion_sis_academico_mail')}}', {user: user}, function(data) {
+   if (data == 1 ) {
+      mensaje_cisc( "notice", "Se envio un enlace a su correo electrónico.");
+   }else{
+     mensaje_cisc( "error", "Problemas de conexión al enviar correo electrónico.");
+   }
+ });
+}
+
 function login(){
 
-    
     btn_login = btn_login +1*1;
     if (btn_login == 1) {
 
+
      $('.login-are').removeAttr('click');
-    var html =  
+    var html =
         '   <div class="form-row">' +
         '       <input id="username" type="text" name="username" ' +
         '       placeholder="Username"  required /> <p class="help-block"></p>' +
@@ -40,9 +74,10 @@ function login(){
         '       placeholder="Password" required /> <p class="help-block"></p>' +
         '   </div>' +
         '   <div class="form-row">' +
+        '   <div class="form-row">' +
         '   </div>';
-       
-    new $.flavr({                
+
+    new $.flavr({
         title       : 'Ingresar',
         iconPath    : '{{ asset('images/menu/')}}',
         icon        : 'ug_logo.png',
@@ -50,10 +85,11 @@ function login(){
         dialog      : 'form',
         form        : {  content: html, method: 'get'},
         buttons : {
-        submit  : { text: 'Iniciar', style: 'danger', addClass: 'submit-btn', 
+        submit  : { text: 'Iniciar', style: 'danger', addClass: 'submit-btn', id: 'btn_iniciar',
                     action: function( $container, $second, $third ){
                       if ($("#username").val() == '' || $("#password").val() == '') {
                           mensaje_cisc( "error", "Ingrese el usuario y el password.");
+                          this.wobble();
                       }else{
 
                          $.ajax({
@@ -69,12 +105,12 @@ function login(){
                                   mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
                              },
                              success:  function (dataResponse) {
-                                  
+
                                   switch (dataResponse) {
 
                                         case '{{perfilEst}}':
                                             notificacionIndex = cargandoSitio(null, null, null);
-                                           sitioCargado(notificacionIndex);
+                                            sitioCargado(notificacionIndex);
                                             mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
                                             location.href = '{{path('estudiantes_notas_actuales')}}';
                                             break;
@@ -110,7 +146,7 @@ function login(){
                                             location.href = '{{path('SisAcademico_Docentes_home')}}';
                                             break;
                                         default:
-                                            
+
                                             mensaje_cisc( "error", "Usuario o constraseña incorrecto/a.");
                                             break;
                                     }//end switch
@@ -122,13 +158,17 @@ function login(){
 
                         return false;
                     }
-        },
-       
-    }       
-    
-       
+        }
+        // ,
+        // Olvide: { text: 'Olvide mi clave',id:'recordar_link', style: 'danger', action: function(){ this.swing(); recordar_pass(); return false }},
+        // tada        : { text: 'Iniciar Sesión', id:'iniciar', style: 'info', action: function(){ this.tada(); iniciar_sesion(); return false }},
+        // Recuperar: { text: 'Enviar Mail',id:'enviar_mail', style: 'primary', action: function(){ this.swing(); enviar_mail($("#username").val()); return false }},
+    }
+
     });
     }
+    $("#iniciar").hide();
+    $("#enviar_mail").hide();
 }
 
 

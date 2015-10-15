@@ -1,6 +1,17 @@
 {% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
 {% block home %}
-   {#<link type="text/css" rel="stylesheet" href="{{ asset('css/profile.css') }}">#}
+   
+   <style>
+      .col-lg-3 {
+         display: none !important;
+     }
+
+     .col-lg-9 {
+         width: 100% !important;
+     }
+
+   </style>
+   <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/datatables/dataTables.bootstrap.css') }}">
    
    <input id="carreraSeleccionada" value="" type="hidden" >
    
@@ -14,13 +25,16 @@
 				<div class="panel-group" id="accordionCarreras">
                {% if data.datosCarreras=='error'%} Se presentó un problema para presentar las carreras. Por favor contacte e soporte técnico. {% endif %}
                {% for countCarreras, datosCarrera in data.datosCarreras %}
-                  <input id="materiaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >                  
+                  <input id="materiaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >
+                  <input id="nombreMateriaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >
+                  <input id="inicioCiclo-Carrera_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.fecha_inicio}}" type="hidden" >
+                  <input id="finCiclo-Carrera_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.fecha_fin}}" type="hidden" >
                   <div id="panelCentralCarrera-{{datosCarrera.id_sa_carrera}}" class="panel panel-default">
                      <div class="panel-heading">
                         <h4 class="panel-title">
                            <a id="idCarrera-{{datosCarrera.id_sa_carrera}}" class="linkCarreras" data-toggle="collapse" data-parent="#accordionCarreras" href="#collapse{{countCarreras+1}}">{{datosCarrera.nombre}}</a>
                            <div style="float:right; margin-top: -7px;">
-                              <button id="homeCarrera-{{datosCarrera.id_sa_carrera}}" class="btn btn-default btn-circle" type="button" style="font-size: 16px; padding: 2px 0;">
+                              <button id="homeCarrera-{{datosCarrera.id_sa_carrera}}" class="btn btn-default btn-circle" type="button" style="font-size: 16px; padding: 2px 6px;">
                                  <i class="fa fa-home"></i>
                               </button>
                            </div>
@@ -322,7 +336,8 @@
             if(tablaMaterias.is(':empty') || nombreElemento.indexOf("homeCarrera")>=0 ) {
               // notificacionIndex = cargandoSitio(null, null, null);
                if(nombreElemento.indexOf("homeCarrera")>=0) {
-                  $("#materiaSeleccionada-Carrera_"+idCarrera).val(''); //Para limpiar la materia seleccionada dentro de la carrera
+                  $("#materiaSeleccionada-Carrera_"+idCarrera).val(''); //Para limpiar el ID de la materia seleccionada dentro de la carrera
+                  $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(''); //Para limpiar el nombre de la materia seleccionada dentro de la carrera
                   var divMostrarMaterias  = tablaMaterias.parent("div[id^='collapse']");//.attr("id");
                   //$("div[id^='collapse']").removeClass("in");
                   //divMostrarMaterias.addClass("in");
@@ -345,22 +360,39 @@
                   $("#chartAsistencias").children().show();
                   $("#img_demo").show();*/
                }
+               var modelessMaterias;
+               
                $.ajax({
                   url:   jumpAction,
                   data: obj_data,
                   type:  'post',
                   async: false,
                   beforeSend: function () {
+                     modelessMaterias = new $.flavr({
+                                                   modal   : true,
+                                                   content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                   buttons     : {}
+                                                });
+
                      tablaMaterias.html("Cargando, espere por favor...");
                   },
                   error: function(){
-                     var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar el listado de materias."
-                     tablaMaterias.html("");
-                     lanzarModal('Listado de Materias',mensajeErrorNotas,'Aceptar');
+                     modelessMaterias.close();
+                     modelessMaterias = new $.flavr({
+                                                   modal   : true,
+                                                   content : 'Lo sentimos. Se  presentó un problema para cargar el listado de materias.',
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', style: 'primary' }
+                                                   }
+                                                });
+                     //var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar el listado de materias."
+                     tablaMaterias.html("Se  presentó un problema para cargar el listado de materias.");
+                     //lanzarModal('Listado de Materias',mensajeErrorNotas,'Aceptar');
                   },
                   success:  function (dataResponse) {
                    // sitioCargado(notificacionIndex);
-                    tablaMaterias.html(dataResponse);
+                     modelessMaterias.close();
+                     tablaMaterias.html(dataResponse);
                   },
                   dataType:'html'
                });

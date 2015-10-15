@@ -1,60 +1,143 @@
-        <div id="header-topbar-option-demo" class="page-header-topbar">
-            <nav id="topbar" role="navigation" style="margin-bottom: 0;" data-step="3" class="navbar navbar-default navbar-static-top">
-            <div class="navbar-header">
-                <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                <a id="logo" href="index.html" class="navbar-brand"><span class="fa fa-rocket"></span><span class="logo-text">Cisc Académico</span><span style="display: none" class="logo-text-icon">µ</span></a>
-            </div>
-            
-            <div class="topbar-main"><a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
-                
-                <form id="topbar-search" action="" method="" class="hidden-sm hidden-xs">
-                    <div class="input-icon right text-white"><a href="#"><i class="fa fa-search"></i></a><input type="text" placeholder="Search here..." class="form-control text-white"/></div>
-                </form>
-                <ul class="nav navbar navbar-top-links navbar-right mbn">
+<header class="main-header">
+  <!-- Logo -->
+  <a href="#" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini"><b>UG</b>-A</span>
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg"><b>UG </b> Académico</span>
+  </a>
+  <!-- Header Navbar: style can be found in header.less -->
+  <nav class="navbar navbar-static-top" role="navigation">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
+    </a>
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
 
-                    
-                   <!--  <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-child fa-fw"></i><span class="badge badge-green">3</span></a></li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-user-secret fa-fw"></i><span class="badge badge-orange">7</span></a></li> -->
-                    
 
-                    <li class="dropdown topbar-user"><a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="{{ asset('images/avatar/48.jpg')}}" alt="" class="img-responsive img-circle">&nbsp;<span class="hidden-xs">{{app.session.get('nom_usuario')}}</span>&nbsp;<span class="caret"></span></a>
-                        <ul class="dropdown-menu dropdown-user pull-right">
-                            <li><a href="{{path('titulacion_sis_academico_logout')}}"><i class="fa fa-key"></i>Log Out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-            <!--BEGIN MODAL CONFIG PORTLET-->
-            <div id="modal-config" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" data-dismiss="modal" aria-hidden="true" class="close">
-                                &times;</button>
-                            <h4 class="modal-title">
-                                Modal title</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eleifend et nisl eget
-                                porta. Curabitur elementum sem molestie nisl varius, eget tempus odio molestie.
-                                Nunc vehicula sem arcu, eu pulvinar neque cursus ac. Aliquam ultricies lobortis
-                                magna et aliquam. Vestibulum egestas eu urna sed ultricies. Nullam pulvinar dolor
-                                vitae quam dictum condimentum. Integer a sodales elit, eu pulvinar leo. Nunc nec
-                                aliquam nisi, a mollis neque. Ut vel felis quis tellus hendrerit placerat. Vivamus
-                                vel nisl non magna feugiat dignissim sed ut nibh. Nulla elementum, est a pretium
-                                hendrerit, arcu risus luctus augue, mattis aliquet orci ligula eget massa. Sed ut
-                                ultricies felis.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" data-dismiss="modal" class="btn btn-default">
-                                Close</button>
-                            <button type="button" class="btn btn-primary">
-                                Save changes</button>
-                        </div>
+        
+        <!-- Messages: style can be found in dropdown.less-->
+        <li class="dropdown messages-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-envelope-o"></i>
+            <span class="label label-success">4</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have 4 messages</li>
+            <li>
+              <!-- inner menu: contains the actual data -->
+              <ul class="menu">
+                <li><!-- start message -->
+                  <a href="#">
+                    <div class="pull-left">
+                      <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
-                </div>
-            </div>
-            <!--END MODAL CONFIG PORTLET-->
-        </div>
+                    <h4>
+                      Support Team
+                      <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                    </h4>
+                    <p>Why not buy a new awesome theme?</p>
+                  </a>
+                </li><!-- end message -->
+              </ul>
+            </li>
+            <li class="footer"><a href="#">See All Messages</a></li>
+          </ul>
+        </li>
+        <!-- Notifications: style can be found in dropdown.less -->
+        <li class="dropdown notifications-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-bell-o"></i>
+            <span class="label label-warning">10</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have 10 notifications</li>
+            <li>
+              <!-- inner menu: contains the actual data -->
+              <ul class="menu">
+                <li>
+                  <a href="#">
+                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="footer"><a href="#">View all</a></li>
+          </ul>
+        </li>
+        <!-- Tasks: style can be found in dropdown.less -->
+        <li class="dropdown tasks-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-flag-o"></i>
+            <span class="label label-danger">9</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have 9 tasks</li>
+            <li>
+              <!-- inner menu: contains the actual data -->
+              <ul class="menu">
+                <li><!-- Task item -->
+                  <a href="#">
+                    <h3>
+                      Design some buttons
+                      <small class="pull-right">20%</small>
+                    </h3>
+                    <div class="progress xs">
+                      <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                        <span class="sr-only">20% Complete</span>
+                      </div>
+                    </div>
+                  </a>
+                </li><!-- end task item -->
+              </ul>
+            </li>
+            <li class="footer">
+              <a href="#">View all tasks</a>
+            </li>
+          </ul>
+        </li>
+
+
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+            <img src="{{ asset('theme/dist/img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
+            <span class="hidden-xs" style="text-transform: capitalize !important;">{{app.session.get('nom_usuario')}}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- User image -->
+            <li class="user-header">
+              <img src="{{ asset('theme/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
+              <p>
+                {{app.session.get('nom_usuario')}} - Developer
+                <small>En actividad desde Sept. 2015</small>
+              </p>
+            </li>
+            <!-- Menu Footer-->
+            <li class="user-footer">
+              <div class="pull-left">
+                
+              </div>
+              <div class="pull-right">
+                <a href="{{path('titulacion_sis_academico_logout')}}" class="btn btn-default btn-flat">Sign out</a>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <!-- Control Sidebar Toggle Button -->
+        {% if app.session.get('perfil') == perfilEst or app.session.get('perfil') == perfilEstDoc or app.session.get('perfil') == perfilEstAdm %}
+        <li>
+          <a href="{{path('estudiantes_notas_actuales')}}"><i class="fa fa-child"></i></a>
+        </li>
+         {% endif %}
+         {% if app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm %}
+        <li>
+          <a href="{{path('SisAcademico_Docentes_home')}}"><i class="fa fa-user-plus"></i></a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+</header>
