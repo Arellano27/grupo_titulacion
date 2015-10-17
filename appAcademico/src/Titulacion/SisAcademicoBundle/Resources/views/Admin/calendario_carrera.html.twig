@@ -17,14 +17,19 @@
                 <div class="box-body">
                   <!-- the events -->
                   <div id="external-events">
+
+                {%for count ,event in data %}
+                      <div class="external-event bg-light-blue">{{event.evento}}</div>
+                {% endfor %}
+
                     <!-- <div class="external-event bg-green">Lunch</div>
                     <div class="external-event bg-yellow">Go home</div>
                     <div class="external-event bg-aqua">Do homework</div>
                     <div class="external-event bg-light-blue">Work on UI design</div>
                     <div class="external-event bg-red">Sleep tight</div> -->
-                    <div class="checkbox">
+                    <div class="checkbox" style="">
                       <label for="drop-remove">
-                        <input type="checkbox" id="drop-remove">
+                        <input type="checkbox" id="drop-remove" checked="true">
                         Remover evento
                       </label>
                     </div>
@@ -328,7 +333,7 @@ $.post('{{path('admin_academico_cargar_eventos')}}', {start: 'value1', end: 'end
           var event = $("<div />");
           event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
           event.html(val);
-          
+
           $('#external-events').prepend(event);
 
           //Add draggable funtionality

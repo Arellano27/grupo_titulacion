@@ -1,7 +1,7 @@
 <?php
 namespace Titulacion\SisAcademicoBundle\Helper;
 include ('AcademicoSoap.php');
- 
+
 class UgServices
 {
 
@@ -23,7 +23,7 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-/*
+
      $this->usuario       = "abc";
      $this->clave         = "123";
      $this->source        = "jdbc/procedimientosSaug";
@@ -35,19 +35,19 @@ class UgServices
      //$this->host          = "186.101.66.2:8080";
      $this->host          = "192.168.100.11:8080";
      $this->sourceConsultas= "jdbc/consultasSaug";
-*/
+
 
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-       $this->usuario       = "CapaVisualPhp";
-       $this->clave         = "12CvP2015";
-       $this->source        = "jdbc/saugProcTmp";
-       $this->sourceConsultas  = "jdbc/saugConsTmp";
-       $this->url           = "http://186.101.66.2:8080/";
-       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-       $this->urlWS         = "";
-       $this->host          = "186.101.66.2:8080";
+       // $this->usuario       = "CapaVisualPhp";
+       // $this->clave         = "12CvP2015";
+       // $this->source        = "jdbc/saugProcTmp";
+       // $this->sourceConsultas  = "jdbc/saugConsTmp";
+       // $this->url           = "http://186.101.66.2:8080/";
+       // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+       // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+       // $this->urlWS         = "";
+       // $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
    

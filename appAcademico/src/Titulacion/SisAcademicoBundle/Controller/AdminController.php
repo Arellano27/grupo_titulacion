@@ -14,8 +14,39 @@ class AdminController extends Controller
 
     public function calendario_carreraAction(){
 
-        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
 
+
+        // $tareas =  array(array( 'tarealm' => 'leccion1'),
+        //                 array( 'tarealm' => 'leccion2'),
+        //                 array( 'tarealm' => 'taller1'),
+        //                 array( 'tarealm' => 'taller2'), );
+
+        // return = $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig',
+        //                   array(    'data' => array(
+        //                                      'datosDocente' => $datosDocente,
+        //                                      'datosCarrera' => $datosCarrera2,
+        //                                      'datosMaterias' => $datosMaterias
+        //                                 )
+        //                   ));
+        $arreglo = array(
+                            array('evento' => 'evento1' ),
+                            array('evento' => 'evento2' ),
+                            array('evento' => 'evento3' ),
+                            array('evento' => 'evento4' )
+                        );
+
+
+        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array('data' => $arreglo));
+        // $response->setData(
+        //                         array(
+        //             'error'         => $this->v_error,
+        //             'msg'           => $this->v_msg,
+        //                                 'html'          => $this->v_html,
+        //                                 'withoutModal'  => $withoutModal,
+        //                                 'recargar'      => '0'
+        //                              )
+        //                       );
+        // return $response;
     }
 
     public function cambio_passwordAction(){
@@ -68,4 +99,6 @@ class AdminController extends Controller
 
         return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_academico_carrera_user.html.twig', array());
     }
+
+
 }
