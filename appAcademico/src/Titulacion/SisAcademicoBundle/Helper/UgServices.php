@@ -394,7 +394,41 @@ public function getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$idCiclo)
         $response=$this->ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
         return $response; 
             
-}#end function
+  }#end function
+   
+    public function getConsultaCorreo($login){
+    $this->tipo    = "10";
+    $usuario    = "CapaVisualPhp";
+    $clave      = "12CvP2015";
+    $this->source  = "jdbc/consultasSaug";
+    $this->urlWS   = $this->url.$this->urlConsulta;
+    $trama      = "<usuario>".$login."</usuario>";
+    $XML        = NULL;
+    $response=$this->ws->doRequestSreReceptaTransacionConsultasCorreo($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $XML);
+    return $response;
+  }#end function para obtener el correo del usuario()
+
+  public function mantenimientoUsuario($username,$password,$idUsuario,$estado,$nuevoPassword,$opcion){
+    $ws=new AcademicoSoap();
+    $tipo       = "21";
+    $usuario    = "CapaVisual";
+    $clave      = "123";
+    $source     = "jdbc/procedimientosSaug";
+    $url        = $this->url.$this->urlProcedim;
+    $host       = $this->host;
+    $trama      = "<PX_XML><items><item><usuario>".$username."</usuario><contrasena>".$password."</contrasena><id_usuario>".$idUsuario."</id_usuario><estado>".$estado."</estado><nuevacontrasenia>".$nuevoPassword."</nuevacontrasenia></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+    $response=$ws->doRequestSreReceptaTransacionMantUsuario($trama,$source,$tipo,$usuario,$clave,$url,$host);
+     //pruebas
+    return $response;
+
+    //$this->source  = "jdbc/saugConsTmp";
+    //$source     = "jdbc/saugProcTmp";
+    //$this->sourceConsultas= "jdbc/consultasSaug";
+    //$this->source        = "jdbc/procedimientosSaug";
+
+  }#end function
+
+}#end class
 
 public function getgeneraTurno($idEstudiante,$idCarrera,$idCiclo){
        /* $ws=new AcademicoSoap();
