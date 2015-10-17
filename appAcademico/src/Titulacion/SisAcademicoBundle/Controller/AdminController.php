@@ -50,32 +50,32 @@ class AdminController extends Controller
     }
 
     public function cambio_passwordAction(){
-    	return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
+        return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
     }
 
     public function ingreso_nuevo_passAction(Request $request){
         #obtenemos los datos enviados por get
             $username     = $request->request->get('user');
-            $password    = $request->request->get('pass');
+            $password     = $request->request->get('pass');
             $password1    = $request->request->get('pass1');
             
-            $UgServices = new UgServices;
-             $salt    = "µ≈α|⊥ε¢ʟ@δσ";
-             $passwordEncr = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
-            
-             $passwordNuevoEncr = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+            $UgServices   = new UgServices;
+            $salt         = "µ≈α|⊥ε¢ʟ@δσ";
+            $passwordEncr = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+            $passwordNuevoEncr = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
 
-              $dataMant = $UgServices->mantenimientoUsuario("A",$username,$password,$password1);
+            $dataMant = $UgServices->mantenimientoUsuario($username,$passwordEncr,'','',$passwordNuevoEncr,'A');
 
-                   if ($dataMant) {
+                if ( is_object($dataMant)) {
+                    $estado = $dataMant ->PI_ESTADO;
+                     $message = $dataMant ->PV_MENSAJE;
+                }
 
-                        $countMant  = count($dataMant);
-                        if($count == 1){
-                         $estado   = $dataMant[0]['pi_estado'];
-                         $message   = $dataMant[0]['pv_mensaje'];
-                        }
-                    }
-
+                    //echo "<pre>";
+                    //var_dump($estado.'-----'.$message);
+                    //echo "</pre>";
+                    //exit();                    
+                
             $respuesta = array(
                "Codigo" => $estado ,
                "Mensaje" => $message,
@@ -84,6 +84,7 @@ class AdminController extends Controller
           return new Response(json_encode($respuesta));
             
     }
+
 
     public function cargar_eventosAction(Request $request)
     {
