@@ -1,9 +1,9 @@
 
 <link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>
-<form id="form-home" name="form-ingresonotas" method="post" action="{{ path('docentes_ingreso_notas') }}" >     
+<form id="form-home" name="form-ingresonotas" method="post" action="{{ path('docentes_ingreso_notas') }}" >
 
                 <div class="col-lg-12" >
-                    
+
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="row" >
@@ -31,8 +31,8 @@
                                     <option>S7K</option>
                                 </select>
                             </div>
-                               
-                            
+
+
                             <div class="col-lg-12" style="margin-bottom: 20px;">
                                 &nbsp;
                             </div>
@@ -54,7 +54,7 @@
                                        <tr class="odd gradeX">
                                            <td width = "5%" >{{count+1}}</td>
                                             <td>{{ alumnos.Nombrealm }} <input type = "hidden" value = "{{ alumnos.Nombrealm }}" name = "hdalumno_{{count+1}}" /></td>
-                                            
+
                                             <td><input class="form-control" name="examen3_{{count+1}}" type="text" value=""/></td>
                                         </tr>
                                          <input type = "hidden" value = "{{count+1}}" name = "hdcount" />
@@ -75,12 +75,12 @@
                         <!-- /.panel-body -->
                     <!-- /.panel -->
                 </div>
-            
+
 
 </form>
-                           
 
-                                   
-                                   
+
+
+
 
 

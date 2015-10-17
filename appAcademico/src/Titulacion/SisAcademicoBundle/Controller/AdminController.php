@@ -14,8 +14,39 @@ class AdminController extends Controller
 
     public function calendario_carreraAction(){
 
-        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
 
+
+        // $tareas =  array(array( 'tarealm' => 'leccion1'),
+        //                 array( 'tarealm' => 'leccion2'),
+        //                 array( 'tarealm' => 'taller1'),
+        //                 array( 'tarealm' => 'taller2'), );
+
+        // return = $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig',
+        //                   array(    'data' => array(
+        //                                      'datosDocente' => $datosDocente,
+        //                                      'datosCarrera' => $datosCarrera2,
+        //                                      'datosMaterias' => $datosMaterias
+        //                                 )
+        //                   ));
+        $arreglo = array(
+                            array('evento' => 'evento1' ),
+                            array('evento' => 'evento2' ),
+                            array('evento' => 'evento3' ),
+                            array('evento' => 'evento4' )
+                        );
+
+
+        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array('data' => $arreglo));
+        // $response->setData(
+        //                         array(
+        //             'error'         => $this->v_error,
+        //             'msg'           => $this->v_msg,
+        //                                 'html'          => $this->v_html,
+        //                                 'withoutModal'  => $withoutModal,
+        //                                 'recargar'      => '0'
+        //                              )
+        //                       );
+        // return $response;
     }
 
     public function cambio_passwordAction(){
@@ -35,12 +66,39 @@ class AdminController extends Controller
     {
         #llamamos a la consulta del webservice
         $UgServices = new UgServices;
+        // $data = $UgServices->getEventos($start,$end);
+//         $data = array(
+//   "id"=>
+//   "1",
+//   "title"=>
+//    "hola",
+//   "content"=>
+//    "mundo",
+//   "start_date"=>
+//   "2015-09-28 22:00:00",
+//   "end_date"=>
+//    "2015-09-29 22:00:00",
+//   "access_url_id"=>
+//   "1",
+//   "all_day"=>
+//    "0"
+// );
+
+        echo '<pre>'; var_dump($data); exit();
 
 
     }
 
     public function cargar_eventos_carrera_userAction(Request $request)
     {
+
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+
+
+
         return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_academico_carrera_user.html.twig', array());
     }
+
+
 }

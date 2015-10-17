@@ -48,32 +48,32 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
             curl_setopt($soap_do, CURLOPT_POST, true);
             curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
             curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-           // $result = curl_exec($soap_do);
+            $result = curl_exec($soap_do);
 
 // echo '<pre>'; var_dump($result); exit();
 
-$result =  <<<XML
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-         <return>
-            <codigoRespuesta>0</codigoRespuesta>
-            <estado>F</estado>
-            <idHistorico>53</idHistorico>
-            <mensajeRespuesta>ok</mensajeRespuesta>
-            <resultadoObjeto>
-               <parametrosSalida>
-                  <pi_estado>1</pi_estado>
-                  <pv_mensaje>USUARIO CORRECTO</pv_mensaje>
-                  <pv_codTrans>1</pv_codTrans>
-                  <PX_SALIDA><![CDATA[<registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>3</idRol><descRol>ESTUDIANTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros><registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>2</idRol><descRol>DOCENTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros>]]></PX_SALIDA>
-               </parametrosSalida>
-            </resultadoObjeto>
-         </return>
-      </ns2:ejecucionObjetoResponse>
-   </soap:Body>
-</soap:Envelope>
-XML;
+// $result =  <<<XML
+// <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//    <soap:Body>
+//       <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//          <return>
+//             <codigoRespuesta>0</codigoRespuesta>
+//             <estado>F</estado>
+//             <idHistorico>53</idHistorico>
+//             <mensajeRespuesta>ok</mensajeRespuesta>
+//             <resultadoObjeto>
+//                <parametrosSalida>
+//                   <pi_estado>1</pi_estado>
+//                   <pv_mensaje>USUARIO CORRECTO</pv_mensaje>
+//                   <pv_codTrans>1</pv_codTrans>
+//                   <PX_SALIDA><![CDATA[<registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>3</idRol><descRol>ESTUDIANTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros><registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>2</idRol><descRol>DOCENTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros>]]></PX_SALIDA>
+//                </parametrosSalida>
+//             </resultadoObjeto>
+//          </return>
+//       </ns2:ejecucionObjetoResponse>
+//    </soap:Body>
+// </soap:Envelope>
+// XML;
 
 
 
@@ -914,15 +914,15 @@ function doRequestSreReceptaTransacion_matriculacion($datosCuenta,$source,$tipo,
            // echo (string) $post_string;
 
                     $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
-                    $soap_do = curl_init(); 
+                    $soap_do = curl_init();
                     curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
-                    curl_setopt($soap_do, CURLOPT_URL,            $url );   
-                    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10); 
-                    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60); 
+                    curl_setopt($soap_do, CURLOPT_URL,            $url );
+                    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+                    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
                     curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
                     curl_setopt($soap_do, CURLOPT_PORT,8080);
                     curl_setopt($soap_do, CURLOPT_POST, true);
-                    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
+                    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
 
@@ -947,17 +947,17 @@ function doRequestSreReceptaTransacion_matriculacion($datosCuenta,$source,$tipo,
 //                                 <Paralelos>
 //                                   <Paralelo>
 //                                     <cuposRegistrados>15</cuposRegistrados>
-//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <cupoMaximo>50</cupoMaximo>
 //                                     <curso>S1B</curso>
 //                                     <idMateriaParalelo>901</idMateriaParalelo>
 //                                   </Paralelo>
 //                                   <Paralelo>
 //                                     <cuposRegistrados>14</cuposRegistrados>
-//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <cupoMaximo>50</cupoMaximo>
 //                                     <curso>S1C</curso>
 //                                     <idMateriaParalelo>902</idMateriaParalelo>
 //                                   </Paralelo>
-//                                 </Paralelos>    
+//                                 </Paralelos>
 //                               </registro>
 //                               <registro>
 //                                 <id_sa_materia>50</id_sa_materia>
@@ -967,17 +967,17 @@ function doRequestSreReceptaTransacion_matriculacion($datosCuenta,$source,$tipo,
 //                                 <Paralelos>
 //                                   <Paralelo>
 //                                     <cuposRegistrados>15</cuposRegistrados>
-//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <cupoMaximo>50</cupoMaximo>
 //                                     <curso>S1B</curso>
 //                                     <idMateriaParalelo>903</idMateriaParalelo>
 //                                   </Paralelo>
 //                                   <Paralelo>
 //                                     <cuposRegistrados>14</cuposRegistrados>
-//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <cupoMaximo>50</cupoMaximo>
 //                                     <curso>S1C</curso>
 //                                     <idMateriaParalelo>904</idMateriaParalelo>
 //                                   </Paralelo>
-//                                 </Paralelos>    
+//                                 </Paralelos>
 //                               </registro>
 //                               <registro>
 //                                 <id_sa_materia>60</id_sa_materia>
@@ -987,17 +987,17 @@ function doRequestSreReceptaTransacion_matriculacion($datosCuenta,$source,$tipo,
 //                                 <Paralelos>
 //                                   <Paralelo>
 //                                     <cuposRegistrados>15</cuposRegistrados>
-//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <cupoMaximo>50</cupoMaximo>
 //                                     <curso>S1B</curso>
 //                                     <idMateriaParalelo>905</idMateriaParalelo>
 //                                   </Paralelo>
 //                                   <Paralelo>
 //                                     <cuposRegistrados>14</cuposRegistrados>
-//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <cupoMaximo>50</cupoMaximo>
 //                                     <curso>S1C</curso>
 //                                     <idMateriaParalelo>906</idMateriaParalelo>
 //                                   </Paralelo>
-//                                 </Paralelos>    
+//                                 </Paralelos>
 //                               </registro>
 //                               <registro>
 //                                 <id_sa_materia>70</id_sa_materia>
@@ -1007,17 +1007,17 @@ function doRequestSreReceptaTransacion_matriculacion($datosCuenta,$source,$tipo,
 //                                 <Paralelos>
 //                                   <Paralelo>
 //                                     <cuposRegistrados>15</cuposRegistrados>
-//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <cupoMaximo>50</cupoMaximo>
 //                                     <curso>S1B</curso>
 //                                     <idMateriaParalelo>907</idMateriaParalelo>
 //                                   </Paralelo>
 //                                   <Paralelo>
 //                                     <cuposRegistrados>14</cuposRegistrados>
-//                                     <cupoMaximo>50</cupoMaximo>        
+//                                     <cupoMaximo>50</cupoMaximo>
 //                                     <curso>S1C</curso>
 //                                     <idMateriaParalelo>908</idMateriaParalelo>
 //                                   </Paralelo>
-//                                 </Paralelos>    
+//                                 </Paralelos>
 //                               </registro>
 //                             </registros>
 //                         </PX_SALIDA>
@@ -1039,7 +1039,7 @@ function doRequestSreReceptaTransacion_matriculacion($datosCuenta,$source,$tipo,
     }
     else
     {
-        $response  = $this->ReemplazaCaracteres($result);  
+        $response  = $this->ReemplazaCaracteres($result);
         $response= preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
         $xml = new \SimpleXMLElement($response);
          $respuesta = $xml->xpath('//resultadoObjeto')[0];
@@ -1049,13 +1049,13 @@ function doRequestSreReceptaTransacion_matriculacion($datosCuenta,$source,$tipo,
     }
 
 
-  
+
 
 
 }#end function
 
 
-function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){  
+function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
 
  $post_string="
             <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
@@ -1069,7 +1069,7 @@ function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
                      <parametrosObjeto>
                         <parametros>
                             <PX_Entrada>
-                                ".$datosCuenta." 
+                                ".$datosCuenta."
                             </PX_Entrada>
                       </parametros>
                      </parametrosObjeto>
@@ -1077,15 +1077,15 @@ function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
                </soapenv:Body>
             </soapenv:Envelope>";
             $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
-            $soap_do = curl_init(); 
+            $soap_do = curl_init();
             curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
-            curl_setopt($soap_do, CURLOPT_URL,            $url );   
-            curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10); 
-            curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60); 
+            curl_setopt($soap_do, CURLOPT_URL,            $url );
+            curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
             curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
             curl_setopt($soap_do, CURLOPT_PORT,8080);
             curl_setopt($soap_do, CURLOPT_POST, true);
-            curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
+            curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
             curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
             $result = curl_exec($soap_do);
 
@@ -1096,7 +1096,7 @@ function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
                     }
                     else
                     {
-                        
+
                         $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
                         $xml = new \SimpleXMLElement($response);
                         $body = $xml->xpath('//soapBody')[0];
@@ -1104,11 +1104,11 @@ function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
                         $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
                         return $respuestaConsulta;
                     }
-      
+
 }#end function
 
 function doRequestSreReceptaTransacionTurno($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
-{  
+{
 
 $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
    <soapenv:Header/>
@@ -1128,15 +1128,15 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
 </soapenv:Envelope> ";
 
         $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
-        $soap_do = curl_init(); 
+        $soap_do = curl_init();
         curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
-        curl_setopt($soap_do, CURLOPT_URL,            $url );   
-        curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10); 
-        curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60); 
+        curl_setopt($soap_do, CURLOPT_URL,            $url );
+        curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
         curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
         curl_setopt($soap_do, CURLOPT_PORT,8080);
         curl_setopt($soap_do, CURLOPT_POST, true);
-        curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
+        curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
         $result = curl_exec($soap_do);
 
@@ -1146,7 +1146,7 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
     }
     else
     {
-        
+
         $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
         $xml = new \SimpleXMLElement($response);
         $body = $xml->xpath('//soapBody')[0];
@@ -1156,8 +1156,91 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
     }
 }#end function
 
+function doRequestSreReceptaTransacionAnulacionMaterias($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
+
+// echo '<pre>'; var_dump($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host); exit();
+ $post_string="
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+               <soapenv:Header/>
+               <soapenv:Body>
+                  <ser:ejecucionObjeto>
+                      <dataSource>".$source."</dataSource>
+                     <idServicio>".$tipo."</idServicio>
+                     <usuario>".$usuario."</usuario>
+                     <clave>".$clave."</clave>
+                     <parametrosObjeto>
+                        <parametros>
+                           ".$datosCuenta."
+                      </parametros>
+                     </parametrosObjeto>
+                  </ser:ejecucionObjeto>
+               </soapenv:Body>
+            </soapenv:Envelope>";
+                    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+                    $soap_do = curl_init();
+                    curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+                    curl_setopt($soap_do, CURLOPT_URL,            $url );
+                    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+                    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+                    curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+                    curl_setopt($soap_do, CURLOPT_PORT,8080);
+                    curl_setopt($soap_do, CURLOPT_POST, true);
+                    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+                    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+                    $result = curl_exec($soap_do);
+
+// $result =  <<<XML
+//  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//     <soap:Body>
+//         <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//             <return>
+//                 <codigoRespuesta>0</codigoRespuesta>
+//                 <estado>F</estado>
+//                 <idHistorico>58</idHistorico>
+//                 <mensajeRespuesta>ok</mensajeRespuesta>
+//                 <resultadoObjeto>
+//                     <parametrosSalida>
+//                         <PX_SALIDA>&lt;registro>&lt;mensaje>ANULACION DE MATERIA HA SIDO REGISTRADA CORRECTAMENTE&lt;/mensaje>&lt;/registro></PX_SALIDA>
+//                       <PI_ESTADO>1</PI_ESTADO>
+//                       <PV_MENSAJE>CONSULTA CON DATOS</PV_MENSAJE>
+//                       <PV_CODTRANS>7</PV_CODTRANS>
+//                       <PV_MENSAJE_TECNICO>&lt;registro>&lt;mensaje>ANULACION DE MATERIA HA SIDO REGISTRADA CORRECTAMENTE&lt;/mensaje>&lt;/registro></PV_MENSAJE_TECNICO>
+
+//                     </parametrosSalida>
+//                 </resultadoObjeto>
+//             </return>
+//         </ns2:ejecucionObjetoResponse>
+//     </soap:Body>
+// </soap:Envelope>
+// XML;
+
+
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+        $response  = $this->ReemplazaCaracteres($result);
+        $response= preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+        $xml = new \SimpleXMLElement($response);
+         $respuesta = $xml->xpath('//resultadoObjeto')[0];
+        $respuesta = $xml->xpath('//parametrosSalida')[0];
+        //$respuesta = $xml->xpath('//PX_Salida')[0];
+        return $respuesta;
+    }
+
+
+
+
+
+}#end function
+
+
+
 function doRequestSreReceptaCarrera_Matricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
-{  
+{
 
 $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
    <soapenv:Header/>
@@ -1177,15 +1260,15 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
 </soapenv:Envelope> ";
 
         $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
-        $soap_do = curl_init(); 
+        $soap_do = curl_init();
         curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
-        curl_setopt($soap_do, CURLOPT_URL,            $url );   
-        curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10); 
-        curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60); 
+        curl_setopt($soap_do, CURLOPT_URL,            $url );
+        curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
         curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
         curl_setopt($soap_do, CURLOPT_PORT,8080);
         curl_setopt($soap_do, CURLOPT_POST, true);
-        curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
+        curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
         $result = curl_exec($soap_do);
 
@@ -1205,7 +1288,7 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
 //                      <nombreCarrera>CARRERA DE INGENIERIA EN SISTEMAS</nombreCarrera>
 //                      <id_sa_facultad>3</id_sa_facultad>
 //                    </registro>
-                  
+
 //                 </registros>
 //              </respuestaConsulta>
 //           </return>
@@ -1222,7 +1305,7 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
     }
     else
     {
-        
+
         $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
         $xml = new \SimpleXMLElement($response);
         $body = $xml->xpath('//soapBody')[0];
@@ -1234,7 +1317,7 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
 
 
 
-function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){  
+function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
 
  $post_string="
             <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
@@ -1247,7 +1330,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
                      <clave>".$clave."</clave>
                      <parametrosObjeto>
                         <parametros>
-                           ".$datosCuenta." 
+                           ".$datosCuenta."
                       </parametros>
                      </parametrosObjeto>
                   </ser:ejecucionObjeto>
@@ -1285,7 +1368,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
 //                                 <veces>1</veces>
 //                                 <nivel>6</nivel>
 
-//                                 <curso>S1B</curso> 
+//                                 <curso>S1B</curso>
 
 //                               </registro>
 //                               <registro>
@@ -1346,7 +1429,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
 
 
 
-}#end function   
+}#end function
 
 
 function doRequestSreReceptaTransacionRegistroOrdenPago($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){  
@@ -1544,4 +1627,3 @@ function doGeneraTurno($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
 
 
 }
-
