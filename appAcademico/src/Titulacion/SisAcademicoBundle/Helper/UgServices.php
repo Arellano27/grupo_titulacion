@@ -33,19 +33,19 @@ class UgServices
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      // $this->usuario       = "CapaVisualPhp";
-      // $this->clave         = "12CvP2015";
-      // $this->source        = "jdbc/saugProcTmp";
-      // $this->url           = "http://186.101.66.2:8080/";
-      // $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
-      // $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      // $this->urlWS         = "";
-      // $this->host          = "186.101.66.2:8080";
+//      $this->usuario       = "CapaVisualPhp";
+//      $this->clave         = "12CvP2015";
+//      $this->source        = "jdbc/saugProcTmp";
+//      $this->url           = "http://186.101.66.2:8080/";
+//      $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
+//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//      $this->urlWS         = "";
+//      $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
    public function getLogin($username,$password){
       $ws=new AcademicoSoap();
-      $tipo       = "3";
+      $tipo       = "8";
       $usuario    = "abc";
       $clave      = "123";
       $source     = $this->source;
@@ -60,13 +60,13 @@ class UgServices
 
    public function getConsultaNotas($servicio=""){
       $ws=new AcademicoSoap();
-      $tipo       = "3";
+      $tipo       = "8";
       $usuario    = "abc";
       $clave      = "123";
       $source     = "jdbc/saugProcTmp";
-      $url        = "http://192.168.100.11:8080/WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      $host       = "192.168.100.11:8080";
-      $trama      = "<usuario>0924393861</usuario><contrasena>sinclave</contrasena>";
+      $url        = "http://186.101.66.2:8080/WSObjetosUg/ServicioWebObjetos?wsdl?wsdl";
+      $host       = "186.101.66.2:8080";
+      $trama      = "<usuario>.$username.</usuario><contrasena>.$password.</contrasena>";
       $response=$ws->doRequestSreReceptaTransacionConsultas($trama,$source,$tipo,$usuario,$clave,$url,$host);
                           
       return $response;

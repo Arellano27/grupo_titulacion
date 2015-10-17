@@ -65,7 +65,7 @@ class NotificacionesController extends Controller
                     return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig');
                       }
             }else{
-                for($i=0;$i<2;$i++){
+                for($i=0;$i<10;$i++){
                    // if($i==0){
                     $mailer    = $this->container->get('mailer');
                     $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')

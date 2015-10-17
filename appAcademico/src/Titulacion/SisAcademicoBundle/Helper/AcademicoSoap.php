@@ -48,31 +48,31 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
             curl_setopt($soap_do, CURLOPT_POST, true);
             curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
             curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-            // $result = curl_exec($soap_do);
+            $result = curl_exec($soap_do);
 
-
-$result =  <<<XML
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-         <return>
-            <codigoRespuesta>0</codigoRespuesta>
-            <estado>F</estado>
-            <idHistorico>53</idHistorico>
-            <mensajeRespuesta>ok</mensajeRespuesta>
-            <resultadoObjeto>
-               <parametrosSalida>
-                  <pi_estado>1</pi_estado>
-                  <pv_mensaje>USUARIO CORRECTO</pv_mensaje>
-                  <pv_codTrans>1</pv_codTrans>
-                  <px_salida><![CDATA[<registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>3</idRol><descRol>ESTUDIANTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros><registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>2</idRol><descRol>DOCENTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros>]]></px_salida>
-               </parametrosSalida>
-            </resultadoObjeto>
-         </return>
-      </ns2:ejecucionObjetoResponse>
-   </soap:Body>
-</soap:Envelope>
-XML;
+            //var_dump($result);
+//$result =  <<<XML
+//<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//   <soap:Body>
+//      <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//         <return>
+//            <codigoRespuesta>0</codigoRespuesta>
+//            <estado>F</estado>
+//            <idHistorico>53</idHistorico>
+//            <mensajeRespuesta>ok</mensajeRespuesta>
+//            <resultadoObjeto>
+//               <parametrosSalida>
+//                  <pi_estado>1</pi_estado>
+//                  <pv_mensaje>USUARIO CORRECTO</pv_mensaje>
+//                  <pv_codTrans>1</pv_codTrans>
+//                  <px_salida><![CDATA[<registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>3</idRol><descRol>ESTUDIANTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros><registros><Usuario>1</Usuario><nombreUsuario>USUARIO PRIMER</nombreUsuario><cedula>0924393861</cedula><mail>ALGUIEN@USUARIO.COM</mail><idRol>2</idRol><descRol>DOCENTE</descRol><carrrera>CARRERA DE INGENIERIA EN SISTEMAS</carrrera><idCarrera>3</idCarrera></registros>]]></px_salida>
+//               </parametrosSalida>
+//            </resultadoObjeto>
+//         </return>
+//      </ns2:ejecucionObjetoResponse>
+//   </soap:Body>
+//</soap:Envelope>
+//XML;
 
 
 
@@ -82,11 +82,12 @@ XML;
 
         $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
         $xml = new \SimpleXMLElement($response);
-        $body = $xml->xpath('//soapBody')[0];
+        $body = $xml->xpath('//soapBody')[0]
         $return = $xml->xpath('//return')[0];
 
-        $resultadoObjeto = $xml->xpath('//px_salida')[0];
+        $resultadoObjeto = $xml->xpath('//PX_SALIDA')[0];
         $resultadoObjeto = $this->Response("<elements>".$resultadoObjeto."</elements>");
+        var_dump($resultadoObjeto)
         // $cabecera   = new Cabeceras();
         // $respuesta  = $cabecera->eliminaCabecerasRespuesta($result);
         // $respuesta  = $this->Response("<elements>".$respuesta."</elements>");
