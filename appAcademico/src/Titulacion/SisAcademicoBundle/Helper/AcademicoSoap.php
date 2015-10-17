@@ -87,7 +87,7 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
 
         $resultadoObjeto = $xml->xpath('//PX_SALIDA')[0];
         $resultadoObjeto = $this->Response("<elements>".$resultadoObjeto."</elements>");
-        var_dump($resultadoObjeto)
+        
         // $cabecera   = new Cabeceras();
         // $respuesta  = $cabecera->eliminaCabecerasRespuesta($result);
         // $respuesta  = $this->Response("<elements>".$respuesta."</elements>");
