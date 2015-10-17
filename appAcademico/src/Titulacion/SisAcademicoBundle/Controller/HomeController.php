@@ -67,8 +67,7 @@ class HomeController extends Controller
                     $idUsuario     = $data[0]['usuario'];
                     $nombreUsuario = $data[0]['nombreusuario'];
                     $cedula        = $data[0]['cedula'];
-
-                    //$mail          = $data[0]['mail'];
+                    $mail          = $data[0]['mail'];
                      $descRol       = $data[0]['descrol'];
 
                 }else{
@@ -79,7 +78,7 @@ class HomeController extends Controller
                         $nombreUsuario = $login['nombreusuario'];
                         $cedula        = $login['cedula'];
 
-                        //$mail          = $login['mail'];
+                        $mail          = $login['mail'];
 
                         $descRol       = $login['descrol'];
 
@@ -97,9 +96,7 @@ class HomeController extends Controller
                 $session->set("perfil",$perfil); //idrol
                 $session->set("nom_usuario",$nombreUsuario);
                 $session->set("cedula",$cedula);
-
-                //$session->set("mail",$mail);
-
+                $session->set("mail",$mail);
                 $session->set("descRol",$descRol);//nombre rol
 
                 return new Response($perfil);

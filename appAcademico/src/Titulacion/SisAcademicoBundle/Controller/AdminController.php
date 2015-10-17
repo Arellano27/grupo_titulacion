@@ -55,11 +55,30 @@ class AdminController extends Controller
 
     public function ingreso_nuevo_passAction(Request $request){
         #obtenemos los datos enviados por get
+            $session=$request->getSession();
+            $Email= $session->get('mail');
+            $Nombre = $session->get('nom_usuario');
             $username    = $request->request->get('user');
             $username    = $request->request->get('pass1');
             $password    = $request->request->get('pass2');
+           
+              
+        
         #llamamos a la consulta del webservice
         $UgServices = new UgServices;
+        
+               $mailer    = $this->container->get('mailer');
+                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                ->setUsername('titulacion.php@gmail.com')
+                                ->setPassword('sc123456');
+                   //$mailer  = \Swift_Mailer($transport);
+                    $message = \Swift_Message::newInstance('test')
+                                ->setSubject("Contraseña Cambiada Correctamente")
+                                ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                ->setTo($Email)
+                                ->setBody("$Nombre usted ha Cambiado la Contraseña Exitosamente, Su nueva contraseña es 123456");
+                    // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
+                    $this->get('mailer')->send($message);   
     }
 
     public function cargar_eventosAction(Request $request)
