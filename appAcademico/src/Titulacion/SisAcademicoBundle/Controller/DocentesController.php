@@ -79,6 +79,7 @@
 		 
          $UgServices    = new UgServices;
          $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
+
 /*
          if($datosMateriasXML!="") {
                foreach($datosMateriasXML->registros->registro as $datosCarrera) {
@@ -110,11 +111,14 @@
          $idCarrera     = $request->request->get('idCarrera');
          $fechaInicio   = $request->request->get('fechaInicio');
          $fechaFin      = $request->request->get('fechaFin');
+         $inicioCiclo   = $request->request->get('inicioCiclo');
+         $finCiclo      = $request->request->get('finCiclo');
          
          if( !isset($fechaInicio) || !isset($fechaFin) ){
             date_default_timezone_set ( "America/Guayaquil" );
             $day           = date('w');
             $fechaFin      = date('d-m-Y');
+            if($day == 0){ $day = 7; }	//Esto es para el domingo
             $day--;
             $fechaInicio   = date('d-m-Y', strtotime('-'.($day).' days'));
          }
@@ -141,12 +145,19 @@
          
          if($datosAsistenciasXML!=NULL) {
             //PARA OBTENER EL ARREGLO DE FECHAS
+            if($datosAsistenciasXML["alumno"]["nombres"]!=NULL){
+               $tempAlumno = $datosAsistenciasXML["alumno"];
+               $datosAsistenciasXML["alumno"]      = NULL;
+               $datosAsistenciasXML["alumno"][0]   = $tempAlumno;
+            }
+            
             foreach($datosAsistenciasXML["alumno"][0] as $keyFecha => $valueFecha){
                //var_dump($keyFecha);
                //$regExp = "/(f)([0-9]{2}\\-[0-9]{2}\\-[0-9]{4})/";
                $regExp = "/(f)([0-9]{4}\\-[0-9]{2}\\-[0-9]{2})/";
                $tempFecha['diaVal'] = '';
                $tempFecha['diaNom'] = '';
+               
                if(preg_match($regExp, $keyFecha, $matchesFecha)){
                   $tempFecha['diaVal'] = substr($keyFecha, 1);
                   //$tempFecha['diaVal'] =  date("d/m/Y",strtotime($tempFecha['diaVal']));     //Cambio de formato
@@ -173,14 +184,16 @@
                array_push($dataAsistencia, $dataAsistenciaReg);
             }
          }
-
+ 
          return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria.html.twig',
                          array(
                                'dataMateria' => array('fechasAsistencia' => $arregloFechas,
                                                       'datosAsistencia' => $dataAsistencia,
                                                       'fechaInicio'  => date("d/m/Y",strtotime($fechaInicio)),
                                                       'fechaFin'  => date("d/m/Y",strtotime($fechaFin)),
-                                                      'idMateria' => $idMateria
+                                                      'idMateria' => $idMateria,
+                                                      'inicioCiclo' => $inicioCiclo,
+                                                      'finCiclo' => $finCiclo
                                                      )
                              )
                       );
@@ -214,7 +227,7 @@
          $UgServices       = new UgServices;
          $datosNotasArray  = $UgServices->Docentes_getNotasMaterias($datosConsulta);
          
-         $dataProcesar = $datosNotasArray["registro"][0];
+         $dataProcesar = $datosNotasArray["registro"];
          
          $datosGeneralesListado["notaMinima"]	= $dataProcesar["notaMinima"];
          $datosGeneralesListado["idProfesor"]	= $dataProcesar["idProfesor"];
@@ -259,6 +272,11 @@
          //echo count($dataProcesar["estudiantes"]["estudiante"]);
 
          $datosEstudiantes	= array();
+         if($dataProcesar["estudiantes"]["estudiante"]["idEstudiante"]!=NULL) {  //Cuando llega un solo estudiante
+            $tempEstudiante = $dataProcesar["estudiantes"]["estudiante"];
+            $dataProcesar["estudiantes"]["estudiante"]      = NULL;
+            $dataProcesar["estudiantes"]["estudiante"][0]   = $tempEstudiante;
+         }
          foreach($dataProcesar["estudiantes"]["estudiante"] as $estudiante) {
             $tempArrayEst = NULL;
             $tempArrayEst["idEstudiante"]	= $estudiante["idEstudiante"];

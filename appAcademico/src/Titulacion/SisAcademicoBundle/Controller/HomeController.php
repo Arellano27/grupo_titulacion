@@ -14,7 +14,6 @@ class HomeController extends Controller
 {
     function encriptarContrasenia($password) {
         $salt    = "µ≈α|⊥ε¢ʟ@δσ";
-
         $hash = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
         return $hash;
     }
@@ -22,7 +21,7 @@ class HomeController extends Controller
     public function enviarmailAction(Request $request){
         $user = $request->request->get('user');
         #recepto desde la base el correo
-        $email = "scaichemoran@gmail.com"; #quemado por el momento
+        $email = "arellano.torres27@gmail.com"; #quemado por el momento
 
 
        $message = \Swift_Message::newInstance()
@@ -31,7 +30,7 @@ class HomeController extends Controller
         ->setTo('arellano.torres27@gmail.com')
         ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig'),'text/html', 'utf8');
         $resp = $this->get('mailer')->send($message);
-        // 
+        //
 
 
         echo $resp; exit();
@@ -53,7 +52,7 @@ class HomeController extends Controller
             $password    = $request->request->get('pass');
             #$contrasenia = $request->request->get('pass');
             #$password    = encriptarContrasenia($contrasenia);
-            
+
             #llamamos a la consulta del webservice
             $UgServices = new UgServices;
             $data = $UgServices->getLogin($username,$password);
@@ -68,8 +67,10 @@ class HomeController extends Controller
                     $idUsuario     = $data[0]['usuario'];
                     $nombreUsuario = $data[0]['nombreusuario'];
                     $cedula        = $data[0]['cedula'];
+
                     //$mail          = $data[0]['mail'];
                      $descRol       = $data[0]['descrol'];
+
                 }else{
 
 
@@ -77,7 +78,9 @@ class HomeController extends Controller
                         $idUsuario     = $login['usuario'];
                         $nombreUsuario = $login['nombreusuario'];
                         $cedula        = $login['cedula'];
+
                         //$mail          = $login['mail'];
+
                         $descRol       = $login['descrol'];
 
                         if ($login['idrol'] == $perfilAdmin) {
@@ -94,7 +97,9 @@ class HomeController extends Controller
                 $session->set("perfil",$perfil); //idrol
                 $session->set("nom_usuario",$nombreUsuario);
                 $session->set("cedula",$cedula);
-                $session->set("mail",$mail);
+
+                //$session->set("mail",$mail);
+
                 $session->set("descRol",$descRol);//nombre rol
 
                 return new Response($perfil);
