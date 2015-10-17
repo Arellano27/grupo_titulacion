@@ -13,3 +13,9 @@ admin_academico_cargar_eventos:
 admin_academico_cargar_eventos_user:
     path:     /nuevo_pass
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos_carrera_user }
+admin_registro_ordenpago:
+    path:     /registroordenpago
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:registroordenpago }
+admin_carreras_ordenpago:
+    path:     /carrerasordenpago
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:carrerasordenpago }
