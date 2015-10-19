@@ -1186,9 +1186,9 @@ function doRequestSreReceptaTransacionAnulacionMaterias($datosCuenta,$source,$ti
                     curl_setopt($soap_do, CURLOPT_POST, true);
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-                    //$result = curl_exec($soap_do);
+                    $result = curl_exec($soap_do);
 
-$result =  <<<XML
+/*$result =  <<<XML
  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
     <soap:Body>
         <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
@@ -1211,7 +1211,7 @@ $result =  <<<XML
         </ns2:ejecucionObjetoResponse>
     </soap:Body>
 </soap:Envelope>
-XML;
+XML;*/
 
 
 
