@@ -22,28 +22,28 @@
 
          $perfilEst   = $this->container->getParameter('perfilEst');
          $perfilDoc   = $this->container->getParameter('perfilDoc');
-         $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
-         $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
-         $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+         $perfilAdmin = $this->container->getParameter('perfilAdmin');
+         $perfilEstDoc = $this->container->getParameter('perfilEstDoc');
+         $perfilEstAdm = $this->container->getParameter('perfilEstAdm');
          $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
 
          if($session->has("perfil")) {
             if($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilDocAdm){
                $idDocente     = $session->get('id_user');
                //$idDocente     = 1;
-             
+
                $UgServices    = new UgServices;
                $datosCarrerasXML  = $UgServices->Docentes_getCarreras($idDocente);
-               
+
                if($datosCarrerasXML!="") {
                   $datosCarreras = $datosCarrerasXML;
                }
                else {
                # Docente sin Carreras
                }
-            
+
                $datosDocente	= array( 'idDocente' => $idDocente );
-             
+
                return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoCarreras.html.twig',
     									array(
     											'data' => array('datosDocente' => $datosDocente,  'datosCarreras' => $datosCarreras)
@@ -65,21 +65,21 @@
         }
 
       }
-		
-		
+
+
     public function listadoMateriasAction(Request $request)
-      {	 
+      {
 	 $session=$request->getSession();
          $idDocente  = $session->get('id_user');
 	 //$idDocente  = $request->request->get('idDocente');
          $idCarrera  = $request->request->get('idCarrera');
-         
+
          $datosDocente	= array( 'idDocente' => $idDocente );
          $datosCarrera2	= array( 'idCarrera' => $idCarrera );
          $datosMaterias	= array();
          //$idDocente = "1";
          //$idCarrera = "2";
-		 
+
          $UgServices    = new UgServices;
          $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
 
@@ -90,7 +90,7 @@
                }
          }*/
          //para el render realmente deberia estar mandando la informacion de las materias
-       
+
          return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoMaterias.html.twig',
                         array(
                               'data' => array(
@@ -101,9 +101,9 @@
                         )
                      );
       }
-		
-      
-		
+
+
+
       public function listadoAlumnosMateriaAction(Request $request)
       {
          $session=$request->getSession();
@@ -116,7 +116,7 @@
          $fechaFin      = $request->request->get('fechaFin');
          $inicioCiclo   = $request->request->get('inicioCiclo');
          $finCiclo      = $request->request->get('finCiclo');
-         
+
          if( !isset($fechaInicio) || !isset($fechaFin) ){
             date_default_timezone_set ( "America/Guayaquil" );
             $day           = date('w');
@@ -130,8 +130,8 @@
             $fechaInicio   = str_replace("/","-",$fechaInicio);
          }
          $anioConsulta  = date('o');
-         
-         $datosConsulta	= array( 
+
+         $datosConsulta	= array(
                                  'fechaInicio' => $fechaInicio,
                                  'fechaFin' => $fechaFin,
                                  'idDocente' => $idDocente,
@@ -142,9 +142,13 @@
                                  );
          $UgServices    = new UgServices;
          $datosAsistenciasXML  = $UgServices->Docentes_getAsistenciasMaterias($datosConsulta);
-         
+
          $datosAsistencia   = $this->procesarListadoAsistenciasEstudiantes($datosAsistenciasXML);
-         
+
+            
+               
+               
+ 
          return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria.html.twig',
                          array(
                                'dataMateria' => array('fechasAsistencia' => $datosAsistencia["arregloFechas"],
@@ -159,7 +163,7 @@
                              )
                       );
       }
-		
+
 		public function notasAlumnosMateriaAction(Request $request)
       {
          $idMateria  = $request->request->get('idMateria');
@@ -173,9 +177,9 @@
                              )
                       );
       }
-      
-      
-      
+
+
+
       public function listadoNotasAlumnosMateriaAction(Request $request)
       {
          $session=$request->getSession();
@@ -184,6 +188,9 @@
          $idCarrera  = $request->request->get('idCarrera');
          if(NULL!==$request->request->get('idParcial')){
             $idParcial = $request->request->get('idParcial');
+         
+         
+         
          }
          else{
             $idParcial = 'todos';
@@ -199,6 +206,7 @@
          //Consulta todos los parciales, es un WS diferente para consulta por parcial
          if($idParcial == 'todos'){
             $datosConsulta	= array( 'idMateria' => $idMateria,
+                  
                                     'idDocente' => $idDocente);
             $datosNotasArray  = $UgServices->Docentes_getNotasMaterias($datosConsulta);
          }
@@ -210,7 +218,7 @@
          }
          $datosReturnArray = $this->procesarListadoNotasEstudiantes($datosNotasArray);
          /*Consulta de la información de las notas - FIN*/
-         
+
          return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoNotasMateria.html.twig',
                          array(
                               'identificaParcial' => $datosParcialesArray,
@@ -221,12 +229,12 @@
                              )
                       );
       }
-      
+
       public function visionGeneralMateriaAction(Request $request)
       {
          $idDocente  = $request->request->get('idDocente');
          $idMateria  = $request->request->get('idMateria');
-         
+
          $datosDocente	= array( 'idDocente' => $idDocente );
 
          $datosMateria	= array( 'idMateria' => $idMateria );
@@ -675,37 +683,37 @@
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
          }
       }      // getMateriasListado()
-      
+
              public function mostraralumnosAction(Request $request)
-        { 
-          
+        {
+
             $notas='';
-            
+
             $parametro1 =$request->request->get('parametro1');
-            
+
          $response   		= new JsonResponse();
          $withoutModal       = true;
-         
+
             $idDocente     = 1;
             $carrera  =1;
             $UgServices    = new UgServices;
             $datosAlumnosXML  = $UgServices->Docentes_getAlumnos($idDocente,$carrera);
-            
+
            /* if($datosAlumnosXML!="") {
                $nombresalumnos = array();
                foreach($datosAlumnosXML->registros->registro as $datosAlumnos) {
                   array_push($nombresalumnos, (array)$datosAlumnos);
                }
             }*/
-          
-        
+
+
         $tareas =  array(
                               array( 'tarealm' => 'leccion1'),
                               array( 'tarealm' => 'leccion2'),
                               array( 'tarealm' => 'taller1'),
                               array( 'tarealm' => 'taller2'),
                            );
-        
+
 			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:ingresonotas.html.twig',
 						  array(
 							   'arr_datos'	=> $datosAlumnosXML,
@@ -714,7 +722,7 @@
                                                           'pruebaexam'	=> $parametro1,
                                                            'msg'   	=> $this->v_msg
 						  ));
-                        
+
                         $response->setData(
                                 array(
 					'error' 		=> $this->v_error,
@@ -726,15 +734,15 @@
                               );
                         return $response;
         }
-        
+
               public function mostraralumnos2Action(Request $request)
-        { 
-            
+        {
+
             $notas='';
-            
+
          $response   		= new JsonResponse();
          $withoutModal       = true;
-          
+
 	$nombresalumnos =  array(
                               array( 'Nombrealm' => 'Carlos Quiñonez'),
                               array( 'Nombrealm' => 'Juan Romero'),
@@ -746,15 +754,15 @@
                               array( 'Nombrealm' => 'Fernanda Montero'),
                               array( 'Nombrealm' => 'Ana Kam'),
                               array( 'Nombrealm' => 'Angel Fuentes'),
-                           );   
-        
+                           );
+
         $tareas =  array(
                               array( 'tarealm' => 'leccion1'),
                               array( 'tarealm' => 'leccion2'),
                               array( 'tarealm' => 'taller1'),
                               array( 'tarealm' => 'taller2'),
                            );
-        
+
 			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:ingresonotas2.html.twig',
 						  array(
 							   'arr_datos'	=> $nombresalumnos,
@@ -762,7 +770,7 @@
                                                            'cantidad'   => '',
                                                            'msg'   	=> $this->v_msg
 						  ));
-                        
+
                         $response->setData(
                                 array(
 					'error' 		=> $this->v_error,
@@ -774,15 +782,15 @@
                               );
                         return $response;
         }
-        
+
                public function mostraralumnos3Action(Request $request)
-        { 
-            
+        {
+
             $notas='';
-            
+
          $response   		= new JsonResponse();
          $withoutModal       = true;
-          
+
 	$nombresalumnos =  array(
                               array( 'Nombrealm' => 'Carlos Quiñonez'),
                               array( 'Nombrealm' => 'Juan Romero'),
@@ -794,15 +802,15 @@
                               array( 'Nombrealm' => 'Fernanda Montero'),
                               array( 'Nombrealm' => 'Ana Kam'),
                               array( 'Nombrealm' => 'Angel Fuentes'),
-                           );   
-        
+                           );
+
 			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:ingresoexamen.html.twig',
 						  array(
 							   'arr_datos'	=> $nombresalumnos,
                                                            'cantidad'   => '',
                                                            'msg'   	=> $this->v_msg
 						  ));
-                        
+
                         $response->setData(
                                 array(
 					'error' 		=> $this->v_error,
@@ -814,15 +822,15 @@
                               );
                         return $response;
         }
-        
+
        public function ingresonotasAction(Request $request)
-        { 
-            
+        {
+
             $notas='';
-            
+
             $totalalm =$request->request->get('hdcountalm');
             $totaltar =$request->request->get('hdcounttar');
-            
+
             ;
             for($i=1; $i<=$totalalm; $i++)
             {
@@ -848,10 +856,10 @@
         }
 
        public function ingresonotas2Action(Request $request)
-        { 
-            
+        {
+
             $notas='';
-            
+
             $total =$request->request->get('hdcount');
             for($i=1; $i<$total; $i++)
             {
@@ -863,7 +871,7 @@
             }
             print_r($notas) ;
 			$pagina = 1;
-          
+
 	$nombresalumnos =  array(
                               array( 'Nombrealm' => 'Carlos Quiñonez'),
                               array( 'Nombrealm' => 'Juan Romero'),
@@ -875,7 +883,7 @@
                               array( 'Nombrealm' => 'Fernanda Montero'),
                               array( 'Nombrealm' => 'Ana Kam'),
                               array( 'Nombrealm' => 'Angel Fuentes'),
-                           );   
+                           );
 			return $this->render('TitulacionSisAcademicoBundle:Docentes:ingresonotas.html.twig',
 						  array(
 							   'arr_datos'	=> $nombresalumnos,
@@ -883,12 +891,12 @@
                                                            'msg'   	=> $this->v_msg
 						  ));
         }
-     
+
         public function ingresoexamenAction(Request $request)
-        { 
-            
+        {
+
             $notas='';
-            
+
             $total =$request->request->get('hdcount');
             for($i=1; $i<$total; $i++)
             {
@@ -900,7 +908,7 @@
             }
             print_r($notas) ;
 			$pagina = 1;
-          
+
 	$nombresalumnos =  array(
                               array( 'Nombrealm' => 'Carlos Quiñonez'),
                               array( 'Nombrealm' => 'Juan Romero'),
@@ -912,7 +920,7 @@
                               array( 'Nombrealm' => 'Fernanda Montero'),
                               array( 'Nombrealm' => 'Ana Kam'),
                               array( 'Nombrealm' => 'Angel Fuentes'),
-                           );   
+                           );
 			return $this->render('TitulacionSisAcademicoBundle:Docentes:ingresonotas.html.twig',
 						  array(
 							   'arr_datos'	=> $nombresalumnos,
@@ -920,14 +928,14 @@
                                                            'msg'   	=> $this->v_msg
 						  ));
         }
-        
+
         public function consultaNotasAction(Request $request)
-        { 
+        {
            $notas='';
-            
+
          $response   		= new JsonResponse();
          $withoutModal       = true;
-          
+
 	$nombresalumnos =  array(
                               array( 'Nombrealm' => 'Carlos Quiñonez'),
                               array( 'Nombrealm' => 'Juan Romero'),
@@ -939,15 +947,15 @@
                               array( 'Nombrealm' => 'Fernanda Montero'),
                               array( 'Nombrealm' => 'Ana Kam'),
                               array( 'Nombrealm' => 'Angel Fuentes'),
-                           );   
-        
+                           );
+
 			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:consultanotas.html.twig',
 						  array(
 							   'arr_datos'	=> $nombresalumnos,
                                                            'cantidad'   => '',
                                                            'msg'   	=> $this->v_msg
 						  ));
-                        
+
                         $response->setData(
                                 array(
 					'error' 		=> $this->v_error,
@@ -959,13 +967,13 @@
                               );
                         return $response;
         }
-        
+
       function nombresDias($nombreIngles) {
          $diasEspaniol  = array("lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo");
          $diasIngles    = array("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday");
-         
+
          $nombreIngles  = str_replace($diasIngles, $diasEspaniol, strtolower($nombreIngles));
-         
+
          return $nombreIngles;
       }
       
@@ -1240,5 +1248,5 @@
          
          return $dataReturn;
       }//function procesarListadoAsistenciasEstudiantes();
-		
+
    }

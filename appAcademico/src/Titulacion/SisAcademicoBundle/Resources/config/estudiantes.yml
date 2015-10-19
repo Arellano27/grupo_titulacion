@@ -20,6 +20,15 @@ estudiantes_notas_historico:
 estudiantes_menu_derecho:
     pattern:  /menuderecho
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:menuderecho}
+estudiantes_anulacion:
+    pattern:  /anulacion
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:anulacion_materias}
+estudiantes_anulacion_materias:
+    pattern:  /anulacion_materias
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:anulacion_materias_2}
+estudiantes_anulacion_materias_2:
+    pattern:  /anulacion_materias_2
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:anulacion_materias_3}
 estudiantes_proceso_matricula:
     pattern:  /procesomatricula
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:procesomatricula}
@@ -30,8 +39,17 @@ estudiantes_presenta_matricula:
     pattern:  /presentarmatricula
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:presenta_matricula}
 estudiantes_pdf_matricula:
-    pattern:  /pdfmatricula
+    pattern:  /pdfmatricula/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfmatricula}
+estudiantes_genera_turno:
+    pattern:  /generaturno
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:generaturno}
+estudiantes_pdf_ordenpago:
+    pattern:  /pdfordenpago/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfordenpago}
+estudiantes_subir_archivos:
+    pattern:  /subirarchivos/{idEstudiante}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:subirarchivos}   
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes

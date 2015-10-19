@@ -21,7 +21,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">  
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#mat_{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera_matricula' id="mat1_{{ facultad.Carrera }}_{{ facultad.Facultad }}_f" >{{ facultad.Nombre }}</a>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#mat_{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera_matricula' id="mat1_{{ facultad.Carrera }}_{{ facultad.Facultad }}_f" name="{{ facultad.Nombre }}" >{{ facultad.Nombre }}</a>
                                 </h4>
                             </div>
 
@@ -54,6 +54,8 @@
      var idFacultad  = splitCarrera[2];
      var indicaClase  = splitCarrera[3];
      var idEstudiante  = {{idEstudiante}}; 
+     var carrera =$(this).attr('name');
+
      var tablaNotasa = $('#ctnmat_'+idCarrera+'_'+idFacultad);
      
      if(indicaClase!=null )
@@ -63,7 +65,7 @@
       $('.temporal').removeClass('active');
      }
 
-    var obj_data = {'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idIndica':idIndica,'idFacultad':idFacultad};
+    var obj_data = {'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idIndica':idIndica,'idFacultad':idFacultad,'carrera':carrera};
        var jumpAction = '{{path('estudiantes_proceso_matricula')}}';
         $.ajax({
            url:   jumpAction,
