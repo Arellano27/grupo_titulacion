@@ -22,24 +22,35 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-      // $this->usuario       = "abc";
-      // $this->clave         = "123";
-      // $this->source        = "jdbc/procedimientosSaug";
-      // $this->url           = "http://192.168.100.11:8080/";
-      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      // $this->urlWS         = "";
-      // $this->host          = "192.168.100.11:8080";
+//       $this->usuario         = "abc";
+//       $this->clave           = "123";
+//       $this->source          = "jdbc/procedimientosSaug";
+//       $this->sourceConsultas = "jdbc/consultasSaug";
+//       $this->url             = "http://192.168.100.11:8080/";
+//       $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+//       $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//       $this->urlWS           = "";
+//       $this->host            = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
       $this->usuario       = "CapaVisualPhp";
       $this->clave         = "12CvP2015";
+      
+      $this->url           = "http://186.101.66.2:8080/";
+      
+      /*Saug Temporal*/
       $this->source        = "jdbc/saugProcTmp";
       $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->url           = "http://186.101.66.2:8080/";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      
+//      /*Preproduccion*/
+//      $this->source        = "jdbc/procedimientosSaug";
+//      $this->sourceConsultas  = "jdbc/consultasSaug";
+//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//      
       $this->urlWS         = "";
       $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
@@ -80,13 +91,7 @@ class UgServices
 
 
    public function Docentes_getMaterias($idDocente, $idCarrera){
-      /*informacion quemada - inicio*/
-      //$idDocente  = 00;
-      //$idCarrera  = 00;
-      /*informacion quemada - fin*/
-
       $this->tipo    = "5";
-      //$this->source  = "jdbc/saugConsTmp";
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama         = "<usuario>".$idDocente."</usuario><carrera>".$idCarrera."</carrera>";
       $XML           = NULL;
@@ -98,18 +103,6 @@ class UgServices
 
    public function Docentes_getAsistenciasMaterias($datosConsulta){
       $this->tipo    = "9";
-      //$this->source  = "jdbc/saugProcTmp";
-
-      /*informacion quemada - inicio*/
-       //$this->source                 = "jdbc/saugProcTmp";
-       //$this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-       //$datosConsulta["fechaInicio"] = '15/09/2015';
-       //$datosConsulta["fechaFin"]    = '20/09/2015';
-       //$datosConsulta["idDocente"]   = 31;
-       //$datosConsulta["idMateria"]   = 51;
-       //$datosConsulta["idParalelo"]  = 7;
-       //$datosConsulta["anio"]        = 2015;
-      /*informacion quemada - fin*/
       $datosConsulta["idParalelo"]  = 0;  /* ES NECESARIO PARA LA TRAMA ACTUAL */
       $datosConsulta["ciclo"]       = $datosConsulta["idCarrera"];  /* ESTE REEMPLAZO ES NECESARIO*/
       $this->urlWS   = $this->url.$this->urlProcedim;
@@ -132,45 +125,16 @@ class UgServices
 
    public function Docentes_getNotasMaterias($datosConsulta){
       $this->tipo    = "12";
-      $this->source  = "jdbc/saugProcTmp";
 
-      //quemado - inicio
-      // $this->source              = "jdbc/saugProcTmp";
-      // $this->urlProcedim         = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
        $datosConsulta["ciclo"]    = 0;    /* ES NECESARIO PARA LA TRAMA ACTUAL */
-//       $datosConsulta["idDocente"]= 3;
-//       $datosConsulta["idMateria"]= 54;
-      //quemado - fin
 
       $this->urlWS   = $this->url.$this->urlProcedim;
 
       $trama         =  "<PI_ID_CICLO_DETALLE>".$datosConsulta["ciclo"]."</PI_ID_CICLO_DETALLE>
                         <PI_ID_USUARIO_PROFESOR>".$datosConsulta["idDocente"]."</PI_ID_USUARIO_PROFESOR>
                         <PI_ID_MATERIA>".$datosConsulta["idMateria"]."</PI_ID_MATERIA>";
+
       $XML           = NULL;
-//$XML        = <<<XML
-//<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-//   <soap:Body>
-//      <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-//         <return>
-//            <codigoRespuesta>0</codigoRespuesta>
-//            <estado>F</estado>
-//            <idHistorico>30334</idHistorico>
-//            <mensajeRespuesta>ok</mensajeRespuesta>
-//            <resultadoObjeto>
-//               <parametrosSalida>
-//                  <PX_SALIDA><![CDATA[&lt;registros&gt;&lt;registro&gt;&lt;cantParciales&gt;2&lt;/cantParciales&gt;&lt;notaMinima&gt;6.50&lt;/notaMinima&gt;&lt;periodos&gt;&lt;periodo&gt;&lt;parcial&gt;1&lt;/parcial&gt;&lt;totalizar&gt;SI&lt;/totalizar&gt;&lt;componentePeriodo&gt;&lt;idNota&gt;51&lt;/idNota&gt;&lt;componente&gt;GESTIÓNFORMATIVA&lt;/componente&gt;&lt;idNota&gt;52&lt;/idNota&gt;&lt;componente&gt;GESTIÓNPRÁCTICA&lt;/componente&gt;&lt;idNota&gt;53&lt;/idNota&gt;&lt;componente&gt;ACREDITACIÓN&lt;/componente&gt;&lt;/componentePeriodo&gt;&lt;/periodo&gt;&lt;periodo&gt;&lt;parcial&gt;2&lt;/parcial&gt;&lt;totalizar&gt;SI&lt;/totalizar&gt;&lt;componentePeriodo&gt;&lt;idNota&gt;51&lt;/idNota&gt;&lt;componente&gt;GESTIÓNFORMATIVA&lt;/componente&gt;&lt;idNota&gt;52&lt;/idNota&gt;&lt;componente&gt;GESTIÓNPRÁCTICA&lt;/componente&gt;&lt;idNota&gt;53&lt;/idNota&gt;&lt;componente&gt;ACREDITACIÓN&lt;/componente&gt;&lt;/componentePeriodo&gt;&lt;/periodo&gt;&lt;/periodos&gt;&lt;idProfesor&gt;31&lt;/idProfesor&gt;&lt;profesor&gt;ACOSTAZAMBRANONANCYLENIS&lt;/profesor&gt;&lt;idMateria&gt;1&lt;/idMateria&gt;&lt;materia&gt;Matemática1&lt;/materia&gt;&lt;idParalelo&gt;1&lt;/idParalelo&gt;&lt;paralelo&gt;S1A&lt;/paralelo&gt;&lt;estudiantes&gt;&lt;estudiante&gt;&lt;idEstudiante&gt;17&lt;/idEstudiante&gt;&lt;estudiante&gt;MORAXAVIER&lt;/estudiante&gt;&lt;promedio&gt;9.50&lt;/promedio&gt;&lt;ciclo&gt;9&lt;/ciclo&gt;&lt;parciales&gt;&lt;Parcial&gt;1&lt;/Parcial&gt;&lt;total&gt;10.00&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;4.00&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;parciales&gt;&lt;Parcial&gt;2&lt;/Parcial&gt;&lt;total&gt;10.00&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.00&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;4.00&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;estadoCiclo&gt;A&lt;/estadoCiclo&gt;&lt;/estudiante&gt;&lt;estudiante&gt;&lt;idEstudiante&gt;6&lt;/idEstudiante&gt;&lt;estudiante&gt;FERNANDEZPALOMINOWILSONALBERTO&lt;/estudiante&gt;&lt;promedio&gt;7.00&lt;/promedio&gt;&lt;ciclo&gt;9&lt;/ciclo&gt;&lt;parciales&gt;&lt;Parcial&gt;1&lt;/Parcial&gt;&lt;total&gt;7.30&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;2.30&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;1.20&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;3.80&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;parciales&gt;&lt;Parcial&gt;2&lt;/Parcial&gt;&lt;total&gt;6.60&lt;/total&gt;&lt;notas&gt;&lt;nota&gt;&lt;idTipoNota&gt;51&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNFORMATIVA&lt;/tipoNota&gt;&lt;Nota&gt;2.50&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;52&lt;/idTipoNota&gt;&lt;tipoNota&gt;GESTIÓNPRÁCTICA&lt;/tipoNota&gt;&lt;Nota&gt;3.20&lt;/Nota&gt;&lt;/nota&gt;&lt;nota&gt;&lt;idTipoNota&gt;53&lt;/idTipoNota&gt;&lt;tipoNota&gt;ACREDITACIÓN&lt;/tipoNota&gt;&lt;Nota&gt;0.90&lt;/Nota&gt;&lt;/nota&gt;&lt;/notas&gt;&lt;/parciales&gt;&lt;estadoCiclo&gt;A&lt;/estadoCiclo&gt;&lt;/estudiante&gt;&lt;/estudiantes&gt;&lt;/registro&gt;&lt;/registros&gt;]]></PX_SALIDA>
-//                  <PI_ESTADO>1</PI_ESTADO>
-//                  <PV_MENSAJE>CONSULTA CON DATOS</PV_MENSAJE>
-//                  <PV_CODTRANS>7</PV_CODTRANS>
-//                  <PV_MENSAJE_TECNICO/>
-//               </parametrosSalida>
-//            </resultadoObjeto>
-//         </return>
-//      </ns2:ejecucionObjetoResponse>
-//   </soap:Body>
-//</soap:Envelope>
-//XML;
 
       $xmlData["XML_test"]          = $XML;
       $xmlData["bloqueRegistros"]   = 'registros';
@@ -181,9 +145,40 @@ class UgServices
    }#end function Docentes_getNotasMaterias()
 
 
+   public function Docentes_getNotasMateriasPorParcial($datosConsulta){
+      $this->tipo    = "23";
+      $this->urlWS   = $this->url.$this->urlProcedim;
+      
+      $datosConsulta["ciclo"]    = 0;    /* ES NECESARIO PARA LA TRAMA ACTUAL, SE LO SACA DEL ID_MATERIA_CICLO */
 
+      $trama         =  "<PI_ID_CICLO_DETALLE>".$datosConsulta["ciclo"]."</PI_ID_CICLO_DETALLE>
+                        <PI_ID_USUARIO_PROFESOR>".$datosConsulta["idDocente"]."</PI_ID_USUARIO_PROFESOR>
+                        <PI_ID_MATERIA>".$datosConsulta["idMateria"]."</PI_ID_MATERIA>
+                        <PARCIAL>".$datosConsulta["idParcial"]."</PARCIAL>";;
 
+      $XML           = NULL;
 
+      $xmlData["XML_test"]          = $XML;
+      $xmlData["bloqueRegistros"]   = 'registros';
+      $xmlData["bloqueSalida"]      = 'px_salida';
+
+      $response   =  $this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
+      return $response;
+   }#end function Docentes_getNotasMateriasPorParcial()
+
+   public function Docentes_getParcialesCarrera($datosConsulta){
+      $this->tipo    = "19";
+      $this->urlWS   = $this->url.$this->urlConsulta;
+      
+      $trama         = "<carrera>".$datosConsulta["idCarrera"]."</carrera>";
+      $XML           = NULL;
+    
+      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+
+      return $response;
+   }#end function Docentes_getParcialesCarrera()
+   
+   
        public function Docentes_getAlumnos($idDocente, $idCarrera){
            $ws         = new AcademicoSoap();
            $tipo       = "3";
