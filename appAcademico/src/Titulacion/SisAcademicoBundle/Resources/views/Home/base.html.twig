@@ -21,11 +21,9 @@
      <!-- fullCalendar 2.2.5-->
     <link rel="stylesheet" href="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/plugins/fullcalendar/fullcalendar.print.css') }}" media="print">
-    <link rel="stylesheet" href="{{ asset('theme/dist/css/AdminLTE.min.css') }}">
-    <link type="text/css" rel="stylesheet" href="{{ asset('theme/dist/css/skins/_all-skins.min.css') }}">
+  <link type="text/css" rel="stylesheet" href="{{ asset('css/growl/jquery.growl.css') }}" >
+  <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
 
-
-    <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
   </head>
 
 
@@ -67,6 +65,7 @@
     </div><!-- ./wrapper -->
 
 {% block javascripts %}
+    
     <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
     <script src="{{ asset('theme/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script/jquery-ui.js') }}"></script>
@@ -86,6 +85,7 @@
     <script src="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
    <script src="{{ asset('theme/plugins/datatables/jquery.dataTables.min.js') }}"></script>
    <script src="{{ asset('theme/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script src="{{ asset('js/growl/jquery.growl.js') }}"></script>
 
 <script type="text/javascript">
   $(function () {

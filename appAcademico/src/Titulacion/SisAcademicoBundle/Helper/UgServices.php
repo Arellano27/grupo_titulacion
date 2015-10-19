@@ -24,33 +24,33 @@ class UgServices
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
 
-     $this->usuario       = "abc";
-     $this->clave         = "123";
-     $this->source        = "jdbc/procedimientosSaug";
-     //$this->url           = "http://186.101.66.2:8080/";
-     $this->url           = "http://192.168.100.11:8080/";
-     $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-     $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-     $this->urlWS         = "";
-     //$this->host          = "186.101.66.2:8080";
-     $this->host          = "192.168.100.11:8080";
-     $this->sourceConsultas= "jdbc/consultasSaug";
+     // $this->usuario       = "abc";
+     // $this->clave         = "123";
+     // $this->source        = "jdbc/procedimientosSaug";
+     // //$this->url           = "http://186.101.66.2:8080/";
+     // $this->url           = "http://192.168.100.11:8080/";
+     // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+     // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+     // $this->urlWS         = "";
+     // //$this->host          = "186.101.66.2:8080";
+     // $this->host          = "192.168.100.11:8080";
+     // $this->sourceConsultas= "jdbc/consultasSaug";
 
 
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-       // $this->usuario       = "CapaVisualPhp";
-       // $this->clave         = "12CvP2015";
-       // $this->source        = "jdbc/saugProcTmp";
-       // $this->sourceConsultas  = "jdbc/saugConsTmp";
-       // $this->url           = "http://186.101.66.2:8080/";
-       // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-       // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-       // $this->urlWS         = "";
-       // $this->host          = "186.101.66.2:8080";
+       $this->usuario       = "CapaVisualPhp";
+       $this->clave         = "12CvP2015";
+       $this->source        = "jdbc/saugProcTmp";
+       $this->sourceConsultas  = "jdbc/saugConsTmp";
+       $this->url           = "http://186.101.66.2:8080/";
+       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+       $this->urlWS         = "";
+       $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
-   
+
    public function getLogin($username,$password){
 
       $this->tipo    = "8";
@@ -114,7 +114,7 @@ class UgServices
       /*informacion quemada - fin*/
       $datosConsulta["idParalelo"]  = 0;  /* ES NECESARIO PARA LA TRAMA ACTUAL */
       $datosConsulta["ciclo"]       = $datosConsulta["idCarrera"];  /* ESTE REEMPLAZO ES NECESARIO*/
-      
+
 
       $trama         =  "<fechaInicio>".$datosConsulta["fechaInicio"]."</fechaInicio><fechaFin>".$datosConsulta["fechaFin"]."</fechaFin>".
                         "<idProfesor>".$datosConsulta["idDocente"]."</idProfesor><idMateria>".$datosConsulta["idMateria"]."</idMateria><idParalelo>".$datosConsulta["idParalelo"]."</idParalelo>".
@@ -305,7 +305,7 @@ public function getConsultaCarreras_Matricula($idEstudiante){
         $trama      = "<usuario>".$idEstudiante."</usuario>";
         //$response=$ws->doRequestSreReceptaCarrera_Matricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
          $response=$this->ws->doRequestSreReceptaCarrera_Matricula($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response;     
+        return $response;
 
 }#end function
 
@@ -322,8 +322,8 @@ public function getConsultaDatos_Matricula($idEstudiante,$idCarrera,$idCiclo){
         $trama      = "<pi_id_estudiante>".$idEstudiante."</pi_id_estudiante><pi_id_carrera>".$idCarrera."</pi_id_carrera><pi_id_ciclodetalle>".$idCiclo."</pi_id_ciclodetalle>";
         //$response=$ws->doRequestSreReceptaTransacion_matriculacion($trama,$this->source,$this->tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doRequestSreReceptaTransacion_matriculacion($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        
-        return $response;  
+
+        return $response;
 
 }#end function
 
@@ -341,8 +341,8 @@ public function getConsultaDatos_Anulacion($idEstudiante,$idCarrera,$idCiclo,$id
         $trama      = "<PI_ID_ESTUDIANTE>".$idEstudiante."</PI_ID_ESTUDIANTE><PI_ID_CARRERA>".$idCarrera."</PI_ID_CARRERA><PI_ID_CICLO>".$idCiclo."</PI_ID_CICLO><PI_ID_MATERIA>".$idMateria."</PI_ID_MATERIA>";
         //$response=$ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doRequestSreReceptaTransacionAnulacionMaterias($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response; 
-            
+        return $response;
+
 }#end function
 
 
@@ -375,8 +375,8 @@ public function getConsultaDatos_Turno($idEstudiante,$idCarrera){
         $trama      = "<usuario>".$idEstudiante."</usuario><carrera>".$idCarrera."</carrera>";
         //$response=$ws->doRequestSreReceptaTransacionTurno($trama,$source,$tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doRequestSreReceptaTransacionTurno($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response; 
-          
+        return $response;
+
 }#end function
 
 public function getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$idCiclo){
@@ -392,10 +392,10 @@ public function getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$idCiclo)
         $trama      = "<PI_ID_ESTUDIANTE>".$idEstudiante."</PI_ID_ESTUDIANTE><PI_ID_CARRERA>".$idCarrera."</PI_ID_CARRERA><PI_ID_CICLO>".$idCiclo."</PI_ID_CICLO>";
         //$response=$ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response; 
-            
+        return $response;
+
   }#end function
-   
+
     public function getConsultaCorreo($login){
     $this->tipo    = "10";
     $usuario    = "CapaVisualPhp";
@@ -428,8 +428,6 @@ public function getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$idCiclo)
 
   }#end function
 
-}#end class
-
 public function getgeneraTurno($idEstudiante,$idCarrera,$idCiclo){
        /* $ws=new AcademicoSoap();
         $tipo       = "7";
@@ -443,8 +441,8 @@ public function getgeneraTurno($idEstudiante,$idCarrera,$idCiclo){
         $trama      = "<PI_ID_USUARIO_ESTUDIANTE>".$idEstudiante."</PI_ID_USUARIO_ESTUDIANTE><PI_ID_CARRERA>".$idCarrera."</PI_ID_CARRERA><PI_ID_CICLO_DETALLE>".$idCiclo."</PI_ID_CICLO_DETALLE>";
         //$response=$ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doGeneraTurno($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response; 
-            
+        return $response;
+
 }#end function
 
 public function getConsultaRegistro_OrdenPago($idEstudiante,$idCarrera,$idCiclo){
@@ -460,7 +458,52 @@ public function getConsultaRegistro_OrdenPago($idEstudiante,$idCarrera,$idCiclo)
         $trama      = "<PI_ID_USUARIO_ESTUDIANTE>".$idEstudiante."</PI_ID_USUARIO_ESTUDIANTE><PI_ID_CICLO_DETALLE>".$idCiclo."</PI_ID_CICLO_DETALLE><PI_ID_CARRERA>".$idCarrera."</PI_ID_CARRERA>";
         //$response=$ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doRequestSreReceptaTransacionRegistroOrdenPago($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response; 
-            
+        return $response;
+
 }#end function
+
+
+/**
+ * [stalin-caiche: cosnsulta de eventos academicos]
+ */
+public function getConsultaSoloEventos($idEventos){
+  $this->tipo       = "22";
+  $this->urlWS   = $this->url.$this->urlConsulta;
+  $trama      = "<catalogo>".$idEventos."</catalogo>";
+
+  $response = $this->ws->doRequestReceptaSoloEventosAcademicos($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+  return $response;
+}#end function
+
+public function crearEventos($evento){
+
+  $idparametro = 0;
+  $idtipoparametro = 1;
+  $usuario = 1;
+  $estado = "A";
+  $opcion = "I";
+  $this->tipo       = "31";
+  $this->urlWS   = $this->url.$this->urlProcedim;
+  $trama      = "<PX_XML><items><item><id_parametro>".$idparametro."</id_parametro><id_tipo_parametro>".$idtipoparametro."</id_tipo_parametro><nombre>".$evento."</nombre><valor1/><valor2/><usuario>".$usuario."</usuario><estado>".$estado."</estado></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+
+  $response = $this->ws->doInsertEventosAcademicos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+  return $response;
+
+}#end function
+
+public function insertarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario){
+  $idparametro = 0;
+  $idtipoparametro = 1;
+  $usuario = 1;
+  $estado = "A";
+  $opcion = "I";
+  $this->tipo       = "32";
+  $this->urlWS   = $this->url.$this->urlProcedim;
+  $trama      = "<PX_XML><items><item><id_sa_parametro_actividad>".$id_evento."</id_sa_parametro_actividad><id_sa_ciclo_detalle>".$id_ciclo."</id_sa_ciclo_detalle><fecha_desde>".$fec_desde."</fecha_desde><fecha_hasta>".$fec_hasta."</fecha_hasta><id_sg_usuario_registro>".$id_usuario."</id_sg_usuario_registro><id_sa_calendario_academico>0</id_sa_calendario_academico></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+  // echo '<pre>'; var_dump($trama); exit();
+  $response = $this->ws->doInsertEventosCalendario($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+  return $response;
+}
+
+
 }#end class
