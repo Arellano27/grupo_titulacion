@@ -14,22 +14,77 @@ class AdminController extends Controller
 
     public function calendario_carreraAction(){
 
-        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array());
 
+
+        // $tareas =  array(array( 'tarealm' => 'leccion1'),
+        //                 array( 'tarealm' => 'leccion2'),
+        //                 array( 'tarealm' => 'taller1'),
+        //                 array( 'tarealm' => 'taller2'), );
+
+        // return = $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig',
+        //                   array(    'data' => array(
+        //                                      'datosDocente' => $datosDocente,
+        //                                      'datosCarrera' => $datosCarrera2,
+        //                                      'datosMaterias' => $datosMaterias
+        //                                 )
+        //                   ));
+        $arreglo = array(
+                            array('evento' => 'evento1' ),
+                            array('evento' => 'evento2' ),
+                            array('evento' => 'evento3' ),
+                            array('evento' => 'evento4' )
+                        );
+
+
+        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array('data' => $arreglo));
+        // $response->setData(
+        //                         array(
+        //             'error'         => $this->v_error,
+        //             'msg'           => $this->v_msg,
+        //                                 'html'          => $this->v_html,
+        //                                 'withoutModal'  => $withoutModal,
+        //                                 'recargar'      => '0'
+        //                              )
+        //                       );
+        // return $response;
     }
 
     public function cambio_passwordAction(){
-    	return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
+        return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
     }
 
     public function ingreso_nuevo_passAction(Request $request){
         #obtenemos los datos enviados por get
-            $username    = $request->request->get('user');
-            $username    = $request->request->get('pass1');
-            $password    = $request->request->get('pass2');
-        #llamamos a la consulta del webservice
-        $UgServices = new UgServices;
+            $username     = $request->request->get('user');
+            $password     = $request->request->get('pass');
+            $password1    = $request->request->get('pass1');
+            
+            $UgServices   = new UgServices;
+            $salt         = "µ≈α|⊥ε¢ʟ@δσ";
+            $passwordEncr = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+            $passwordNuevoEncr = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+
+            $dataMant = $UgServices->mantenimientoUsuario($username,$passwordEncr,'','',$passwordNuevoEncr,'A');
+
+                if ( is_object($dataMant)) {
+                    $estado = $dataMant ->PI_ESTADO;
+                     $message = $dataMant ->PV_MENSAJE;
+                }
+
+                    //echo "<pre>";
+                    //var_dump($estado.'-----'.$message);
+                    //echo "</pre>";
+                    //exit();                    
+                
+            $respuesta = array(
+               "Codigo" => $estado ,
+               "Mensaje" => $message,
+            );
+            
+          return new Response(json_encode($respuesta));
+            
     }
+
 
     public function cargar_eventosAction(Request $request)
     {
@@ -68,4 +123,6 @@ class AdminController extends Controller
 
         return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_academico_carrera_user.html.twig', array());
     }
+
+
 }
