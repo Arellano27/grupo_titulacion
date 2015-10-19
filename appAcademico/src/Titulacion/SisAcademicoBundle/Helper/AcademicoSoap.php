@@ -1086,31 +1086,31 @@ function doRequestSreReceptaTransacionAnulacionMaterias($datosCuenta,$source,$ti
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
+/*$result =  <<<XML
+ <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+            <return>
+                <codigoRespuesta>0</codigoRespuesta>
+                <estado>F</estado>
+                <idHistorico>58</idHistorico>
+                <mensajeRespuesta>ok</mensajeRespuesta>
+                <resultadoObjeto>
+                    <parametrosSalida>
+                        <PX_SALIDA>&lt;registro>&lt;mensaje>ANULACION DE MATERIA HA SIDO REGISTRADA CORRECTAMENTE&lt;/mensaje>&lt;/registro></PX_SALIDA>
+                      <PI_ESTADO>1</PI_ESTADO>
+                      <PV_MENSAJE>CONSULTA CON DATOS</PV_MENSAJE>
+                      <PV_CODTRANS>7</PV_CODTRANS>
+                      <PV_MENSAJE_TECNICO>&lt;registro>&lt;mensaje>ANULACION DE MATERIA HA SIDO REGISTRADA CORRECTAMENTE&lt;/mensaje>&lt;/registro></PV_MENSAJE_TECNICO>
+               
+                    </parametrosSalida>
+                </resultadoObjeto>
+            </return>
+        </ns2:ejecucionObjetoResponse>
+    </soap:Body>
+</soap:Envelope>
+XML;*/
 
-// $result =  <<<XML
-//  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-//     <soap:Body>
-//         <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-//             <return>
-//                 <codigoRespuesta>0</codigoRespuesta>
-//                 <estado>F</estado>
-//                 <idHistorico>58</idHistorico>
-//                 <mensajeRespuesta>ok</mensajeRespuesta>
-//                 <resultadoObjeto>
-//                     <parametrosSalida>
-//                         <PX_SALIDA>&lt;registro>&lt;mensaje>ANULACION DE MATERIA HA SIDO REGISTRADA CORRECTAMENTE&lt;/mensaje>&lt;/registro></PX_SALIDA>
-//                       <PI_ESTADO>1</PI_ESTADO>
-//                       <PV_MENSAJE>CONSULTA CON DATOS</PV_MENSAJE>
-//                       <PV_CODTRANS>7</PV_CODTRANS>
-//                       <PV_MENSAJE_TECNICO>&lt;registro>&lt;mensaje>ANULACION DE MATERIA HA SIDO REGISTRADA CORRECTAMENTE&lt;/mensaje>&lt;/registro></PV_MENSAJE_TECNICO>
-
-//                     </parametrosSalida>
-//                 </resultadoObjeto>
-//             </return>
-//         </ns2:ejecucionObjetoResponse>
-//     </soap:Body>
-// </soap:Envelope>
-// XML;
 
 
 

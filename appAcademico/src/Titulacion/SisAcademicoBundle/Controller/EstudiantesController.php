@@ -1139,7 +1139,7 @@
                             $UgServices = new UgServices;
 
                              $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$Idciclo);
-                            
+                           
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
@@ -1155,11 +1155,13 @@
                                                               $IdMateria=$lsdetallematerias->id_sa_materia;
                                                               $Nivel=$lsdetallematerias->nivel;
                                                               $Curso=$lsdetallematerias->curso;
+                                                              $IdEstadoMat=$lsdetallematerias->idEstadoSolicitud;
                                                               $materiaObject=array('Nombre'=>$Nombre,
                                                                                       'Veces'=>$Veces,
                                                                                       'IdMateria'=>$IdMateria,
                                                                                       'Nivel'=>$Nivel,
-                                                                                      'Curso'=>$Curso);
+                                                                                      'Curso'=>$Curso,
+                                                                                      'IdEstado'=>$IdEstadoMat);
                                                               
                                                                 array_push($Materias_inscribir, $materiaObject); 
                                                         }
