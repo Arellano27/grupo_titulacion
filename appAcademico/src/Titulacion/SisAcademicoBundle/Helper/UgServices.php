@@ -19,28 +19,42 @@ class UgServices
    
    public function __construct() {
       $this->ws         = new AcademicoSoap();
-      $this->tipo       = "0";
+   /*   $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-     $this->usuario       = "abc";
+    /* $this->usuario       = "abc";
      $this->clave         = "123";
      $this->source        = "jdbc/procedimientosSaug";
-     $this->url           = "http://192.168.100.11:8080/";
+        $this->url           = "http://192.168.100.11:8080/";
      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
      $this->urlWS         = "";
-     $this->host          = "192.168.100.11:8080";
+     $this->host          = "192.168.100.11:8080";*/
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
-      /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      // $this->usuario       = "CapaVisualPhp";
-      // $this->clave         = "12CvP2015";
-      // $this->source        = "jdbc/saugProcTmp";
-      // $this->url           = "http://186.101.66.2:8080/";
-      // $this->urlConsulta   = "consultasTmp/ServicioWebConsultas?wsdl";
-      // $this->urlProcedim   = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      // $this->urlWS         = "";
-      // $this->host          = "186.101.66.2:8080";
+      /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO PRE*/
+//       $this->usuario       = "CapaVisualPhp";
+//       $this->clave         = "12CvP2015";
+//       $this->sourcecons        = "jdbc/consultasSaug";
+//       $this->sourcepro        = "jdbc/procedimientosSaug";
+//       $this->url           = "http://186.101.66.2:8080/";
+//       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+//       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//       $this->urlWS         = "";
+//       $this->host          = "186.101.66.2:8080";
+      /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
+        /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO PRO*/
+       $this->usuario       = "CapaVisualPhp";
+       $this->clave         = "12CvP2015";
+       $this->usuariopro       = "CapaVisual";
+       $this->clavepro         = "123";
+       $this->sourcecons    = "jdbc/saugConsTmp";
+       $this->sourcepro      = "jdbc/saugProcTmp";
+       $this->url           = "http://186.101.66.2:8080/";
+       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+       $this->urlWS         = "";
+       $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
    public function getLogin($username,$password){
@@ -48,7 +62,7 @@ class UgServices
       $tipo       = "8";
       $usuario    = "abc";
       $clave      = "123";
-      $source     = $this->source;
+      $source     = $this->sourcepro;
       $url        = $this->url.$this->urlProcedim;
       $host       = $this->host;
       $trama      = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
@@ -64,9 +78,9 @@ class UgServices
       $tipo       = "3";
       $usuario    = "abc";
       $clave      = "123";
-      $source     = "jdbc/saugProcTmp";
-      $url        = "http://192.168.100.11:8080/WSObjetosUgPre/ServicioWebObjetos?wsdl";
-      $host       = "192.168.100.11:8080";
+      $source     = $this->sourcepro;
+      $url        = $this->url.$this->urlProcedim;
+      $host       = $this->host;
       $trama      = "<usuario>0924393861</usuario><contrasena>sinclave</contrasena>";
       $response=$ws->doRequestSreReceptaTransacionConsultas($trama,$source,$tipo,$usuario,$clave,$url,$host);
                           
@@ -75,7 +89,7 @@ class UgServices
    
    public function Docentes_getCarreras($idDocente){
       $this->tipo    = "3";
-      $this->source  = "jdbc/saugConsTmp";
+      $this->source  = $this->sourcecons;
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama      = "<usuario>".$idDocente."</usuario><rol>2</rol>";
       $XML        = NULL;
@@ -92,7 +106,7 @@ class UgServices
       /*informacion quemada - fin*/
       
       $this->tipo    = "5";
-      $this->source  = "jdbc/saugConsTmp";
+      $this->source  = $this->sourcecons;
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama         = "<usuario>".$idDocente."</usuario><carrera>".$idCarrera."</carrera>";
       $XML           = NULL;
@@ -107,8 +121,8 @@ class UgServices
       $this->source  = "jdbc/saugProcTmp";
       
       /*informacion quemada - inicio*/
-       $this->source                 = "jdbc/saugProcTmp";
-       $this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
+       $this->source                 = $this->sourcepro;
+       //$this->urlProcedim            = "WSObjetosUgPre/ServicioWebObjetos?wsdl";
        //$datosConsulta["fechaInicio"] = '15/09/2015';
        //$datosConsulta["fechaFin"]    = '20/09/2015';
        //$datosConsulta["idDocente"]   = 31;
@@ -138,7 +152,7 @@ class UgServices
    
    public function Docentes_getNotasMaterias($datosConsulta){
       $this->tipo    = "12";
-      $this->source  = "jdbc/saugProcTmp";
+      $this->source  = $this->sourcepro;
       
       //quemado - inicio
       // $this->source              = "jdbc/saugProcTmp";
@@ -186,19 +200,163 @@ class UgServices
       return $response;
    }#end function Docentes_getNotasMaterias()
    
-   
-   
-   
-   
-       public function Docentes_getAlumnos($idDocente, $idCarrera){
+
+public function getConsultaCarreras($idEstudiante,$idRol){
+        $ws=new AcademicoSoap();
+        $tipo       = "3";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = $this->sourcecons;
+        $url        = $this->url.$this->urlConsulta;
+        $host       = $this->host;
+        $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+        $response=$ws->doRequestSreReceptaTransacionCarreras($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        return $response;     
+}#end function
+
+
+public function getConsultaNotas_act($idFacultad,$idCarrera,$idEstudiante){
+        $ws=new AcademicoSoap();
+        $tipo       = "11";
+        $usuario    = "CapaVisual";
+        $clave      = "123";
+        $source     = $this->sourcepro;
+        $url        = $this->url.$this->urlProcedim;
+        $host       = $this->host;
+        $tipoconsulta='A';
+        $trama      = "<p_tipoConsulta>".$tipoconsulta."</p_tipoConsulta><p_codUsuario>".$idEstudiante."</p_codUsuario><p_idCarrera>".$idCarrera."</p_idCarrera>";
+        $response=$ws->doRequestSreReceptaTransacionnotas_ac($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        return $response;
+                
+}#end function
+
+public function getConsultaNotas_nh($idFacultad,$idCarrera,$idEstudiante){
+        $ws=new AcademicoSoap();
+        $tipo       = "11";
+        $usuario    = "abc";
+        $clave      = "123";
+        //$source     = "jdbc/saugProcTmp";
+        $source     = $this->sourcepro;
+       // $url        = "http://186.101.66.2:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
+        $url        = $this->url.$this->urlProcedim;
+        $host       = $this->host;
+       // $idEstudiante=17;
+       // $idCarrera=4;
+        $tipoconsulta='H';
+        //$trama      = "<idFacultad>".$idFacultad." </idFacultad><idCarrera>".$idCarrera ." </idCarrera><idEstudiante>".$idEstudiante."</idEstudiante>";
+        $trama      = "<p_tipoConsulta>".$tipoconsulta."</p_tipoConsulta><p_codUsuario>".$idEstudiante."</p_codUsuario><p_idCarrera>".$idCarrera."</p_idCarrera>";
+        //$trama      = "<usuario>0924393861rr</usuario><contrasena>sinclave</contrasena>";
+        $response=$ws->doRequestSreReceptaTransacionnotas_nh($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        return $response;
+                
+}#end function
+
+public function getConsultaAlumno_Asistencia($idEstudiante,$idCarrera,$ciclo,$anio){
+        $ws=new AcademicoSoap();
+        $tipo       = "13";
+        $usuario    = "CapaVisual";
+        $clave      = "123";
+        $source     = $this->sourcepro;
+        $url        = $this->url.$this->urlProcedim;
+        $host       = $this->host;
+        $trama      = "<pi_idEstudiante>".$idEstudiante."</pi_idEstudiante><pi_idCarrera>".$idCarrera."</pi_idCarrera>";
+        $response=$ws->doRequestSreReceptaTransacionAsistencias($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        return $response;
+
+}
+public function getConsultaCarreras_Matricula($idEstudiante,$idRol){
+        $ws=new AcademicoSoap();
+        $tipo       = "3";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = $this->sourcecons;
+        //$url        = "http://192.168.100.11:8080/consultas/ServicioWebConsultas?wsdl";
+        //$host       = "192.168.100.11";
+        $url        = $this->url.$this->urlConsulta;
+        $host       = $this->host;
+        $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+        $response=$ws->doRequestSreReceptaTransacionCarreras($trama,$source,$tipo,$usuario,$clave,$url,$host);
+         
+        return $response;     
+}#end function
+
+public function getConsultaDatos_Matricula($idEstudiante,$idRol,$idCarrera){
+        $ws=new AcademicoSoap();
+        $tipo       = "3";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = $this->sourcecons;
+        $url        = $this->url.$this->urlConsulta;
+        $host       = $this->host;
+        $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+        $response=$ws->doRequestSreReceptaTransacion_matriculacion($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        return $response;     
+}#end function
+
+public function setMatricula_Estudiante($trama){
+        $ws=new AcademicoSoap();
+        $tipo       = "3";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = $this->sourcecons;
+        $url        = $this->url.$this->urlConsulta;
+        $host       = $this->host;
+        //$trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+        $response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        return $response;     
+}#end function
+
+ public function Docentes_gettareaxparcial($trama){
            $ws         = new AcademicoSoap();
-           $tipo       = "3";
-           $usuario    = "abc";
+           $tipo       = "24";
+           $usuario    = "CapaVisual";
            $clave      = "123";
-           $source     = "jdbc/saugProcTmp";
-           $url        = "http://192.168.100.11:8080/WSObjetosUgPre/ServicioWebObjetos?wsdl";
-           $host       = "192.168.100.11:8080";
-           $trama      = "<idDocente>".$idDocente."</idDocente>";
+           $source     = $this->sourcepro;
+           $url        = $this->url.$this->urlProcedim;
+           $host       = $this->host;
+           
+          
+               $XML        = <<<XML
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+         <return>
+            <codigoRespuesta>0</codigoRespuesta>
+            <estado>F</estado>
+            <idHistorico>152821</idHistorico>
+            <mensajeRespuesta>ok</mensajeRespuesta>
+            <resultadoObjeto>
+               <parametrosSalida>
+                  <PX_SALIDA><![CDATA[<registros><registro><cantParciales>1</cantParciales><notaMinima>6.50</notaMinima><periodos><periodo><parcial>PARCIAL1</parcial><totalizar>SI</totalizar><componentePeriodo><idNota>51</idNota><componente>GESTIÓN FORMATIVA</componente><idNota>52</idNota><componente>GESTIÓN PRÁCTICA</componente><idNota>53</idNota><componente>ACREDITACIÓN</componente></componentePeriodo></periodo><periodo><parcial>PARCIAL2</parcial><totalizar>SI</totalizar></periodo><periodo><parcial>SUSPENSO</parcial><totalizar>NO</totalizar></periodo></periodos><idProfesor>5</idProfesor><profesor>BARRETO BARRETO KATIUSKA ELIZABETH </profesor><idMateria>30</idMateria><materia>Investigación Operaciones</materia><idParalelo>65</idParalelo><paralelo>S5K</paralelo></registro><registro><cantParciales>1</cantParciales><notaMinima>6.50</notaMinima><periodos><periodo><parcial>PARCIAL1</parcial><totalizar>SI</totalizar><componentePeriodo><idNota>51</idNota><componente>GESTIÓN FORMATIVA</componente><idNota>52</idNota><componente>GESTIÓN PRÁCTICA</componente><idNota>53</idNota><componente>ACREDITACIÓN</componente></componentePeriodo></periodo><periodo><parcial>PARCIAL2</parcial><totalizar>SI</totalizar></periodo><periodo><parcial>SUSPENSO</parcial><totalizar>NO</totalizar></periodo></periodos><idProfesor>5</idProfesor><profesor>BARRETO BARRETO KATIUSKA ELIZABETH </profesor><idMateria>30</idMateria><materia>Investigación Operaciones</materia><idParalelo>66</idParalelo><paralelo>S5L</paralelo></registro></registros>]]></PX_SALIDA>
+                  <PI_ESTADO>1</PI_ESTADO>
+                  <PV_MENSAJE>CONSULTA CON DATOS</PV_MENSAJE>
+                  <PV_CODTRANS>7</PV_CODTRANS>
+                  <PV_MENSAJE_TECNICO/>
+               </parametrosSalida>
+            </resultadoObjeto>
+         </return>
+      </ns2:ejecucionObjetoResponse>
+   </soap:Body>
+</soap:Envelope>
+XML;
+           
+           
+                   
+           
+           $response=$ws->doRequestSreReceptaTransacionConsultasdoc2($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
+
+           return $response;
+   }#end function
+
+      public function Docentes_getAlumnos($trama){
+           $ws         = new AcademicoSoap();
+           $tipo       = "9";
+           $usuario    = $this->usuario;
+           $clave      = $this->clave;
+           $source     = $this->sourcecons;
+           $url        = $this->url.$this->urlConsulta;
+           $host       = $this->host;
+           /*$trama      = "<idDocente>".$idDocente."</idDocente>";
            
           
                $XML        = <<<XML
@@ -250,121 +408,94 @@ xmlns:ns2="http://servicios.ug.edu.ec/">
 </ns2:ejecucionConsultaResponse>
 </soap:Body>
 </soap:Envelope>
-XML;
+XML;*/
            
-           
+           $XML=null;
                    
            
-           $response=$ws->doRequestSreReceptaTransacionConsultasdoc($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
+           $response=$ws->doRequestConsultaAlumnos($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
    }#end function
+   
+       public function Docentes_ingresoNotas($trama){
+           $ws         = new AcademicoSoap();
+           $tipo       = "14";
+           $usuario    = "CapaVisual";
+           $clave      = "123";
+           $source     =$this->sourcepro;
+           $url        = $this->url.$this->urlProcedim;
+           $host       = $this->host;
+           
+           $XML=null;
+                   
+           
+           $response=$ws->doRequestIngresoNotas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
+           return $response;
+   }#end function
+        public function Docentes_ingresoAsistencia($trama){
+           $ws         = new AcademicoSoap();
+           $tipo       = "16";
+           $usuario    = "CapaVisual";
+           $clave      = "123";
+           $source     =$this->sourcepro;
+           $url        = $this->url.$this->urlProcedim;
+           $host       = $this->host;
+           
+           $XML=null;
+                   
+           
+           $response=$ws->doRequestIngresoNotas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
-public function getConsultaCarreras($idEstudiante,$idRol){
-        $ws=new AcademicoSoap();
-        $tipo       = "3";
-        $usuario    = "CapaVisualPhp";
-        $clave      = "12CvP2015";
-        $source     = "jdbc/saugConsTmp";
-        $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
-        $host       = "186.101.66.2:8080";
-        $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
-        $response=$ws->doRequestSreReceptaTransacionCarreras($trama,$source,$tipo,$usuario,$clave,$url,$host);
-        return $response;     
-}#end function
+           return $response;
+   }#end function
+   
+ public function Docentes_getfechasparcial($trama){
+           $ws         = new AcademicoSoap();
+           $tipo       = "21";
+           $usuario    = $this->usuario;
+           $clave      = $this->clave;
+           $source     = $this->sourcecons;
+           $url        = $this->url.$this->urlConsulta;
+           $host       = $this->host;
+          // $trama      = "<idDocente>".$Parcial."</idDocente>";
+           
+          
+               $XML        = <<<XML
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+         <return>
+            <codigoRespuesta>0</codigoRespuesta>
+            <estado>F</estado>
+            <idHistorico>12156</idHistorico>
+            <mensajeRespuesta>exito</mensajeRespuesta>
+            <respuestaConsulta>
+               <registros>
+                  <registro>
+                     <fecha>2015-10-17</fecha>
+                     <ingreso>1</ingreso>
+                  </registro>
+                  <registro>
+                     <fecha>2015-10-18</fecha>
+                     <ingreso>1</ingreso>
+                  </registro>
+               </registros>
+            </respuestaConsulta>
+         </return>
+      </ns2:ejecucionConsultaResponse>
+   </soap:Body>
+</soap:Envelope>
+XML;
+           
+           //$XML =null;
+                   
+           
+           $response=$ws->doRequestConsultaFechas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
-
-public function getConsultaNotas_act($idFacultad,$idCarrera,$idEstudiante){
-        $ws=new AcademicoSoap();
-        $tipo       = "11";
-        $usuario    = "CapaVisual";
-        $clave      = "123";
-        $source     = "jdbc/saugProcTmp";
-        $url        = "http://186.101.66.2:8080/WSObjetosUgPre/ServicioWebObjetos";
-        $host       = "186.101.66.2:8080";
-        $tipoconsulta='A';
-        $trama      = "<p_tipoConsulta>".$tipoconsulta."</p_tipoConsulta><p_codUsuario>".$idEstudiante."</p_codUsuario><p_idCarrera>".$idCarrera."</p_idCarrera>";
-        $response=$ws->doRequestSreReceptaTransacionnotas_ac($trama,$source,$tipo,$usuario,$clave,$url,$host);
-        return $response;
-                
-}#end function
-
-public function getConsultaNotas_nh($idFacultad,$idCarrera,$idEstudiante){
-        $ws=new AcademicoSoap();
-        $tipo       = "11";
-        $usuario    = "abc";
-        $clave      = "123";
-        //$source     = "jdbc/saugProcTmp";
-        $source     = "jdbc/saugProcTmp";
-       // $url        = "http://186.101.66.2:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
-        $url        = "http://186.101.66.2:8080/WSObjetosUgPre/ServicioWebObjetos";
-        $host       = "186.101.66.2:8080";
-       // $idEstudiante=17;
-       // $idCarrera=4;
-        $tipoconsulta='H';
-        //$trama      = "<idFacultad>".$idFacultad." </idFacultad><idCarrera>".$idCarrera ." </idCarrera><idEstudiante>".$idEstudiante."</idEstudiante>";
-        $trama      = "<p_tipoConsulta>".$tipoconsulta."</p_tipoConsulta><p_codUsuario>".$idEstudiante."</p_codUsuario><p_idCarrera>".$idCarrera."</p_idCarrera>";
-        //$trama      = "<usuario>0924393861rr</usuario><contrasena>sinclave</contrasena>";
-        $response=$ws->doRequestSreReceptaTransacionnotas_nh($trama,$source,$tipo,$usuario,$clave,$url,$host);
-        return $response;
-                
-}#end function
-
-public function getConsultaAlumno_Asistencia($idEstudiante,$idCarrera,$ciclo,$anio){
-        $ws=new AcademicoSoap();
-        $tipo       = "13";
-        $usuario    = "CapaVisual";
-        $clave      = "123";
-        $source     = "jdbc/saugProcTmp";
-        $url        = "http://186.101.66.2:8080/WSObjetosUgPre/ServicioWebObjetos?wsdl";
-        $host       = "186.101.66.2:8080";
-        $trama      = "<pi_idEstudiante>".$idEstudiante."</pi_idEstudiante><pi_idCarrera>".$idCarrera."</pi_idCarrera>";
-        $response=$ws->doRequestSreReceptaTransacionAsistencias($trama,$source,$tipo,$usuario,$clave,$url,$host);
-        return $response;
-
-}
-public function getConsultaCarreras_Matricula($idEstudiante,$idRol){
-        $ws=new AcademicoSoap();
-        $tipo       = "3";
-        $usuario    = "CapaVisualPhp";
-        $clave      = "12CvP2015";
-        $source     = "jdbc/saugConsTmp";
-        //$url        = "http://192.168.100.11:8080/consultas/ServicioWebConsultas?wsdl";
-        //$host       = "192.168.100.11";
-        $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
-        $host       = "186.101.66.2:8080";
-        $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
-        $response=$ws->doRequestSreReceptaTransacionCarreras($trama,$source,$tipo,$usuario,$clave,$url,$host);
-         
-        return $response;     
-}#end function
-
-public function getConsultaDatos_Matricula($idEstudiante,$idRol,$idCarrera){
-        $ws=new AcademicoSoap();
-        $tipo       = "3";
-        $usuario    = "CapaVisualPhp";
-        $clave      = "12CvP2015";
-        $source     = "jdbc/saugConsTmp";
-        $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
-        $host       = "186.101.66.2:8080";
-        $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
-        $response=$ws->doRequestSreReceptaTransacion_matriculacion($trama,$source,$tipo,$usuario,$clave,$url,$host);
-        return $response;     
-}#end function
-
-public function setMatricula_Estudiante($trama){
-        $ws=new AcademicoSoap();
-        $tipo       = "3";
-        $usuario    = "CapaVisualPhp";
-        $clave      = "12CvP2015";
-        $source     = "jdbc/saugConsTmp";
-        $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
-        $host       = "186.101.66.2:8080";
-        //$trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
-        $response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
-        return $response;     
-}#end function
+           return $response;
+   }#end function
 
 }#end class
      

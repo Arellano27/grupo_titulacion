@@ -4,9 +4,9 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs">
     <li class="active"><a  data-toggle="tab" class="tabNotas" id="notas">Consulta de Notas</a></li>
-    <li><a data-toggle="tab" class="tabNotas"  id="ingreso">Ingreso Notas P#1</a></li>
-    <li><a data-toggle="tab" class="tabNotas"  id="ingreso2">Ingreso Notas P#2</a></li>
-    <li><a data-toggle="tab" class="tabNotas"  id="examen">Ingreso Examen</a></li>
+    {%for count, parcial in arr_parcial %}
+    <li><a data-toggle="tab" class="tabNotas"  id="ingreso{{count}}">{{parcial.parcial}}</a></li>
+    {% endfor %}
   </ul>
 
   <!-- Tab panes -->
@@ -19,7 +19,7 @@
    $(document).ready(function() { 
       var condition = '{{ condition }}';
       if (condition == '') {
-         var obj_data = {"idMateria" : "{{idMateria}}"};
+         var obj_data = {"idParalelo" : "1"};
          mostrarInfoTabsNotas('notas','{{ path('docentes_consulta_notas_materia') }}', obj_data);
          //mostrarAlumnos('notas','{{ path('docentes_consulta_notas_materia') }}', null);
       }
@@ -35,18 +35,19 @@
 
      if(tabs === 'notas' ) {
        idhtml='notas';
-       var obj_data = {"idMateria" : "{{idMateria}}"};
+       var obj_data = {"idParalelo" : "1"};
        mostrarInfoTabsNotas('notas','{{ path('docentes_consulta_notas_materia') }}', obj_data);
      }
-     if(tabs ==='ingreso'){
-       idhtml='ingresonotas';
-       mostrarAlumnos('notas','{{ path('docentes_mostrar_alumnos') }}','2345');
+     if(tabs ==='ingreso1'){
+        var materia= '{{idMateria}}';
+       // alert(materia);
+       mostrarAlumnos('notas','{{ path('docentes_mostrar_alumnos') }}',materia);
      }
      else if(tabs==='ingreso2'){
-       mostrarAlumnos('alumnos2','{{ path('docentes_mostrar_alumnos2') }}','2345');
+       mostrarAlumnos('notas','{{ path('docentes_mostrar_alumnos2') }}','2');
      }
-     else if(tabs==='examen'){
-       idhtml='alumnos3';
+     else if(tabs==='ingreso3'){
+       
        mostrarAlumnos('notas','{{ path('docentes_mostrarAlumnoexamen') }}','2345');
      }
    });

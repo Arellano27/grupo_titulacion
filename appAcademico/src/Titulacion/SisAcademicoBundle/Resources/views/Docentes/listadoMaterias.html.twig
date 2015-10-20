@@ -48,7 +48,7 @@
          var obj_data      = {'idMateria':idMateria,'idCarrera':idCarrera};
 
          var optionSelect        = $(this);
-         var jumpOption          = '{{path('docentes_listado_alumnos_materia')}}';
+         var jumpOption          = '{{path('docentes_alumnos_asistencias')}}';
          var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";;
          
          $.ajax({

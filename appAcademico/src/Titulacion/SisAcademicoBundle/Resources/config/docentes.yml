@@ -45,3 +45,27 @@ docentes_ingreso_notas:
 docentes_ingreso_notas2:
     pattern:  /notas2/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresonotas2 }
+    
+docentes_alumnos_asistencias:
+    pattern:  /materias/asistencias/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:tabDocAsistencias }
+    
+docentes_ingreso_asistencia:
+    pattern:  /ingreso/asistencia
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresarAsistencia }
+    
+docentes_asistencia_alumnos:
+    pattern:  /asistencia/alumnos
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:IngresoAsistencia }
+    
+docentes_ingresar_nota:
+    pattern:  /ingresar/nota
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresarNota }
+    
+docentes_actualiza_asis:
+    pattern:  /actualiza/asis
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizaAsis }
+    
+docentes_actualiza_asistencia:
+    pattern:  /actualizar/asistencias
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizarAsistencia}
