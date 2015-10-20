@@ -41,6 +41,15 @@ estudiantes_presenta_matricula:
 estudiantes_pdf_matricula:
     pattern:  /pdfmatricula/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfmatricula}
+estudiantes_genera_turno:
+    pattern:  /generaturno
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:generaturno}
+estudiantes_pdf_ordenpago:
+    pattern:  /pdfordenpago/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfordenpago}
+estudiantes_subir_archivos:
+    pattern:  /subirarchivos/{idEstudiante}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:subirarchivos}   
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes

@@ -119,7 +119,7 @@
                               
                                      },
                                      success:  function (dataResponse) {
-                                        console.log(dataResponse);
+                                        
                                        var respuesta=jQuery.parseJSON(dataResponse);
                                        $("#div_respuesta").html(respuesta.mensaje);
                                        if (respuesta.codigo_error!=1)
@@ -296,6 +296,48 @@
 
 
                         <div id="step-1">
+                                {% if (banderaarchivos==1 )%}
+                                       <!--  <div class="col-lg-12">
+                                                <form method="post" id='frmdocumentos' action="{{ path('estudiantes_subir_archivos',{ 'idEstudiante': idEstudiante})}}" enctype="multipart/form-data">
+                                                    <table>
+                                                        <tr>
+                                                            <td> 
+                                                                <label> Foto del Estudiante</lable> 
+                                                            </td>
+                                                            <td> 
+                                                                    <input type="file" name="archivo[]" id="imgfoto"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <label> Papeleta de Votacion</lable> 
+                                                            </td>
+                                                             <td>   
+                                                                <input type="file" name="archivo[]" id="imgVotacion" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                               <label> Cedula de Identidad </lable>
+                                                            </td>
+                                                            <td>
+                                                                <input type="file" name="archivo[]" id="imgCedula"/>
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                                <td align='right' colspan='2'>
+                                                                    <input class='btn btn-success ' type="submit" value="Subir Documentos" />
+                                                                </td>
+                                                        </tr>
+                                                        
+                                                    </table>
+                                                    <div id='divarchivos'>
+
+                                                        </div>
+                                                </form>
+                                        </div>   -->
+                                {% endif %}    
                             <h4 align="center" >Condiciones de Matriculacion </h4>
                               <p>Sr. Estudiante una vez  matriculado no es posible reversar el proceso. Presiones siguiente para iniciar el proceso de Matriculacion </p>  
 
@@ -441,8 +483,10 @@
                         <tfoot>
                             <tr>
                                 <td colspan=5 align="right">
-                                     <a class="btn btn-success" href="{{ path('estudiantes_pdf_matricula',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank">Imprimir Documento</a>
+                                     <a class="btn btn-success" href="{{ path('estudiantes_pdf_matricula',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank">Imprimir Documento de Matriculacion</a>
+                                     <!-- <a class="btn btn-success" href="{{ path('estudiantes_pdf_ordenpago',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera}) }}" target="_blank">Imprimir Orden de Pago</a> -->
                                 </td>
+                               
                             </tr>
                         </tfoot>
                        
@@ -457,9 +501,187 @@
 
 {% endif %}
 
-{% if (banderaMatricula!=4 and banderaMatricula!=1)%}
+{% if (banderaMatricula!=4 and banderaMatricula!=1 )%}
+    <table class="col-lg-12">
+        <tr>
+            <td align='center'>
+                <h2>{{Mensaje}} </h2>
+            </td>
+        </tr>
+            
+                {% if (banderaMatricula==3 )%}
+                    <tr>
+                        <td align='center'>
+                            <a class="btn btn-success btngenerarturno"  >Generar Turno </a>
+                            <br>
+                            <br>
+                        </td>
+                    </tr>
 
-    <h2>{{Mensaje}} </h2>
+                {% endif %}
+    </table>
+    <div id="divturnos">
+    </div>
+
+        <script language="javascript">// <![CDATA[
+            $(document).ready(function() {
+               // Interceptamos el evento submit
+                $('#frmdocumentos').submit(function() {
+                var formData = new FormData($(this)[0]);
+              // Enviamos el formulario usando AJAX
+                    $.ajax({
+                        type: 'POST',
+                        url: $(this).attr('action'),
+                        data: formData,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        // Mostramos un mensaje con la respuesta de PHP
+                        success: function(data) {
+                            $('#divarchivos').html(data);
+                        }
+                    })        
+                    return false;
+                });
+            })
+        </script>
+
+        <script language="javascript">// <![CDATA[
+            $(document).ready(function() {
+               // Interceptamos el evento submit
+                $('.btngenerarturno').on("click",function(event){
+                $(".btngenerarturno").attr("disabled", true);
+                var idEstudiante='{{idEstudiante}}';
+                var idCarrera='{{idCarrera}}';
+                var idCiclo = '{{idciclo}}';
+                var obj_data = {'idEstudiante':idEstudiante,'idCarrera':idCarrera,'idCiclo':idCiclo};
+                var tablamatricula = $('#divturnos');
+                var jumpAction = '{{path('estudiantes_genera_turno')}}';
+              // Enviamos el formulario usando AJAX
+                    $.ajax({
+                        url:   jumpAction,
+                         data: obj_data,
+                         type:  'post',
+                         async: true,
+                         beforeSend: function () {
+                   
+                         },
+                        // Mostramos un mensaje con la respuesta de PHP
+                        success: function(data) {
+
+                             var respuesta=jQuery.parseJSON(data);
+                               //tablamatricula.html(respuesta.mensaje);
+                                if (respuesta.codigo_error==1)
+                                {
+                                   modelessMateriasInscribir= new $.flavr({
+                                                   modal   : true,
+                                                   content : respuesta.mensaje+"<br/><br/> POR FAVOR VERIFIQUE SU NUEVO TURNO",
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', 
+                                                                   style: 'primary',
+                                                                   action: function(){
+                                                                        location.reload();
+                                                                   } }
+                                                   }
+                                                }); 
+                                   $('.btngenerarturno').remove();
+                                   
+                                }
+                                else
+                                {
+                                    modelessMateriasInscribir= new $.flavr({
+                                                   modal   : true,
+                                                   content : respuesta.mensaje,
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', 
+                                                                   style: 'primary'}
+                                                   }
+                                                }); 
+                                }
+
+                                
+
+                            //    if (respuesta.codigo_error!=1)
+                            //    {
+                            //         $('.botonMatriculaSig').addClass('buttonDisabled');
+                            //         $('.botonAnterior').removeClass('buttonDisabled');
+                            //         $("#btninscribe").attr("disabled", false);
+                            //    }
+                            //    else
+                            //    {
+                            //     $('.botonAnterior').addClass('buttonDisabled');
+                            //     $("#btninscribe").remove();
+                            //    }
+                            // tablamatricula.html(data);
+                        }
+                    })        
+                    return false;
+                });
+            })
+        </script>
+        {% if (banderaMatricula==7 )%}
+        <!-- <table align='center'>
+            <tr>
+                    
+                    <td align='center' valign='center'>
+                        <label>Criterio de Consulta</label>
+                        <br/>
+                        <select  name='selconsulta'>
+                          <option value="cedula" > Cedula de Identicada</option>
+                            <option value="codigo"> Codigo del Estudiante </option>
+                        </select >
+                    </td>
+            </tr>
+            <tr>
+                    <td align='center'>
+                        <label>Dato a Consultar</label>
+                        <br/>
+                           <input type="text" id="busquedaest" /> 
+                    </td>
+                    
+            </tr>
+            <tr>
+                    <td align='center'>
+                             <br/>
+                            <a class="btn btn-success " id='btnconsultarest'>Consultar</a>
+                    </td>
+            </tr>
+        </table>
+        <div id='divodenespagos'>
+
+        </div>
+
+            <script language="javascript">// <![CDATA[
+                    $(document).ready(function() {
+                        $('#btnconsultarest').on("click",function(event){
+                            var elecmentocombo = document.getElementsByName("selconsulta"); 
+                            var indice=elecmentocombo[0].options.selectedIndex;
+                            var criterio =elecmentocombo[0].options[indice].value;
+                            var valorBuscado=$("#busquedaest").val();
+                            alert(valorBuscado);
+                            var obj_data = {'idEstudiante':valorBuscado,'idCarrera':idCarrera,'criterio':criterio};
+                            var resultado = $('#divodenespagos');
+                            var jumpAction = '{{path('admin_registro_ordenpago')}}';
+                      // Enviamos el formulario usando AJAX
+                            $.ajax({
+                                 data: obj_data,
+                                 type:  'post',
+                                 async: true,
+                                 beforeSend: function () {
+                           
+                                 },
+                                // Mostramos un mensaje con la respuesta de PHP
+                                success: function(data) {
+                                    resultado.html(data);
+                                }
+                            })        
+                            return false;
+                        });
+                    })
+            </script>
+ -->
+        {% endif %}
 
 {% endif %}
 

@@ -11,5 +11,18 @@ admin_academico_cargar_eventos:
     path:     /cargar_eventos
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos }
 admin_academico_cargar_eventos_user:
-    path:     /eventos_user
+    path:     /nuevo_pass
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos_carrera_user }
+admin_registro_ordenpago:
+    path:     /registroordenpago
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:registroordenpago }
+admin_carreras_ordenpago:
+    path:     /carrerasordenpago
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:carrerasordenpago }
+admin_academico_crear_eventos:
+    path:     /crear_evento
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:crear_eventos_academicos }
+admin_academico_insertar_eventos:
+    path:     /insertar_evento
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:insertar_eventos_calendario }
+

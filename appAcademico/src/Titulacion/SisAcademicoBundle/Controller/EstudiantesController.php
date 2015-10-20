@@ -8,6 +8,7 @@
     use Symfony\Component\HttpFoundation\JsonResponse;
     use Titulacion\SisAcademicoBundle\Helper\UgServices;
     use Titulacion\SisAcademicoBundle\fpdf\fpdf;
+    use Titulacion\SisAcademicoBundle\Helper\procesarArchivos;
 
     class EstudiantesController extends Controller
     {
@@ -1138,7 +1139,7 @@
                             $UgServices = new UgServices;
 
                              $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$Idciclo);
-                            
+                           
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
@@ -1154,11 +1155,13 @@
                                                               $IdMateria=$lsdetallematerias->id_sa_materia;
                                                               $Nivel=$lsdetallematerias->nivel;
                                                               $Curso=$lsdetallematerias->curso;
+                                                              $IdEstadoMat=$lsdetallematerias->idEstadoSolicitud;
                                                               $materiaObject=array('Nombre'=>$Nombre,
                                                                                       'Veces'=>$Veces,
                                                                                       'IdMateria'=>$IdMateria,
                                                                                       'Nivel'=>$Nivel,
-                                                                                      'Curso'=>$Curso);
+                                                                                      'Curso'=>$Curso,
+                                                                                      'IdEstado'=>$IdEstadoMat);
                                                               
                                                                 array_push($Materias_inscribir, $materiaObject); 
                                                         }
@@ -1339,6 +1342,9 @@
                       $idRol=$perfilEst;
                       $CicloMatricula=$anio." - Ciclo ".$ciclo; //'2015 Ciclo 2';
                       $pdf= " ";
+                      $banderaarchivos=0;
+                     // $banderaMatricula=7;
+                      
                       if ($banderaMatricula==1)
                       {
                          $UgServices = new UgServices;
@@ -1463,7 +1469,8 @@
                                                     'Materias_inscribir'=>$Materias_inscribir,
                                                     'cicloencurso'=>$CicloMatricula,
                                                     'idciclo'=>$Idciclo,
-                                                    'carrera'=>$carrera
+                                                    'carrera'=>$carrera,
+                                                    'banderaarchivos'=>$banderaarchivos
                                                  ));
 
              }else{
@@ -1647,7 +1654,7 @@
     }#end function
 
       
-       public function pdfmatriculaAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera)
+    public function pdfmatriculaAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera)
     {     
             $session=$request->getSession();
             $perfilEst   = $this->container->getParameter('perfilEst');
@@ -1743,12 +1750,23 @@
                               }
                   }
                   $mpdfService = $this->get('tfox.mpdfport');
-                   
-                    $html =  $pdf;
+                  $mPDF = $mpdfService->getMpdf();
+                 // $mPDF = $mpdfService->add();
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  
+                  //$mPDF->AddPage('','','1','i','on');
+                  //$mPDF->WriteHTML($pdf);
+                  //$mPDF->Output();
+                  return new response($mPDF->Output());
+                   // $html =  $pdf;
+
                     //$mpdfService->SetTitle("Acme Trading Co. - Invoice");
                     //$mpdfService->Output("Pruebas.pdf")
-                    $response = $mpdfService->generatePdfResponse($html);
-                    return $response;
+
+
+                    //$response = $mpdfService->generatePdfResponse($html);
+                    //return $response;
 
 
 
@@ -1768,4 +1786,309 @@
            }  
     }#end function
         
+    public function generaturnoAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
+
+                $respuesta= new Response("",200);
+                $idEstudiante  = $request->request->get('idEstudiante');
+                $idCarrera  = $request->request->get('idCarrera');
+                $idCiclo  = $request->request->get('idCiclo');
+                $UgServices = new UgServices;
+                $xml = $UgServices->getgeneraTurno($idEstudiante,$idCarrera,$idCiclo);
+                $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+                $arrayProceso=array();
+                $arrayProceso['codigo_error']=$Estado;
+                $arrayProceso['mensaje']=$Mensaje;
+                $jarray=json_encode($arrayProceso);
+
+                 $respuesta->setContent($jarray);
+                return $respuesta;
+
+
+
+
+        } else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }  
+    }#end function
+
+     public function pdfordenpagoAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
+
+
+                $UgServices = new UgServices;
+                $xml1 = $UgServices->getConsultaRegistro_OrdenPago($idEstudiante,$idCarrera,$ciclo);
+              //obtenet el ciclo de matriculacion del XML
+                $pdfGen="";
+               $mpdfService = $this->get('tfox.mpdfport');
+                $mPDF = $mpdfService->getMpdf();
+                $mPDF->AddPage('','','1','i','on');
+                $lnPage=1;
+                $lnCuenta=0;
+                $lnhasta=0;
+               //var_dump($xml1);
+               if ( is_object($xml1))
+                  {
+                            foreach($xml1->PX_SALIDA as $xml)
+                             {  
+                                  
+                                  foreach($xml->OrdenPagos as $lscaborden)
+                                  {
+                                        $lnhasta=count ($lscaborden->OrdenPago);
+                                        foreach($lscaborden->OrdenPago as $lsOrden) 
+                                          {
+                                              $lnCuenta=$lnCuenta+1;
+                                              $NumOrden= (string ) $lsOrden->numero_orden;
+                                              $FecOrden= (string ) $lsOrden->fecha_limite_pago;
+                                              $ValorOrden=(string ) $lsOrden->valor_total;
+                                              $pdf= " <html> 
+                                                  <body>
+                                                  <table class='table table-striped table-bordered' border='1' width='100%'  >
+                                                  <tr>
+                                                  <td width='100%'>
+                                                    <img width='5%' src='images/menu/ug_logo.png'/>
+                                                    <b> $carrera </b>
+                                                  </td>
+                                                  </tr>
+                                                  <tr>
+                                                  <td width='100%'>
+                                                    <table align='center'>
+                                                    <tr>
+                                                      <td align='left'>
+                                                        <b> Orden de Pago  N° </b>
+                                                      </td>
+                                                      <td>
+                                                        $NumOrden
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td align='left'>
+                                                        <b> Fecha Maxima de Pago </b>
+                                                      </td>
+                                                      <td>
+                                                        $FecOrden
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td align='left'>
+                                                        <b> Valor a Pagar </b>
+                                                      </td>
+                                                      <td>
+                                                        $ValorOrden
+                                                      </td>
+                                                    </tr>
+                                                    </table>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                <td width='105%'>    
+                                                    <table  border='1' width='100%' align='center'>
+                                                                <tr>
+                                                                        <th colspan='2' > Detalle de Orden de Pago  </th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th  align='center'>Detalle</th>
+                                                                    <th  align='center'>Valor</th>
+                                                                </tr>"; 
+
+
+                                             foreach($lsOrden->Detalles->Detalle as $lsDetOrden) 
+                                                {
+                                                  $Rubro=$lsDetOrden->Rubro;
+                                                  $Valor=$lsDetOrden->valor;
+                                                  $pdf.="<tr>
+                                                            <td  width='100%' align='center'>$Rubro</td>
+                                                            <td  width='100%' align='center'>$Valor</td>
+                                                        </tr>"; 
+                                                } 
+                                                 $pdf.="</table>";
+
+                                               $pdf.="</td>
+                                                        </tr>
+                                                      </table> <br><br><br><br>
+                                               </body></html>";
+                                               //$pdfGen.=$pdf;
+                                               
+                                               if ($lnPage==3)
+                                               {
+                                                  $lnPage=1;
+                                                  $mPDF->AddPage('','','1','i','on');
+                                                  
+                                               }
+                                               else
+                                               {
+                                                $lnPage=$lnPage+1;
+                                                if ($lnhasta==$lnCuenta)
+                                                  {
+                                                    $mPDF->AddPage('','','1','i','on'); 
+                                                    
+                                                  }
+                                               }
+                                               
+
+                                               $mPDF->WriteHTML($pdf);
+                                               
+                                          }
+                                      }
+                                  }
+                                      
+                  }
+                 
+                  //$mPDF->WriteHTML($pdfGen);
+                  
+                  //$mPDF->AddPage('','','1','i','on');
+                  //$mPDF->WriteHTML($pdf);
+                  //$mPDF->Output();
+                  if ($lnhasta<=0)
+                  {
+                    $mPDF->WriteHTML("No existen Datos para Generar");
+                  }
+                  return new response($mPDF->Output());
+                   // $html =  $pdf;
+
+                    //$mpdfService->SetTitle("Acme Trading Co. - Invoice");
+                    //$mpdfService->Output("Pruebas.pdf")
+
+
+                    //$response = $mpdfService->generatePdfResponse($html);
+                    //return $response;
+
+
+
+        } else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }  
+    }#end function
+
+     public function subirarchivosAction(Request $request,$idEstudiante)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
+
+                $ruta="documentos/estudiantes";
+                $Documentos = new procesarArchivos;
+                if (!empty($_FILES)) {
+                    $existingFile = false;
+                    //Comprobamos que por lo menos haya un archivo
+                    foreach ($_FILES as $uploadedFile => $dataFile) {
+                        for ($i = 0; $i < count($dataFile["name"]); $i++) {
+                            if ($dataFile["name"][$i] != "") {
+                                $existingFile = true;
+                            };
+                        }
+                    }
+                    if ($existingFile) {
+                        //llamamos a la funcion que mueve y comprueba los archivos
+                        $filesUploaded = $Documentos->moveFiles($_FILES,$idEstudiante,$ruta);
+                    } else {
+                        die("No hay un archivo para procesar");
+                    }
+                } else {
+                    die("No se enviaron archivos");
+                }
+
+                // if (isset($filesUploaded) and !empty($filesUploaded)) {
+                //     echo "Archivos cargados :)", "<br>";
+                //     //ejemplo de como
+                    
+                //     foreach ($filesUploaded as $singleFile) {
+                //         echo $singleFile,
+                //         '<br>',
+                //             '<img src="documentos/estudiantes/' . $singleFile . '" width="30%">',
+                //         '<br>',
+                //         '<hr>';
+                //     }
+                // }
+
+                return new response("Proceso Exitoso");
+
+                   // $html =  $pdf;
+
+                    //$mpdfService->SetTitle("Acme Trading Co. - Invoice");
+                    //$mpdfService->Output("Pruebas.pdf")
+
+
+                    //$response = $mpdfService->generatePdfResponse($html);
+                    //return $response;
+
+
+
+        } else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }  
+    }#end function
     }

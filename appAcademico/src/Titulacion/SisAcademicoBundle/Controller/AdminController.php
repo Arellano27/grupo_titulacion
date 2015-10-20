@@ -12,49 +12,22 @@ class AdminController extends Controller
 {
 
 
-    public function calendario_carreraAction(){
+    public function calendario_carreraAction(Request $request){
+
+        $UgServices   = new UgServices;
+        $rsEventos = $UgServices->getConsultaSoloEventos(1); #como parametros enviaremos siempre 1
 
 
-
-        // $tareas =  array(array( 'tarealm' => 'leccion1'),
-        //                 array( 'tarealm' => 'leccion2'),
-        //                 array( 'tarealm' => 'taller1'),
-        //                 array( 'tarealm' => 'taller2'), );
-
-        // return = $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig',
-        //                   array(    'data' => array(
-        //                                      'datosDocente' => $datosDocente,
-        //                                      'datosCarrera' => $datosCarrera2,
-        //                                      'datosMaterias' => $datosMaterias
-        //                                 )
-        //                   ));
-        $arreglo = array(
-                            array('evento' => 'evento1' ),
-                            array('evento' => 'evento2' ),
-                            array('evento' => 'evento3' ),
-                            array('evento' => 'evento4' )
-                        );
-
-
-        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array('data' => $arreglo));
-        // $response->setData(
-        //                         array(
-        //             'error'         => $this->v_error,
-        //             'msg'           => $this->v_msg,
-        //                                 'html'          => $this->v_html,
-        //                                 'withoutModal'  => $withoutModal,
-        //                                 'recargar'      => '0'
-        //                              )
-        //                       );
-        // return $response;
+        return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array('data' => $rsEventos));
     }
 
     public function cambio_passwordAction(){
-    	return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
+        return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
     }
 
     public function ingreso_nuevo_passAction(Request $request){
         #obtenemos los datos enviados por get
+
             $session=$request->getSession();
             $Email= $session->get('mail');
             $Nombre = $session->get('nom_usuario');
@@ -67,7 +40,29 @@ class AdminController extends Controller
         #llamamos a la consulta del webservice
         $UgServices = new UgServices;
         
-               $mailer    = $this->container->get('mailer');
+              
+            $username     = $request->request->get('user');
+            $password     = $request->request->get('pass');
+            $password1    = $request->request->get('pass1');
+
+            $UgServices   = new UgServices;
+            $salt         = "µ≈α|⊥ε¢ʟ@δσ";
+            $passwordEncr = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+            $passwordNuevoEncr = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+
+            $dataMant = $UgServices->mantenimientoUsuario($username,$passwordEncr,'','',$passwordNuevoEncr,'A');
+
+                if ( is_object($dataMant)) {
+                    $estado = $dataMant ->PI_ESTADO;
+                     $message = $dataMant ->PV_MENSAJE;
+                }
+
+                    //echo "<pre>";
+                    //var_dump($estado.'-----'.$message);
+                    //echo "</pre>";
+                    //exit();
+                if ($estado == "1") {
+                  $mailer    = $this->container->get('mailer');
                     $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
                                 ->setUsername('titulacion.php@gmail.com')
                                 ->setPassword('sc123456');
@@ -76,10 +71,21 @@ class AdminController extends Controller
                                 ->setSubject("Contraseña Cambiada Correctamente")
                                 ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
                                 ->setTo($Email)
-                                ->setBody("$Nombre usted ha Cambiado la Contraseña Exitosamente, Su nueva contraseña es 123456");
+                                ->setBody("$Nombre usted ha Cambiado la Contraseña Exitosamente, Su nueva contraseña es $password1");
                     // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
                     $this->get('mailer')->send($message);   
+                }
+
+            $respuesta = array(
+               "Codigo" => $estado ,
+               "Mensaje" => $message,
+            );
+
+          return new Response(json_encode($respuesta));
+
+
     }
+
 
     public function cargar_eventosAction(Request $request)
     {
@@ -103,7 +109,7 @@ class AdminController extends Controller
 //    "0"
 // );
 
-        echo '<pre>'; var_dump($data); exit();
+        echo '<pre>'; var_dump("hi"); exit();
 
 
     }
@@ -114,10 +120,39 @@ class AdminController extends Controller
         #llamamos a la consulta del webservice
         $UgServices = new UgServices;
 
-
-
         return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_academico_carrera_user.html.twig', array());
     }
+    /**
+     * [Action que permite crear un vento del calendario academico]
+     * @param  Request $request [description]
+     */
+    public function crear_eventos_academicosAction(Request $request){
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+        $evento    = $request->request->get('evento');
+
+        $rsInsertEvent = $UgServices->crearEventos($evento);
+
+        return new Response($rsInsertEvent);
+        // echo '<pre>'; var_dump($rsInsertEvent); exit();
+    }#end function
+
+    public function insertar_eventos_calendarioAction(Request $request){
+
+        $id_ciclo = 19;
+        $UgServices = new UgServices;
+        $id_evento    = $request->request->get('id_evento');
+        $fec_desde    = $request->request->get('start');
+        $fec_hasta    = $request->request->get('end');
+        // $date = date_format($fec_desde, 'Y-m-d H:i:s');
+// echo '<pre>'; var_dump($date); exit();
+        $session=$request->getSession();
+        $id_usuario = $session->get("id_user");
+        $id_usuario = 11;
+        $rsInsertEvent = $UgServices->insertarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario);
+        // echo '<pre>'; var_dump($rsInsertEvent); exit();
+        return new Response($rsInsertEvent);
+    }#end function
 
 
 }
