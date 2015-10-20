@@ -37,7 +37,7 @@
                           {% else %}
                                 {% set colorevent = color[1] %}
                           {% endif %}
-                            <div ondblclick="inactivar_evento()" id="{{event.codigo}}" name="{{event.codigo}}"  class="external-event" style="background-color: {{colorevent}}">{{color[0]}}</div>
+                            <div ondblclick="inactivar_evento(this)" id="evento_drag" name="{{event.codigo}}"  class="external-event" style="background-color: {{colorevent}}">{{color[0]}}</div>
                       {% endfor %}
 
                       <!-- </div> -->
@@ -129,15 +129,17 @@
           });
         }
 
-        function inactivar_evento(){
-
+        function inactivar_evento(evet){
+                alert($(evet).attr("name"));
             var html =                '   <div class="form-row">' +
                 '       <input type="text" name="titulo" ' +
                 '       placeholder="Título" />' +
                 '   </div>' +
                 '   <div class="form-row">' +
-                '       <input type="password" name="password" ' +
-                '       placeholder="Descripción" />' +
+                '       <select id="estado" name="estado" >' +
+                '       <option>Activo</option>' +
+                '       <option>Inactivo</option>' +
+                '       </select>' +
                 '   </div>' +
                 '   <div class="form-row">' +
                 '   </div>';
