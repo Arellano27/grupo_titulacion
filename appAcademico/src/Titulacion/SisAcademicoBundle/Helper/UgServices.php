@@ -37,21 +37,21 @@ class UgServices
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
       $this->usuario       = "CapaVisualPhp";
       $this->clave         = "12CvP2015";
-      
+
       $this->url           = "http://186.101.66.2:8080/";
-      
+
       /*Saug Temporal*/
       $this->source        = "jdbc/saugProcTmp";
       $this->sourceConsultas  = "jdbc/saugConsTmp";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      
+
 //      /*Preproduccion*/
 //      $this->source        = "jdbc/procedimientosSaug";
 //      $this->sourceConsultas  = "jdbc/consultasSaug";
 //      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
 //      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-//      
+//
       $this->urlWS         = "";
       $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
@@ -142,7 +142,7 @@ class UgServices
    public function Docentes_getNotasMateriasPorParcial($datosConsulta){
       $this->tipo    = "23";
       $this->urlWS   = $this->url.$this->urlProcedim;
-      
+
       $datosConsulta["ciclo"]    = 0;    /* ES NECESARIO PARA LA TRAMA ACTUAL, SE LO SACA DEL ID_MATERIA_CICLO */
       $trama         =  "<PI_ID_CICLO_DETALLE>".$datosConsulta["ciclo"]."</PI_ID_CICLO_DETALLE>
                         <PI_ID_USUARIO_PROFESOR>".$datosConsulta["idDocente"]."</PI_ID_USUARIO_PROFESOR>
@@ -160,16 +160,16 @@ class UgServices
    public function Docentes_getParcialesCarrera($datosConsulta){
       $this->tipo    = "19";
       $this->urlWS   = $this->url.$this->urlConsulta;
-      
+
       $trama         = "<carrera>".$datosConsulta["idCarrera"]."</carrera>";
       $XML           = NULL;
-    
+
       $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
 
       return $response;
    }#end function Docentes_getParcialesCarrera()
-   
-   
+
+
    public function Docentes_getAlumnos($idDocente, $idCarrera){
        $ws         = new AcademicoSoap();
        $this->tipo = "3";
@@ -361,7 +361,7 @@ public function getConsultaDatos_Anulacion($idEstudiante,$idCarrera,$idCiclo,$id
         //$response=$ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
 
         $response=$this->ws->doRequestSreReceptaTransacionAnulacionMaterias($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response; 
+        return $response;
 
 }#end function
 
@@ -479,8 +479,8 @@ public function Mensajes_Enviados($idUsuario){
            $url  = "";
            $host = "";
            $trama      = "<idDocente>".$idUsuario."</idDocente>";
-           
-          
+
+
                $XML        = <<<XML
 <soap:Envelope
 xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -505,7 +505,7 @@ xmlns:ns2="http://servicios.ug.edu.ec/">
             </Detalle>
             <Fecha>
                     12/12/12
-            </Fecha>            
+            </Fecha>
         </Mensajes>
     </respuestaConsulta>
 </return>
@@ -513,14 +513,14 @@ xmlns:ns2="http://servicios.ug.edu.ec/">
 </soap:Body>
 </soap:Envelope>
 XML;
-         
+
            $response=$ws->doRequestSreReceptaTransacionConsultas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
    }#end function
 
 
-	
+
 
 
 public function getConsultaRegistro_OrdenPago($idEstudiante,$idCarrera,$idCiclo){
