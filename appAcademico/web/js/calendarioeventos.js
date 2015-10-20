@@ -1,5 +1,20 @@
 jQuery(document).ready(function() {
+		
 
+		function drop(ev) {
+		    ev.preventDefault();
+		    var data = ev.dataTransfer.getData("text");
+		    ev.target.appendChild(document.getElementById(data));
+		    alert("hola mundo");
+		}
+
+		function allowDrop(ev) {
+		    ev.preventDefault();
+		}
+
+		// function drag(ev) {
+		//     ev.dataTransfer.setData("text", ev.target.id);
+		// }
 	// function ini_events(ele,url) {
  //          ele.each(function (url) {
  //            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
@@ -67,11 +82,23 @@ jQuery(document).ready(function() {
 		},
 		editable: true,
 		droppable: true,
-		eventReceive: function(event){
-				var title = event.title;
-				var start = event.start.format("YYYY-MM-DD");
-				// alert(start);
-	            var id_evento = $("#eventos_drop").attr("name");
+		// eventReceive: function(event){
+		// 		var title = event.title;
+		// 		var start = event.start.format("YYYY-MM-DD");
+		// 		// $("#eventos_drop").each(function(){
+		// 		// 	alert(this.name);
+		// 		// });
+		// 		// alert(event.id);
+		// 		console.info("============");
+		// 		console.debug(event);
+	 //            var id_evento = $(event).attr("name");
+	 //            insertar_eventos(start,id_evento);
+		// },
+		drop: function(date, allDay){
+
+				var start = date.format("YYYY-MM-DD");
+
+	            var id_evento = $(this).attr("name");
 	            insertar_eventos(start,id_evento);
 		},
 	});
@@ -118,3 +145,4 @@ jQuery(document).ready(function() {
           $("#new-event").val("");
         });
 });
+
