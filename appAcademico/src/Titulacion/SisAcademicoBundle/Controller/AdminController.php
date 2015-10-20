@@ -1,7 +1,7 @@
 <?php
 
 namespace Titulacion\SisAcademicoBundle\Controller;
-//stalin caiche
+//git
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\HttpFoundation\Request;

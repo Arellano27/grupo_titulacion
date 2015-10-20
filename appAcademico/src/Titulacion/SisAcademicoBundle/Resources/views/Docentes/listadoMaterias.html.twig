@@ -20,9 +20,9 @@
          <td id="jornadaMateria_{{ materias.id_sa_materia_paralelo }}">{{ materias.jornada|upper }}</td>
          <td id="alumnosMateria_{{ materias.id_sa_materia_paralelo }}">{{ materias.cantidad }}</td>
          <td class="td-actions">
-            <a id="materiaAsistencias-{{ materias.id_sa_materia_paralelo }}" href="" class="asistenciaAlumnos btn btn-primary btn-circle" title="Histórico de asistencia de Alumnos"><i class="fa fa-list"> </i></a>
-            <a id="materiasNotas-{{ materias.id_sa_materia_paralelo  }}" href="" class="notasAlumnos btn btn-primary btn-circle" title="Consultas de Notas de los Alumnos"><i class="fa fa-mortar-board"> </i></a>
-            <a id="materiasVision-{{ materias.id_sa_materia_paralelo  }}" href="" class="materiasVision btn btn-primary btn-circle" title="Consultar una vista general de la asignatura"><i class="fa fa-bar-chart-o"> </i></a></td>
+            <a id="materiaAsistencias-{{ materias.id_sa_materia_paralelo }}" href="" class="tip asistenciaAlumnos btn btn-primary btn-circle"><span>Histórico de Asistencia de Alumnos</span><i class="fa fa-list"> </i></a>
+            <a id="materiasNotas-{{ materias.id_sa_materia_paralelo  }}" href="" class="tip notasAlumnos btn btn-primary btn-circle"><span>Consultas de Notas de los Alumnos</span><i class="fa fa-mortar-board"> </i></a>
+            <a id="materiasVision-{{ materias.id_sa_materia_paralelo  }}" href="" class="tip materiasVision btn btn-primary btn-circle"><span>Vista General de la Asignatura</span><i class="fa fa-bar-chart-o"> </i></a></td>
         </tr>
       {% endfor %}
       </tbody>
@@ -98,7 +98,7 @@
          var jumpOption = '{{path('docentes_notas_alumnos_materia')}}';
          
          //var obj_data = {'idDocente': idDocente,'idMateria':idMateria};
-         var obj_data = {'idMateria':idMateria};
+         var obj_data = {'idMateria':idMateria, 'idCarrera':idCarrera};
 
          $.ajax({
             url:   jumpOption,

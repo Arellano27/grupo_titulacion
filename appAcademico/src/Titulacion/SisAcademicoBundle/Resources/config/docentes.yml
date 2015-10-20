@@ -22,6 +22,14 @@ docentes_consulta_notas_materia:
     pattern:  /materias/notas/listado
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listadoNotasAlumnosMateria }
     
+docentes_notas_crear_xls:
+    pattern:  /exportar/notas/listado/{idMateria}/{idParcial}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:exportarListadoNotasAlumnosMateria }
+    
+docentes_asistencias_crear_xls:
+    pattern:  /exportar/asistencias/listado/{idCarrera}/{idParalelo}/{idMateria}/{fechaInicio}/{fechaFin}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:exportarListadoAsistenciasAlumnosMateria }
+    
 docentes_vision_materia:
     pattern:  /materias/visionGeneral/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria }

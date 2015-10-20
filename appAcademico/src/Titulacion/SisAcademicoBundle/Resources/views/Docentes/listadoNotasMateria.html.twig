@@ -6,18 +6,50 @@
    table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after {
       top: 36px;
    }
+      
+   #selectorParcialesMateria {
+      padding-top: 6px;
+      border-bottom: 1px solid;
+      margin-bottom: 10px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-bottom: 5px;
+      padding-top: 12px;
+      border-radius: 3px;
+      border: 1px solid #337AB7;
+
+   }
+
 </style>
 
 <div class="row">
    <div class="col-xs-12 container">
            <div class="panel panel-default">
            <div class="panel-heading ">
-              LISTADO DE ALUMNOS - {{datosGenerales.materia|upper}} [{{datosGenerales.paralelo|upper}}]
+               LISTADO DE ALUMNOS - {{datosGenerales.materia|upper}} [{{datosGenerales.paralelo|upper}}]
            </div>
 
            <!-- /.panel-heading -->
            <div class="panel-body ">
-                   <div class="table-responsive ">
+                  <div class="table-responsive ">
+                     <div class="col-lg-2"></div>
+                     <div id="selectorParcialesMateria" class="col-lg-8">
+                        <div class="col-lg-12">
+                           <div class="col-lg-3" style="padding-top: 7px; display: unset !important;">Seleccionar Parcial:</div>
+                           <div class="col-lg-2 periodosAsistencia" style="padding-top: 7px;">
+                              <select id="parcialesSelectNotas">
+                                 {#<option value="">Selec. Parcial</option>#}
+                                 {% for keyIdentParcial,dataIdentParcial in identificaParcial %}
+                                    <option value="{{dataIdentParcial.numero_parcial}}">{{dataIdentParcial.nombre}}</option>
+                                 {% endfor %}
+                                 <option value="todos">Todos</option>
+                              </select>
+                           </div>
+                           <div class="col-lg-2"><button id="consultaNotasParciales" class="btn btn-primary" type="button">Consultar</button></div>
+                           <div class="col-lg-2"></div>
+                           <div class="col-lg-2 botonesExport"><a id="exportaNotas" class="btn btn-success" href="{{ path('docentes_notas_crear_xls',{ 'idMateria': datosGenerales.idmateriaParalelo, 'idParcial': parcialActual}) }}" target="_blank"><i class="fa fa-fw fa-save"></i> Exportar Listado Actual</a></div>
+                        </div>
+                     </div>
                            <table id="listadoNotasMateria_{{datosGenerales.idMateria}}" class="table table-striped">
                                    <thead>
                                      <tr>
@@ -26,7 +58,9 @@
                                              {% set colspan = componentesParcial.cantComponentes %}
                                            <th class="no-sort" style="text-align:center; border-right-width:4px;" colspan="{{colspan}}"> {{nombreParcial|upper|replace({'_': ' '})}} </th>
                                            {% endfor %}
+                                          {% if parcialActual|lower == 'todos' %}
                                            <th class="no-sort" style="text-align:center;" rowspan="2"> Resultado <br/>del<br/> Semestre</th>
+                                          {% endif %}
                                      </tr>
                                      
                                      <tr>
@@ -63,59 +97,17 @@
                                           {% set estadoCiclo = 'NO FINALIZA' %}
                                           {% set classEstadoCiclo = 'label-info' %}
                                        {% endif %}   
-
-                                       <td style="text-align: center;"><span class="label label-sm {{classEstadoCiclo}}" type="button" style="cursor:default;">{{estadoCiclo}}</span></td>
+                                       {% if parcialActual|lower == 'todos' %}
+                                          <td style="text-align: center;"><span class="label label-sm {{classEstadoCiclo}}" type="button" style="cursor:default;">{{estadoCiclo}}</span></td>
+                                       {% endif %}
+                                       
                                     </tr>
                                     {% endfor %}
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      {#
-                                    {% for dataEstudiante in dataMateriaNotas.estudiantes %}
-                                       
-                                     <tr>
-                                           <td> <div style="float:left;">{{dataEstudiante.estudiante|upper}}</div><div style="float:right;"></td>
-                                           {% for dataParciales in dataEstudiante.parciales %}
-                                              {% for dataNotas in dataParciales.notas %}
-                                                 {% for keyNota, dataNota in dataNotas.nota %}
-                                                   {% if dataNota.idTipoNota==5331 %}
-                                                      <td class="parcial{{dataNota.idTipoNota}}" style="text-align: right; padding-right: 41px;"> {{dataNota.Nota}}</td>
-                                                   {% endif %}
-                                                   {% if dataNota.idTipoNota==52 %}
-                                                      <td class="parcial{{dataNota.idTipoNota}}" style="text-align: right; padding-right: 41px;"> {{dataNota.Nota}}</td>
-                                                   {% endif %}
-                                                 {% endfor %}  
-                                              {% endfor %}
-                                              <td class="totalParcial" style="text-align: right; padding-right: 16px; border-right-width:4px;"> 8.45</td>
-                                           {% endfor %}{#
-                                           <td style="text-align: right; padding-right: 41px;"> 4.00</td>
-                                           <td style="text-align: right; padding-right: 25px;"> 3.00</td>
-                                           <td style="text-align: right; padding-right: 16px; border-right-width:4px;"> 7.00</td>
-                                           <td style="text-align: right; padding-right: 59px; border-right-width:4px;"> ---</td>
-                                           <td style="text-align: center;"><button class="btn btn-success" type="button" style="cursor:default;">Aprobado</button></td>
-                                     </tr>
-                                    {% endfor %}#}
-                                    {# <tr>
-                                           <td> <div style="float:left;">QUIÑONEZ NUQUEZ Carlos</div></td>
-                                           <td style="text-align: right; padding-right: 41px;"> 3.50</td>
-                                           <td style="text-align: right; padding-right: 25px;"> 3.00</td>
-                                           <td style="text-align: right; padding-right: 16px; border-right-width:4px;"> 6.50</td>
-                                           <td style="text-align: right; padding-right: 41px;"> 1.00</td>
-                                           <td style="text-align: right; padding-right: 25px;"> 3.00</td>
-                                           <td style="text-align: right; padding-right: 16px; border-right-width:4px;"> 4.00</td>
-                                           <td style="text-align: right; padding-right: 59px; border-right-width:4px;"> 2.00</td>
-                                           <td style="text-align: center;"><button class="btn btn-danger" type="button" style="cursor:default;">Reprobado</button></td>
-                                     </tr>#}
-
                                    </tbody>
                              </table>
                            </div>
                            <!-- /.table-responsive -->
-                   </div>
+                  </div>
                    <!-- /.panel-body -->
            </div>
            <!-- /.panel -->
@@ -123,6 +115,9 @@
 </div>
 <script type="text/javascript">
    $(document).ready(function(){
+      var parcialActual = '{{parcialActual}}';
+      $("#parcialesSelectNotas").val(parcialActual);
+      
       $('#listadoNotasMateria_{{datosGenerales.idMateria}}').DataTable({
          "paging": false,
          "lengthChange": false,
@@ -158,5 +153,113 @@
             }
         }
       });
+      
+      
+      $("#exportaNotas").on("click", function(event){
+         var textoOriginalExport = '<i class="fa fa-fw fa-save"></i> Exportar Listado Actual';
+         var textoCargandoExport = '<i class="fa fa-refresh fa-spin"></i> Generando exportación';
+         
+         $("#exportaNotas").html(textoCargandoExport);
+         setTimeout(function(){
+            $("#exportaNotas").html(textoOriginalExport);
+         }, 5000);
+      });
+
+      $("#consultaNotasParciales").click(function(){
+         var idParcial = $("#parcialesSelectNotas").val();
+         var idMateria = "{{datosGenerales.idmateriaParalelo}}";
+         var idCarrera  = $("#carreraSeleccionada").val();
+         
+         var obj_data      = {'idMateria':idMateria, 'idCarrera':idCarrera, 'idParcial':idParcial};
+         var jumpOption    = '{{path('docentes_consulta_notas_materia')}}';
+         
+         $.ajax({
+            url:   jumpOption,
+            type:  'post',
+            data: obj_data,
+            async: false,
+            beforeSend: function () {
+               modelessMaterias = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
+            },
+            error: function(){
+               modelessMaterias.close();
+               var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la consulta de notas.";
+               modelessMaterias = new $.flavr({
+                                                modal   : true,
+                                                content : mensajeErrorNotas,
+                                                buttons     : {
+                                                   primary : { text: 'Aceptar', style: 'primary' }
+                                                }
+                                             });
+            },
+            success:  function (dataResponse) {
+              modelessMaterias.close();
+              $("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
+              $("#panelNotasCarrera_"+idCarrera).html(dataResponse);
+            },
+            dataType:'html'
+         });
+      });
+
+      //console.log(controladorExport);
+      {#$("#exportaNotas").on('click', function(){
+         var idOpcionMateria     = $(this).attr("id");
+         var idCarrera           = $("#carreraSeleccionada").val();
+         var idMateria           = $("#materiaSeleccionada-Carrera_"+idCarrera).val();
+         var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";
+         var inicioCiclo         = $("#inicioCiclo-Carrera_"+idCarrera).val();
+         var finCiclo            = $("#finCiclo-Carrera_"+idCarrera).val();
+         
+         var jumpOption                = '{{path('docentes_crear_xls')}}';
+         var obj_data                  = {'idMateria':idMateria};
+         var mensajeErrorExportNotas   = "<i class=\"fa fa-fw fa-close\"></i> Lo sentimos. Se  presentó un problema en la exportación de notas.";
+         var mensajeExitoExportNotas   = "<i class=\"fa fa-fw fa-check\"></i> Exportación completada"
+         if(jumpOption!=null){
+            $.ajax({
+               url:   jumpOption,
+               type:  'post',
+               data: obj_data,
+               async: false,
+               beforeSend: function () {
+                 modelessOpciones = new $.flavr({
+                                             modal   : true,
+                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Generando archivo...</b>',
+                                             buttons     : {}
+                                          });
+               },
+               error: function(){
+                  modelessOpciones.close();
+                  modelessOpciones = new $.flavr({
+                                             modal   : true,
+                                             content : mensajeErrorExportNotas,
+                                             buttons     : {
+                                                primary : { text: 'Aceptar', style: 'primary' }
+                                             }
+                                          });
+               },
+               success:  function (dataResponse) {
+                  var blob       = new Blob([dataResponse]);
+                  var link       = document.createElement('a');
+                  link.href		= window.URL.createObjectURL(blob);
+                  link.download	= "Listado de Notas"+new Date()+".xls";
+                  link.click();
+                  modelessOpciones.close();
+                  modelessOpciones = new $.flavr({
+                                             modal   : true,
+                                             content : mensajeExitoExportNotas,
+                                             buttons     : {
+                                                primary : { text: 'Aceptar', style: 'primary' }
+                                             }
+                                          });
+               },
+               dataType:'binary'
+            });
+         }
+            
+      });#}
    });
 </script>
