@@ -50,6 +50,7 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
             curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
             $result = curl_exec($soap_do);
 
+
 // echo '<pre>'; var_dump($result); exit();
 
 // $result =  <<<XML
@@ -77,6 +78,7 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
 
 
 
+
     if(!$result){
         return "error";
     }else{
@@ -88,6 +90,7 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
 
         $resultadoObjeto = $xml->xpath('//PX_SALIDA')[0];
         $resultadoObjeto = $this->Response("<elements>".$resultadoObjeto."</elements>");
+        
         // $cabecera   = new Cabeceras();
         // $respuesta  = $cabecera->eliminaCabecerasRespuesta($result);
         // $respuesta  = $this->Response("<elements>".$respuesta."</elements>");

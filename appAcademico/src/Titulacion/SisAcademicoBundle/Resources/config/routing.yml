@@ -13,3 +13,6 @@ SisAcademico_docente:
 SisAcademico_admin:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/admin.yml"
     prefix:   /admin
+SaAcademico_Notificaciones: 
+    resource: "@TitulacionSisAcademicoBundle/Resources/config/Notificaciones.yml"
+    prefix:   /comunicacion

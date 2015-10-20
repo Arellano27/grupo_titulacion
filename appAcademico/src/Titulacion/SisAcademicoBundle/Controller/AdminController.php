@@ -27,6 +27,20 @@ class AdminController extends Controller
 
     public function ingreso_nuevo_passAction(Request $request){
         #obtenemos los datos enviados por get
+
+            $session=$request->getSession();
+            $Email= $session->get('mail');
+            $Nombre = $session->get('nom_usuario');
+            $username    = $request->request->get('user');
+            $username    = $request->request->get('pass1');
+            $password    = $request->request->get('pass2');
+           
+              
+        
+        #llamamos a la consulta del webservice
+        $UgServices = new UgServices;
+        
+              
             $username     = $request->request->get('user');
             $password     = $request->request->get('pass');
             $password1    = $request->request->get('pass1');
@@ -47,6 +61,20 @@ class AdminController extends Controller
                     //var_dump($estado.'-----'.$message);
                     //echo "</pre>";
                     //exit();
+                if ($estado == "1") {
+                  $mailer    = $this->container->get('mailer');
+                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                ->setUsername('titulacion.php@gmail.com')
+                                ->setPassword('sc123456');
+                   //$mailer  = \Swift_Mailer($transport);
+                    $message = \Swift_Message::newInstance('test')
+                                ->setSubject("Contraseña Cambiada Correctamente")
+                                ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                ->setTo($Email)
+                                ->setBody("$Nombre usted ha Cambiado la Contraseña Exitosamente, Su nueva contraseña es $password1");
+                    // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
+                    $this->get('mailer')->send($message);   
+                }
 
             $respuesta = array(
                "Codigo" => $estado ,
@@ -54,6 +82,7 @@ class AdminController extends Controller
             );
 
           return new Response(json_encode($respuesta));
+
 
     }
 
