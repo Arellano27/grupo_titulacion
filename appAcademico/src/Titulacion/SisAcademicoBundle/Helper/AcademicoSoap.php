@@ -1503,10 +1503,12 @@ function doGeneraTurno($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
                   $xml = new \SimpleXMLElement($response);
                   $body = $xml->xpath('//soapBody')[0];
                   // $return = $xml->xpath('//registro')[0];
-                  $resultadoObjeto = $xml->xpath('//XML_F52E2B61-18A1-11d1-B105-00805F49916B')[0];
+                  $resultadoObjeto = $xml->xpath('//registros')[0];
                   // $deJson = json_encode($resultadoObjeto);
-                  $resultadoObjeto = $this->Response($resultadoObjeto);
-
+                  $resultadoObjeto = json_encode($resultadoObjeto);
+                  $xml_array = json_decode($resultadoObjeto,TRUE);
+// echo '<pre>'; var_dump($xml_array); exit();
+                  // $resultadoObjeto = $this->Response($resultadoObjeto);
                   return $resultadoObjeto;
               }
 

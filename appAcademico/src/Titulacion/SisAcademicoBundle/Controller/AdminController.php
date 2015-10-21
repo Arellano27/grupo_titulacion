@@ -34,13 +34,13 @@ class AdminController extends Controller
             $username    = $request->request->get('user');
             $username    = $request->request->get('pass1');
             $password    = $request->request->get('pass2');
-           
-              
-        
+
+
+
         #llamamos a la consulta del webservice
         $UgServices = new UgServices;
-        
-              
+
+
             $username     = $request->request->get('user');
             $password     = $request->request->get('pass');
             $password1    = $request->request->get('pass1');
@@ -73,7 +73,7 @@ class AdminController extends Controller
                                 ->setTo($Email)
                                 ->setBody("$Nombre usted ha Cambiado la Contraseña Exitosamente, Su nueva contraseña es $password1");
                     // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
-                    $this->get('mailer')->send($message);   
+                    $this->get('mailer')->send($message);
                 }
 
             $respuesta = array(
@@ -140,7 +140,7 @@ class AdminController extends Controller
     public function insertar_eventos_calendarioAction(Request $request){
 
         $id_ciclo = 19;
-        $UgServices = new UgServices;
+        $UgServices   = new UgServices;
         $id_evento    = $request->request->get('id_evento');
         $fec_desde    = $request->request->get('start');
         $fec_hasta    = $request->request->get('end');
@@ -154,5 +154,16 @@ class AdminController extends Controller
         return new Response($rsInsertEvent);
     }#end function
 
+
+    public function editar_eventos_calendarioAction(Request $request){
+        $UgServices = new UgServices;
+
+        $evento     = $request->request->get('evento');
+        $id_evento  = $request->request->get('id_evento');
+
+        $rsInsertEvent = $UgServices->modificarEventos($evento,$id_evento);
+
+        return new Response($rsInsertEvent);
+    }#end function
 
 }

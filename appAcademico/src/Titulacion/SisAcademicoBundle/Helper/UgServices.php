@@ -23,28 +23,26 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-//       $this->usuario         = "abc";
-//       $this->clave           = "123";
-//       $this->source          = "jdbc/procedimientosSaug";
-//       $this->sourceConsultas = "jdbc/consultasSaug";
-//       $this->url             = "http://192.168.100.11:8080/";
-//       $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
-//       $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
-//       $this->urlWS           = "";
-//       $this->host            = "192.168.100.11:8080";
+      $this->usuario         = "abc";
+      $this->clave           = "123";
+      $this->source          = "jdbc/procedimientosSaug";
+      $this->sourceConsultas = "jdbc/consultasSaug";
+      $this->url             = "http://192.168.100.11:8080/";
+      $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlWS           = "";
+      $this->host            = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "CapaVisualPhp";
-      $this->clave         = "12CvP2015";
-
-      $this->url           = "http://186.101.66.2:8080/";
-
-      /*Saug Temporal*/
-      $this->source        = "jdbc/saugProcTmp";
-      $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      // $this->usuario       = "CapaVisualPhp";
+      // $this->clave         = "12CvP2015";
+      // $this->url           = "http://186.101.66.2:8080/";
+      // /*Saug Temporal*/
+      // $this->source        = "jdbc/saugProcTmp";
+      // $this->sourceConsultas  = "jdbc/saugConsTmp";
+      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
 
 //      /*Preproduccion*/
 //      $this->source        = "jdbc/procedimientosSaug";
@@ -581,7 +579,22 @@ public function insertarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_h
   // echo '<pre>'; var_dump($trama); exit();
   $response = $this->ws->doInsertEventosCalendario($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
   return $response;
-}
+}#end function
+
+public function modificarEventos($evento,$idparametro){
+
+  $idtipoparametro = 1;
+  $usuario = 1;
+  $estado = "A";
+  $opcion = "A";
+  $this->tipo       = "31";
+  $this->urlWS   = $this->url.$this->urlProcedim;
+  $trama      = "<PX_XML><items><item><id_parametro>".$idparametro."</id_parametro><id_tipo_parametro>".$idtipoparametro."</id_tipo_parametro><nombre>".$evento."</nombre><valor1/><valor2/><usuario>".$usuario."</usuario><estado>".$estado."</estado></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+
+  $response = $this->ws->doInsertEventosCalendario($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+  return $response;
+
+}#end function
 
 
 }#end class
