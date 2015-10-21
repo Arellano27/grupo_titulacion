@@ -347,7 +347,7 @@ function confirm(form, item)
 					var form_user = $( "#form-"+form );
 					var form_data = form_user.serialize();
                                         
-                                         
+                                       
                 $("input:checkbox:checked").each(function(){
 	              arr_checked[i]=$(this).val();
                            i++;   }); 
@@ -359,13 +359,13 @@ function confirm(form, item)
                     var arr_datos1=JSON.stringify(arr_checked);
                     var arr_datos2=JSON.stringify(arr_unchecked);
                     //var arr_datos=arr_checked.toString();
-                    if(form==='ingresoAsis' ){
+                    if(form==='ingresoAsis' ||  form==='actualizaAsis' ){
                         
                        
                         var form_data = {'arr_checked':arr_datos1,'arr_unchecked':arr_datos2,'materia':$('#hdmateria').val()};
                     }
                                         
-                                        
+                                         
 					var form_action = form_user.attr('action');
 					var deleteModalBody = removeModalBody || 'S';
 
@@ -400,9 +400,10 @@ function confirm(form, item)
 								$( "#content-"+form ).append( loading_bar );
 							
 							$('#modal-'+form).modal('show');
+                                                        
 						},
 						success: function(data) 
-						{
+						{ 
 							modal_size = data.btnSize || 'sm';
 							
 							$( "#modal-"+form ).remove();

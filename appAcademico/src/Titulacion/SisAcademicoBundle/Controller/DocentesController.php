@@ -188,60 +188,7 @@
                       );
       }
 		
-		public function notasAlumnosMateriaAction(Request $request)
-      {
-               $UgServices    = new UgServices;
-               $idDocente="";
-               $idCarrera="";
-                 $trama ="<PI_ID_CICLO_DETALLE>18567</PI_ID_CICLO_DETALLE>
-                         <PI_ID_USUARIO_PROFESOR>5</PI_ID_USUARIO_PROFESOR>
-                         <PI_ID_MATERIA>251</PI_ID_MATERIA>
-                         <PARCIAL>1</PARCIAL>
-                         <PI_ESTUDIANTE>2</PI_ESTUDIANTE>";
-               $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
-               
-               for ($i=1; $i<=$datosParciales->registro[0]->cantParciales; $i++)
-            {
-                     $arr_parcial[$i]['parcial']='parcial #'.$i;
-                          
-            }
-               $tareas= $datosParciales->registro[0]->periodos->periodo[0]->componentePeriodo;
-               $i=0;
-               foreach ($tareas->idNota as $idnota) {
-               $registros[$i]['idNota']= (string)$idnota;
-               $i++;
-               }
-               $i=0;
-               foreach ($tareas->componente as $componente) {
-               $registros[$i]['componente']= (string)$componente;
-               $i++;
-               }
-//               print_r($registros);
-//               exit();
-               
-               $idMateria  = $request->request->get('idMateria');
-              // print_r($datosParciales);
-              // echo $datosParciales->registro[0]->cantParciales;
-               // print_r($datosParciales[0]['periodos']);
-               //echo $datosParciales[0]['cantparciales'];
-               $session=$request->getSession();
-               $session->set("idMateria",$idMateria);
-               
-               for ($i=1; $i<=$datosParciales->registro[0]->cantParciales; $i++)
-            {
-                     $arr_parcial[$i]['parcial']='parcial #'.$i;
-                          
-            }
-       //Menu de Notas por Materia para Profesor
-       return $this->render('TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria.html.twig',
-                         array(
-                               'condition' => '',
-                               'arr_parcial' => $arr_parcial,
-                               'idMateria' => $idMateria
-                             )
-                      );
-      }
-      
+
       
       
       public function listadoNotasAlumnosMateriaAction(Request $request)
@@ -473,83 +420,7 @@
       
   
         
-               public function mostraralumnos3Action(Request $request)
-        { 
-            
-            $notas='';
-            
-         $response   		= new JsonResponse();
-         $withoutModal       = true;
-          
-	$nombresalumnos =  array(
-                              array( 'Nombrealm' => 'Carlos Quiñonez'),
-                              array( 'Nombrealm' => 'Juan Romero'),
-                              array( 'Nombrealm' => 'Daniel Verdesoto'),
-                              array( 'Nombrealm' => 'Fernando Lopez'),
-                              array( 'Nombrealm' => 'Alexandra Gutierrez'),
-                              array( 'Nombrealm' => 'Roberto Carlos'),
-                              array( 'Nombrealm' => 'Orlando Macias'),
-                              array( 'Nombrealm' => 'Fernanda Montero'),
-                              array( 'Nombrealm' => 'Ana Kam'),
-                              array( 'Nombrealm' => 'Angel Fuentes'),
-                           );   
-        
-			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:ingresoexamen.html.twig',
-						  array(
-							   'arr_datos'	=> $nombresalumnos,
-                                                           'cantidad'   => '',
-                                                           'msg'   	=> $this->v_msg
-						  ));
-                        
-                        $response->setData(
-                                array(
-					'error' 		=> $this->v_error,
-					'msg'			=> $this->v_msg,
-                                        'html' 			=> $this->v_html,
-                                        'withoutModal' 	=> $withoutModal,
-                                        'recargar'      => '0'
-                                     )
-                              );
-                        return $response;
-        }
 
-     
-        public function ingresoexamenAction(Request $request)
-        { 
-            
-            $notas='';
-            
-            $total =$request->request->get('hdcount');
-            for($i=1; $i<$total; $i++)
-            {
-                $notas['academico1'][] =$request->request->get('academicos1_'.$i);
-                $notas['examen1'][] =$request->request->get('examen1_'.$i);
-                $notas['academico2'][] =$request->request->get('academicos2_'.$i);
-                $notas['examen2'][] =$request->request->get('examen2_'.$i);
-                $notas['examen3'][] =$request->request->get('examen3_'.$i);
-            }
-            print_r($notas) ;
-			$pagina = 1;
-          
-	$nombresalumnos =  array(
-                              array( 'Nombrealm' => 'Carlos Quiñonez'),
-                              array( 'Nombrealm' => 'Juan Romero'),
-                              array( 'Nombrealm' => 'Daniel Verdesoto'),
-                              array( 'Nombrealm' => 'Fernando Lopez'),
-                              array( 'Nombrealm' => 'Alexandra Gutierrez'),
-                              array( 'Nombrealm' => 'Roberto Carlos'),
-                              array( 'Nombrealm' => 'Orlando Macias'),
-                              array( 'Nombrealm' => 'Fernanda Montero'),
-                              array( 'Nombrealm' => 'Ana Kam'),
-                              array( 'Nombrealm' => 'Angel Fuentes'),
-                           );   
-			return $this->render('TitulacionSisAcademicoBundle:Docentes:ingresonotas.html.twig',
-						  array(
-							   'arr_datos'	=> $nombresalumnos,
-                                                           'cantidad'   => '',
-                                                           'msg'   	=> $this->v_msg
-						  ));
-        }
         
         public function consultaNotasAction(Request $request)
         { 
@@ -598,97 +469,30 @@
          
          return $nombreIngles;
       }
-      
-        public function tabDocAsistenciasAction(Request $request)
-      {
-            date_default_timezone_set('America/Buenos_Aires');
-         $idMateria     = $request->request->get('idMateria');
-         $idCarrera     = $request->request->get('idCarrera');
-         $UgServices    = new UgServices;
-       //Menu de Notas por Materia para Profesor
-         $Parcial='1';
-               
-               $trama = "<materia>2271</materia>";
-                
-          $arr_fechas  = $UgServices->Docentes_getfechasparcial($trama);
-//          print_r($arr_fechas);
-//          exit();
-           $muestrafecha="";
-           $fecha_act=date('Y-m-d');
-           foreach($arr_fechas as $fecha) {
-               if ($fecha_act==$fecha['fecha'] && $fecha['ingreso'] == '1' ){
-                   $muestrafecha=$fecha_act;
-               }
-            }
-           // echo $fecha_act;
-           // echo $arr_fechas[0]['fecha']."--".$fecha_act;
-            // print_r($arr_fechas);
-         //  exit();
-       return $this->render('TitulacionSisAcademicoBundle:Docentes:tabsDocAsistencias.html.twig',
-                         array(
-                               'condition' => '',
-                               'idCarrera' => $idCarrera,
-                               'idMateria' => $idMateria,
-                               'fecha'=> $muestrafecha,
-                             )
-                      );
-      }
-      
-          
-        public function IngresoAsistenciaAction(Request $request)
+                     public function mostraralumnos3Action(Request $request)
         { 
-           $notas='';
-            date_default_timezone_set('America/Buenos_Aires');
+            
+            $notas='';
+            
          $response   		= new JsonResponse();
          $withoutModal       = true;
-                     $profesor='Apolinario';
-            $materia='Calculo';
-            $paralelo='S2A';
           
-            $notas='';
-            $id_Materia =$request->request->get('codigo');
-            
-            $parcial =$request->request->get('alumno');
-            $session=$request->getSession();
-               $session->set("parcial",$parcial);
-            
-            $parametro1 =$request->request->get('parametro1');
-            
-            $response   		= new JsonResponse();
-            $withoutModal       = true;
-            
-            $fecha=date('d/m/Y');
-            $idDocente     = 1;
-            $carrera  =1;
-            $UgServices    = new UgServices;
-            //$idDocente="";
-               $idCarrera="";
-             $materia="235";
-           
-               $Parcial='1';
-               
-               	$trama = "<materiaparalelo>".$materia."</materiaparalelo>";
-                
-            $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
-       
-           
-           $datosParciales  = $UgServices->Docentes_gettareaxparcial($idDocente,$idCarrera);
-            
-           /*print_r($datosParciales);
-           exit();*/
-            $profesor=$datosParciales->registro[0]->profesor;
-            $materia=$datosParciales->registro[0]->materia;
-            $paralelo=$datosParciales->registro[0]->paralelo;
-
+	$nombresalumnos =  array(
+                              array( 'Nombrealm' => 'Carlos Quiñonez'),
+                              array( 'Nombrealm' => 'Juan Romero'),
+                              array( 'Nombrealm' => 'Daniel Verdesoto'),
+                              array( 'Nombrealm' => 'Fernando Lopez'),
+                              array( 'Nombrealm' => 'Alexandra Gutierrez'),
+                              array( 'Nombrealm' => 'Roberto Carlos'),
+                              array( 'Nombrealm' => 'Orlando Macias'),
+                              array( 'Nombrealm' => 'Fernanda Montero'),
+                              array( 'Nombrealm' => 'Ana Kam'),
+                              array( 'Nombrealm' => 'Angel Fuentes'),
+                           );   
         
-			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:AlumnosIngresoAsistencia.html.twig',
+			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:ingresoexamen.html.twig',
 						  array(
-							   'arr_datos'	=> $arr_datos,
-                                                           'fecha'   => $fecha,
-                                                           'profesor'   => $profesor,
-                                                           'materia'    => $materia,
-                                                           'paralelo'   => $paralelo,
-                                                           'id_materia'    => $id_Materia,
+							   'arr_datos'	=> $nombresalumnos,
                                                            'cantidad'   => '',
                                                            'msg'   	=> $this->v_msg
 						  ));
@@ -704,237 +508,96 @@
                               );
                         return $response;
         }
-        
-           
-        public function ingresarAsistenciaAction(Request $request)
-        { 
-           $notas='';
-           date_default_timezone_set('America/Buenos_Aires');
-            $session=$request->getSession();
-           $idDocente     = $session->get('id_user');
-           $id_materia  = $request->request->get('materia');
-           $id_materia  ='235';
-            
-           $arr_checked  = $request->request->get('arr_checked');
-           $arr_unchecked  = $request->request->get('arr_unchecked');
-           $alumnosa=json_decode($arr_checked);
-           $alumnosi=json_decode($arr_unchecked);
-           $UgServices    = new UgServices;
-           $idDocente='31';
-           $estudiante='2';
-           //$materia_paralelo='235';
-           $fecha='01/06/2015';
-           $fecha=date('d/m/Y');
-           $id_docente='2'; 
-           
-               $doc = new \DOMDocument('1.0');
-                    
-                  $doc->formatOutput = true;
-                  $xml = $doc->createElement('PX_XML_CAB');
-                  $xml = $doc->appendChild($xml);
-                  $items = $doc->createElement('items');
-                  $items = $xml->appendChild($items);
-                  $item = $doc->createElement('item');
-                  $item = $items->appendChild($item);
-                  $id_profesor = $doc->createElement('id_profesor');
-                  $id_profesor = $item->appendChild($id_profesor);
-                  $text = $doc->createTextNode($idDocente);
-                  $text = $id_profesor->appendChild($text);
-                  $id_estudiante = $doc->createElement('fecha_asistencia');
-                  $id_estudiante = $item->appendChild($id_estudiante);
-                  $text = $doc->createTextNode($fecha);
-                  $text = $id_estudiante->appendChild($text);
-                  $id_materia_paralelo = $doc->createElement('id_materia_paralelo');
-                  $id_materia_paralelo = $item->appendChild($id_materia_paralelo);
-                  $text = $doc->createTextNode($id_materia);
-                  $text = $id_materia_paralelo->appendChild($text);
-                  $id_usuario = $doc->createElement('id_usuario');
-                  $id_usuario = $item->appendChild($id_usuario);
-                  $text = $doc->createTextNode($idDocente);
-                  $text = $id_usuario->appendChild($text);
-                  $xmldet = $doc->createElement('PX_XML_DET');
-                  $xmldet = $doc->appendChild($xmldet);
-                  $items = $doc->createElement('items');
-                  $items = $xmldet->appendChild($items);
-                  
-           
-             foreach($alumnosa as $alumno) {
-                 // echo $alumno."-";
-                  $item = $doc->createElement('item');
-                  $item = $items->appendChild($item);
-                  $estado_asistencia = $doc->createElement('estado_asistencia');
-                  $estado_asistencia = $item->appendChild($estado_asistencia);
-                  $text = $doc->createTextNode('1');
-                  $text = $estado_asistencia->appendChild($text);
-                  $id_estudiante = $doc->createElement('id_estudiante');
-                  $id_estudiante = $item->appendChild($id_estudiante);
-                  $text = $doc->createTextNode($alumno);
-                  $text = $id_estudiante->appendChild($text);
-            }
-            foreach($alumnosi as $alumno) {
-                 // echo $alumno."-";
-                  $item = $doc->createElement('item');
-                  $item = $items->appendChild($item);
-                  $estado_asistencia = $doc->createElement('estado_asistencia');
-                  $estado_asistencia = $item->appendChild($estado_asistencia);
-                  $text = $doc->createTextNode('1');
-                  $text = $estado_asistencia->appendChild($text);
-                  $id_estudiante = $doc->createElement('id_estudiante');
-                  $id_estudiante = $item->appendChild($id_estudiante);
-                  $text = $doc->createTextNode($alumno);
-                  $text = $id_estudiante->appendChild($text);
-            }
-                  $opcion = $doc->createElement('PC_OPCION');
-                  $opcion = $doc->appendChild($opcion);
-                  $text = $doc->createTextNode('I');
-                  $text = $opcion->appendChild($text);
-                  
-                  $xmlfinal= $doc->saveXML() . "\n";
-                 
-                 $xmlfinal= str_replace ( '<?xml version="1.0"?>' , '' , $xmlfinal);
-//                 echo $xmlfinal;
-//                 exit();
-         $response   		= new JsonResponse();
-          $respuesta  = $UgServices->Docentes_ingresoAsistencia($xmlfinal);
-              
-//                 print_r($respuesta);
-//                   exit();
-            
-                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
-                 
-                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
-                // echo $result;
-                // exit();
-                 
-                      //print $result;
-           $mensaje =(string)$result;
-        
-            $this->v_error	= true;
 
-            $response->setData(
-                                array(
-                                        'error' => true,
-                                        'msg' => $mensaje
-                                     )
-                              );
-            
-            return $response;
-        }
-        
-             public function actualizarAsistenciaAction(Request $request)
+		public function notasAlumnosMateriaAction(Request $request)
+      {
+               $UgServices    = new UgServices;
+               $idDocente="";
+               $idCarrera="";
+                 $trama ="<PI_ID_CICLO_DETALLE>18567</PI_ID_CICLO_DETALLE>
+                         <PI_ID_USUARIO_PROFESOR>5</PI_ID_USUARIO_PROFESOR>
+                         <PI_ID_MATERIA>251</PI_ID_MATERIA>
+                         <PARCIAL>1</PARCIAL>
+                         <PI_ESTUDIANTE>2</PI_ESTUDIANTE>";
+               $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
+               
+               for ($i=1; $i<=$datosParciales->registro[0]->cantParciales; $i++)
+            {
+                     $arr_parcial[$i]['parcial']='parcial #'.$i;
+                          
+            }
+               $tareas= $datosParciales->registro[0]->periodos->periodo[0]->componentePeriodo;
+               $i=0;
+               foreach ($tareas->idNota as $idnota) {
+               $registros[$i]['idNota']= (string)$idnota;
+               $i++;
+               }
+               $i=0;
+               foreach ($tareas->componente as $componente) {
+               $registros[$i]['componente']= (string)$componente;
+               $i++;
+               }
+//               print_r($registros);
+//               exit();
+               
+               $idMateria  = $request->request->get('idMateria');
+              // print_r($datosParciales);
+              // echo $datosParciales->registro[0]->cantParciales;
+               // print_r($datosParciales[0]['periodos']);
+               //echo $datosParciales[0]['cantparciales'];
+               $session=$request->getSession();
+               $session->set("idMateria",$idMateria);
+               
+               for ($i=1; $i<=$datosParciales->registro[0]->cantParciales; $i++)
+            {
+                     $arr_parcial[$i]['parcial']='parcial #'.$i;
+                          
+            }
+       //Menu de Notas por Materia para Profesor
+       return $this->render('TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria.html.twig',
+                         array(
+                               'condition' => '',
+                               'arr_parcial' => $arr_parcial,
+                               'idMateria' => $idMateria
+                             )
+                      );
+      }
+      
+        public function ingresoexamenAction(Request $request)
         { 
-           $notas='';
-           date_default_timezone_set('America/Buenos_Aires');
-            $session=$request->getSession();
-           $idDocente     = $session->get('id_user');
-           $id_materia  = $request->request->get('materia');
-           $fecha=$session->get('combofecha');
-           $id_materia  ='235';
             
-           $arr_checked  = $request->request->get('arr_checked');
-           $arr_unchecked  = $request->request->get('arr_unchecked');
-           $alumnosa=json_decode($arr_checked);
-           $alumnosi=json_decode($arr_unchecked);
-           $UgServices    = new UgServices;
-           $idDocente='31';
-           $estudiante='2';
-           //$materia_paralelo='235';
-          // $fecha='01/06/2015';
-           //$fecha=date('d/m/Y');
-           $id_docente='2'; 
-           
-               $doc = new \DOMDocument('1.0');
-                    
-                  $doc->formatOutput = true;
-                  $xml = $doc->createElement('PX_XML_CAB');
-                  $xml = $doc->appendChild($xml);
-                  $items = $doc->createElement('items');
-                  $items = $xml->appendChild($items);
-                  $item = $doc->createElement('item');
-                  $item = $items->appendChild($item);
-                  $id_profesor = $doc->createElement('id_profesor');
-                  $id_profesor = $item->appendChild($id_profesor);
-                  $text = $doc->createTextNode($idDocente);
-                  $text = $id_profesor->appendChild($text);
-                  $id_estudiante = $doc->createElement('fecha_asistencia');
-                  $id_estudiante = $item->appendChild($id_estudiante);
-                  $text = $doc->createTextNode($fecha);
-                  $text = $id_estudiante->appendChild($text);
-                  $id_materia_paralelo = $doc->createElement('id_materia_paralelo');
-                  $id_materia_paralelo = $item->appendChild($id_materia_paralelo);
-                  $text = $doc->createTextNode($id_materia);
-                  $text = $id_materia_paralelo->appendChild($text);
-                  $id_usuario = $doc->createElement('id_usuario');
-                  $id_usuario = $item->appendChild($id_usuario);
-                  $text = $doc->createTextNode($idDocente);
-                  $text = $id_usuario->appendChild($text);
-                  $xmldet = $doc->createElement('PX_XML_DET');
-                  $xmldet = $doc->appendChild($xmldet);
-                  $items = $doc->createElement('items');
-                  $items = $xmldet->appendChild($items);
-                  
-           
-             foreach($alumnosa as $alumno) {
-                 // echo $alumno."-";
-                  $item = $doc->createElement('item');
-                  $item = $items->appendChild($item);
-                  $estado_asistencia = $doc->createElement('estado_asistencia');
-                  $estado_asistencia = $item->appendChild($estado_asistencia);
-                  $text = $doc->createTextNode('1');
-                  $text = $estado_asistencia->appendChild($text);
-                  $id_estudiante = $doc->createElement('id_estudiante');
-                  $id_estudiante = $item->appendChild($id_estudiante);
-                  $text = $doc->createTextNode($alumno);
-                  $text = $id_estudiante->appendChild($text);
+            $notas='';
+            
+            $total =$request->request->get('hdcount');
+            for($i=1; $i<$total; $i++)
+            {
+                $notas['academico1'][] =$request->request->get('academicos1_'.$i);
+                $notas['examen1'][] =$request->request->get('examen1_'.$i);
+                $notas['academico2'][] =$request->request->get('academicos2_'.$i);
+                $notas['examen2'][] =$request->request->get('examen2_'.$i);
+                $notas['examen3'][] =$request->request->get('examen3_'.$i);
             }
-            foreach($alumnosi as $alumno) {
-                 // echo $alumno."-";
-                  $item = $doc->createElement('item');
-                  $item = $items->appendChild($item);
-                  $estado_asistencia = $doc->createElement('estado_asistencia');
-                  $estado_asistencia = $item->appendChild($estado_asistencia);
-                  $text = $doc->createTextNode('1');
-                  $text = $estado_asistencia->appendChild($text);
-                  $id_estudiante = $doc->createElement('id_estudiante');
-                  $id_estudiante = $item->appendChild($id_estudiante);
-                  $text = $doc->createTextNode($alumno);
-                  $text = $id_estudiante->appendChild($text);
-            }
-                  $opcion = $doc->createElement('PC_OPCION');
-                  $opcion = $doc->appendChild($opcion);
-                  $text = $doc->createTextNode('A');
-                  $text = $opcion->appendChild($text);
-                  
-                  $xmlfinal= $doc->saveXML() . "\n";
-                 
-                 $xmlfinal= str_replace ( '<?xml version="1.0"?>' , '' , $xmlfinal);
-//                 echo $xmlfinal;
-//                 exit();
-         $response   		= new JsonResponse();
-          $respuesta  = $UgServices->Docentes_ingresoAsistencia($xmlfinal);
-              
-//                 print_r($respuesta);
-//                   exit();
-            
-                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
-                 
-                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
-                // echo $result;
-                // exit();
-                 
-                      //print $result;
-           $mensaje =(string)$result;
-        
-            $this->v_error	= true;
-
-            $response->setData(
-                                array(
-                                        'error' => true,
-                                        'msg' => $mensaje
-                                     )
-                              );
-            
-            return $response;
+            print_r($notas) ;
+			$pagina = 1;
+          
+	$nombresalumnos =  array(
+                              array( 'Nombrealm' => 'Carlos Quiñonez'),
+                              array( 'Nombrealm' => 'Juan Romero'),
+                              array( 'Nombrealm' => 'Daniel Verdesoto'),
+                              array( 'Nombrealm' => 'Fernando Lopez'),
+                              array( 'Nombrealm' => 'Alexandra Gutierrez'),
+                              array( 'Nombrealm' => 'Roberto Carlos'),
+                              array( 'Nombrealm' => 'Orlando Macias'),
+                              array( 'Nombrealm' => 'Fernanda Montero'),
+                              array( 'Nombrealm' => 'Ana Kam'),
+                              array( 'Nombrealm' => 'Angel Fuentes'),
+                           );   
+			return $this->render('TitulacionSisAcademicoBundle:Docentes:ingresonotas.html.twig',
+						  array(
+							   'arr_datos'	=> $nombresalumnos,
+                                                           'cantidad'   => '',
+                                                           'msg'   	=> $this->v_msg
+						  ));
         }
              public function mostraralumnosAction(Request $request)
         { 
@@ -958,7 +621,7 @@
             $UgServices    = new UgServices;
             //$idDocente="";
                $idCarrera="";
-             $materia="235";
+             $materia="2269";
            
                
                
@@ -1032,7 +695,7 @@
             $UgServices    = new UgServices;
             //$idDocente="";
                $idCarrera="";
-             $materia="235";
+             $materia="2269";
            
                
                
@@ -1286,7 +949,7 @@
             $UgServices    = new UgServices;
             //$idDocente="";
                $idCarrera="";
-             $materia="235";
+             $materia="2269";
        //Menu de Notas por Materia para Profesor
          $Parcial='1';
                
@@ -1342,4 +1005,344 @@
                         return $response;
         }
         
+          public function tabDocAsistenciasAction(Request $request)
+      {
+            date_default_timezone_set('America/Buenos_Aires');
+         $idMateria     = $request->request->get('idMateria');
+         $idCarrera     = $request->request->get('idCarrera');
+         $UgServices    = new UgServices;
+       //Menu de Notas por Materia para Profesor
+         $Parcial='1';
+               
+               $trama = "<materia>2271</materia>";
+                
+          $arr_fechas  = $UgServices->Docentes_getfechasparcial($trama);
+//          print_r($arr_fechas);
+//          exit();
+           $muestrafecha="";
+           $fecha_act=date('Y-m-d');
+           foreach($arr_fechas as $fecha) {
+               if ($fecha_act==$fecha['fecha'] && $fecha['ingreso'] == '1' ){
+                   $muestrafecha=$fecha_act;
+               }
+            }
+           // echo $fecha_act;
+           // echo $arr_fechas[0]['fecha']."--".$fecha_act;
+            // print_r($arr_fechas);
+         //  exit();
+       return $this->render('TitulacionSisAcademicoBundle:Docentes:tabsDocAsistencias.html.twig',
+                         array(
+                               'condition' => '',
+                               'idCarrera' => $idCarrera,
+                               'idMateria' => $idMateria,
+                               'fecha'=> $muestrafecha,
+                             )
+                      );
+      }
+      
+          
+        public function IngresoAsistenciaAction(Request $request)
+        { 
+           $notas='';
+            date_default_timezone_set('America/Buenos_Aires');
+         $response   		= new JsonResponse();
+         $withoutModal       = true;
+                     $profesor='Apolinario';
+            $materia='Calculo';
+            $paralelo='S2A';
+          
+            $notas='';
+            $id_Materia =$request->request->get('codigo');
+            
+            $parcial =$request->request->get('alumno');
+            $session=$request->getSession();
+               $session->set("parcial",$parcial);
+            
+            $parametro1 =$request->request->get('parametro1');
+            
+            $response   		= new JsonResponse();
+            $withoutModal       = true;
+            
+            $fecha=date('d/m/Y');
+            $idDocente     = 1;
+            $carrera  =1;
+            $UgServices    = new UgServices;
+            //$idDocente="";
+               $idCarrera="";
+             $materia="2269";
+           
+               $Parcial='1';
+               
+               	$trama = "<materiaparalelo>".$materia."</materiaparalelo>";
+                
+            $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
+       
+           
+           $datosParciales  = $UgServices->Docentes_gettareaxparcial($idDocente,$idCarrera);
+            
+           /*print_r($datosParciales);
+           exit();*/
+            $profesor=$datosParciales->registro[0]->profesor;
+            $materia=$datosParciales->registro[0]->materia;
+            $paralelo=$datosParciales->registro[0]->paralelo;
+
+        
+			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:AlumnosIngresoAsistencia.html.twig',
+						  array(
+							   'arr_datos'	=> $arr_datos,
+                                                           'fecha'   => $fecha,
+                                                           'profesor'   => $profesor,
+                                                           'materia'    => $materia,
+                                                           'paralelo'   => $paralelo,
+                                                           'id_materia'    => $id_Materia,
+                                                           'cantidad'   => '',
+                                                           'msg'   	=> $this->v_msg
+						  ));
+                        
+                        $response->setData(
+                                array(
+					'error' 		=> $this->v_error,
+					'msg'			=> $this->v_msg,
+                                        'html' 			=> $this->v_html,
+                                        'withoutModal' 	=> $withoutModal,
+                                        'recargar'      => '0'
+                                     )
+                              );
+                        return $response;
+        }
+        
+           
+        public function ingresarAsistenciaAction(Request $request)
+        { 
+           $notas='';
+           date_default_timezone_set('America/Buenos_Aires');
+            $session=$request->getSession();
+           $idDocente     = $session->get('id_user');
+           $id_materia  = $request->request->get('materia');
+           $id_materia  ='2271';
+            
+           $arr_checked  = $request->request->get('arr_checked');
+           $arr_unchecked  = $request->request->get('arr_unchecked');
+           $alumnosa=json_decode($arr_checked);
+           $alumnosi=json_decode($arr_unchecked);
+           $UgServices    = new UgServices;
+           $idDocente='31';
+           $estudiante='2';
+           //$materia_paralelo='235';
+           $fecha='01/06/2015';
+           //$fecha=date('d/m/Y');
+           $fecha=date('Y-m-d');
+           $id_docente='2'; 
+           
+               $doc = new \DOMDocument('1.0');
+                    
+                  $doc->formatOutput = true;
+                  $xml = $doc->createElement('PX_XML_CAB');
+                  $xml = $doc->appendChild($xml);
+                  $items = $doc->createElement('items');
+                  $items = $xml->appendChild($items);
+                  $item = $doc->createElement('item');
+                  $item = $items->appendChild($item);
+                  $id_profesor = $doc->createElement('id_profesor');
+                  $id_profesor = $item->appendChild($id_profesor);
+                  $text = $doc->createTextNode($idDocente);
+                  $text = $id_profesor->appendChild($text);
+                  $id_estudiante = $doc->createElement('fecha_asistencia');
+                  $id_estudiante = $item->appendChild($id_estudiante);
+                  $text = $doc->createTextNode($fecha);
+                  $text = $id_estudiante->appendChild($text);
+                  $id_materia_paralelo = $doc->createElement('id_materia_paralelo');
+                  $id_materia_paralelo = $item->appendChild($id_materia_paralelo);
+                  $text = $doc->createTextNode($id_materia);
+                  $text = $id_materia_paralelo->appendChild($text);
+                  $id_usuario = $doc->createElement('id_usuario');
+                  $id_usuario = $item->appendChild($id_usuario);
+                  $text = $doc->createTextNode($idDocente);
+                  $text = $id_usuario->appendChild($text);
+                  $xmldet = $doc->createElement('PX_XML_DET');
+                  $xmldet = $doc->appendChild($xmldet);
+                  $items = $doc->createElement('items');
+                  $items = $xmldet->appendChild($items);
+                  
+           
+             foreach($alumnosa as $alumno) {
+                 // echo $alumno."-";
+                  $item = $doc->createElement('item');
+                  $item = $items->appendChild($item);
+                  $estado_asistencia = $doc->createElement('estado_asistencia');
+                  $estado_asistencia = $item->appendChild($estado_asistencia);
+                  $text = $doc->createTextNode('1');
+                  $text = $estado_asistencia->appendChild($text);
+                  $id_estudiante = $doc->createElement('id_estudiante');
+                  $id_estudiante = $item->appendChild($id_estudiante);
+                  $text = $doc->createTextNode($alumno);
+                  $text = $id_estudiante->appendChild($text);
+            }
+            foreach($alumnosi as $alumno) {
+                 // echo $alumno."-";
+                  $item = $doc->createElement('item');
+                  $item = $items->appendChild($item);
+                  $estado_asistencia = $doc->createElement('estado_asistencia');
+                  $estado_asistencia = $item->appendChild($estado_asistencia);
+                  $text = $doc->createTextNode('1');
+                  $text = $estado_asistencia->appendChild($text);
+                  $id_estudiante = $doc->createElement('id_estudiante');
+                  $id_estudiante = $item->appendChild($id_estudiante);
+                  $text = $doc->createTextNode($alumno);
+                  $text = $id_estudiante->appendChild($text);
+            }
+                  $opcion = $doc->createElement('PC_OPCION');
+                  $opcion = $doc->appendChild($opcion);
+                  $text = $doc->createTextNode('I');
+                  $text = $opcion->appendChild($text);
+                  
+                  $xmlfinal= $doc->saveXML() . "\n";
+                 
+                 $xmlfinal= str_replace ( '<?xml version="1.0"?>' , '' , $xmlfinal);
+//                echo $xmlfinal;
+//                exit();
+         $response   		= new JsonResponse();
+          $respuesta  = $UgServices->Docentes_ingresoAsistencia($xmlfinal);
+              
+//                 print_r($respuesta);
+//                   exit();
+            
+                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
+                 
+                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
+                // echo $result;
+                // exit();
+                 
+                      //print $result;
+           $mensaje =(string)$result;
+        
+            $this->v_error	= true;
+
+            $response->setData(
+                                array(
+                                        'error' => true,
+                                        'msg' => $mensaje
+                                     )
+                              );
+            
+            return $response;
+        }
+        
+             public function actualizarAsistenciaAction(Request $request)
+        { 
+           $notas='';
+           date_default_timezone_set('America/Buenos_Aires');
+            $session=$request->getSession();
+           $idDocente     = $session->get('id_user');
+           $id_materia  = $request->request->get('materia');
+           $fecha=$session->get('combofecha');
+           $id_materia  ='235';
+            
+           $arr_checked  = $request->request->get('arr_checked');
+           $arr_unchecked  = $request->request->get('arr_unchecked');
+           
+           $alumnosa=json_decode($arr_checked);
+           $alumnosi=json_decode($arr_unchecked);
+           $UgServices    = new UgServices;
+           $idDocente='31';
+           $estudiante='2';
+           //$materia_paralelo='235';
+          // $fecha='01/06/2015';
+           //$fecha=date('d/m/Y');
+           $fecha=date('Y-m-d');
+           $id_docente='2'; 
+           
+               $doc = new \DOMDocument('1.0');
+                    
+                  $doc->formatOutput = true;
+                  $xml = $doc->createElement('PX_XML_CAB');
+                  $xml = $doc->appendChild($xml);
+                  $items = $doc->createElement('items');
+                  $items = $xml->appendChild($items);
+                  $item = $doc->createElement('item');
+                  $item = $items->appendChild($item);
+                  $id_profesor = $doc->createElement('id_profesor');
+                  $id_profesor = $item->appendChild($id_profesor);
+                  $text = $doc->createTextNode($idDocente);
+                  $text = $id_profesor->appendChild($text);
+                  $id_estudiante = $doc->createElement('fecha_asistencia');
+                  $id_estudiante = $item->appendChild($id_estudiante);
+                  $text = $doc->createTextNode($fecha);
+                  $text = $id_estudiante->appendChild($text);
+                  $id_materia_paralelo = $doc->createElement('id_materia_paralelo');
+                  $id_materia_paralelo = $item->appendChild($id_materia_paralelo);
+                  $text = $doc->createTextNode($id_materia);
+                  $text = $id_materia_paralelo->appendChild($text);
+                  $id_usuario = $doc->createElement('id_usuario');
+                  $id_usuario = $item->appendChild($id_usuario);
+                  $text = $doc->createTextNode($idDocente);
+                  $text = $id_usuario->appendChild($text);
+                  $xmldet = $doc->createElement('PX_XML_DET');
+                  $xmldet = $doc->appendChild($xmldet);
+                  $items = $doc->createElement('items');
+                  $items = $xmldet->appendChild($items);
+                  
+         
+             foreach($alumnosa as $alumno) {
+                 // echo $alumno."-";
+                  $item = $doc->createElement('item');
+                  $item = $items->appendChild($item);
+                  $estado_asistencia = $doc->createElement('estado_asistencia');
+                  $estado_asistencia = $item->appendChild($estado_asistencia);
+                  $text = $doc->createTextNode('1');
+                  $text = $estado_asistencia->appendChild($text);
+                  $id_estudiante = $doc->createElement('id_estudiante');
+                  $id_estudiante = $item->appendChild($id_estudiante);
+                  $text = $doc->createTextNode($alumno);
+                  $text = $id_estudiante->appendChild($text);
+            }
+            foreach($alumnosi as $alumno) {
+                 // echo $alumno."-";
+                  $item = $doc->createElement('item');
+                  $item = $items->appendChild($item);
+                  $estado_asistencia = $doc->createElement('estado_asistencia');
+                  $estado_asistencia = $item->appendChild($estado_asistencia);
+                  $text = $doc->createTextNode('1');
+                  $text = $estado_asistencia->appendChild($text);
+                  $id_estudiante = $doc->createElement('id_estudiante');
+                  $id_estudiante = $item->appendChild($id_estudiante);
+                  $text = $doc->createTextNode($alumno);
+                  $text = $id_estudiante->appendChild($text);
+            }
+                  $opcion = $doc->createElement('PC_OPCION');
+                  $opcion = $doc->appendChild($opcion);
+                  $text = $doc->createTextNode('A');
+                  $text = $opcion->appendChild($text);
+                  
+                  $xmlfinal= $doc->saveXML() . "\n";
+                 
+                 $xmlfinal= str_replace ( '<?xml version="1.0"?>' , '' , $xmlfinal);
+//                 echo $xmlfinal;
+//                 exit();
+         $response   		= new JsonResponse();
+          $respuesta  = $UgServices->Docentes_ingresoAsistencia($xmlfinal);
+              
+//                 print_r($respuesta);
+//                   exit();
+            
+                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
+                 
+                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
+                // echo $result;
+                // exit();
+                 
+                      //print $result;
+           $mensaje =(string)$result;
+        
+            $this->v_error	= true;
+
+            $response->setData(
+                                array(
+                                        'error' => true,
+                                        'msg' => $mensaje
+                                     )
+                              );
+            
+            return $response;
+        }
    }

@@ -478,7 +478,7 @@ XML;*/
                      <ingreso>1</ingreso>
                   </registro>
                   <registro>
-                     <fecha>2015-10-18</fecha>
+                     <fecha>2015-10-20</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                </registros>

@@ -1074,7 +1074,22 @@ function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
       
 }#end function
 
-   function doRequestSreReceptaTransacionConsultasdoc2($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){  
+    
+   function eliminaCabecerasConsultas2($result)
+    {
+       $cadena=substr($result,strpos($result,"<registros>")+11, strlen($result));
+       $cadena=substr($cadena,0,strpos($cadena,"</registros>"));
+       return $cadena;
+    }
+    
+    function eliminaCabecerasConsultas($result)
+    {
+       $cadena=substr($result,strpos($result,"<respuestaConsulta>")+19, strlen($result));
+       $cadena=substr($cadena,0,strpos($cadena,"</respuestaConsulta>"));
+       return $cadena;
+    }
+    
+      function doRequestSreReceptaTransacionConsultasdoc2($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){  
 
  $post_string="
             <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
@@ -1130,19 +1145,6 @@ function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
 
     } 
     
-   function eliminaCabecerasConsultas($result)
-    {
-       $cadena=substr($result,strpos($result,"<respuestaConsulta>")+19, strlen($result));
-       $cadena=substr($cadena,0,strpos($cadena,"</respuestaConsulta>"));
-       return $cadena;
-    }
-    
-   function eliminaCabecerasConsultas2($result)
-    {
-       $cadena=substr($result,strpos($result,"<registros>")+11, strlen($result));
-       $cadena=substr($cadena,0,strpos($cadena,"</registros>"));
-       return $cadena;
-    }
     
     function doRequestConsultaAlumnos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){  
 
@@ -1244,7 +1246,7 @@ function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
                         return $this->Response($respuesta);
       }
       
-          function doRequestIngresoNotas($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML){  
+  function doRequestIngresoNotas($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML){  
                 
   $post_string="<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
                <soapenv:Header/>
@@ -1275,7 +1277,8 @@ function doSetMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
                         curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
                         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                         $result = curl_exec($soap_do);
-                        //var_dump($result);
+//                        var_dump($result);
+//                        exit();
                // $result = $XML;
                     $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
                      $respuesta =new \SimpleXMLElement($response);

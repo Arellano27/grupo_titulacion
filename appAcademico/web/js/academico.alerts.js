@@ -3,8 +3,6 @@ var servidorUrl = ((location.href.split('/'))[0])+'//'+((location.href.split('/'
 servidorUrl ='http://localhost/desarrollo/appAcademico/';
 function popup_home(action, titulo)
 {
-
-
     $.ajax({
         type: 'get',
         url: action,
