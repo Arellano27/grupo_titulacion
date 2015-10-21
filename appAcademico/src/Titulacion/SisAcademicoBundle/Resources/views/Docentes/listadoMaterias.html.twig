@@ -20,9 +20,9 @@
          <td id="jornadaMateria_{{ materias.id_sa_materia_paralelo }}">{{ materias.jornada|upper }}</td>
          <td id="alumnosMateria_{{ materias.id_sa_materia_paralelo }}">{{ materias.cantidad }}</td>
          <td class="td-actions">
-            <a id="materiaAsistencias-{{ materias.id_sa_materia_paralelo }}" href="" class="asistenciaAlumnos btn btn-primary btn-circle" title="Histórico de asistencia de Alumnos"><i class="fa fa-list"> </i></a>
-            <a id="materiasNotas-{{ materias.id_sa_materia_paralelo  }}" href="" class="notasAlumnos btn btn-primary btn-circle" title="Consultas de Notas de los Alumnos"><i class="fa fa-mortar-board"> </i></a>
-            <a id="materiasVision-{{ materias.id_sa_materia_paralelo  }}" href="" class="materiasVision btn btn-primary btn-circle" title="Consultar una vista general de la asignatura"><i class="fa fa-bar-chart-o"> </i></a></td>
+            <a id="materiaAsistencias-{{ materias.id_sa_materia_paralelo }}" href="" class="tip asistenciaAlumnos btn btn-primary btn-circle"><span>Histórico de Asistencia de Alumnos</span><i class="fa fa-list"> </i></a>
+            <a id="materiasNotas-{{ materias.id_sa_materia_paralelo  }}" href="" class="tip notasAlumnos btn btn-primary btn-circle"><span>Consultas de Notas de los Alumnos</span><i class="fa fa-mortar-board"> </i></a>
+            <a id="materiasVision-{{ materias.id_sa_materia_paralelo  }}" href="" class="tip materiasVision btn btn-primary btn-circle"><span>Vista General de la Asignatura</span><i class="fa fa-bar-chart-o"> </i></a></td>
         </tr>
       {% endfor %}
       </tbody>
@@ -45,11 +45,15 @@
          var materiaSplit  = $(this).attr("id").split("-");
          var idMateria     = materiaSplit[1];
          var idCarrera     = $("#carreraSeleccionada").val();
-         var obj_data      = {'idMateria':idMateria,'idCarrera':idCarrera};
+         var inicioCiclo    = $("#inicioCiclo-Carrera_"+idCarrera).val();
+         var finCiclo      = $("#finCiclo-Carrera_"+idCarrera).val();
+         var obj_data      = {'idMateria':idMateria,'idCarrera':idCarrera, 'inicioCiclo':inicioCiclo, 'finCiclo':finCiclo};
 
          var optionSelect        = $(this);
+
          var jumpOption          = '{{path('docentes_alumnos_asistencias')}}';
          var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";;
+
          
          $.ajax({
             url:  jumpOption,
@@ -84,18 +88,19 @@
       
       $(".notasAlumnos").on('click', function(event){
          event.preventDefault();
+         var modelessMaterias;
          var idSplit          = $(this).attr('id').split('-');
          var nombreElemento   = idSplit[0]; 
          var idMateria        = idSplit[1]; 
          //var idDocente        = 1;
          var idCarrera        = $("#carreraSeleccionada").val();
-         var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";;
+         var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";
          
          var optionSelect = $(this);
          var jumpOption = '{{path('docentes_notas_alumnos_materia')}}';
          
          //var obj_data = {'idDocente': idDocente,'idMateria':idMateria};
-         var obj_data = {'idMateria':idMateria};
+         var obj_data = {'idMateria':idMateria, 'idCarrera':idCarrera};
 
          $.ajax({
             url:   jumpOption,
@@ -103,15 +108,26 @@
             data: obj_data,
             async: false,
             beforeSend: function () {
-              //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+               modelessMaterias = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
             },
             error: function(){
-               //console.log("hay un error");
-               var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la consulta de notas."
-               lanzarModal('Consulta de Notas',mensajeErrorNotas,'Aceptar');//alert(mensajeErrorNotas);
+               modelessMaterias.close();
+               var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la consulta de notas.";
+               modelessMaterias = new $.flavr({
+                                                modal   : true,
+                                                content : mensajeErrorNotas,
+                                                buttons     : {
+                                                   primary : { text: 'Aceptar', style: 'primary' }
+                                                }
+                                             });
             },
             success:  function (dataResponse) {
-              //console.log(optionSelect.closest(".panel-body"));
+              modelessMaterias.close();
+              $("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
               optionSelect.closest(".panel-body").html(dataResponse);
             },
             dataType:'html'

@@ -10,7 +10,7 @@
   </ul>
 
   <!-- Tab panes -->
-  <div class="tab-content">
+  <div class="tab-content" id="panelNotasCarrera_{{idCarrera}}">
     <div class="tab-pane fade in active" id="content-notas"></div>
   </div>
 </div>
@@ -19,9 +19,10 @@
    $(document).ready(function() { 
       var condition = '{{ condition }}';
       if (condition == '') {
-         var obj_data = {"idParalelo" : "1"};
+
+         var obj_data = {"idMateria" : "{{idMateria}}", "idCarrera" : "{{idCarrera}}"};
+
          mostrarInfoTabsNotas('notas','{{ path('docentes_consulta_notas_materia') }}', obj_data);
-         //mostrarAlumnos('notas','{{ path('docentes_consulta_notas_materia') }}', null);
       }
       if (condition == 'ingresonotas'){
          mostrarAlumnos('ingresonotas','{{ path('docentes_mostrar_alumnos') }}','2345');
@@ -35,7 +36,9 @@
 
      if(tabs === 'notas' ) {
        idhtml='notas';
-       var obj_data = {"idParalelo" : "1"};
+
+       var obj_data = {"idMateria" : "{{idMateria}}", "idCarrera" : "{{idCarrera}}"};
+
        mostrarInfoTabsNotas('notas','{{ path('docentes_consulta_notas_materia') }}', obj_data);
      }
      if(tabs ==='ingreso1'){

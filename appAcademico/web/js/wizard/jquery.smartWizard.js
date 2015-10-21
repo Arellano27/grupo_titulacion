@@ -480,7 +480,7 @@ function SmartWizard(target, options) {
         contentCache:true, // cache step contents, if false content is fetched always from ajax url
         cycleSteps: false, // cycle step navigation
         enableFinishButton: false, // make finish button enabled always
-        hideButtonsOnDisabled: false, // when the previous/next/finish buttons are disabled, hide them instead?
+        hideButtonsOnDisabled: true, // when the previous/next/finish buttons are disabled, hide them instead?
         errorSteps:[],    // Array Steps with errors
         labelNext:'Siguiente',
         labelPrevious:'Anterior',
@@ -490,7 +490,7 @@ function SmartWizard(target, options) {
         onLeaveStep: null, // triggers when leaving a step
         onShowStep: null,  // triggers when showing a step
         onFinish: null,  // triggers when Finish button is clicked
-        includeFinishButton : true   // Add the finish button
+        includeFinishButton : false   // Add the finish button
     };
 
 })(jQuery);
