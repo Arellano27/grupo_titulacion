@@ -1248,7 +1248,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
                     curl_setopt($soap_do, CURLOPT_POST, true);
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-                    //$result = curl_exec($soap_do);
+                    $result = curl_exec($soap_do);
 
 }#end function
 
