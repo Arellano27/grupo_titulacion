@@ -13,9 +13,11 @@
     margin-top: 37px;
   }
 </style>
+<style>
+#div1 {width:350px;height:70px;padding:10px;border:1px solid #aaaaaa;}
+</style>
 
-  
-
+<script src="{{ asset('js/calendarioeventos.js') }}"></script>
 <section class="content">
           <div class="row">
             <div class="col-md-3">
@@ -26,7 +28,6 @@
                 <div class="box-body">
                   <!-- the events -->
                   <div id="external-events">
-                        
                        {#{dump(data)}#}
                       {%for count ,event in data %}
                           {% set color = event.descripcion|split("|") %}
@@ -36,7 +37,7 @@
                           {% else %}
                                 {% set colorevent = color[1] %}
                           {% endif %}
-                            <div id="eventos_drop" name="{{event.codigo}}" class="external-event" style="background-color: {{colorevent}}">{{color[0]}}</div>
+                            <div ondblclick="inactivar_evento(this)" id="evento_drag" name="{{event.codigo}}"  class="external-event" style="background-color: {{colorevent}}">{{color[0]}}</div>
                       {% endfor %}
 
                       <!-- </div> -->
@@ -46,6 +47,7 @@
                     <div class="external-event bg-light-blue">Work on UI design</div>
                     <div class="external-event bg-red">Sleep tight</div> -->
                     <p>
+                      <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
                       <b>Remover evento</b><img src="{{ asset('images/trashcan.png') }}" id="trash" alt="">
                     </p>
                     <div class="checkbox" style="display:none;">
@@ -126,6 +128,50 @@
             }
           });
         }
+
+        function inactivar_evento(evet){
+                alert($(evet).attr("name"));
+            var html =                '   <div class="form-row">' +
+                '       <input type="text" name="titulo" ' +
+                '       placeholder="Título" />' +
+                '   </div>' +
+                '   <div class="form-row">' +
+                '       <select id="estado" name="estado" >' +
+                '       <option>Activo</option>' +
+                '       <option>Inactivo</option>' +
+                '       </select>' +
+                '   </div>' +
+                '   <div class="form-row">' +
+                '   </div>';
+
+                var select = $(this).parent().siblings('.demo-select');
+                var entrance = select.find('.animate-entrance :selected').text();
+                var closing = select.find('.animate-closing :selected').text();
+
+
+                new $.flavr({
+                    title       : 'Editar Evento',
+                    content     : '',
+                    dialog      : 'form',
+                    form        : { content: html, method: 'post' },
+                    onSubmit    : function( $container, $form ){
+                         $.ajax({
+                            url: '',
+                            data: 'type=changetitle&title='+title+'&eventid='+event.id,
+                            type: 'POST',
+                            dataType: 'json',
+                            success: function(response){
+                              if(response.status == 'success')
+                                      $('#calendar').fullCalendar('updateEvent',event);
+                            },
+                            error: function(e){
+                              alert('Error processing your request: '+e.responseText);
+                            }
+                          });
+                        return false;
+                    }
+                });
+        }
     </script>
-    <script src="{{ asset('js/calendarioeventos.js') }}"></script>
+    
 {% endblock %}
