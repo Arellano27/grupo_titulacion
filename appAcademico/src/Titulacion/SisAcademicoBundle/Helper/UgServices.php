@@ -24,17 +24,17 @@ class UgServices
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
 
-//      $this->usuario       = "abc";
-//      $this->clave         = "123";
-//      $this->source        = "jdbc/procedimientosSaug";
-//      //$this->url           = "http://186.101.66.2:8080/";
-//      $this->url           = "http://192.168.100.11:8080/";
-//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-//      $this->urlWS         = "";
-//      //$this->host          = "186.101.66.2:8080";
-//      $this->host          = "192.168.100.11:8080";
-//      $this->sourceConsultas= "jdbc/consultasSaug";
+      $this->usuario       = "abc";
+      $this->clave         = "123";
+      $this->source        = "jdbc/procedimientosSaug";
+      //$this->url           = "http://186.101.66.2:8080/";
+      $this->url           = "http://192.168.100.11:8080/";
+      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlWS         = "";
+      //$this->host          = "186.101.66.2:8080";
+      $this->host          = "192.168.100.11:8080";
+      $this->sourceConsultas= "jdbc/consultasSaug";
 
 
 
@@ -452,57 +452,35 @@ public function getgeneraTurno($idEstudiante,$idCarrera,$idCiclo){
 
 
 public function Mensajes_Enviados($idUsuario){
-           $ws         = new AcademicoSoap();
-           $tipo       = "3";
-           $usuario    = "abc";
-           $clave      = "123";
-           $source     = "jdbc/procedimientosSaug";
-//           $url        = "http://192.168.100.11:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
-//           $host       = "192.168.100.11:8080";
-           $url  = "";
-           $host = "";
-           $trama      = "<idDocente>".$idUsuario."</idDocente>";
-           
-          
-               $XML        = <<<XML
-<soap:Envelope
-xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-<soap:Body>
-<ns2:ejecucionConsultaResponse
-xmlns:ns2="http://servicios.ug.edu.ec/">
-<return>
-    <codigoRespuesta>0</codigoRespuesta>
-    <estado>F</estado>
-    <idHistorico>1089</idHistorico>
-    <mensajeRespuesta>ok</mensajeRespuesta>
-    <respuestaConsulta>
-        <Mensajes>
-            <Tipo>
-                    Mensaje
-            </Tipo>
-            <Asunto>
-                   Semestre Ciclo 1
-            </Asunto>
-            <Detalle>
-                    Empiezan Clases
-            </Detalle>
-            <Fecha>
-                    12/12/12
-            </Fecha>            
-        </Mensajes>
-    </respuestaConsulta>
-</return>
-</ns2:ejecucionConsultaResponse>
-</soap:Body>
-</soap:Envelope>
-XML;
-         
-           $response=$ws->doRequestSreReceptaTransacionConsultas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
-
+    
+           $this->tipo       = "11";
+           $this->urlWS   = $this->url.$this->urlConsulta;         
+           $trama      = "<id_recepcion>".$idUsuario."</id_recepcion>";
+           $response=$this->ws->doRequestSreReceptaTransacionConsultasMensajesEnviados($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
            return $response;
-   }#end function
+           
+ }#end function
 
-
+public function Mensajes_No_Leidos($idUsuario){
+    
+           $this->tipo       = "13";
+           $this->urlWS   = $this->url.$this->urlConsulta;         
+           $trama      = "<id_recepcion>".$idUsuario."</id_recepcion>";
+           $response=$this->ws->doRequestSreReceptaTransacionConsultasMensajesNoLeidos($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+           return $response;
+           
+ }#end function
+ 
+ public function Eventos_Recividos($idUsuario){
+    
+           $this->tipo       = "17";
+           $this->urlWS   = $this->url.$this->urlConsulta;         
+           $trama      = "<id_recepcion>".$idUsuario."</id_recepcion>";
+           $response=$this->ws->doRequestSreReceptaTransacionConsultasEventosNoLeidos($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+           return $response;
+           
+ }#end function
+ 
 	
 
 

@@ -126,15 +126,15 @@
 				        </tr>
 				        </thead>
 				        <tbody>
-                    {% for facultad in facultades %} 
+                    {% for facultad in data.facultades %} 
                             <tr>
-                                <td style="text-align: center">{{ facultad.Tipo }}</td>                               
-                                <td style="text-align: center">{{ facultad.Asunto }}</td>
-                                <td style="text-align: center">{{ facultad.Detalle }}</td>
-                                <td style="text-align: center">13/09/2015</td>
+                                <td style="text-align: center">{{ facultad.tipo_notificaciones }}</td>                               
+                                <td style="text-align: center">{{ facultad.asunto }}</td>
+                                <td style="text-align: center">{{ facultad.mensaje }}</td>
+                                <td style="text-align: center">{{ facultad.fecha_registro }}</td>
                                  <td style="text-align: center">  <a href="{{ path('dayscript_Lectura') }}"id="Mensaje_1" name="Mensaje_1"><i class="fa fa-envelope-o"></i></a></td>
                             </tr>
-                          {%endfor%}                              
+                     {%endfor%}                              
                                                               
                     </tbody>
                                         </table>

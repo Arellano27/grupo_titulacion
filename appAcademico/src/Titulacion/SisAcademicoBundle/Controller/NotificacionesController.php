@@ -18,7 +18,7 @@ class NotificacionesController extends Controller
       var $Asunto="";
       var $mensaje="";
         public function index_notificacionesAction(Request $request)
-        {   $idEstudiante  =2;
+        {   $idEstudiante  = 1;
          $session=$request->getSession();
             $Emisor   = $request->request->get('Emisor');
             $Universidad   = $request->request->get('Universidad');
@@ -29,41 +29,18 @@ class NotificacionesController extends Controller
             $mensaje = $request->request->get('mensaje');
          if($session->has("perfil")) {
             if($mensaje == null){
-            try
-                { $lcFacultad="";
+           $lcFacultad="";
                      $lcCarrera="";
                        $Carreras = array();
                         $UgServices = new UgServices;
-                        $xml = $UgServices->Mensajes_Enviados($idEstudiante);
+                        $facultades = $UgServices->Mensajes_Enviados($idEstudiante);
                         
-                        if ( is_object($xml))
-                        {
-                                $cont = 0;
-                                while($cont <= 5){
-                                $materiaObject = array( 'Tipo' => 'Mensaje',
-                                                             'Asunto'=>'Inicio Clases',
-                                                             'Detalle'=>'Ciclo 1 2016',
-                                                                'Fecha'=>'22/09/2015',
-                                                            );                                
-                                    array_push($Carreras, $materiaObject); 
-                                  $cont = $cont +1;
-                                 }
-                                      
-                                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',array(
-                                                  'facultades' =>  $Carreras,
-                                                  'idEstudiante'=>1,
-                                                  'cuantos'=>4
-                        )); 
-                          }
-                           else
-                            {
-                              throw new \Exception('Un error');
-                            }
-                        
-                  }catch (\Exception $e)
-                      {                       
-                    return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig');
-                      }
+                             return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',
+    									array(
+    											'data' => array('facultades' => $facultades)
+    										 )
+                              );
+               
             }else{
                 for($i=0;$i<10;$i++){
                    // if($i==0){
@@ -97,31 +74,13 @@ class NotificacionesController extends Controller
                       $lcCarrera="";
                        $Carreras = array();
                         $UgServices = new UgServices;
-                        $xml = $UgServices->Mensajes_Enviados($idEstudiante);
+                        $facultades = $UgServices->Mensajes_Enviados($idEstudiante);
                         
-                        if ( is_object($xml))
-                        {
-                                $cont = 0;
-                                while($cont <= 5){
-                                $materiaObject = array( 'Tipo' => 'Mensaje',
-                                                             'Asunto'=>'Inicio Clases',
-                                                             'Detalle'=>'Ciclo 1 2016',
-                                                                'Fecha'=>'22/09/2015',
-                                                            );                                
-                                    array_push($Carreras, $materiaObject); 
-                                  $cont = $cont +1;
-                                 }
-                                      
-                                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',array(
-                                                  'facultades' =>  $Carreras,
-                                                  'idEstudiante'=>1,
-                                                  'cuantos'=>4
-                                          )); 
-                                      }
-                           else
-                            {
-                              throw new \Exception('Un error');
-                            }
+                             return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',
+    									array(
+    											'data' => array('facultades' => $facultades)
+    										 )
+                              );
                         
                   }catch (\Exception $e)
                       {                       
@@ -140,7 +99,14 @@ class NotificacionesController extends Controller
         public function mensajes_universidadAction(Request $request)
             {    $session=$request->getSession();   
                 if($session->has("perfil")) {
-                    return $this->render('TitulacionSisAcademicoBundle:Notificaciones:mensajes_universidad.html.twig');
+                    $UgServices = new UgServices;
+                    $Mensajes_Recividos = $UgServices->Mensajes_No_Leidos(2);
+                    var_dump($Mensajes_Recividos);
+                    return $this->render('TitulacionSisAcademicoBundle:Notificaciones:mensajes_universidad.html.twig',
+    									array(
+    											'data' => array('Mensajes' => $Mensajes_Recividos)
+    										 )
+                              );
                 }else{
                     return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
                 }
@@ -148,9 +114,16 @@ class NotificacionesController extends Controller
             }
         
          public function eventos_universidadAction(Request $request)
-            {         $session=$request->getSession();   
+            {  $session=$request->getSession();   
                 if($session->has("perfil")) {
-                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:eventos_universidad.html.twig');
+                     $UgServices = new UgServices;
+                     $Eventos_Recividos = $UgServices->Eventos_Recividos(2);
+                    
+                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:eventos_universidad.html.twig',
+    									array(
+    											'data' => array('Mensajes' => $Eventos_Recividos)
+    										 )
+                              );
                 }else{
                     return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
                 }

@@ -215,9 +215,6 @@ class HomeController extends Controller
                                        );
                      $datosDocente  = array( 'idDocente' => $idDocente );
 
-
-
-
                      return $this->render('SisAcademicoBundle:Docentes:listadoCarreras.html.twig',
                                                 array(
                                                         'data' => array('datosDocente' => $datosDocente,  'datosCarreras' => $datosCarreras)
@@ -235,12 +232,12 @@ class HomeController extends Controller
                 $datos_menu_izquierda = array();
                 $datos_menu_izquierda = array( 'error' => $error,
                         'services' => $services );
-
+               
+                
                 return $this->render('TitulacionSisAcademicoBundle:Home:index.html.twig',
                                         array(
                                                 'data' => array('service_selected' => 'DatosMenu',
                                                         'services_menu_izq' => $datos_menu_izquierda
-
                                                                )
                                              )
                 );

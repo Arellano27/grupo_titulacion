@@ -59,6 +59,10 @@
                               {
                                 $bolCorrecto=0;
                               }
+                               
+                //                $NotifiNol = $UgServices->Notificaciones_No_leidos($idEstudiante);
+                //                $MensajesNoL = $UgServices->Eventos_No_Leidos($idEstudiante);
+                                
                               return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_home.html.twig',array(
                                                       'facultades' =>  $Carreras,
                                                       'idEstudiante'=>$idEstudiante,
