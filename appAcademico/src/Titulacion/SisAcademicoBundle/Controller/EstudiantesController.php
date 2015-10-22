@@ -1217,7 +1217,25 @@
          public function anulacion_materias_3Action(Request $request)
         {
              
-            $session=$request->getSession();
+             $session=$request->getSession();
+             //Comentar cuando funcione lo de anulacion y cambiar el mail quemado por email variable
+            $Email= $session->get('mail');
+            $Nombre = $session->get('nom_usuario');
+                               $mailer    = $this->container->get('mailer');
+                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                ->setUsername('titulacion.php@gmail.com')
+                                ->setPassword('sc123456');
+                   //$mailer  = \Swift_Mailer($transport);
+                    $message = \Swift_Message::newInstance('test')
+                                ->setSubject("Anulación de Materia Exitosa")
+                                ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                ->setTo("ghuayamabe89@gmail.com")
+                                ->setBody("$Nombre usted ha anulado con exito sus Materias");
+                    // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
+                    $this->get('mailer')->send($message);  
+                    //Comentar cuando funcione lo de anulacion
+                    
+                    
             $perfilEst   = $this->container->getParameter('perfilEst');
             $perfilDoc   = $this->container->getParameter('perfilDoc');
             $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
@@ -1250,6 +1268,22 @@
                                {  
                                   $Mensaje=(string) $datos->mensaje;
                                }
+                                $session=$request->getSession();
+            $Email= $session->get('mail');
+            $Nombre = $session->get('nom_usuario');
+                               $mailer    = $this->container->get('mailer');
+                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                ->setUsername('titulacion.php@gmail.com')
+                                ->setPassword('sc123456');
+                   //$mailer  = \Swift_Mailer($transport);
+                    $message = \Swift_Message::newInstance('test')
+                                ->setSubject("Anulación de Materia Exitosa")
+                                ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                ->setTo("ghuayamabe89@gmail.com")
+                                ->setBody("$Nombre usted ha anulado con exito la Materia");
+                    // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
+                    $this->get('mailer')->send($message);   
+                               
                               
                           }
                         

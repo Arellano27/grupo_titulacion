@@ -52,16 +52,16 @@ class UgServices
 
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "CapaVisualPhp";
-      $this->clave         = "12CvP2015";
-
-      $this->url           = "http://186.101.66.2:8080/";
-
-      /*Saug Temporal*/
-      $this->source        = "jdbc/saugProcTmp";
-      $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//      $this->usuario       = "CapaVisualPhp";
+//      $this->clave         = "12CvP2015";
+//
+//      $this->url           = "http://186.101.66.2:8080/";
+//
+//      /*Saug Temporal*/
+//      $this->source        = "jdbc/saugProcTmp";
+//      $this->sourceConsultas  = "jdbc/saugConsTmp";
+//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
 
 //      /*Preproduccion*/
 //      $this->source        = "jdbc/procedimientosSaug";
@@ -69,8 +69,8 @@ class UgServices
 //      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
 //      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
 //
-      $this->urlWS         = "";
-      $this->host          = "186.101.66.2:8080";
+//      $this->urlWS         = "";
+//      $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
 

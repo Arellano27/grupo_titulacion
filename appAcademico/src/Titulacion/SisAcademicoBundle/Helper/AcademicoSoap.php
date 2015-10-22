@@ -1707,7 +1707,7 @@ function doRequestSreReceptaTransacionConsultasMensajesNoLeidos($datosCuenta,$so
    curl_setopt($soap_do, CURLOPT_POST, true);
    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-
+   
    if($XML==NULL){
       $result = curl_exec($soap_do);
    }

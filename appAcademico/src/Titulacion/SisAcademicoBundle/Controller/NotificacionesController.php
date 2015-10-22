@@ -101,7 +101,7 @@ class NotificacionesController extends Controller
                 if($session->has("perfil")) {
                     $UgServices = new UgServices;
                     $Mensajes_Recividos = $UgServices->Mensajes_No_Leidos(2);
-                    var_dump($Mensajes_Recividos);
+                
                     return $this->render('TitulacionSisAcademicoBundle:Notificaciones:mensajes_universidad.html.twig',
     									array(
     											'data' => array('Mensajes' => $Mensajes_Recividos)
