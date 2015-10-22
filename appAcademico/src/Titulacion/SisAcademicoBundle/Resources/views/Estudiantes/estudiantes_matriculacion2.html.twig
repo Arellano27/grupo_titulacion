@@ -3,6 +3,8 @@
 {% if (banderaMatricula==1) %}
 
         <script>
+            
+
             function onFinishCallback() {
                 alert('Finish Clicked');
             }
@@ -26,8 +28,16 @@
                                 //console.log(elecmentocombo[index].options.selectedIndex);
                                 var indice=elecmentocombo[index].options.selectedIndex;
                                 Curso =elecmentocombo[index].options[indice].text;
-                                IdCurso =elecmentocombo[index].options[indice].value;
+                                //IdCurso =elecmentocombo[index].options[indice].value;
+                                splitIdCurso =elecmentocombo[index].options[indice].value;
+                                splitIdCurso=splitIdCurso.split("_");
+                                IdCurso=splitIdCurso[0];
+
                                  if (elementochk[index].checked && IdCurso=='')
+                                 {
+                                        indicasel=indicasel+1;
+                                 }
+                                  if (!elementochk[index].checked && IdCurso!='')
                                  {
                                         indicasel=indicasel+1;
                                  }
@@ -171,7 +181,11 @@
                                         {
                                              var indice=elecmentocombo[index].options.selectedIndex;
                                             Curso =elecmentocombo[index].options[indice].text;
-                                            IdCurso =elecmentocombo[index].options[indice].value;
+                                            splitIdCurso =elecmentocombo[index].options[indice].value;
+                                            //cambio 
+                                            splitIdCurso=splitIdCurso.split("_");
+                                            IdCurso=splitIdCurso[0];
+                                            //splitIdCurso =elecmentocombo[index].options[indice].value;
             
             
                                             if (elementochk[index].checked)
@@ -382,14 +396,17 @@
                                                                         <td id="nombre_{{ disponibles.IdMateria }}">{{ disponibles.Nombre }}</td>
                                                                         <td width="5%" id="veces_{{ disponibles.IdMateria }}" >{{ disponibles.Veces }}</td>
                                                                         <td width="20%" id="curso_{{ disponibles.IdMateria }}">
-                                                                        <select  name="cursos_select" index=1>
+                                                                        <select  name="cursos_select" index=1 onchange="lista(this.value,{{ disponibles.IdMateria }})">
                                                                           <option value=""  selected> Sel.</option>
                                                                             {% for cursos in disponibles.Cursos %} 
-                                                                               <option value="{{cursos.Idmatpar}}" > {{ cursos.Curso }} </option>
+                                                                               <option value="{{cursos.Idmatpar}}_{{disponibles.IdMateria}}_{{ cursos.Registrados }}_{{ cursos.Maximo }}"
+                                                                                 > {{ cursos.Curso }} </option>
                                                                              {% endfor %}  
                                                                            </select >
+                                                                           <label id="lbd_{{ disponibles.IdMateria }}"> </label>
                                                                          </td>
-                                                                          <td width='10%' id="sel_{{ disponibles.IdMateria }}"> <input type="checkbox" name="matricular_select" value=""></td>
+                                                                          <td width='10%' id="sel_{{ disponibles.IdMateria }}"> <input type="checkbox" name="matricular_select" value="">
+                                                                          </td>
                                                                     </tr>
 
                                                                 {% endfor %}  
@@ -449,6 +466,17 @@
             });
 
         });
+
+         function lista(Curso,indica) {
+                    $('#lbd_'+indica).text("");
+                    var splitDisponibles=Curso.split("_");
+                    var idLabel=splitDisponibles[1];
+                    var Registrado=splitDisponibles[2];
+                    var Maximo=splitDisponibles[3];
+                    $('#lbd_'+idLabel).text(Registrado + " de " + Maximo );
+
+         }
+
 
     </script>
 
@@ -549,6 +577,8 @@
 
         <script language="javascript">// <![CDATA[
             $(document).ready(function() {
+
+               
                // Interceptamos el evento submit
                 $('.btngenerarturno').on("click",function(event){
                 $(".btngenerarturno").attr("disabled", true);

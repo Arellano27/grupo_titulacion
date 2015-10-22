@@ -1,0 +1,126 @@
+<div class="col-lg-12">
+<div class="table-responsive">
+
+    <table align='center'>
+            <thead>
+                <tr>
+                    <th align='center' colspan='4'>
+                          <h4><b>Legalización de Órdenes de Pagos </b></h4>  
+                    </th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">
+                          Criterio de Consulta
+                    </th>
+                    <th style="text-align:center">
+                          Estados
+                    </th>
+                    <th style="text-align:center">
+                          Dato a Consultar
+                    </th>
+                </tr>
+            </thead>
+            <tr>
+                    
+                    <td align='left' valign='center'>
+                        
+                        <select  name='selconsulta'>
+                          <option value="cedula" > Cedula de Identicada</option>
+                          <option value="codigo"> Codigo del Estudiante </option>
+                        </select >
+                    </td>
+                    <td>
+                        
+                        <select  name='selestadoord'>
+                          <option value="79" >Pendientes</option>
+                          <option value="81"> Pagadas</option>
+                          <option value="80"> Anuladas</option>
+                        </select >  
+                    </td>
+                    <td align='left'>
+                           <input onkeyup = "if(event.keyCode == 13) onkeydato()" style="height:22px" type="text" id="busquedaest" /> 
+                    </td>
+                    
+            </tr>
+            <tr>
+                    
+                    
+            </tr>
+            <tr>
+                    <td align='center' colspan='3'>
+                             <br/>
+                            <a class="btn btn-success " id='btnconsultarest'>Consultar</a>
+                              <!-- <input type="submit" name="btnconsultarest" id="btnconsultarest" value="Inscribir"> -->
+
+                    </td>
+            </tr>
+    </table>
+</div>
+</div>
+<div id='divodenespagos'>
+
+</div>
+
+<script language="javascript">// <![CDATA[
+        $(document).ready(function() {
+            $('#btnconsultarest').on("click",function(event){
+                onkeydato();
+            });
+        })
+    
+    function onkeydato() {
+                var elecmentocombo = document.getElementsByName("selconsulta"); 
+                var indice=elecmentocombo[0].options.selectedIndex;
+                var criterio =elecmentocombo[0].options[indice].value;
+
+                var elecmentoEstado = document.getElementsByName("selestadoord"); 
+                var indice2=elecmentoEstado[0].options.selectedIndex;
+                var lcEstado =elecmentoEstado[0].options[indice2].value;
+                var valorBuscado=$("#busquedaest").val();
+                 var idCarrera='{{idCarrera}}';
+                var obj_data = {'idEstudiante':valorBuscado,'idCarrera':idCarrera,'criterio':criterio,'estado':lcEstado};
+                var resultado = $('#divodenespagos');
+                var jumpAction = '{{path('admin_listar_ordenpago')}}';
+          // Enviamos el formulario usando AJAX
+                if (valorBuscado.length!=0)
+                {
+                     $.ajax({
+                           url:   jumpAction,
+                           data: obj_data,
+                           type:  'post',
+                           async: true,
+                           beforeSend: function () {
+                             resultado.html("Cargando, espere por favor...");
+                             //notificacionIndex = cargandoSitio(null, null, null);
+                    
+                           },
+                           success:  function (dataResponse) {
+                             resultado.html(dataResponse);
+                             
+                           },
+                             error: function(dataResponse)
+                        {
+                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                          form="accordion";
+                          msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                  $( '#'+form ).append( msg_alert );
+                                  $('#modal-'+form).modal('show');
+                        },
+                   //         timeout: 50000
+                           dataType:'html'
+                        });
+                }
+                else
+                {
+                     modelessActualizadOrden= new $.flavr({
+                                                   modal   : true,
+                                                   content : 'Por favor, ingrese un dato para consultar',
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', style: 'primary' }
+                                                   }
+                                                });
+                }
+           
+            }
+                    
+</script>
