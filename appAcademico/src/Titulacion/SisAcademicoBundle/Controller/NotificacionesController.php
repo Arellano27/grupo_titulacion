@@ -131,9 +131,16 @@ class NotificacionesController extends Controller
         
          public function notificaciones_universidadAction(Request $request)
             {    
+             
                 $session=$request->getSession();   
                 if($session->has("perfil")) {
-                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:notificaciones_universidad.html.twig');
+                     $UgServices = new UgServices;
+                     $Notificaciones_Recividos = $UgServices->Notificaciones_Recividas(2);
+                     
+                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:notificaciones_universidad.html.twig',	array(
+    											'data' => array('Mensajes' => $Notificaciones_Recividos)
+    										 )
+                              );
                 }else{
                     return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
                 }
@@ -191,7 +198,9 @@ class NotificacionesController extends Controller
          }
         
         public function LecturaAction(Request $request)
-            {      $session=$request->getSession();   
+            {      
+            
+            $session=$request->getSession();   
                 if($session->has("perfil")) {   
                 return $this->render('TitulacionSisAcademicoBundle:Notificaciones:Lectura.html.twig');
                 }else{

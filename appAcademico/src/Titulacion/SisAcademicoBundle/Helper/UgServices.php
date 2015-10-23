@@ -516,6 +516,16 @@ public function Mensajes_No_Leidos($idUsuario){
            
  }#end function
  
+  public function Notificaciones_Recividas($idUsuario){
+    
+           $this->tipo       = "15";
+           $this->urlWS   = $this->url.$this->urlConsulta;         
+           $trama      = "<id_recepcion>".$idUsuario."</id_recepcion>";
+           $response=$this->ws->doRequestSreReceptaTransacionConsultasNotificcionesNoLeidos($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+           return $response;
+           
+ }#end function
+ 
 	
 
 //           $ws         = new AcademicoSoap();

@@ -1217,10 +1217,10 @@
          public function anulacion_materias_3Action(Request $request)
         {
              
-             $session=$request->getSession();
-             //Comentar cuando funcione lo de anulacion y cambiar el mail quemado por email variable
-            $Email= $session->get('mail');
-            $Nombre = $session->get('nom_usuario');
+                    $session=$request->getSession();
+                    //Comentar cuando funcione lo de anulacion y cambiar el mail quemado por email variable
+                    $Email= $session->get('mail');
+                    $Nombre = $session->get('nom_usuario');
                                $mailer    = $this->container->get('mailer');
                     $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
                                 ->setUsername('titulacion.php@gmail.com')
