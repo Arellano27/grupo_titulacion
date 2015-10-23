@@ -1279,7 +1279,7 @@
                     $message = \Swift_Message::newInstance('test')
                                 ->setSubject("Anulación de Materia Exitosa")
                                 ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
-                                ->setTo("ghuayamabe89@gmail.com")
+                                ->setTo($Email)
                                 ->setBody("$Nombre usted ha anulado con exito la Materia");
                     // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
                     $this->get('mailer')->send($message);   
