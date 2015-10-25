@@ -21,4 +21,16 @@ admin_carreras_ordenpago:
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:carrerasordenpago }
     path:     /eventos_user
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos_carrera_user }
+admin_inscripcion:
+    path:     /inscripcion
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:inscripcion }
+admin_inscripcion_datos:
+    path:     /inscripcion_datos
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:inscripcion_datos }
+admin_inscripcion_listar:
+    path:     /inscripcion_listar
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:inscripcion_listar }
+admin_inscripcion_resgistrar:
+    path:     /inscripcion_registar
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:inscripcion_registrar }
 

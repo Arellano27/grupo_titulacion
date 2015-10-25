@@ -1,0 +1,114 @@
+
+<div class="col-lg-12 divordentemp">
+    <h4 class="StepTitle" align="center" >Listado de Materias</h4>
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                    
+                    <table  align='center' border='1' id="table-listarpago">
+                        <thead>
+                            <tr>
+                                <td colspan='5'><input   class="form-control" id="disabledInput" type="text" placeholder="Nombres : {{ estudiante }}  Apellidos : {{ estudiante_ap }}  Identificacion : {{ identificacion }}  Estado:{{ EstadoAlumno }}" disabled STYLE="color: #FFFFFF; font-family: Verdana; font-weight: bold; font-size: 15px; background-color: #0B2161;" > </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center" >Nivel</th>
+                                <th style="text-align:center" >Id Materia</th>
+                                <th style="text-align:center">Materia</th>
+                                <th style="text-align:center">Curso</th>
+                                <th style="text-align:center">Veces</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                               {% for listado in inscripcion %}    
+                                 <tr class="odd gradeX">
+                                    <td   align="center"   width='5%' id="nivel_{{ listado.nivel }}">{{ listado.nivel }}</td>
+                                    <td   align="center"   width='5%' id="idmat_{{ listado.id_sa_materia }}">{{ listado.id_sa_materia }}</td>
+                                    <td align="center" width='5%' id="nombre_{{ listado.nombre }}">{{ listado.nombre }}</td>
+                                    <td align="center" width='5%' id="curso_{{ listado.curso }}">{{ listado.curso }}</td>
+                                    <td align="center" width='5%' id="veces_{{ listado.veces }}">{{ listado.veces }}</td>
+                                </tr>
+                            {% endfor %}  
+                        </tbody>
+                        <tfoot>
+                           
+                                    <tr>
+                                            <td width='5%' colspan='5' align="right">
+                                              {% if (EstadoAlumno=='REGISTRADO')%}
+                                              <a class="btn btn-success " id='btnlegalorden'>Inscribir</a>
+                                              {% endif %}
+                                            </td>
+                                    </tr>
+                           
+                        </tfoot>
+                    
+                    </table>
+                </div>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+
+    </div>
+
+       
+</div>
+<script>
+        $("#btnlegalorden").on("click",function(event){
+        $("#btnlegalorden").attr("disabled", true);
+                        var idEstudiante='{{idUsuarioEst}}';
+                        var idCiclo='{{idCiclo}}';
+                        var obj_data = {'idUsuarioEst':idEstudiante,'idCiclo':idCiclo};
+                        var jumpAction = '{{path('admin_inscripcion_resgistrar')}}';
+                        $.ajax({
+                           url:   jumpAction,
+                           data: obj_data,
+                           type:  'post',
+                           async: true,
+                           beforeSend: function () 
+                           {
+                            
+                           },
+                           success:  function (dataResponse) 
+                           {
+                               var respuesta=jQuery.parseJSON(dataResponse);
+                               if (respuesta.codigo_error!=1)
+                               {
+                                    $("#btnlegalorden").attr("disabled", false);
+                                    modelessActualizadOrden2= new $.flavr({
+                                           modal   : true,
+                                           content : 'No se ha podido realizar la inscripcion',
+                                           buttons     : {
+                                              primary : { text: 'Aceptar', 
+                                              style: 'primary' }
+                                           }
+                                        });
+                               }
+                               else
+                               {
+                                modelessActualizadOrden2= new $.flavr({
+                                           modal   : true,
+                                           content : 'Proceso Exitoso',
+                                           buttons     : {
+                                              primary : { text: 'Aceptar', 
+                                              style: 'primary' }
+                                           }
+                                        });
+                                             $(".divordentemp").remove();
+                               }         
+                           },
+                           error: function(dataResponse)
+                           {
+                              form="accordion";
+                              msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                      $( '#'+form ).append( msg_alert );
+                                      $('#modal-'+form).modal('show');
+                           },
+                           dataType:'html'
+                        });             
+            });
+</script>

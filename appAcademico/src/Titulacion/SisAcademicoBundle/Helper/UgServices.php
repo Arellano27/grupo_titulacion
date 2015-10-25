@@ -462,4 +462,28 @@ public function getConsultaRegistro_OrdenPago($idEstudiante,$idCarrera,$idCiclo)
         return $response; 
             
 }#end function
+//INSCRIPCION ADMIN
+public function getConsultaCarrerasInscripcion($idUsuario,$idRol)
+{
+        $this->tipo    = "3";
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $trama      = "<usuario>".$idUsuario."</usuario><rol>".$idRol."</rol>";
+        $response=$this->ws->doRequestSreReceptaTransacionCarrerasInscripcion($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
+public function getConsulta_listado_inscripcion($idEstudiante,$idCarrera,$idCiclo)
+{
+        $this->tipo       = "36";
+        $this->urlWS   = $this->url.$this->urlProcedim;
+        $trama      = "<PV_ID_ESTUDIANTE>".$idEstudiante."</PV_ID_ESTUDIANTE><PI_ID_CARRERA>".$idCarrera."</PI_ID_CARRERA><PI_ID_CICLO>".$idCiclo."</PI_ID_CICLO>";
+        $response=$this->ws->doRequestsListarInscripcion($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response; 
+            
+}#end function
+public function setActualizaInscripcion($trama){
+        $this->tipo       = "28";
+        $this->urlWS   = $this->url.$this->urlProcedim;
+        $response=$this->ws->doSetActualizaInscripcion($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
 }#end class
