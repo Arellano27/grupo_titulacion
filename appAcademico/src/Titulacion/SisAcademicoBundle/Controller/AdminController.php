@@ -14,7 +14,32 @@ class AdminController extends Controller
 
     public function calendario_carreraAction(Request $request){
 
+
+
         $UgServices   = new UgServices;
+        $session=$request->getSession();
+        // $id_usuario = $session->get("id_user");
+        $id_usuario = 3;
+        $id_rol     = $session->get("perfil");
+
+        if ($id_rol > 3) {
+           if ($id_rol == 4) {
+               $id_rol =  1;
+           }elseif ($id_rol == 5) {
+               $id_rol =  1;
+           }elseif ($id_rol == 6) {
+               $id_rol =  2;
+           }
+        }
+
+        $rsCarrera = $UgServices->getConsultaCarreras($id_usuario,$id_rol);
+        // echo '<pre>'; var_dump($rsCarrera); exit();
+        $resultadoObjeto = json_encode($rsCarrera);
+        $xml_array = json_decode($resultadoObjeto,TRUE);
+
+        $session->set("îdcarrera_calendar",$xml_array["registros"]["registro"]["id_sa_carrera"]);
+        $session->set("îdciclo_calendar",$xml_array["registros"]["registro"]["id_sa_ciclo_detalle"]);
+
         $rsEventos = $UgServices->getConsultaSoloEventos(1); #como parametros enviaremos siempre 1
 
 
@@ -89,28 +114,21 @@ class AdminController extends Controller
 
     public function cargar_eventosAction(Request $request)
     {
+        $session=$request->getSession();
+        $id_ciclo = $session->get("îdciclo_calendar");
+        $id_usuario = $session->get("id_user");
+        // echo '<pre>'; var_dump($id_ciclo); exit();
+
+
         #llamamos a la consulta del webservice
         $UgServices = new UgServices;
-        // $data = $UgServices->getEventos($start,$end);
-//         $data = array(
-//   "id"=>
-//   "1",
-//   "title"=>
-//    "hola",
-//   "content"=>
-//    "mundo",
-//   "start_date"=>
-//   "2015-09-28 22:00:00",
-//   "end_date"=>
-//    "2015-09-29 22:00:00",
-//   "access_url_id"=>
-//   "1",
-//   "all_day"=>
-//    "0"
-// );
 
-        echo '<pre>'; var_dump("hi"); exit();
+        $rsInsertEvent = $UgServices->cargarEventosCalendario($id_ciclo,$id_usuario);
 
+        return new Response(json_encode($rsInsertEvent));
+         // echo '<pre>'; var_dump($rsInsertEvent);
+
+        // echo $rsInsertEvent;
 
     }
 
@@ -122,6 +140,9 @@ class AdminController extends Controller
 
         return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_academico_carrera_user.html.twig', array());
     }
+
+
+
     /**
      * [Action que permite crear un vento del calendario academico]
      * @param  Request $request [description]
@@ -138,14 +159,14 @@ class AdminController extends Controller
     }#end function
 
     public function insertar_eventos_calendarioAction(Request $request){
+        $session=$request->getSession();
 
-        $id_ciclo = 19;
+        $id_ciclo = $session->get("îdciclo_calendar");
         $UgServices   = new UgServices;
         $id_evento    = $request->request->get('id_evento');
         $fec_desde    = $request->request->get('start');
         $fec_hasta    = $request->request->get('end');
         // $date = date_format($fec_desde, 'Y-m-d H:i:s');
-// echo '<pre>'; var_dump($date); exit();
         $session=$request->getSession();
         $id_usuario = $session->get("id_user");
         $id_usuario = 11;
@@ -160,9 +181,29 @@ class AdminController extends Controller
 
         $evento     = $request->request->get('evento');
         $id_evento  = $request->request->get('id_evento');
+        $est_evento  = $request->request->get('est_evento');
+        
 
-        $rsInsertEvent = $UgServices->modificarEventos($evento,$id_evento);
+        $rsInsertEvent = $UgServices->modificarEventos($evento,$id_evento,$est_evento);
 
+        return new Response($rsInsertEvent);
+    }#end function
+
+    public function modificar_eventos_calendarioAction(Request $request){
+        $session=$request->getSession();
+
+        $id_ciclo = $session->get("îdciclo_calendar");
+        $UgServices   = new UgServices;
+        $id_evento    = $request->request->get('id_evento');
+        $fec_desde    = $request->request->get('start');
+        $fec_hasta    = $request->request->get('end');
+        $id_calendario  = $request->request->get('id_calendario');
+        // $date = date_format($fec_desde, 'Y-m-d H:i:s');
+        $session=$request->getSession();
+        $id_usuario = $session->get("id_user");
+        $id_usuario = 11;
+        $rsInsertEvent = $UgServices->modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario,$id_calendario);
+        // echo '<pre>'; var_dump($rsInsertEvent); exit();
         return new Response($rsInsertEvent);
     }#end function
 

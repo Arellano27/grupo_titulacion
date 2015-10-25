@@ -23,34 +23,34 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-      $this->usuario         = "abc";
-      $this->clave           = "123";
-      $this->source          = "jdbc/procedimientosSaug";
-      $this->sourceConsultas = "jdbc/consultasSaug";
-      $this->url             = "http://192.168.100.11:8080/";
-      $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      $this->urlWS           = "";
-      $this->host            = "192.168.100.11:8080";
+      // $this->usuario         = "abc";
+      // $this->clave           = "123";
+      // $this->source          = "jdbc/procedimientosSaug";
+      // $this->sourceConsultas = "jdbc/consultasSaug";
+      // $this->url             = "http://192.168.100.11:8080/";
+      // $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+      // $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      // $this->urlWS           = "";
+      // $this->host            = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      // $this->usuario       = "CapaVisualPhp";
-      // $this->clave         = "12CvP2015";
-      // $this->url           = "http://186.101.66.2:8080/";
-      // /*Saug Temporal*/
-      // $this->source        = "jdbc/saugProcTmp";
-      // $this->sourceConsultas  = "jdbc/saugConsTmp";
-      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->usuario       = "usr_tesis";
+      $this->clave         = "Tesis2015";
+      $this->url           = "http://186.101.66.2:8080/";
+      /*Saug Temporal*/
+      $this->source        = "jdbc/saugProcTmp";
+      $this->sourceConsultas  = "jdbc/saugConsTmp";
+      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
 
-//      /*Preproduccion*/
-//      $this->source        = "jdbc/procedimientosSaug";
-//      $this->sourceConsultas  = "jdbc/consultasSaug";
-//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-//
-      $this->urlWS         = "";
+// //      /*Preproduccion*/
+// //      $this->source        = "jdbc/procedimientosSaug";
+// //      $this->sourceConsultas  = "jdbc/consultasSaug";
+// //      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+// //      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+// //
+//       $this->urlWS         = "";
       $this->host          = "186.101.66.2:8080";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
    }
@@ -240,6 +240,7 @@ XML;
 
 
 public function getConsultaCarreras($idEstudiante,$idRol){
+  // echo '<pre>'; var_dump($idEstudiante,$idRol); exit();
         $this->tipo    = "3";
         $this->urlWS   = $this->url.$this->urlConsulta;
         /*$ws=new AcademicoSoap();
@@ -250,8 +251,9 @@ public function getConsultaCarreras($idEstudiante,$idRol){
         $url        = "http://186.101.66.2:8080/consultasTmp/ServicioWebConsultas?wsdl";
         $host       = "186.101.66.2:8080";
         $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";*/
-         $trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
-
+        // $trama = "<usuario>";
+         $trama      = "<usuario>".$idEstudiante."</usuario> <rol> ".$idRol." </rol>";
+// echo 'aa<pre>'; var_dump($trama); exit();
         //$response=$ws->doRequestSreReceptaTransacionCarreras($trama,$this->source,$this->tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doRequestSreReceptaTransacionCarreras($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
         return $response;
@@ -575,27 +577,60 @@ public function insertarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_h
   $opcion = "I";
   $this->tipo       = "32";
   $this->urlWS   = $this->url.$this->urlProcedim;
-  $trama      = "<PX_XML><items><item><id_sa_parametro_actividad>".$id_evento."</id_sa_parametro_actividad><id_sa_ciclo_detalle>".$id_ciclo."</id_sa_ciclo_detalle><fecha_desde>".$fec_desde."</fecha_desde><fecha_hasta>".$fec_hasta."</fecha_hasta><id_sg_usuario_registro>".$id_usuario."</id_sg_usuario_registro><id_sa_calendario_academico>0</id_sa_calendario_academico></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+  $trama      = "<PX_XML><items><item><id_sa_eventos_calendario_academico>".$id_evento."</id_sa_eventos_calendario_academico><id_sa_ciclo_detalle>".$id_ciclo."</id_sa_ciclo_detalle><fecha_desde>".$fec_desde."</fecha_desde><fecha_hasta>".$fec_hasta."</fecha_hasta><id_sg_usuario_registro>".$id_usuario."</id_sg_usuario_registro><id_sa_calendario_academico>0</id_sa_calendario_academico></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
   // echo '<pre>'; var_dump($trama); exit();
   $response = $this->ws->doInsertEventosCalendario($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
   return $response;
 }#end function
 
-public function modificarEventos($evento,$idparametro){
+public function modificarEventos($evento,$idparametro,$estado){
+// echo 'UGSERVICE<pre>'; var_dump($evento,$idparametro,$estado); exit();
+
+    if ($estado == 'Activo') {
+       $estado_evento = "A";
+    }else{
+      $estado_evento = "I";
+    }
 
   $idtipoparametro = 1;
   $usuario = 1;
-  $estado = "A";
+  
   $opcion = "A";
   $this->tipo       = "31";
   $this->urlWS   = $this->url.$this->urlProcedim;
-  $trama      = "<PX_XML><items><item><id_parametro>".$idparametro."</id_parametro><id_tipo_parametro>".$idtipoparametro."</id_tipo_parametro><nombre>".$evento."</nombre><valor1/><valor2/><usuario>".$usuario."</usuario><estado>".$estado."</estado></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+  $trama      = "<PX_XML><items><item><id_parametro>".$idparametro."</id_parametro><id_tipo_parametro>".$idtipoparametro."</id_tipo_parametro><nombre>".$evento."</nombre><valor1/><valor2/><usuario>".$usuario."</usuario><estado>".$estado_evento."</estado></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
 
-  $response = $this->ws->doInsertEventosCalendario($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+  $response = $this->ws->doInsertEventosAcademicos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
   return $response;
 
 }#end function
 
-
+public function cargarEventosCalendario($id_ciclo,$id_usuario){
+  $idparametro = 0;
+  $idtipoparametro = 1;
+  $usuario = 1;
+  $estado = "A";
+  $opcion = "C";
+  $this->tipo       = "32";
+  $this->urlWS   = $this->url.$this->urlProcedim;
+  $trama      = "<PX_XML><items><item><id_sa_parametro_actividad>0</id_sa_parametro_actividad><id_sa_ciclo_detalle>".$id_ciclo."</id_sa_ciclo_detalle><fecha_desde>0</fecha_desde><fecha_hasta>0</fecha_hasta><id_sg_usuario_registro>".$id_usuario."</id_sg_usuario_registro><id_sa_calendario_academico>0</id_sa_calendario_academico></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+  // echo '<pre>'; var_dump($trama); exit();
+  $response = $this->ws->doSelectEventosCalendario($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+  // echo '<pre>'; var_dump($response); exit();
+  return $response;
+}#end function
+public function modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario,$id_calendario){
+  $idparametro = 0;
+  $idtipoparametro = 1;
+  $usuario = 1;
+  $estado = "A";
+  $opcion = "A";
+  $this->tipo       = "32";
+  $this->urlWS   = $this->url.$this->urlProcedim;
+  $trama      = "<PX_XML><items><item><id_sa_eventos_calendario_academico>".$id_evento."</id_sa_eventos_calendario_academico><id_sa_ciclo_detalle>".$id_ciclo."</id_sa_ciclo_detalle><fecha_desde>".$fec_desde."</fecha_desde><fecha_hasta>".$fec_hasta."</fecha_hasta><id_sg_usuario_registro>".$id_usuario."</id_sg_usuario_registro><id_sa_calendario_academico>".$id_calendario."</id_sa_calendario_academico></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+  // echo '<pre>'; var_dump($trama); exit();
+  $response = $this->ws->doUpdateEventosCalendario($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+  return $response;
+}#end function
 }#end class
 
