@@ -2129,4 +2129,23 @@
                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
            }  
     }#end function
+    
+    
+      public function listarsolicitudesAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           
+          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes.html.twig');
+           
+    }#end function
+    
+    
     }

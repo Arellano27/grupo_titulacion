@@ -14,6 +14,7 @@
           <li><a id="menuizqDoc_asistencia" href="#"><i class="fa fa-circle-o"></i> Asistencia de Alumnos</a></li>
           <li><a id="menuizqDoc_listadonotas" href="#"><i class="fa fa-circle-o"></i> Listado de Notas</a></li>
           <li><a id="menuizqDoc_vistageneral" href="#"><i class="fa fa-circle-o"></i> Vista por Asignatura</a></li>
+          <li><a id="menuizqDoc_vistageneral" href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Clases</a></li>
         </ul>
       </li>
       {% endif %}
@@ -28,6 +29,7 @@
           <li><a href="{{path('estudiantes_anulacion')}}"><i class="fa fa-circle-o"></i> Anulación</a></li>
           <li><a href="{{path('estudiantes_deudas')}}"><i class="fa fa-circle-o"></i> Deudas Pendientes</a></li>
           <li><a href="{{path('estudiantes_notas_actuales')}}"><i class="fa fa-circle-o"></i> Consulta de Notas</a></li>
+          <li><a href="{{path('estudiantes_listar_solicitudes')}}"><i class="fa fa-circle-o"></i> Listado de Solicitudes</a></li>
         </ul>
       </li>      
       {% endif %}     

@@ -6,6 +6,7 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\JsonResponse;
     use Titulacion\SisAcademicoBundle\Helper\UgServices;
+    use Titulacion\SisAcademicoBundle\fpdf\fpdf;
     use Symfony\Component\HttpFoundation\ResponseHeaderBag;
     use \PHPExcel_Style_Alignment;
     use \PHPExcel_Style_Border;
@@ -15,6 +16,7 @@
       var $v_error =false;
       var $v_html ="";
       var $v_msg  ="";
+       var $pdf="";
 
       public function indexAction(Request $request) //(Request $request)
       {
@@ -1249,4 +1251,96 @@
          return $dataReturn;
       }//function procesarListadoAsistenciasEstudiantes();
 
+      public function consultahorariosAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           
+          return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig');
+           
+    }#end function
+    
+      public function pdfhorariosAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+           
+                 $pdf= " <html> 
+                                            <body>
+                                            <img width='5%' src='images/menu/ug_logo.png'/>
+                                            <table align='center'>
+                                            <tr>
+                                              <td align='center'>
+                                                <b> Registro de Matricula</b>
+                                              </td>
+                                            <tr>
+                                            <tr>
+                                            <td>
+                                              <b> e </b>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            <div class='col-lg-12'>
+                                            <br><br><br><br>
+                                            <table class='table table-striped table-bordered' border='1' width='100%' >
+                                                     <thead>
+                                                        <tr>
+                                                                <th colspan='5'   style='text-align: center !important;background-color: #337AB7 !important;color: white!important;'>Periodo  </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style='text-align: center !important;'>Nivel</th>
+                                                            <th style='text-align: center !important;'>Id Materias</th>
+                                                            <th style='text-align: center !important;'>Nombre Materias</th>
+                                                            <th style='text-align: center !important;'>Veces</th>
+                                                            <th style='text-align: center !important;'>Curso</th> 
+                                                        </tr>";
+
+                                                  
+                                                 $pdf.="<tr>
+                                                            <td align='center'>1</td>
+                                                            <td align='center'>2</td>
+                                                            <td align='center'>Gabriel</td>
+                                                            <td align='center'>4</td>
+                                                            <td align='center'>3</td>
+                                                        </tr>";
+                                            
+
+                                            $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
+
+                                                    <tr><td width='40%'><img width='80%' src='images/menu/firma.png'/></td> 
+                                                      <td width='20%'>&nbsp;</td>
+                                                      <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
+                                                    </tr>
+
+                                                    <tr><td align='center' ><b>GAbriel Huayamabe</b></td>
+                                                    <td >&nbsp;</td>
+                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                    </table>";
+
+                                             $pdf.="</div></body></html>";
+ 
+                                            
+                            
+                  $mpdfService = $this->get('TFox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();               
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  return new response($mPDF->Output());
+                 
+    }#end function
+    
+      
    }

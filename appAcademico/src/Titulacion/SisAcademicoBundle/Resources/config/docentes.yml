@@ -53,3 +53,13 @@ docentes_ingreso_notas:
 docentes_ingreso_notas2:
     pattern:  /notas2/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresonotas2 }
+    
+docentes_consulta_horarios:
+    pattern:  /consultahorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:consultahorarios }
+    
+docentes_pdfhorarios:
+    pattern:  /PdfHorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:pdfhorarios }
+    
+    
