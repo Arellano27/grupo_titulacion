@@ -462,6 +462,7 @@ public function getConsultaRegistro_OrdenPago($idEstudiante,$idCarrera,$idCiclo)
         return $response; 
             
 }#end function
+
 //INSCRIPCION ADMIN
 public function getConsultaCarrerasInscripcion($idUsuario,$idRol)
 {
@@ -484,6 +485,31 @@ public function setActualizaInscripcion($trama){
         $this->tipo       = "28";
         $this->urlWS   = $this->url.$this->urlProcedim;
         $response=$this->ws->doSetActualizaInscripcion($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
+
+//ANULACION ADMIN
+public function getConsultaCarrerasAnulacion($idUsuario,$idRol)
+{
+        $this->tipo    = "3";
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $trama      = "<usuario>".$idUsuario."</usuario><rol>".$idRol."</rol>";
+        $response=$this->ws->doRequestSreReceptaTransacionCarrerasAnulacion($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
+public function getConsulta_listado_anulacion($fechaInicio,$fechaFin,$idCarrera,$tipo_solicitud)
+{
+        $this->tipo    = "25";
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $trama      = "<fecha_desde>".$fechaInicio."</fecha_desde><fecha_hasta>".$fechaFin."</fecha_hasta><carrera>".$idCarrera."</carrera><tipo_solicitud>".$tipo_solicitud."</tipo_solicitud>";
+        $response=$this->ws->doRequestSreReceptaTransacionAnulacion_Listar($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
+public function getConsulta_listado_anulacion_detalle($id_sa_solicitud,$id_tipo_solicitud){
+        $this->tipo       = "34";
+        $this->urlWS   = $this->url.$this->urlProcedim;
+        $trama      = "<solicitud>".$id_sa_solicitud."</solicitud><id_tipo_solicitud>".$id_tipo_solicitud."</id_tipo_solicitud>";
+        $response=$this->ws->doSetListado_Anulacion_Detalle($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
         return $response;
 }#end function
 }#end class

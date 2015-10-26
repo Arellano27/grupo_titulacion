@@ -366,6 +366,293 @@ class AdminController extends Controller
                 $respuesta->setContent($jarray);
                 return $respuesta;
         }
+        
+        //ANULACION
+          public function anulacionAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+         /*if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+                {*/ 
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          $idUsuario="";
+                          $idRol="";
+                          $idUsuario=$session->get("id_user");
+                          $idRol=$perfilAdmin;
+                          $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                          $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                          
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarrerasAnulacion($idUsuario,$idRol);
+                            if ( is_object($xml))
+                            {
+                                  foreach($xml->registros->registro as $lcCarreras) 
+                                  {
+                                          $lcFacultad="";
+                                          $lcCarrera=$lcCarreras->id_sa_carrera;
+                                          $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                     'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                     'Carrera'=>$lcCarreras->id_sa_carrera,
+                                                                     'Ciclo'=>$lcCarreras->id_sa_ciclo_detalle
+                                                                    );
+                                          array_push($Carreras, $materiaObject); 
+                                  } 
+    
+                                  $bolCorrecto=1;
+                                  $cuantos=count($Carreras);
+                                  if ($cuantos==0)
+                                  {
+                                        $bolCorrecto=0;
+                                  }    
+                            }
+                            else
+                            {
+    
+                              throw new \Exception('Un error');
+                            }    
+                 }
+                 catch (\Exception $e)
+                 {
+    
+                        $bolCorrecto=0;
+                        $cuantos=0;
+    
+                 }    
+                 return $this->render('TitulacionSisAcademicoBundle:Admin:carreras_anulacion.html.twig',array(
+                                                  'carreras' => $Carreras,
+                                                  'bolcorrecto'=>$bolCorrecto
+                                               ));
+            /*}
+            else
+            {
+                   $this->get('session')->getFlashBag()->add(
+                                 'mensaje',
+                                 'Los datos ingresados no son válidos'
+                             );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+    }
+    else
+    {
+         $this->get('session')->getFlashBag()->add(
+                              'mensaje',
+                               'Los datos ingresados no son válidos'
+                           );
+             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+     }*/
+    }#termina funcion
+      public function anulacion_datosAction(Request $request)
+    {
+        $idCarrera  = $request->request->get('idCarrera');
+        $idCiclo  = $request->request->get('idCiclo');
+
+        return $this->render('TitulacionSisAcademicoBundle:Admin:admin_buscar_anulacion.html.twig', array('idCarrera'=>$idCarrera,'idCiclo'=>$idCiclo));
+    }
+     public function anulacion_listarAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+          /*if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+                {*/ 
+                        try
+                        {
+                              $lcFacultad="";
+                              $lcCarrera="";
+                              $idUsuario="";
+                              $idRol="";
+                              $idUsuario=$session->get("id_user");
+                              $idRol=$perfilAdmin;
+                              $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                              $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                              $idEstudiante  = $request->request->get('idEstudiante');
+                              $idCarrera  = $request->request->get('idCarrera');
+                              $idCiclo=$request->request->get('idCiclo');
+                              $mes  = $request->request->get('criterio_mes');
+                              $anio  = $request->request->get('criterio_anio');
+                              $mes_h  = $request->request->get('criterio_mes_h');
+                              $anio_h  = $request->request->get('criterio_anio_h');
+                              $fechaInicio="01-".$mes."-".$anio;
+                              $fechaFin="31-".$mes_h."-".$anio_h;
+                              $tipo_solicitud=82; //solocitudes de anulaciones
+                              
+                              $arrInscripcion = array();
+                              $UgServices = new UgServices;
+                              $bolCorrecto=0;
+                              $cuantos=0;
+                              $xml1 = $UgServices->getConsulta_listado_anulacion($fechaInicio,$fechaFin,$idCarrera,$tipo_solicitud);
+                              
+                                if ( is_object($xml1))
+                                {
+                                        foreach($xml1->registros as $xml)
+                                        {  
+                                                              foreach($xml->registro as $lsregistros) 
+                                                              {
+                                                                              
+                          
+                                                                              $materiaObject = array( 'id_sa_solicitud' => $lsregistros->id_sa_solicitud,
+                                                                                                         'id_tipo_solicitud'=> $lsregistros->id_tipo_solicitud,
+                                                                                                         'tipo'=>$lsregistros->tipo,
+                                                                                                         'solicitante'=>$lsregistros->solicitante,
+                                                                                                         'estado'=>$lsregistros->estado,
+                                                                                                         'id_estado'=>$lsregistros->id_estado
+                                                                                                        );
+                                                                              array_push($arrInscripcion, $materiaObject); 
+                                                                }  
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                  throw new \Exception('Un error');
+                                }    
+                     }
+                     catch (\Exception $e)
+                     {
+
+                            $bolCorrecto=0;
+                            $cuantos=0;
+
+                     }    
+                      return $this->render('TitulacionSisAcademicoBundle:Admin:admin_listado_anulacion.html.twig',array(
+                                                          'inscripcion' => $arrInscripcion,
+                                                          'idCarrera'=>$idCarrera,
+                                                          'idCiclo'=>$idCiclo
+                                                       ));
+           /*}
+                    else
+                    {
+                           $this->get('session')->getFlashBag()->add(
+                                         'mensaje',
+                                         'Los datos ingresados no son válidos'
+                                     );
+                             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+                    }
+            }
+            else
+            {
+                 $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                       'Los datos ingresados no son válidos'
+                                   );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+             }*/
+        }
+         public function anulacion_detalleAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+          /*if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+                {*/ 
+                        try
+                        {
+                              $lcFacultad="";
+                              $lcCarrera="";
+                              $idUsuario="";
+                              $idRol="";
+                              $idUsuario=$session->get("id_user");
+                              $idRol=$perfilAdmin;
+                              $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                              $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                              //$idEstudiante  = $request->request->get('idEstudiante');
+                              $NombreEstudiante  = $request->request->get('nombreEst');
+                              $idCarrera  = $request->request->get('idCarrera');
+                              $idCiclo=$request->request->get('idCiclo');
+                              $id_sa_solicitud=$request->request->get('id_sa_solicitud');
+                              $id_tipo_solicitud=$request->request->get('id_tipo_solicitud');
+                              
+                              $arrInscripcion = array();
+                              $UgServices = new UgServices;
+                              $bolCorrecto=0;
+                              $cuantos=0;
+                              $xml1 = $UgServices->getConsulta_listado_anulacion_detalle($id_sa_solicitud,$id_tipo_solicitud);
+                              
+                                if ( is_object($xml1))
+                                {
+                                        foreach($xml1->px_Salida as $xml)
+                                        {  
+                                                              
+                                                              foreach($xml->detalle as $lsregistros) 
+                                                              {
+                              
+                          
+                                                                              $materiaObject = array( 'id_solicitud_detalle' => $lsregistros->id_solicitud_detalle,
+                                                                                                         'identificador'=> $lsregistros->identificador,
+                                                                                                         'aprobada'=>$lsregistros->aprobada,
+                                                                                                         'descripcion'=>$lsregistros->descripcion
+                                                                                                        );
+                                                                              array_push($arrInscripcion, $materiaObject); 
+                                                                                                                       echo "<pre>";
+                                 
+                                                                }  
+                                                                
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                  throw new \Exception('Un error');
+                                }    
+                     }
+                     catch (\Exception $e)
+                     {
+
+                            $bolCorrecto=0;
+                            $cuantos=0;
+
+                     }    
+                      return $this->render('TitulacionSisAcademicoBundle:Admin:admin_listado_anulacion_detalle.html.twig',array(
+                                                          'inscripcion' => $arrInscripcion,
+                                                          'idCarrera'=>$idCarrera,
+                                                          'idCiclo'=>$idCiclo,
+                                                           'NombreEstudiante'=>$NombreEstudiante
+                                                       ));
+           /*}
+                    else
+                    {
+                           $this->get('session')->getFlashBag()->add(
+                                         'mensaje',
+                                         'Los datos ingresados no son válidos'
+                                     );
+                             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+                    }
+            }
+            else
+            {
+                 $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                       'Los datos ingresados no son válidos'
+                                   );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+             }*/
+        }
 
 
 
