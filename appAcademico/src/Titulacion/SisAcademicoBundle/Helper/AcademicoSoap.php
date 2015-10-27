@@ -164,7 +164,7 @@ $result = $XML;
 }#end function
 
 function doRequestSreReceptaTransacionConsultasdoc($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){
-
+//echo "-----------------------------------------".$datosCuenta."--".$source."--".$tipo."--".$usuario."--".$clave."--".$url."--".$host."--";
    $post_string="
         <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\">
         <soapenv:Header/>
@@ -201,7 +201,7 @@ function doRequestSreReceptaTransacionConsultasdoc($datosCuenta,$source,$tipo,$u
    else {
       $result = $XML;
    }
-
+//var_dump($result);
    if(!$result){
         return "error";
    }else{
@@ -1468,7 +1468,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
                     //     exit();
                     return $respuesta;
                     
-            }
+            
 }   
 
 

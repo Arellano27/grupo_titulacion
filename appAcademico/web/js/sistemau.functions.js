@@ -102,6 +102,45 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
         });
     }
 	
+    function tabdocentes(id,section,codigo,alumno){
+      
+        var obj_data = {"codigo" : codigo,"alumno" : alumno,"parcial":$("#hdparcial").val()};
+        $.ajax
+        ({
+            type: 'post',
+            url: section,
+            data: obj_data,
+            dataType: "json",
+            beforeSend: function( )
+            { $( "#content-"+id ).html("Cargando, espere por favor...");
+                //$( "#content-"+id ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+                
+            },
+            success: function(data) 
+            {
+               
+		if(data.error === true){
+                    $( "#loading-bar-spinner-relative" ).remove();
+                    msg_alert = alert_bootstrap( id, 'Atenci&oacute;n', data.msg, 'sm', 'alert');
+                    $( "#"+id ).append( msg_alert );
+                    $('#modal-'+id).modal('show');
+                } else if(data.modalOverBody) //MODAL SOBRE EL CUERPO DE LA PAGINA
+                    {
+                            var title = data.title;
+                            var content = data.html;
+                            var type = data.typeModalOverBody || 'alert';
+                            var size = data.sizeModalOverBody || 'md';
+
+                            createModalOverBody(title, content, size, type);
+                    }
+                
+                else{
+                    $( "#"+id ).html(data.html);
+                    }
+            }
+        });
+    }
+        
 function confirm(form, item)
     {     //alert("55");
         var msg_alert = "", msg = "", functions = "";
@@ -526,3 +565,27 @@ function confirm(form, item)
         $( "#modal-body" ).remove();
     }
     
+    function changeSelect(id, path)
+    {
+        /*if(id != 'main-services')
+        {*/
+        var selected = $("#"+id).val();
+        var datos = {'docente':$("#"+id).val(),'carrera':$("#hdCarrera").val()};
+
+        $.ajax
+        ({
+            type: 'post',
+            url: path,
+            data: datos,
+            dataType: "json",
+            beforeSend: function()
+            {
+                $( "#content-"+id ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+            },
+            success: function(data) 
+            {
+                    $( "#content-"+id ).html( data.html );
+                
+            }
+        });
+    }

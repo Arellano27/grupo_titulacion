@@ -5,9 +5,7 @@
         <script src="{{ asset('js/jqueryValidate/dist/additional-methods.js') }}"></script>
         
 	<script>
-
-
-	$(document).ready(function() {
+              $(document).ready(function() {
         /*   $("#btn-guardar").click(function(){
 $("#formulario").submit();  
 });*/
@@ -19,46 +17,12 @@ $("#formulario").submit();
                                 academicos_1: { required: true, number: true,max: 10 },
 				academicos_2: { required: true, number: true,max: 10 },
                                 academicos_3: { required: true, number: true,max: 10 },
-				username: {
-					required: true,
-					minlength: 2
-				},
-				password: {
-					required: true,
-					minlength: 5
-				},
-				confirm_password: {
-					required: true,
-					minlength: 5,
-					equalTo: "#password"
-				},
-				email: {
-					required: true,
-					email: true
-				},
-				topic: {
-					required: "#newsletter:checked",
-					minlength: 2
-				},
 				agree: "required"
 			},
 			messages: {
 				academicos_1: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
 				academicos_2: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
                                 academicos_3: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
-				username: {
-					required: "Please enter a username",
-					minlength: "Your username must consist of at least 2 characters"
-				},
-				password: {
-					required: "Please provide a password",
-					minlength: "Your password must be at least 5 characters long"
-				},
-				confirm_password: {
-					required: "Please provide a password",
-					minlength: "Your password must be at least 5 characters long",
-					equalTo: "Please enter the same password as above"
-				},
 				email: "Please enter a valid email address",
 				agree: "Please accept our policy",
 				topic: "Please select at least 2 topics"
@@ -124,7 +88,7 @@ $("#formulario").submit();
    
 </div>
                       
-                            <div class="dataTable_wrapper col-lg-12">
+                            <div class="dataTable_wrapper col-xs-12">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
@@ -196,46 +160,12 @@ $("#formulario").submit();
                                 academicos_1: { required: true, number: true,max: 10 },
 				academicos_2: { required: true, number: true,max: 10 },
                                 academicos_3: { required: true, number: true,max: 10 },
-				username: {
-					required: true,
-					minlength: 2
-				},
-				password: {
-					required: true,
-					minlength: 5
-				},
-				confirm_password: {
-					required: true,
-					minlength: 5,
-					equalTo: "#password"
-				},
-				email: {
-					required: true,
-					email: true
-				},
-				topic: {
-					required: "#newsletter:checked",
-					minlength: 2
-				},
 				agree: "required"
 			},
 			messages: {
 				academicos_1: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
 				academicos_2: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
                                 academicos_3: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
-				username: {
-					required: "Please enter a username",
-					minlength: "Your username must consist of at least 2 characters"
-				},
-				password: {
-					required: "Please provide a password",
-					minlength: "Your password must be at least 5 characters long"
-				},
-				confirm_password: {
-					required: "Please provide a password",
-					minlength: "Your password must be at least 5 characters long",
-					equalTo: "Please enter the same password as above"
-				},
 				email: "Please enter a valid email address",
 				agree: "Please accept our policy",
 				topic: "Please select at least 2 topics"

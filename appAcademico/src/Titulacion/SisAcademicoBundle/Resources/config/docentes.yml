@@ -9,10 +9,6 @@ docentes_listado_materias:
 docentes_listado_alumnos_materia:
     pattern:  /materias/alumnos/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria}
-
-docentes_consulta_notas:
-    pattern:  /materias/notas/
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:consultaNotas }
     
 docentes_consulta_notas_materia:
     pattern:  /materias/notas/listado
@@ -77,3 +73,11 @@ docentes_actualiza_asis:
 docentes_actualiza_asistencia:
     pattern:  /actualizar/asistencias
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizarAsistencia}
+    
+admin_lista_estudiantes:
+    pattern:  /listar/estudiantes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listaEstudiantes}
+    
+admin_cmb_materias:
+    pattern:  /combo/materias
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:cmbMaterias}
