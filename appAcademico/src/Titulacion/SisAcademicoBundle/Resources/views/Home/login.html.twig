@@ -1,3 +1,4 @@
+<link type="text/css" rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') }}">
 <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
 <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
 <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
@@ -17,6 +18,26 @@
 <script src="{{ asset('js/lib/iOS-Overlay/js/modernizr-2.0.6.min.js') }}"></script>
 <script src="{{ asset('js/lib/jquery-spin/spin.min.js') }}"></script>
 <script src="{{ asset('js/sistemau.functions.js') }}"></script>
+
+
+<style type="text/css">
+
+.flavr-container .flavr-fixer .flavr-outer .flavr-toolbar{background: #fff !important;}
+.flavr-container .flavr-fixer .flavr-outer .flavr-content {
+  border-top: 5px solid #005595 !important;
+  background: #fff !important;
+  color: #000 !important;
+}
+.flavr-container .flavr-fixer .flavr-outer .flavr-content .flavr-message form input { 
+  border: 1.5px solid #d2d6de !important; 
+  background: #FAFFBD !important;
+}
+.flavr-container .flavr-overlay {background: #d2d6de !important;}
+.flavr-container .flavr-fixer .flavr-outer .flavr-toolbar.inline .flavr-button { font-weight: bold; }
+.flavr-container .flavr-fixer .flavr-outer .flavr-toolbar .flavr-button.danger { background-color: #F44A56; }
+.growl.growl-default { background: #2ECC71 !important; }
+
+</style>
 <script type="text/javascript">
 
   $(document).ready(function(){
@@ -42,13 +63,25 @@ function iniciar_sesion () {
 }
 
 function enviar_mail (user) {
+var modelessEnvioCorreo;
+modelessEnvioCorreo = new $.flavr({
+                              modal   : true,
+                              content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                              buttons     : {}
+                              });
 
 $("#username").val($.trim($("#username").val()));
+
 if($("#username").val() == '')
 {
+  modelessEnvioCorreo.close();
    mensaje_cisc( "error", "Debe ingresar el usuario.");
 }else{
+
+
  $.post('{{path('titulacion_sis_academico_mail')}}', {user: user}, function(data) {
+
+modelessEnvioCorreo.close();
 
     switch(data){
 
@@ -58,7 +91,9 @@ if($("#username").val() == '')
       
     }
  });
+
   }
+
 }
 
 function login(){
@@ -70,7 +105,7 @@ function login(){
      $('.login-are').removeAttr('click');
     var html =
         '   <div class="form-row">' +
-        '       <input id="username" type="text" name="username" ' +
+        '       <input id="username" type="text" name="username" maxlength="10"' +
         '       placeholder="Username"  required /> <p class="help-block"></p>' +
         '   </div>' +
         '   <div class="form-row">' +
@@ -89,68 +124,64 @@ function login(){
         dialog      : 'form',
         form        : {  content: html, method: 'get'},
         buttons : {
-        submit  : { text: 'Iniciar', style: 'danger', addClass: 'submit-btn', id: 'btn_iniciar',
+        submit  : { text: 'Iniciar', style: 'primary', addClass: 'submit-btn', id: 'btn_iniciar',
                     action: function( $container, $second, $third ){
                       if ($("#username").val() == '' || $("#password").val() == '') {
                           mensaje_cisc( "error", "Ingrese el usuario y el password.");
                           this.wobble();
                       }else{
 
-                         $.ajax({
-                             url:   '{{path('titulacion_sis_academico_ingresar')}}',
-                             data: {'user': $("#username").val(),'pass':$("#password").val()},
+                        var modelessLogin;
+                        $.ajax({
+                            url:   '{{path('titulacion_sis_academico_ingresar')}}',
+                            data: {'user': $("#username").val(),'pass':$("#password").val()},
 
-                             type:  'post',
-                             beforeSend: function () {
-                               // sitioCargado(notificacionIndex);
+                            type:  'post',
+                            beforeSend: function () {
+                              modelessLogin = new $.flavr({
+                              modal   : true,
+                              content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                              buttons     : {}
+                              });
+                            },
+                            error:function(){
+                              modelessLogin.close();
+                              btn_login = 0;
+                              mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
                              },
-                             error:function(){
-                                  btn_login = 0;
-                                  mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
-                             },
-                             success:  function (dataResponse) {
-
-                                  switch (dataResponse) {
+                            success:  function (dataResponse) {
+                              modelessLogin.close();
+                              var perfil = JSON.parse(dataResponse).Perfil;
+                              var nombreUsuario = JSON.parse(dataResponse).NombreUsuario;
+                              //alert('{{perfilEstDoc}}');
+                                  switch (perfil.toString()) {
 
                                         case '{{perfilEst}}':
-                                            notificacionIndex = cargandoSitio(null, null, null);
-                                            sitioCargado(notificacionIndex);
-                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
                                             location.href = '{{path('estudiantes_notas_actuales')}}';
                                             break;
                                         case '{{perfilDoc}}':
-                                            notificacionIndex = cargandoSitio(null, null, null);
-                                            sitioCargado(notificacionIndex);
-                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
                                             location.href = '{{path('SisAcademico_Docentes_home')}}';
                                             break;
                                         case '{{perfilAdmin}}':
-                                            notificacionIndex = cargandoSitio(null, null, null);
-                                            sitioCargado(notificacionIndex);
-                                            $.growl.error({ message: "Perfil NO habilitado" });
+                                            mensaje_cisc( "error", "Perfil NO habilitado");
                                             //alertify.success("Bienvenido "+$("#username").val());
                                             //location.href = '{#{path('dayscript_minisitio_login')}#}';
                                             break;
                                         case '{{perfilEstDoc}}':
-                                            notificacionIndex = cargandoSitio(null, null, null);
-                                            sitioCargado(notificacionIndex);
-                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
                                             location.href = '{{path('estudiantes_notas_actuales')}}';
                                             break;
                                         case '{{perfilEstAdm}}':
-                                            notificacionIndex = cargandoSitio(null, null, null);
-                                            sitioCargado(notificacionIndex);
-                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
                                             location.href = '{{path('estudiantes_notas_actuales')}}';
                                             break;
                                         case '{{perfilDocAdm}}':
-                                            notificacionIndex = cargandoSitio(null, null, null);
-                                            sitioCargado(notificacionIndex);
-                                            mensaje_cisc( "notice", "Bienvenido "+$("#username").val());
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
                                             location.href = '{{path('SisAcademico_Docentes_home')}}';
                                             break;
                                         default:
-
                                             mensaje_cisc( "error", "Usuario o constraseña incorrecto/a.");
                                             break;
                                     }//end switch
@@ -164,17 +195,17 @@ function login(){
                     }
         }
         ,
-        Olvide: { text: 'Olvide mi clave',id:'recordar_link', style: 'danger', action: function(){ this.swing(); recordar_pass(); return false }},
-        tada        : { text: 'Iniciar Sesión', id:'iniciar', style: 'info',animateClosing: 'rollOut', action: function(){ iniciar_sesion(); return false }},
-        Recuperar: { text: 'Enviar Mail',id:'enviar_mail', style: 'primary', action: function(){ this.swing(); enviar_mail($("#username").val()); return false }},
+        danger: { text: 'Olvide mi clave',id:'recordar_link', style: 'danger', action: function(){ this.swing(); recordar_pass(); return false }},
+        retornar      : { text: 'Regresar', id:'iniciar', style: 'primary',animateClosing: 'rollOut', action: function(){ iniciar_sesion(); return false }},
+        Recuperar: { text: 'Enviar Mail',id:'enviar_mail', style: 'info',  action: function(){ this.swing(); enviar_mail($("#username").val()); return false }},
     }
 
     });
     }
     $("#iniciar").hide();
     $("#enviar_mail").hide();
-}
+  }
 
 
 
-</script>
+  </script>

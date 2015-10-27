@@ -19,10 +19,24 @@ admin_registro_ordenpago:
 admin_carreras_ordenpago:
     path:     /carrerasordenpago
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:carrerasordenpago }
+    path:     /eventos_user
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos_carrera_user }
 admin_academico_crear_eventos:
     path:     /crear_evento
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:crear_eventos_academicos }
 admin_academico_insertar_eventos:
     path:     /insertar_evento
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:insertar_eventos_calendario }
+admin_academico_estudiante_carrera:
+    path:     /estudiantesCarrera
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_estudiantes_carrera }
+admin_academico_estudiante_carrera_selected:
+    path:     /consultaEstadoEstudiante
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:estudiante_carrera_selected }
+admin_academico_estudiante_carrera_pdf:
+    path:     /pdf/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfEstudiantes_InscritosMatriculados }
+admin_academico_cambio_pass_interno:
+    path:     /restablecer_pass_interno
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cambio_password }
 

@@ -166,16 +166,26 @@ class HomeController extends Controller
                 $session->set("perfil",$perfil); //idrol
                 $session->set("nom_usuario",$nombreUsuario);
                 $session->set("cedula",$cedula);
-
                 $session->set("mail",$mail);
-
                 $session->set("descRol",$descRol);//nombre rol
 
-                return new Response($perfil);
+                $respuesta = array(
+                  "Perfil" => $perfil ,
+                  "NombreUsuario" => $nombreUsuario,
+                );
+                return new Response(json_encode($respuesta));
+
+                //return new Response($perfil);
             }else{
                 $perfil = 5;# error usuario y contraseña no
-                return new Response('05');
-                // return new Response($password);
+
+                 $respuesta = array(
+                  "Perfil" => '05' ,
+                  "NombreUsuario" => '',
+                );
+
+                return new Response(json_encode($respuesta));
+                //return new Response('05');
             }
 
 
