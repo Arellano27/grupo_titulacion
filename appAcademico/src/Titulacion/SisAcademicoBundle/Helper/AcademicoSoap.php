@@ -1458,64 +1458,66 @@ function doGeneraTurno($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
     }
 }#end function
 
+/**
+ * [Funcion retorna todos los eventos creados]
+ */
+function  doRequestReceptaSoloEventosAcademicos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
+  $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+           <soapenv:Header/>
+           <soapenv:Body>
+              <ser:ejecucionConsulta>
+                 <dataSource>".$source."</dataSource>
+                 <idServicio>".$tipo."</idServicio>
+                 <usuario>".$usuario."</usuario>
+                 <clave>".$clave."</clave>
+                 <parametrosConsulta>
+                    <parametros>
+                        ".$datosCuenta."
+                    </parametros>
+                 </parametrosConsulta>
+              </ser:ejecucionConsulta>
+           </soapenv:Body>
+        </soapenv:Envelope> ";
 
-    function  doRequestReceptaSoloEventosAcademicos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
-      // echo '<pre>'; var_dump($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host); exit();
-      $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
-               <soapenv:Header/>
-               <soapenv:Body>
-                  <ser:ejecucionConsulta>
-                     <dataSource>".$source."</dataSource>
-                     <idServicio>".$tipo."</idServicio>
-                     <usuario>".$usuario."</usuario>
-                     <clave>".$clave."</clave>
-                     <parametrosConsulta>
-                        <parametros>
-                            ".$datosCuenta."
-                        </parametros>
-                     </parametrosConsulta>
-                  </ser:ejecucionConsulta>
-               </soapenv:Body>
-            </soapenv:Envelope> ";
-
-            $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
-                    $soap_do = curl_init();
-                    curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
-                    curl_setopt($soap_do, CURLOPT_URL,            $url );
-                    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
-                    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
-                    curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
-                    curl_setopt($soap_do, CURLOPT_PORT,8080);
-                    curl_setopt($soap_do, CURLOPT_POST, true);
-                    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
-                    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
-                    // echo '<pre>'; var_dump($soap_do); exit();
-                    $result = curl_exec($soap_do);
-                    // echo '<pre>'; var_dump($result); exit();
-            if(!$result)
-              {
-                  return "error";
-              }
-              else
-              {
-                  // echo '<pre>'; var_dump($result); exit();
-                $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-                  $xml = new \SimpleXMLElement($response);
-                  // $body = $xml->xpath('//soapBody')[0];
-                  // $return = $xml->xpath('//registro')[0];
-                  // echo '<pre>'; var_dump($xml); exit();
-                  $resultadoObjeto = $xml->xpath('//registros')[0];
-                  // $resultadoObjeto = $xml->xpath('//registro')[0];
-                  // $deJson = json_encode($resultadoObjeto);
-                  $resultadoObjeto = json_encode($resultadoObjeto);
-                  $xml_array = json_decode($resultadoObjeto,TRUE);
-// echo '<pre>'; var_dump($xml_array); exit();
-                  // $resultadoObjeto = $this->Response($resultadoObjeto);
-                  return $xml_array;
-              }
+        $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+                $soap_do = curl_init();
+                curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+                curl_setopt($soap_do, CURLOPT_URL,            $url );
+                curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+                curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+                curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+                curl_setopt($soap_do, CURLOPT_PORT,8080);
+                curl_setopt($soap_do, CURLOPT_POST, true);
+                curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+                curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+                // echo '<pre>'; var_dump($soap_do); exit();
+                $result = curl_exec($soap_do);
+                // echo '<pre>'; var_dump($result); exit();
+        if(!$result)
+          {
+              return "error";
+          }
+          else
+          {
+              // echo '<pre>'; var_dump($result); exit();
+            $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+              $xml = new \SimpleXMLElement($response);
+              // $body = $xml->xpath('//soapBody')[0];
+              // $return = $xml->xpath('//registro')[0];
+              // echo '<pre>'; var_dump($xml); exit();
+              $resultadoObjeto = $xml->xpath('//registros')[0];
+              // $resultadoObjeto = $xml->xpath('//registro')[0];
+              // $deJson = json_encode($resultadoObjeto);
+              $resultadoObjeto = json_encode($resultadoObjeto);
+              $xml_array = json_decode($resultadoObjeto,TRUE);
+              // $resultadoObjeto = $this->Response($resultadoObjeto);
+              return $xml_array;
+          }
 
 }#end function
-
+/**
+ * [Funcion para crear un evento]
+ */
 function doInsertEventosAcademicos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
   // echo '<pre>'; var_dump($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host); exit();
    $post_string="
@@ -1565,7 +1567,9 @@ function doInsertEventosAcademicos($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     return $xml_array["PI_ESTADO"];
 }#end function
 
-
+/**
+ * [Funcion para insertar un evento al calendario]
+ */
 function doInsertEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
   $post_string="
             <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
@@ -1596,14 +1600,14 @@ function doInsertEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
-// echo '<pre>'; var_dump($result); exit();
+
                     $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
                     $xml = new \SimpleXMLElement($response);
                     $body = $xml->xpath('//soapBody')[0];
                     $return = $xml->xpath('//return')[0];
 
                     $resultadoObjeto = $xml->xpath('//parametrosSalida')[0];
-// echo '<pre>'; var_dump($resultadoObjeto)S; exit();
+
                     $resultadoObjeto = json_encode($resultadoObjeto);
                     $xml_array = json_decode($resultadoObjeto,TRUE);
                     // $resultadoObjeto = $this->Response($resultadoObjeto);
@@ -1613,7 +1617,9 @@ function doInsertEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     // return $xml_array;
                     return $xml_array["PI_ESTADO"];
 }#end function
-
+/**
+ * [Funcion que permite consultar los eventos que han sido insertados en el calendario]
+ */
 function doSelectEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
   $post_string="
             <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
@@ -1644,7 +1650,6 @@ function doSelectEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
-// echo '<pre>'; var_dump($result); exit();
                     $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
                     $xml = new \SimpleXMLElement($response);
                     $body = $xml->xpath('//soapBody')[0];
@@ -1653,27 +1658,12 @@ function doSelectEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     $resultadoObjeto = $xml->xpath('//parametrosSalida')[0];
                     $resultadoObjeto = $xml->xpath('//PX_Salida')[0];
                     // $resultadoObjeto = $xml->xpath('//item')[0];
-// echo '<pre>'; var_dump($resultadoObjeto); exit();
                     $resultadoObjeto = $this->Response($resultadoObjeto);
-// echo '<pre>'; var_dump($resultadoObjeto); exit();
-
-                    // $resultadoObjeto = $xml->xpath('//item')[0];
-// echo '<pre>'; var_dump($resultadoObjeto); exit();item
-                    // $resultadoObjeto = json_encode($resultadoObjeto);
-                    // echo '<pre>'; var_dump($resultadoObjeto); exit();
-                    // $xml_array = json_decode($resultadoObjeto,TRUE);
-                    // $resultadoObjeto = $this->Response($resultadoObjeto);
-                    // $resultadoObjeto = $xml->xpath('//PV_MENSAJE')[0];
-                    // $resultadoObjeto = $this->Response($resultadoObjeto);
-                    // echo '<pre>'; var_dump($xml_array); exit();
-                    // return $xml_array;
-                    // echo '<pre>'; var_dump($xml_array); exit();
-                    // return $xml_array["PX_Salida"];
-                    // $resultadoObjeto = json_encode($xml_array["PX_Salida"]);
-                    // $xml_array = json_decode($resultadoObjeto,TRUE);
                     return $resultadoObjeto;
 }#end function
-
+/**
+ * [Funcion que permite actualizar un evento del calendario]
+ */
 function doUpdateEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
   $post_string="
             <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
@@ -1704,14 +1694,14 @@ function doUpdateEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
-// echo '<pre>'; var_dump($result); exit();
+
                     $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
                     $xml = new \SimpleXMLElement($response);
                     $body = $xml->xpath('//soapBody')[0];
                     $return = $xml->xpath('//return')[0];
 
                     $resultadoObjeto = $xml->xpath('//parametrosSalida')[0];
-// echo '<pre>'; var_dump($resultadoObjeto)S; exit();
+
                     $resultadoObjeto = json_encode($resultadoObjeto);
                     $xml_array = json_decode($resultadoObjeto,TRUE);
                     // $resultadoObjeto = $this->Response($resultadoObjeto);

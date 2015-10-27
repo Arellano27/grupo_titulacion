@@ -619,11 +619,11 @@ public function cargarEventosCalendario($id_ciclo,$id_usuario){
   // echo '<pre>'; var_dump($response); exit();
   return $response;
 }#end function
-public function modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario,$id_calendario){
+public function modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario,$id_calendario,$estado){
   $idparametro = 0;
   $idtipoparametro = 1;
   $usuario = 1;
-  $estado = "A";
+  // $estado = "A";
   $opcion = "A";
   $this->tipo       = "32";
   $this->urlWS   = $this->url.$this->urlProcedim;

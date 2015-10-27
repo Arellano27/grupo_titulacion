@@ -53,7 +53,7 @@
                     <div class="external-event bg-red">Sleep tight</div> -->
                     <p>
                       <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
-                      <b>Remover evento</b><img src="{{ asset('images/trashcan.png') }}" id="trash" alt="">
+                      <!-- <b>Remover evento</b><img src="{{ asset('images/trashcan.png') }}" id="trash" alt=""> -->
                     </p>
                     <div class="checkbox" style="display:none;">
                       <label for="drop-remove">
@@ -118,7 +118,7 @@
     <script type="text/javascript">
       jQuery(document).ready(function() {
 
-        
+          
           $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
           function drop(ev) {
               ev.preventDefault();
@@ -159,15 +159,7 @@
 
        //        ini_events($('#external-events div.external-event'));
        //
-            var currentMousePos = {
-            x: -1,
-            y: -1
-        };
-          jQuery(document).on("mousemove", function (event) {
-              currentMousePos.x = event.pageX;
-              currentMousePos.y = event.pageY;
-          });
-
+           
           /* initialize the external events
           -----------------------------------------------------------------*/
 
@@ -251,6 +243,12 @@
                 '       <input id="titulo" type="text" name="titulo" ' +
                 '       placeholder="Título" />' +
                 '   </div>' +
+                '   <div class="form-row">' +
+                '       <select id="estado" name="estado" >' +
+                '       <option>Activo</option>' +
+                '       <option>Inactivo</option>' +
+                '       </select>' +
+                '   </div>' +
                 '   <div class="form-group">' +
                 '       <label>Date and time range:</label>' +
                 '       <div class="input-group">' +
@@ -270,21 +268,34 @@
 
                 new $.flavr({
                     title       : 'Editar Evento',
+                    position :  'top-mid',
                     content     : '',
                     dialog      : 'form',
                     form        : { content: html, method: 'post' },
                     onSubmit    : function( $container, $form ){
-                        $.post('{#{path('admin_academico_editar_eventos')}#}', {evento: $("#titulo").val(), id_evento: $(evet).attr("name"), est_evento: $("#estado").val()}, function(data) {
-                          if(data == 1){
-                              mensaje_cisc( "notice", "PROCESO EXITOSO!!");
-                            }else{
-                                mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
-                            }
-                        });
+
+                        var title = $('#titulo').val();
+                        var fechas = $('#reservationtime').val();
+                        var fech  = fechas.split("-");
+                        var fec_desde = fech[0];
+                        var fec_hasta = fech[1];
+                        var id_evento = calEvent.id;
+                        var id_calendario = calEvent.idc;
+                        var estado = $("#estado").val();
+
+                        if (estado == 'Inactivo') {
+                            estado = 'I';
+                        }else{
+                          estado = 'A';
+                        }
+
+                        modificar_eventos_calendario(fec_desde,fec_hasta,id_evento,id_calendario,estado);
                         return false;
                     }
                 });
           $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+          $("#titulo").val(calEvent.title);
+          // $("#reservationtime").val(calEvent.start +'-'+calEvent.end);
           },
           drop: function(date, allDay){
 
@@ -305,10 +316,9 @@
         // var end = event.end.format();
         var start = event.start.format("YYYY-MM-DD");
         // alert(end);
-          modificar_eventos_calendario(start,id_evento,id_calendario);
+          modificar_eventos_calendario(start,"",id_evento,id_calendario,"A");
 
-          },
-
+          }
         });
        /* ADDING EVENTS */
               var currColor = "#3c8dbc"; //Red by default
@@ -371,6 +381,9 @@
           $.post('{{path('admin_academico_crear_eventos')}}', {evento: evento_color}, function(data) {
             if(data == 1){
                 mensaje_cisc( "notice", "EVENTO INSERTADO CON ÉXITO");
+                // $("#external-events").load();
+                location.href = '{{path('admin_academico_home')}}';
+                $('#calendar').fullCalendar( 'refetchEvents' );
             }else{
                 mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
             }
@@ -407,6 +420,8 @@
                         $.post('{{path('admin_academico_editar_eventos')}}', {evento: $("#titulo").val(), id_evento: $(evet).attr("name"), est_evento: $("#estado").val()}, function(data) {
                           if(data == 1){
                               mensaje_cisc( "notice", "PROCESO EXITOSO!!");
+                              location.href = '{{path('admin_academico_home')}}';
+                              $('#calendar').fullCalendar( 'refetchEvents' );
                             }else{
                                 mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
                             }
@@ -417,9 +432,12 @@
             $("#titulo").val($(evet).attr("id"));
         }//end function
 
-        function modificar_eventos_calendario(date,id_evento,id_calendario){
+        function modificar_eventos_calendario(date,end,id_evento,id_calendario,estado){
             // date = new Date(date);
-            $.post('{{path('admin_academico_modificar_eventos')}}', {start: date, end: date, id_evento: id_evento,id_calendario:id_calendario}, function(data) {
+            if(end == ''){
+              end = date;
+            }
+            $.post('{{path('admin_academico_modificar_eventos')}}', {start: date, end: end, id_evento: id_evento,id_calendario:id_calendario,estado:estado}, function(data) {
               if(data == 1){
                 mensaje_cisc( "notice", "EVENTO ACTUALIZADO CON ÉXITO");
                 $('#calendar').fullCalendar( 'refetchEvents' );

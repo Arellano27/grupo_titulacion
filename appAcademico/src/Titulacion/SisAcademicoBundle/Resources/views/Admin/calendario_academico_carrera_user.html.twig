@@ -9,7 +9,7 @@
 <section class="content">
           <div class="row">
 
-            <div class="col-md-9">
+            <div class="col-md-12">
               <div class="box box-primary">
                 <div class="box-body no-padding">
                   <!-- THE CALENDAR -->
@@ -121,65 +121,56 @@
           editable: false,
           droppable: true, // this allows things to be dropped onto the calendar !!!
                  events: function (start, end, timezone, callback) {
-
+                  $.ajax({
+                    url: '{{path('admin_academico_cargar_eventos')}}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {param1: 'value1'},
+                  })
+                  .done(function(data) {
                   var events = [];
-                  events.push({
-                    title: 'hola',
-                    start:  new Date('2015-10-12'),
-                    end:   new Date('2015-10-13')
+                    console.debug(data.length);
+                    for(i=0;i<data.length;i++){
+                      // alert(data[i]['fecha_hasta']);
+                      var nombre = data[i]['nombre_evento'];
+                      var arnombre = nombre.split("|");
+
+                      // this.id = data[i]['id_sa_eventos_calendario_academico'];
+                      // this.start = data[i]['fecha_desde'];
+                      // this.title = arnombre[0];
+                      // this.end = data[i]['fecha_hasta'];
+                      // this.color = arnombre[1];
+                      // events.push(this);
+                      events.push({
+                        id:  data[i]['id_sa_eventos_calendario_academico'],
+                        idc: data[i]['id_sa_calendario_academico'],
+                        inicio: data[i]['fecha_desde'],
+                        fin: data[i]['fecha_hasta'],
+                        title: arnombre[0],
+                        start: data[i]['fecha_desde'],//new Date('2015-10-12'),
+                        end:  data[i]['fecha_hasta'],//new Date('2015-10-13')
+                        color: arnombre[1]
+                      });
+                    }
+
+                      // $('#calendar').fullCalendar('addEventSource',events);
+                    callback(events);
+
+                  })
+                  .fail(function() {
+                    console.log("error");
+                  })
+                  .always(function() {
+                    console.log("complete");
                   });
-                  callback(events);
-            // $.ajax({
-            //     url: '{{path('admin_academico_cargar_eventos')}}',
-            //     type: "GET",
-            //     datatype: 'json',
-            //     success: function (doc) {
-            //         var events = [];
-            //         if ($(doc) != undefined && $(doc).Events.length > 0) {
-            //             $(doc).Events.forEach(function (Obj) {
-            //                 events.push({
-            //                     title: Obj.Title,
-            //                     start: Obj.Start,
-            //                     end: Obj.End
-            //                 });
-
-            //             });
-            //         }
-            //         callback(events);
-            //     },error: function (err) {
-            //         alert('Error in fetching data');
-            //     }
-            // });
-        },
-          drop: function (date, allDay) { // this function is called when something is dropped (evento cuando se deja caer un evento al calendario)
-
-            // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('eventObject');
-
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject);
-
-            // assign it the date that was reported
-            copiedEventObject.start = date;
-            copiedEventObject.allDay = allDay;
-            copiedEventObject.backgroundColor = $(this).css("background-color");
-            copiedEventObject.borderColor = $(this).css("border-color");
-
-            // render the event on the calendar
-            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
-            // is the "remove after drop" checkbox checked?
-            if ($('#drop-remove').is(':checked')) {
-              // if so, remove the element from the "Draggable Events" list
-              $(this).remove();
-            }
-
           },
-
-          select: function (start, end, allDay){
-            alert("poppúp");
-          },
+          eventClick: function (calEvent, jsEvent, view){
+            new $.flavr({
+                  content      : 'Titulo: '+calEvent.title+'<br>Desde: '+calEvent.inicio+'<br>Hasta: '+calEvent.fin,
+                  closeOverlay : true,
+                  closeEsc     : true
+              });
+          }
 
 
         });

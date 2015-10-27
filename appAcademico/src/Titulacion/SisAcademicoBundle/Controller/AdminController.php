@@ -182,7 +182,6 @@ class AdminController extends Controller
         $evento     = $request->request->get('evento');
         $id_evento  = $request->request->get('id_evento');
         $est_evento  = $request->request->get('est_evento');
-        
 
         $rsInsertEvent = $UgServices->modificarEventos($evento,$id_evento,$est_evento);
 
@@ -198,11 +197,12 @@ class AdminController extends Controller
         $fec_desde    = $request->request->get('start');
         $fec_hasta    = $request->request->get('end');
         $id_calendario  = $request->request->get('id_calendario');
+        $estado  = $request->request->get('estado');
         // $date = date_format($fec_desde, 'Y-m-d H:i:s');
         $session=$request->getSession();
         $id_usuario = $session->get("id_user");
         $id_usuario = 11;
-        $rsInsertEvent = $UgServices->modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario,$id_calendario);
+        $rsInsertEvent = $UgServices->modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario,$id_calendario,$estado);
         // echo '<pre>'; var_dump($rsInsertEvent); exit();
         return new Response($rsInsertEvent);
     }#end function
