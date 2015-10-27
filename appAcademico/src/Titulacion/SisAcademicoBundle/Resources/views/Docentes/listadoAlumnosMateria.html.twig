@@ -1,7 +1,8 @@
 {% block listaNotasAlumnos %}
-   <script type="text/javascript">
+  <script type="text/javascript">
       var inicioCicloCarrera  = '{{dataMateria.inicioCiclo}}';
       var finCicloCarrera     = '{{dataMateria.finCiclo}}';
+     // alert(inicioCicloCarrera);
       var inicioConsultaAsist;
       var finConsultaAsist;
       var delayTrigger  = 0;
@@ -115,21 +116,21 @@
 	<div class="col-lg-12">
 		<div class="panel panel-primary" style="border-radius: 0px;">
 		<div class="panel-heading" style="border-radius: 0px;">
-         LISTADO DE ALUMNOS - <span id="nombreCarreraMostrar_{{dataMateria.idMateria}}"></span>
+                    LISTADO DE ALUMNOS - <span id="nombreCarreraMostrar_{{dataMateria.idMateria}}"></span>
 		</div>
 		<!-- /.panel-heading -->
 		<div class="panel-body">
 			<div class="table-responsive">
             
             <div id="selectorFechasAsistencia" class="col-lg-12">
-               <div class="col-lg-8">
-                  <div class="col-lg-3" style="padding-top: 5px; display: block !important; text-align: center;">Seleccionar Fechas:</div>
-                  <div class="col-lg-2"><input id="fechasAsistenciasDesde" style="width: 96px;" class="input-sm" type="text" value="" /></div>
-                  <div class="col-lg-1" style="padding-top: 5px;">hasta</div>
-                  <div class="col-lg-2"><input id="fechasAsistenciasHasta" style="width: 96px;" class="input-sm" type="text" value="" /></div>
-                  <div class="col-lg-2"><button id="consultaAsistencia" class="btn btn-primary" type="button">Consultar</button></div>
-                  <div class="col-lg-2 periodosAsistencia">
-                     <i class="fa fa-fw fa-calendar"></i>
+               <div class="col-xs-8">
+                  <div class="col-xs-3" style="padding-top: 5px; display: block !important; text-align: center; width:22.5%;margin-left: -25px">Seleccionar Fechas:</div>
+                  <div class="col-xs-2"><input id="fechasAsistenciasDesde" style="width: 96px;" class="input-sm" type="text" value="" /></div>
+                  <div class="col-xs-1" style="padding-top: 5px;">hasta</div>
+                  <div class="col-xs-2"><input id="fechasAsistenciasHasta" style="width: 96px;" class="input-sm" type="text" value="" /></div>
+                  <div class="col-xs-2"><button id="consultaAsistencia" class="btn btn-primary" type="button">Consultar</button></div>
+                  <i class="fa fa-fw fa-calendar col-xs-1" style="padding-top: 10px;"></i>
+                     <div class="col-xs-2 periodosAsistencia">
                      <select id="periodosSelectAsistencia">
                         <option value="">Selec. Rango</option>
                         <option value="semanaActual">Semana Actual</option>
@@ -180,7 +181,6 @@
 			<!-- /.panel-body -->
 		</div>
 		<!-- /.panel -->
-      
       <script type="text/javascript">
  {#        $('#listadoAsistenciaMateria').DataTable({
             "bPaginate": false,
@@ -261,7 +261,7 @@
                        {#$("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
                        $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(tituloPanelMateria);
                        optionSelect.closest(".panel-body").html(dataResponse);#}
-                       $("#panelCarrera-"+idCarreraConsulta).html(dataResponse);
+                       $("#panelAsistenciasCarrera-"+idCarreraConsulta).html(dataResponse);
                      },
                      dataType:'html'
                   });
