@@ -25,30 +25,30 @@ class UgServices
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
 
 
-//      $this->usuario       = "abc";
-//      $this->clave         = "123";
-//      $this->source        = "jdbc/procedimientosSaug";
-//      //$this->url           = "http://186.101.66.2:8080/";
-//      $this->url           = "http://192.168.100.11:8080/";
-//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-//      $this->urlWS         = "";
-//      //$this->host          = "186.101.66.2:8080";
-//      $this->host          = "192.168.100.11:8080";
-//      $this->sourceConsultas= "jdbc/consultasSaug";
+      $this->usuario       = "abc";
+      $this->clave         = "123";
+      $this->source        = "jdbc/procedimientosSaug";
+      //$this->url           = "http://186.101.66.2:8080/";
+      $this->url           = "http://192.168.100.11:8080/";
+     $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+     $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+     $this->urlWS         = "";
+      //$this->host          = "186.101.66.2:8080";
+      $this->host          = "192.168.100.11:8080";
+ $this->sourceConsultas= "jdbc/consultasSaug";
 
 
 
-       $this->usuario         = "abc";
-      $this->clave           = "123";
-       $this->source          = "jdbc/procedimientosSaug";
-     $this->sourceConsultas = "jdbc/consultasSaug";
-       $this->url             = "http://192.168.100.11:8080/";
-       $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
-       $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
-       $this->urlWS           = "";
-       $this->host            = "192.168.100.11:8080";
-      /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
+//       $this->usuario         = "abc";
+//      $this->clave           = "123";
+//       $this->source          = "jdbc/procedimientosSaug";
+//     $this->sourceConsultas = "jdbc/consultasSaug";
+//       $this->url             = "http://192.168.100.11:8080/";
+//       $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+//       $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//       $this->urlWS           = "";
+//       $this->host            = "192.168.100.11:8080";
+//      /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
@@ -501,7 +501,7 @@ public function Mensajes_No_Leidos($idUsuario){
            $this->tipo       = "13";
            $this->urlWS   = $this->url.$this->urlConsulta;         
            $trama      = "<id_recepcion>".$idUsuario."</id_recepcion>";
-           $response=$this->ws->doRequestSreReceptaTransacionConsultasMensajesNoLeidos($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+           $response=$this->ws->doRequestSreReceptaTransacionConsultasMensajesNoLeidos($idUsuario,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
            return $response;
            
  }#end function
@@ -511,7 +511,7 @@ public function Mensajes_No_Leidos($idUsuario){
            $this->tipo       = "17";
            $this->urlWS   = $this->url.$this->urlConsulta;         
            $trama      = "<id_recepcion>".$idUsuario."</id_recepcion>";
-           $response=$this->ws->doRequestSreReceptaTransacionConsultasEventosNoLeidos($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+           $response=$this->ws->doRequestSreReceptaTransacionConsultasEventosNoLeidos($idUsuario,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
            return $response;
            
  }#end function
@@ -521,7 +521,7 @@ public function Mensajes_No_Leidos($idUsuario){
            $this->tipo       = "15";
            $this->urlWS   = $this->url.$this->urlConsulta;         
            $trama      = "<id_recepcion>".$idUsuario."</id_recepcion>";
-           $response=$this->ws->doRequestSreReceptaTransacionConsultasNotificcionesNoLeidos($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+           $response=$this->ws->doRequestSreReceptaTransacionConsultasNotificcionesNoLeidos($idUsuario,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
            return $response;
            
  }#end function

@@ -1674,7 +1674,7 @@ function doRequestSreReceptaTransacionConsultasMensajesEnviados($datosCuenta,$so
 }#end function
 
 function doRequestSreReceptaTransacionConsultasMensajesNoLeidos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){
-
+   
    $post_string="
         <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\">
         <soapenv:Header/>
@@ -1686,7 +1686,7 @@ function doRequestSreReceptaTransacionConsultasMensajesNoLeidos($datosCuenta,$so
                 <clave>12CvP2015</clave>
                 <parametrosConsulta>
                     <parametros>
-                        <usuario_receptor>2</usuario_receptor>
+                        <usuario_receptor>$datosCuenta</usuario_receptor>
                         <estado_lectura>0</estado_lectura>
                         <estado>2</estado>
                         <tipo_mensaje>1</tipo_mensaje>
@@ -1752,7 +1752,7 @@ function doRequestSreReceptaTransacionConsultasEventosNoLeidos($datosCuenta,$sou
                 <clave>12CvP2015</clave>
                 <parametrosConsulta>
                     <parametros>
-                        <usuario_receptor>2</usuario_receptor>
+                        <usuario_receptor>$datosCuenta</usuario_receptor>
                         <estado_lectura>0</estado_lectura>
                         <estado>2</estado>
                         <tipo_mensaje>1</tipo_mensaje>
@@ -1818,7 +1818,7 @@ function doRequestSreReceptaTransacionConsultasNotificcionesNoLeidos($datosCuent
          <clave>12CvP2015</clave>
          <parametrosConsulta>
             <parametros>
-            	<Id_Usuario_Receptor>2</Id_Usuario_Receptor>
+            	<Id_Usuario_Receptor>$datosCuenta</Id_Usuario_Receptor>
             	<estado_lectura>0</estado_lectura>
             	<estado>2</estado>
             	<tipo_mensaje>2</tipo_mensaje>
