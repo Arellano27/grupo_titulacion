@@ -33,9 +33,22 @@ admin_academico_crear_eventos:
 admin_academico_insertar_eventos:
     path:     /insertar_evento
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:insertar_eventos_calendario }
+admin_academico_estudiante_carrera:
+    path:     /estudiantesCarrera
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_estudiantes_carrera }
+admin_academico_estudiante_carrera_selected:
+    path:     /consultaEstadoEstudiante
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:estudiante_carrera_selected }
+admin_academico_estudiante_carrera_pdf:
+    path:     /pdf/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfEstudiantes_InscritosMatriculados }
+admin_academico_cambio_pass_interno:
+    path:     /restablecer_pass_interno
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cambio_password }
 admin_academico_editar_eventos:
     path:     /editar_evento
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:editar_eventos_calendario }
 admin_academico_modificar_eventos:
     path:     /modificar_evento
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:modificar_eventos_calendario }
+
