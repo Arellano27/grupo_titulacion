@@ -26,10 +26,12 @@
         <ul class="treeview-menu">
           <li><a href="{{path('estudiantes_matriculacion')}}"><i class="fa fa-circle-o"></i> Matriculación</a></li>
           <!-- <li><a href="{{path('estudiantes_deudas')}}"><i class="fa fa-circle-o"></i> Deudas Pendientes</a></li> -->
+          <li><a href="{{path('estudiantes_anulacion')}}"><i class="fa fa-circle-o"></i> Anulación</a></li>
+
           <li><a href="{{path('estudiantes_notas_actuales')}}"><i class="fa fa-circle-o"></i> Consulta de Notas</a></li>
         </ul>
-      </li>
-      {% endif %}
+      </li>      
+      {% endif %}     
       {% if app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm %}
       <li class="treeview">
         <a href="#">
@@ -43,6 +45,19 @@
         </ul>
       </li>
       {% endif %}
+     {#  {% if app.session.get('perfil') == perfilDoc or app.session.get('perfil') == perfilDocAdm %}#}
+        <li class="treeview">
+        <a href="{{path('SisAcademico_Docentes_home')}}">
+          <i class="fa fa-comments-o"></i><span>Mensajes</span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{path('dayscript_index')}}"><i class="fa fa-circle-o"></i> Envio de Mensajes</a></li>
+          <li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-circle-o"></i> Configuracion Mensajes</a></li>
+          <!-- <li><a href="{#{ path('dayscript_configuracion') }#}"><i class="fa fa-circle-o"></i> Aprobar</a></li> -->
+        </ul>
+      </li>
+     {# {% endif %}#}
     </ul>
   </section>
 </aside>
@@ -57,7 +72,7 @@
             //title       : 'Alerta del Sistema',
             content : '<div class="mensajeError">Por favor, seleccione una carrera y luego una materia para usar esta opción.',
             buttons : {
-                  primary : { text: 'Acceptar', style: 'primary' }
+                  primary : { text: 'Aceptar', style: 'primary' }
             }
          });
       }

@@ -9,6 +9,10 @@
     
       <link href="{{ asset('css/custom.css')}}" rel="stylesheet"> <!-- Libreria de form wizart matriculacion -->
     <link type="text/css" rel="stylesheet" href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}">
+    <!-- daterange picker -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/daterangepicker/daterangepicker-bs3.css') }}">  
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/colorpicker/bootstrap-colorpicker.min.css') }}">  
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/timepicker/bootstrap-timepicker.min.css') }}">  
     <link type="text/css" rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('theme/dist/css/AdminLTE.min.css') }}">
@@ -21,11 +25,11 @@
      <!-- fullCalendar 2.2.5-->
     <link rel="stylesheet" href="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/plugins/fullcalendar/fullcalendar.print.css') }}" media="print">
-    <link rel="stylesheet" href="{{ asset('theme/dist/css/AdminLTE.min.css') }}">
-    <link type="text/css" rel="stylesheet" href="{{ asset('theme/dist/css/skins/_all-skins.min.css') }}">
+  <link type="text/css" rel="stylesheet" href="{{ asset('css/growl/jquery.growl.css') }}" >
+  <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
 
+  
 
-    <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
   </head>
 
 
@@ -67,7 +71,7 @@
     </div><!-- ./wrapper -->
 
 {% block javascripts %}
-    <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    
     <script src="{{ asset('theme/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script/jquery-ui.js') }}"></script>
     <script src="{{ asset('theme/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
@@ -84,14 +88,36 @@
  <!-- fullCalendar 2.2.5 -->
     <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+
    <script src="{{ asset('theme/plugins/datatables/jquery.dataTables.min.js') }}"></script>
    <script src="{{ asset('theme/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+   <script src="{{ asset('js/growl/jquery.growl.js') }}"></script>
+   
+   <script src="{{ asset('theme/plugins/select2/select2.full.min.js') }}"></script>
+   <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.js') }}"></script>
+   <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
+   <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+
+      <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
+   <script src="{{ asset('theme/plugins/daterangepicker/daterangepicker.js') }}"></script>
+   <script src="{{ asset('theme/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
+   <script src="{{ asset('theme/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
+   <script src="{{ asset('theme/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+   <script src="{{ asset('theme/plugins/iCheck/icheck.min.js') }}"></script>
+   <script src="{{ asset('theme/plugins/fastclick/fastclick.min.js') }}"></script>
+   <script src="{{ asset('theme/dist/js/app.min.js') }}"></script>
+   <script src="{{ asset('theme/dist/js/demo.js') }}"></script>
+
+
+
 
 <script type="text/javascript">
   $(function () {
-// !IMPORTANT -- FIX ERROR SIDEBAR MENU IN CHARTS-DYNAMIC PAGE
+           
+// !IMPORTANT -- FIX ERROR SIDEBAR MENU IN CHARTS-DYNAMIC PAGE   stalin
     $(".page-content").height("1200px");
     $("#master-detail-chart").parent().height("400px");
+     
     });  
 </script>
     {% endblock %}

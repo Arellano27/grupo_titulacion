@@ -80,9 +80,16 @@ doctrine:
         auto_mapping: true
 
 # Swiftmailer Configuration
+#swiftmailer:
+#    transport:  gmail
+#    encryption: ssl
+#    host:       smtp.gmail.com
+#    username:   titulacion.php@gmail.com
+#    password:   sc123456
 swiftmailer:
-    transport:  gmail
+    transport:  "%mailer_transport%"
     encryption: ssl
-    host:       smtp.gmail.com
-    username:   titulacion.php@gmail.com
-    password:   sc123456
+    auth_mode:  login
+    host:       "%mailer_host%"
+    username:   "%mailer_user%"
+    password:   "%mailer_password%"

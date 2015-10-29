@@ -18,7 +18,8 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Titulacion\SisAcademicoBundle\TitulacionSisAcademicoBundle(),
-            new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
+	        new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
