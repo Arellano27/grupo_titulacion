@@ -19,8 +19,6 @@ admin_registro_ordenpago:
 admin_carreras_ordenpago:
     path:     /carrerasordenpago
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:carrerasordenpago }
-    path:     /eventos_user
-    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos_carrera_user }
 admin_academico_crear_eventos:
     path:     /crear_evento
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:crear_eventos_academicos }

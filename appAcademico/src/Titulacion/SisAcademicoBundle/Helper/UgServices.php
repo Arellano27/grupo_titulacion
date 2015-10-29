@@ -23,31 +23,31 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-      // $this->usuario         = "abc";
-      // $this->clave           = "123";
-      // $this->source          = "jdbc/procedimientosSaug";
-      // $this->sourceConsultas = "jdbc/consultasSaug";
-      // $this->url             = "http://192.168.100.11:8080/";
-      // $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
-      // $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      // $this->urlWS           = "";
-      // $this->host            = "192.168.100.11:8080";
+      $this->usuario         = "abc";
+      $this->clave           = "123";
+      $this->source          = "jdbc/procedimientosSaug";
+      $this->sourceConsultas = "jdbc/consultasSaug";
+      $this->url             = "http://192.168.100.11:8080/";
+      $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlWS           = "";
+      $this->host            = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "usr_tesis";
-      $this->clave         = "Tesis2015";
-      $this->url           = "http://186.101.66.2:8080/";
-      /*Saug Temporal*/
-      // $this->source           = "jdbc/saugProcTmp";
-      // $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      $this->host          = "186.101.66.2:8080";
+//       $this->usuario       = "usr_tesis";
+//       $this->clave         = "Tesis2015";
+//       $this->url           = "http://186.101.66.2:8080/";
+//       /*Saug Temporal*/
+//       // $this->source           = "jdbc/saugProcTmp";
+//       // $this->sourceConsultas  = "jdbc/saugConsTmp";
+//       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+//       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//       $this->host          = "186.101.66.2:8080";
 
-// //      /*Preproduccion*/
-     $this->source        = "jdbc/procedimientosSaug";
-     $this->sourceConsultas  = "jdbc/consultasSaug";
+// // //      /*Preproduccion*/
+//      $this->source        = "jdbc/procedimientosSaug";
+//      $this->sourceConsultas  = "jdbc/consultasSaug";
      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
 // //
@@ -67,7 +67,7 @@ class UgServices
       $this->urlWS   = $this->url.$this->urlProcedim;
       $trama         = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
       $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-
+// echo '<pre>'; var_dump($response); exit();
       return $response;
    }#end function
 

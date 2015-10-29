@@ -22,15 +22,12 @@ class AdminController extends Controller
         $id_usuario = 3;
         $id_rol     = $session->get("perfil");
 
-        if ($id_rol > 3) {
-           if ($id_rol == 4) {
-               $id_rol =  1;
-           }elseif ($id_rol == 5) {
-               $id_rol =  1;
-           }elseif ($id_rol == 6) {
-               $id_rol =  2;
-           }
+        if(strlen($id_rol)>1){
+            $id_rol = mb_substr($id_rol,0,1);
+        }else{
+          $id_rol = $id_rol;
         }
+
 
         $rsCarrera = $UgServices->getConsultaCarreras($id_usuario,$id_rol);
         // echo '<pre>'; var_dump($rsCarrera); exit();
