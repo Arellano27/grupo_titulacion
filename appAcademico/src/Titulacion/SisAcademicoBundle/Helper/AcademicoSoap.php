@@ -1268,6 +1268,21 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
         curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
         $result = curl_exec($soap_do);
+        if(!$result)
+        {
+            return "error";
+        }
+        else
+        {
+            $response  = $this->ReemplazaCaracteres($result);
+            $response= preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+            $xml = new \SimpleXMLElement($response);
+             $respuesta = $xml->xpath('//resultadoObjeto')[0];
+            $respuesta = $xml->xpath('//parametrosSalida')[0];
+            //$respuesta = $xml->xpath('//PX_Salida')[0];
+            return $respuesta;
+        }
+        
    }#end function   
    
    
