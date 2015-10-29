@@ -21,6 +21,7 @@
                         var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso,Nivel;
                         var myArray = {};
                         var indicasel=0;
+                        var materiassel=0;
                             $("#table-matricula tbody tr").each(function (index) 
                             {
                                 //console.log(elecmentocombo[index].options[elecmentocombo[index].selectedIndex].text);
@@ -44,6 +45,7 @@
 
                                 if (elementochk[index].checked && IdCurso!='')
                                 {
+                                    materiassel=materiassel+1;
                                     valida=0;
 
                                     $(this).children("td").each(function (index2) 
@@ -88,25 +90,38 @@
 
                             var estado;
                             estado=0;
-                            if(Object.keys(myArray).length==0 || indicasel>0 )
+                            if(Object.keys(myArray).length==0 || indicasel>0  || materiassel>7)
                             {
                                 //alert("Debe Seleccionar las Materias a Inscribir");
-                                modelessMateriasInscribir= new $.flavr({
-                                                   modal   : true,
-                                                   content : 'Sr. Estudiante, debe realizar la selccion de cursos de manera correcta',
-                                                   buttons     : {
-                                                      primary : { text: 'Aceptar', style: 'primary' }
-                                                   }
-                                                });
-
-                                  $('.botonMatriculaSig').addClass('buttonDisabled');
+                                var maxmaterias={{maxmaterias}};
+                                if (materiassel>maxmaterias)
+                                {
+                                        modelessMateriasInscribir= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Sr. Estudiante, el maximo de materias para inscribir es de 7.<br/> Por favor revise la seleccion de Materias',
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                }
+                                else
+                                {
+                                     modelessMateriasInscribir= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Sr. Estudiante, debe realizar la seleccion de cursos de manera correcta',
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                }
+                                $('.botonMatriculaSig').addClass('buttonDisabled');
                                $("#btninscribe").attr("disabled", false);
                             }
 
                             else
                             {
 
-                                $('.botonMatriculaSig').removeClass('buttonDisabled');
+                                //$('.botonMatriculaSig').removeClass('buttonDisabled');
                                 //alert("aqui estoy");
                                 var idEstudiante='{{idEstudiante}}';
                                 var idCarrera='{{idCarrera}}';
@@ -137,11 +152,29 @@
                                             $('.botonMatriculaSig').addClass('buttonDisabled');
                                             $('.botonAnterior').removeClass('buttonDisabled');
                                             $("#btninscribe").attr("disabled", false);
+                                             modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : respuesta.mensaje,
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                           
                                        }
                                        else
                                        {
+                                        modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Sr. Estudiante, El proceso de matriculacion fue exitoso',
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
                                         $('.botonAnterior').addClass('buttonDisabled');
+                                        $('.botonMatriculaSig').removeClass('buttonDisabled');
                                         $("#btninscribe").remove();
+                                        $(".botonMatriculaSig").show();
+
                                        }
                                      },
                                       error: function(dataResponse)
@@ -396,7 +429,7 @@
                                                                         <td id="nombre_{{ disponibles.IdMateria }}">{{ disponibles.Nombre }}</td>
                                                                         <td width="5%" id="veces_{{ disponibles.IdMateria }}" >{{ disponibles.Veces }}</td>
                                                                         <td width="20%" id="curso_{{ disponibles.IdMateria }}">
-                                                                        <select  name="cursos_select" index=1 onchange="lista(this.value,{{ disponibles.IdMateria }})">
+                                                                        <select  name="cursos_select" index=1 onchange="lista(this.value,{{ disponibles.IdMateria }})" id="cbo_{{ disponibles.IdMateria }}">
                                                                           <option value=""  selected> Sel.</option>
                                                                             {% for cursos in disponibles.Cursos %} 
                                                                                <option value="{{cursos.Idmatpar}}_{{disponibles.IdMateria}}_{{ cursos.Registrados }}_{{ cursos.Maximo }}"
@@ -405,7 +438,7 @@
                                                                            </select >
                                                                            <label id="lbd_{{ disponibles.IdMateria }}"> </label>
                                                                          </td>
-                                                                          <td width='10%' id="sel_{{ disponibles.IdMateria }}"> <input type="checkbox" name="matricular_select" value="">
+                                                                          <td width='10%' id="sel_{{ disponibles.IdMateria }}"> <input type="checkbox" name="matricular_select" value="" id="selchk_{{ disponibles.IdMateria }}" onclick="Seleccion({{ disponibles.IdMateria }})">
                                                                           </td>
                                                                     </tr>
 
@@ -470,11 +503,21 @@
          function lista(Curso,indica) {
                     $('#lbd_'+indica).text("");
                     var splitDisponibles=Curso.split("_");
+                    var idCurso=$.trim(splitDisponibles[0]);
                     var idLabel=splitDisponibles[1];
                     var Registrado=splitDisponibles[2];
                     var Maximo=splitDisponibles[3];
                     $('#lbd_'+idLabel).text(Registrado + " de " + Maximo );
-
+                    //$("#selchk_"+indica+" :checkbox").attr('checked',false);  
+                    $("#selchk_"+indica).prop('checked',false);
+                    if (idCurso.length!=0)
+                    {
+                        $("#selchk_"+indica).prop('checked',true);
+                    }
+         }
+          function Seleccion(indica) {
+                    $('#cbo_'+indica).val("");
+                    $('#cbo_'+indica).change();
          }
 
 

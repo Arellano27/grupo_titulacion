@@ -2,35 +2,59 @@
 
     <div class="col-lg-12">
             <b>{{ estudiante }}</b> Usted se encuentra matriculado en las siguientes materias:
-            <table class="table table-striped table-bordered" id ="">
+            <table class="table table-striped table-bordered" id ="Table_Anulacion_Materia">
                      <thead>
                         <tr>
-                                <th colspan="7" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo  {{ cicloencurso }}</th>
+                                <th colspan="6" style="text-align: center !important;background-color: #337AB7 !important;color: white!important;">Periodo  {{ cicloencurso }}</th>
                         </tr>
                         <tr>
-                            <th style="text-align: center !important;">Nivel</th>
-                            <th style="text-align: center !important;">Id Materias</th>
-                            <th style="text-align: center !important;">Nombre Materias</th>
-                            <th style="text-align: center !important;">Veces</th>
-                            <th style="text-align: center !important;">Curso</th> 
-                            <th style="text-align: center !important;"></th> 
-                            <th style="text-align: center !important;"></th> 
+                            <th style="text-align: center !important;" >Nivel</th>
+                            <th style="text-align: center !important;" >Id Materias</th>
+                            <th style="text-align: center !important;" >Nombre Materias</th>
+                            <th style="text-align: center !important;" >Veces</th>
+                            <th style="text-align: center !important;" >Curso</th> 
+                            {% if (solicitudenProceso==0) %}
+                                <th style="text-align: center !important;" >Sel.</th> 
+                             {% endif %}
+                             {% if (solicitudenProceso==1) %}
+                                <th style="text-align: center !important;" >Mensaje</th> 
+                            {% endif %}
+                            
+                            
                         </tr>
+                    </thead>
+                    <tbody>
                         {% for dato in Materias_inscribir %} 
                             <tr>
-                                <td align="center">{{ dato.Nivel }}</td>
-                                <td align="center">{{ dato.IdMateria }}</td>
-                                <td align="center">{{ dato.Nombre }}</td>
-                                <td align="center">{{ dato.Veces }}</td>
-                                <td align="center">{{ dato.Curso }}</td>
-                                <td align="center"><input type="button" name="btn_{{ dato.IdMateria }}" id="btn_{{ dato.IdMateria }}" value="Anular" /></td>
-                                <td align="center"><div id="contenedor_{{ dato.IdMateria }}"></div></td>
+                                <td align="center" id="Nivel_{{ dato.IdMateria }}">{{ dato.Nivel }}</td>
+                                <td align="center" id="idMateria_{{ dato.IdMateria }}">{{ dato.IdMateria }}</td>
+                                <td align="center" id="Nombre_{{ dato.IdMateria }}">{{ dato.Nombre }}</td>
+                                <td align="center" id="Veces_{{ dato.IdMateria }}">{{ dato.Veces }}</td>
+                                <td align="center" id="Curso_{{ dato.IdMateria }}">{{ dato.Curso }}</td>
+                                <td align="center" width='5%' id="sel_{{ dato.IdMateria }}"> 
+                                    {% if (solicitudenProceso==0) %}
+                                        <input type="checkbox" name="Sel_anula_materia" id="selid_{{ dato.IdMateria }}" value="" onclick="Valida_anulacion({{ dato.IdMateria}},{{dato.Veces}})">
+                                     {% endif %}
+                                     {% if (solicitudenProceso==1) %}
+                                        {{ dato.mensaje }}
+                                    {% endif %}
+                                </td>
+
+                               <!--  <td align="center"><input type="button" name="btn_{{ dato.IdMateria }}" id="btn_{{ dato.IdMateria }}" value="Anular" /></td>
+                                <td align="center"><div id="contenedor_{{ dato.IdMateria }}"></div></td> -->
                             </tr>
                         {% endfor %}
+                    </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan=5 align="right">
-                            <!--input type="submit" name="Generapdf" id="btngenpdfmat" value="Imprimir Documento"></td-->
+                        <td colspan=6 align="right">
+                            <!-- <input type="submit" name="solanula" id="btnsolanula" value="Generar Solicitud"> -->
+                            {% if (solicitudenProceso==0) %}
+                                <a class="btn btn-success "id="btnsolanula">Generar Solicitud</a>
+                            {% endif %}
+                             {% if (solicitudenProceso==1) %}
+                                <a class="btn btn-success "id="pdfSolAnula" href="{{ path('estudiantes_pdf_anulamateria',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank">Imprimir Solicitud </a>
+                            {% endif %}
                         </td>
                     </tr>
                 </tfoot>
@@ -40,55 +64,171 @@
 
 
         <script>
-        {% for dato in Materias_inscribir %} 
-            $("#btn_{{ dato.IdMateria }}").on("click",function(event){
-                    var materiaAnulada = $('#contenedor_{{ dato.IdMateria }}');
-                     //var materiaAnuladaBoton = $('#btn_{{ dato.IdMateria }}');
-                    var idEstudiante='{{idEstudiante}}';
-                    var idCarrera='{{idCarrera}}';
-                    var idCiclo='{{idciclo}}';
-                    var idMateria='{{ dato.IdMateria }}';
-                    var obj_data = {'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idCiclo':idCiclo,'idMateria':idMateria};
 
-                     var jumpAction = '{{path('estudiantes_anulacion_materias_2')}}';
-                      $.ajax({
-                         url:   jumpAction,
-                         data: obj_data,
-                         type:  'post',
-                         async: true,
-                         beforeSend: function () {
-                            materiaAnulada.html("Cargando, espere por favor...");
-                            //materiaAnuladaBoton.css("display","none")
-                         },
-                         success:  function (dataResponse) {
-                             materiaAnulada.html(dataResponse);
-                         },
-                          error: function(dataResponse)
-                          {
-                            form="accordion";
-                            msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
-                                            $( '#'+form ).append( msg_alert );
-                                            $('#modal-'+form).modal('show');
-                          },
-                
+            function Valida_anulacion(idMateria,Veces) {
+                    //alert(Veces);
+                    var parveces='{{parveces}}';
+                    parveces=parseInt(parveces);
+                    if (Veces>parveces)
+                    {
+                        
 
-                         dataType:'html'
-                      });
+                        modelessAnulaMateria= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Sr. Estudiante, No es posible Anular materia por : '+ Veces + ' Vez',
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
 
+                        
+                        $("#selid_"+idMateria).prop('checked',false);
+                    }
+         }
 
+         $("#btnsolanula").on("click",function(event){
+                $("#btnsolanula").attr("disabled", true);
+                var IdCurso = "";
+                var idMateria = "";
+                var Materia = "";
+                var idEstudiante = '{{idEstudiante}}';
+                var idCiclo='{{idciclo}}';
+                var idCarrera='{{idCarrera}}';
+                var valida = 0;
+                var myArray = {};
+                var Veces=0;
+                var parveces='{{parveces}}';
+                parveces=parseInt(parveces);
 
-                     var doc = new jsPDF();
-                     doc.text(20, 20, 'Hello world!');
-                     doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
-                     doc.addPage();
-                     doc.text(20, 20, 'Do you like that?');
+                var elementochk = document.getElementsByName("Sel_anula_materia"); 
+                        $("#Table_Anulacion_Materia tbody tr").each(function (index) 
+                            {
+                                //console.log(elecmentocombo[index].options[elecmentocombo[index].selectedIndex].text);
 
-                         // Output as Data URI
-                         doc.output('datauri');
+                                //console.log(elecmentocombo[index].options.selectedIndex);
+                               
 
-               }); 
-         
-        {% endfor %}
+                                if (elementochk[index].checked )
+                                {
+                                    valida=valida+1;
+
+                                    $(this).children("td").each(function (index2) 
+                                    {
+                                        Celda=$(this).attr("id");
+                                        Celda=Celda.split('_');
+                                        Celda=Celda[0];
+                                        //alert(Elemento);
+                                        switch (Celda) 
+                                        {
+                                            case "idMateria": idMateria = $(this).text()
+                                                    //alert(idMateria);
+                                                    break;
+                                            case "Curso": IdCurso = $(this).text();
+                                                    //alert(Materia);
+                                                    break;
+                                            case "Nombre": Materia = $(this).text();
+                                                    //alert(Materia);
+                                                    break;
+
+                                            case "Veces": Veces = $(this).text();
+                                                    //alert(Materia);
+                                                    break;
+                                                    
+                                        }
+                                         
+                                    })
+                                     
+                                    if (Veces<=parveces)
+                                    {
+                                        var arrValores = {};
+                                         arrValores["idMateria"]=idMateria;
+                                         arrValores["Materia"]=Materia;
+                                         arrValores["Idcurso"]=IdCurso;
+                                         arrValores["idEstudiante"]=idEstudiante;
+                                         arrValores["idCarrera"]=idCarrera;
+                                         arrValores["idCiclo"]=idCiclo;
+                                         myArray[index]=arrValores;
+                                    }
+                                }
+                               
+                            })
+
+                            if(Object.keys(myArray).length==0 || valida<=0 )
+                            {
+                                     modelessMateriasInscribir= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Sr. Estudiante, debe realizar la seleccion de Materias de manera correcta',
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                     $("#btnsolanula").attr("disabled", false);
+                            }
+
+                            else
+                            {
+                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo};
+
+                                 var jumpAction = '{{path('estudiantes_anulacion_materias_2')}}';
+                                  $.ajax({
+                                     url:   jumpAction,
+                                     data: obj_data,
+                                     type:  'post',
+                                     async: true,
+                                     beforeSend: function () {
+                                       // alert("dentro");
+                                       //tablaNotasa.html("Cargando, espere por favor...");
+                                     //notificacionIndex = cargandoSitio(null, null, null);
+                              
+                                     },
+                                     success:  function (dataResponse) {
+                                        
+                                       var respuesta=jQuery.parseJSON(dataResponse);
+                                       if (respuesta.codigo_error!=1)
+                                       {
+                                             modelessAnulaMateriap= new $.flavr({
+                                                           modal   : true,
+                                                           content : respuesta.mensaje,
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                             $("#btnsolanula").attr("disabled", false);
+                                           
+                                       }
+                                       else
+                                       {
+                                        $('#btnsolanula').remove();
+                                        modelessAnulaMateriap= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Sr. Estudiante, Su solicitud de Anulacion fue Enviada de Manera Exitosa ',
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary',
+                                                                   action: function(){
+                                                                        location.reload();
+                                                                   } }
+                                                           }
+                                                        });
+
+                                       }
+                                     },
+                                      error: function(dataResponse)
+                                      {
+                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                        form="accordion";
+                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                        $( '#'+form ).append( msg_alert );
+                                                        $('#modal-'+form).modal('show');
+                                      },
+
+                                 dataType:'text'
+                              });
+                            }
+
+              }); 
+
+            
         </script>
 {% endif %}
 
