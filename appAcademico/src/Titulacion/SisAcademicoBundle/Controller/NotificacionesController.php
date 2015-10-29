@@ -44,6 +44,21 @@ class NotificacionesController extends Controller
                               );
                
             }else{
+                
+                 $xmlFinal="
+                      <Notificaciones>
+                        <Notificaciones>
+                            <Tipo_mensaje>$TipoMensaje</Tipo_mensaje>
+                            <Emisor>$idUsuario</Emisor>
+                            <Estado>1</Estado>
+                             <Asunto>$Asunto</Asunto>
+                            <Mensaje>$mensaje</Mensaje>	
+                            <Opciones>'A,P,U'</Opciones> 
+                        </Notificaciones>	
+                    </Notificaciones>";
+                     $UgServices = new UgServices;
+                    $xml = $UgServices->Guarda_Mensajes($xmlFinal);
+            
                 for($i=0;$i<3;$i++){
                     if($i==0){
                     $mailer    = $this->container->get('mailer');
