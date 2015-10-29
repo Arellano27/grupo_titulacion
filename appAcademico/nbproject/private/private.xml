@@ -3,21 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/HomeController.php</file>
             <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/Notificaciones.yml</file>
             <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/routing.yml</file>
             <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/NotificacionesController.php</file>
-=======
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/AlumnosActualizaAsistencia.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/DocentesController.php</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Helper/UgServices.php</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/AlumnosIngresoAsistencia.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/notasAlumnosMateria.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/docentes.yml</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/web/js/sistemau.functions.js</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/listadoAlumnosMateria.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/listaEstudiantes.html.twig</file>
->>>>>>> 02f0d859893792dd59c170895fecf254bb1e927f
         </group>
     </open-files>
 </project-private>
