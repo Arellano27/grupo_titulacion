@@ -1,0 +1,102 @@
+
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+{% if (bolcorrecto==1) %}
+  <div class="col-lg-12">
+    <div class="panel  panel-primary">
+      <!--<div class="panel-heading">
+        Collapsible Accordion Panel Group
+      </div>-->
+      <!-- .panel-heading -->
+      <div class="panel-body">
+                <h2 align="center"><b>Listado de Carreras</b></h2>
+        <div class="panel-group" id="accordion">
+          
+            
+              
+                    {% for facultad in carreras %} 
+                        <div class="panel panel-default">
+                            <div class="panel-heading">  
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#orden_{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera_ordenpago' id="mat1_{{ facultad.Carrera }}_{{ facultad.Facultad }}_f" name="{{ facultad.Nombre }}" >{{ facultad.Nombre }}</a>
+                                </h4>
+                            </div>
+
+                            <div id="orden_{{ facultad.Carrera }}_{{ facultad.Facultad }}" class="panel-collapse collapse">
+                                   <div class="table-responsive">
+                                             <div class="tab-pane fade in active" id="ctnordenpago_{{ facultad.Carrera }}_{{ facultad.Facultad }}" style="width: 100% !important">
+                                                
+                                            </div>
+                                    </div>
+                             
+                        </div>
+                        </div>
+                    {% endfor %}   
+                
+        </div>
+      </div>
+      <!-- .panel-body -->
+    </div>
+     </div>
+     
+    <!-- /.panel -->
+  <!-- /.col-lg-9 -->
+<script>
+    $(".tabscarrera_ordenpago").click(function(){
+      
+    var splitCarrera =$(this).attr('id').split('_'); 
+    var idIndica  = splitCarrera[0];
+     var idCarrera  = splitCarrera[1];
+     var idFacultad  = splitCarrera[2];
+     var indicaClase  = splitCarrera[3];
+     var idUsuario  = ""; 
+     var carrera =$(this).attr('name');
+
+     var tablaNotasa = $('#ctnordenpago_'+idCarrera+'_'+idFacultad);
+     
+     if(indicaClase!=null )
+     {
+
+      $('.active_a').addClass('active');
+      $('.temporal').removeClass('active');
+     }
+
+    var obj_data = {'idCarrera':idCarrera};
+       var jumpAction = '{{path('admin_registro_ordenpago')}}';
+        $.ajax({
+           url:   jumpAction,
+           data: obj_data,
+           type:  'post',
+           async: true,
+           beforeSend: function () {
+             tablaNotasa.html("Cargando, espere por favor...");
+			 //notificacionIndex = cargandoSitio(null, null, null);
+    
+           },
+           success:  function (dataResponse) {
+             tablaNotasa.html(dataResponse);
+			 
+           },
+             error: function(dataResponse)
+        {
+          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+          form="accordion";
+          msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                  $( '#'+form ).append( msg_alert );
+                  $('#modal-'+form).modal('show');
+        },
+   //         timeout: 50000
+           dataType:'html'
+        });
+        
+        
+    });
+</script>
+{% endif %}
+{% if (bolcorrecto!=1) %}
+      <div class='menu_derecho_' id='div_derecho'>
+          No existe Informacion de Carreras 
+    </div>
+
+{% endif %}
+{% endblock %}

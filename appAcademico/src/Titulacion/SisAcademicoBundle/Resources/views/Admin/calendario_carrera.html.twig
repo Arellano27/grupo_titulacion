@@ -1,12 +1,28 @@
 {% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
 {% block home %}
-
-
-
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
+    <!-- daterange picker -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/daterangepicker/daterangepicker-bs3.css') }}">  
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/colorpicker/bootstrap-colorpicker.min.css') }}">  
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/timepicker/bootstrap-timepicker.min.css') }}">  
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/select2/select2.min.css') }}">  
+<style>
+  #trash{
+    width:32px;
+    height:50px;
+    float:left;
+    padding-bottom: 15px;
+    position: relative;
+    margin-top: 37px;
+  }
+</style>
+<style>
+#div1 {width:350px;height:70px;padding:10px;border:1px solid #aaaaaa;}
+</style>
 
+<script src="{{ asset('js/calendarioeventos.js') }}"></script>
 <section class="content">
           <div class="row">
             <div class="col-md-3">
@@ -16,24 +32,38 @@
                 </div>
                 <div class="box-body">
                   <!-- the events -->
+
                   <div id="external-events">
 
-                {%for count ,event in data %}
-                      <div class="external-event bg-light-blue">{{event.evento}}</div>
-                {% endfor %}
-
-                    <!-- <div class="external-event bg-green">Lunch</div>
+                      {%for event in data.registro %}
+                          {% set color = event.nombre|split("|") %}
+                           {#{dump(color)}#}
+                          {% if color|length == 1%}
+                                {% set colorevent = 'rgb(0, 166, 90)' %}
+                          {% else %}
+                                {% set colorevent = color[1] %}
+                          {% endif %}
+                            <div ondblclick="inactivar_evento(this)" id="{{color[0]}}" name="{{event.id_parametro}}"  class="external-event" style="background-color: {{colorevent}}">{{color[0]}}</div>
+                      {% endfor %}
+                      <!-- </div> -->
+                    <!-- <div class="external-event bg-green">Lunch</div> event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
                     <div class="external-event bg-yellow">Go home</div>
                     <div class="external-event bg-aqua">Do homework</div>
                     <div class="external-event bg-light-blue">Work on UI design</div>
                     <div class="external-event bg-red">Sleep tight</div> -->
-                    <div class="checkbox" style="">
+                    <p>
+                      <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+                      <!-- <b>Remover evento</b><img src="{{ asset('images/trashcan.png') }}" id="trash" alt=""> -->
+                    </p>
+                    <div class="checkbox" style="display:none;">
                       <label for="drop-remove">
                         <input type="checkbox" id="drop-remove" checked="true">
                         Remover evento
                       </label>
                     </div>
                   </div>
+
+
                 </div><!-- /.box-body -->
               </div><!-- /. box -->
               <div class="box box-solid">
@@ -82,199 +112,297 @@
     <script src="{{ asset('js/flavr/flavr.js') }}"></script>
     <script src="{{ asset('js/flavr/flavr.min.js') }}"></script>
 
-       <script>
-      $(function () {
 
-        function ini_events(ele,url) {
-          ele.each(function (url) {
 
-            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-            // it doesn't need to have a start or end
-            var eventObject = {
-              title: $.trim($(this).text()), // use the element's text as the event title
-              url: url
-            };
 
-            // store the Event Object in the DOM element so we can get to it later
-            $(this).data('eventObject', eventObject);
+    <script type="text/javascript">
+      jQuery(document).ready(function() {
+
+          
+          $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+          function drop(ev) {
+              ev.preventDefault();
+              var data = ev.dataTransfer.getData("text");
+              ev.target.appendChild(document.getElementById(data));
+              alert("hola mundo");
+          }
+
+          function allowDrop(ev) {
+              alert('inserte');
+              ev.preventDefault();
+          }
+
+          // function drag(ev) {
+          //     ev.dataTransfer.setData("text", ev.target.id);
+          // }
+        // function ini_events(ele,url) {
+       //          ele.each(function (url) {
+       //            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+       //            // it doesn't need to have a start or end
+       //            var eventObject = {
+       //              title: $.trim($(this).text()), // use the element's text as the event title
+       //              url: url
+       //            };
+
+       //            // store the Event Object in the DOM element so we can get to it later
+       //            $(this).data('eventObject', eventObject);
+
+       //            // make the event draggable using jQuery UI
+       //            $(this).draggable({
+       //              zIndex: 1070,
+       //              revert: true, // will cause the event to go back to its
+       //              revertDuration: 0  //  original position after the drag
+       //            });
+
+       //          });
+       //        }
+
+       //        ini_events($('#external-events div.external-event'));
+       //
+           
+          /* initialize the external events
+          -----------------------------------------------------------------*/
+
+          $('#external-events div.external-event').each(function() {
+
+            // store data so the calendar knows to render an event upon drop
+            // $(this).data('event', {
+            //   title: $.trim($(this).text()), // use the element's text as the event title
+            //   stick: true // maintain when user navigates (see docs on the renderEvent method)
+            // });
 
             // make the event draggable using jQuery UI
             $(this).draggable({
-              zIndex: 1070,
-              revert: true, // will cause the event to go back to its
+              zIndex: 999,
+              revert: true,      // will cause the event to go back to its
               revertDuration: 0  //  original position after the drag
             });
 
           });
-        }
-
-        ini_events($('#external-events div.external-event'));
-
-
-        /* initialize the calendar
-         -----------------------------------------------------------------*/
-        //Date for the calendar events (dummy data)
-            var date = new Date();
-            var d    = date.getDate(),
-                m    = date.getMonth(),
-                y    = date.getFullYear();
 
         $('#calendar').fullCalendar({
+          utc: true,
           header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'month,agendaWeek,agendaDay'
           },
           buttonText: {
-            today: 'today',
-            month: 'month',
-            week: 'week',
-            day: 'day'
+                  today: 'today',
+                  month: 'month',
+                  week: 'week',
+                  day: 'day'
           },
-          //Random default events
-          // events: [
-          //   {
-          //     title: 'All Day Event',
-          //     start: new Date(y, m, 1),
-          //     backgroundColor: "#f56954", //red
-          //     borderColor: "#f56954" //red
-          //   },
-          //   {
-          //     title: 'Long Event',
-          //     start: new Date(y, m, d - 5),
-          //     end: new Date(y, m, d - 2),
-          //     backgroundColor: "#f39c12", //yellow
-          //     borderColor: "#f39c12" //yellow
-          //   },
-          //   {
-          //     title: 'Meeting',
-          //     start: new Date(y, m, d, 10, 30),
-          //     allDay: false,
-          //     backgroundColor: "#0073b7", //Blue
-          //     borderColor: "#0073b7" //Blue
-          //   },
-          //   {
-          //     title: 'Lunch',
-          //     start: new Date(y, m, d, 12, 0),
-          //     end: new Date(y, m, d, 14, 0),
-          //     allDay: false,
-          //     backgroundColor: "#00c0ef", //Info (aqua)
-          //     borderColor: "#00c0ef" //Info (aqua)
-          //   },
-          //   {
-          //     title: 'Birthday Party',
-          //     start: new Date(y, m, d + 1, 19, 0),
-          //     end: new Date(y, m, d + 1, 22, 30),
-          //     allDay: false,
-          //     backgroundColor: "#00a65a", //Success (green)
-          //     borderColor: "#00a65a" //Success (green)
-          //   },
-          //   {
-          //     title: 'Click for Google',
-          //     start: new Date(y, m, 28),
-          //     end: new Date(y, m, 29),
-          //     url: 'http://google.com/',
-          //     backgroundColor: "#3c8dbc", //Primary (light-blue)
-          //     borderColor: "#3c8dbc" //Primary (light-blue)
-          //   }
-          // ],
           editable: true,
-          droppable: true, // this allows things to be dropped onto the calendar !!!
-                 events: function (start, end, timezone, callback) {
-
+          droppable: true,
+          slotDuration: '00:30:00',
+           events: function (start, end, timezone, callback) {
+                  $.ajax({
+                    url: '{{path('admin_academico_cargar_eventos')}}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {param1: 'value1'},
+                  })
+                  .done(function(data) {
                   var events = [];
-                  events.push({
-                    title: 'hola',
-                    url: 'www.google.com',
-                    start: new Date('2015-10-12'),
-                    end:  new Date('2015-10-13')
+                    console.debug(data.length);
+                    for(i=0;i<data.length;i++){
+                      // alert(data[i]['fecha_hasta']);
+                      var nombre = data[i]['nombre_evento'];
+                      var arnombre = nombre.split("|");
+
+                      // this.id = data[i]['id_sa_eventos_calendario_academico'];
+                      // this.start = data[i]['fecha_desde'];
+                      // this.title = arnombre[0];
+                      // this.end = data[i]['fecha_hasta'];
+                      // this.color = arnombre[1];
+                      // events.push(this);
+                      events.push({
+                        id:  data[i]['id_sa_eventos_calendario_academico'],
+                        idc: data[i]['id_sa_calendario_academico'],
+                        title: arnombre[0],
+                        start: data[i]['fecha_desde'],//new Date('2015-10-12'),
+                        end:  data[i]['fecha_hasta'],//new Date('2015-10-13')
+                        color: arnombre[1]
+                      });
+                    }
+
+                      // $('#calendar').fullCalendar('addEventSource',events);
+                    callback(events);
+
+                  })
+                  .fail(function() {
+                    console.log("error");
+                  })
+                  .always(function() {
+                    console.log("complete");
                   });
-                  callback(events);
-
-$.post('{{path('admin_academico_cargar_eventos')}}', {start: 'value1', end: 'end'}, function(data) {
-  /*optional stuff to do after success */
-  alert(data);
-});
-                  // $.ajax({
-                  //   url: '{{path('admin_academico_cargar_eventos')}}',
-                  //   data: 'type=changetitle&title='+title+'&eventid='+event.id,
-                  //   type: 'POST',
-                  //   dataType: 'json',
-                  //   success: function(response){
-                  //   if(response.status == 'success')
-                  //     $('#calendar').fullCalendar('updateEvent',event);
-                  //   },
-                  //   error: function(e){
-                  //     alert('Error processing your request: '+e.responseText);
-                  //   }
-                  // });
-
-
-            // $.ajax({
-            //     url: '{{path('admin_academico_cargar_eventos')}}',
-            //     type: "GET",
-            //     datatype: 'json',
-            //     success: function (doc) {
-            //         var events = [];
-            //         if ($(doc) != undefined && $(doc).Events.length > 0) {
-            //             $(doc).Events.forEach(function (Obj) {
-            //                 events.push({
-            //                     title: Obj.Title,
-            //                     start: Obj.Start,
-            //                     end: Obj.End
-            //                 });
-
-            //             });
-            //         }
-            //         callback(events);
-            //     },error: function (err) {
-            //         alert('Error in fetching data');
-            //     }
-            // });
-        },
-        eventDrop: function(date, allDay){
-          // location.href = '{#{path('estudiantes_notas_actuales')}#}';
-            alert("drop");
-        },
-          drop: function (date, allDay) { // this function is called when something is dropped (evento cuando se deja caer un evento al calendario)
-
-            // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('eventObject');
-
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject);
-
-            // assign it the date that was reported
-            copiedEventObject.start = date;
-            copiedEventObject.allDay = allDay;
-            copiedEventObject.backgroundColor = $(this).css("background-color");
-            copiedEventObject.borderColor = $(this).css("border-color");
-
-            // render the event on the calendar
-            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
-            // is the "remove after drop" checkbox checked?
-            if ($('#drop-remove').is(':checked')) {
-              // if so, remove the element from the "Draggable Events" list
-              $(this).remove();
-            }
-
           },
-
-          select: function (start, end, allDay){
-            alert("poppúp");
-          },
-
           eventClick: function (calEvent, jsEvent, view){
-
-            var html =                '   <div class="form-row">' +
-                '       <input type="text" name="username" ' +
+              var html =                '   <div class="form-row">' +
+                '       <input id="titulo" type="text" name="titulo" ' +
                 '       placeholder="Título" />' +
                 '   </div>' +
                 '   <div class="form-row">' +
-                '       <input type="password" name="password" ' +
-                '       placeholder="Descripción" />' +
+                '       <select id="estado" name="estado" >' +
+                '       <option>Activo</option>' +
+                '       <option>Inactivo</option>' +
+                '       </select>' +
+                '   </div>' +
+                '   <div class="form-group">' +
+                '       <label>Date and time range:</label>' +
+                '       <div class="input-group">' +
+                '       <div class="input-group-addon">' +
+                '       <i class="fa fa-clock-o"></i>' +
+                '   </div>' +
+                '   <input type="text" class="form-control pull-right" id="reservationtime">' +
+                '   </div>' +
+                '   </div>' +
+                '   <div class="form-row">' +
+                '   </div>';
+
+
+                var select = $(this).parent().siblings('.demo-select');
+                var entrance = select.find('.animate-entrance :selected').text();
+                var closing = select.find('.animate-closing :selected').text();
+
+                new $.flavr({
+                    title       : 'Editar Evento',
+                    position :  'top-mid',
+                    content     : '',
+                    dialog      : 'form',
+                    form        : { content: html, method: 'post' },
+                    onSubmit    : function( $container, $form ){
+
+                        var title = $('#titulo').val();
+                        var fechas = $('#reservationtime').val();
+                        var fech  = fechas.split("-");
+                        var fec_desde = fech[0];
+                        var fec_hasta = fech[1];
+                        var id_evento = calEvent.id;
+                        var id_calendario = calEvent.idc;
+                        var estado = $("#estado").val();
+
+                        if (estado == 'Inactivo') {
+                            estado = 'I';
+                        }else{
+                          estado = 'A';
+                        }
+
+                        modificar_eventos_calendario(fec_desde,fec_hasta,id_evento,id_calendario,estado);
+                        return false;
+                    }
+                });
+          $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+          $("#titulo").val(calEvent.title);
+          // $("#reservationtime").val(calEvent.start +'-'+calEvent.end);
+          },
+          drop: function(date, allDay){
+
+              var start = date.format("YYYY-MM-DD");
+              var id_evento = $(this).attr("name");
+              // alert(id_evento);
+              insertar_eventos(start,id_evento);
+
+                // $('#calendar').fullCalendar('updateEvent',this);
+
+          },
+         eventDrop: function(event, delta, revertFunc) {
+          console.debug("delta//"+delta);
+          console.debug("event//"+event.end);
+
+          var id_evento = event.id;
+          var id_calendario = event.idc;
+        // var end = event.end.format();
+        var start = event.start.format("YYYY-MM-DD");
+        // alert(end);
+          modificar_eventos_calendario(start,"",id_evento,id_calendario,"A");
+
+          }
+        });
+       /* ADDING EVENTS */
+              var currColor = "#3c8dbc"; //Red by default
+              //Color chooser button
+              var colorChooser = $("#color-chooser-btn");
+              $("#color-chooser > li > a").click(function (e) {
+                e.preventDefault();
+                //Save color
+                currColor = $(this).css("color");
+
+                //Add color effect to button
+                $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+              });
+
+              $("#add-new-event").click(function (e) {
+                e.preventDefault();
+                //Get value and make sure it is not null
+
+                var val = $("#new-event").val();
+                if (val.length == 0) {
+                  return;
+                }
+
+                //Create events
+                var event = $("<div />");
+                event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event ui-draggable");
+                event.html(val);
+
+                var evento_color = val+"|"+currColor;
+
+                $('#external-events').prepend(event);
+
+            crear_evento(evento_color);
+
+
+                //Add draggable funtionality
+                // ini_events(event,'www.google.com');
+
+                //Remove event from text input
+                $("#new-event").val("");
+              });
+      });
+
+    </script>
+    <script type="text/javascript">
+        function insertar_eventos(date,id_evento){
+          // alert(date);
+            // date = new Date(date);
+            $.post('{{path('admin_academico_insertar_eventos')}}', {start: date, end: date, id_evento: id_evento}, function(data) {
+              if(data == 1){
+                mensaje_cisc( "notice", "EVENTO INSERTADO CON ÉXITO");
+                $('#calendar').fullCalendar( 'refetchEvents' );
+              }else{
+                  mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
+              }
+            });
+        }
+
+        function crear_evento(evento_color){
+          $.post('{{path('admin_academico_crear_eventos')}}', {evento: evento_color}, function(data) {
+            if(data == 1){
+                mensaje_cisc( "notice", "EVENTO INSERTADO CON ÉXITO");
+                // $("#external-events").load();
+                location.href = '{{path('admin_academico_home')}}';
+                $('#calendar').fullCalendar( 'refetchEvents' );
+            }else{
+                mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
+            }
+          });
+        }
+
+        function inactivar_evento(evet){
+                $(evet).attr("name");
+                // alert($(evet).attr("id"));
+                // $("#titulo").val($(evet).attr("id"));
+            var html =                '   <div class="form-row">' +
+                '       <input id="titulo" type="text" name="titulo" ' +
+                '       placeholder="Título" />' +
+                '   </div>' +
+                '   <div class="form-row">' +
+                '       <select id="estado" name="estado" >' +
+                '       <option>Activo</option>' +
+                '       <option>Inactivo</option>' +
+                '       </select>' +
                 '   </div>' +
                 '   <div class="form-row">' +
                 '   </div>';
@@ -283,65 +411,42 @@ $.post('{{path('admin_academico_cargar_eventos')}}', {start: 'value1', end: 'end
                 var entrance = select.find('.animate-entrance :selected').text();
                 var closing = select.find('.animate-closing :selected').text();
 
-
                 new $.flavr({
                     title       : 'Editar Evento',
                     content     : '',
                     dialog      : 'form',
                     form        : { content: html, method: 'post' },
                     onSubmit    : function( $container, $form ){
-                         $.ajax({
-                            url: '',
-                            data: 'type=changetitle&title='+title+'&eventid='+event.id,
-                            type: 'POST',
-                            dataType: 'json',
-                            success: function(response){
-                              if(response.status == 'success')
-                                      $('#calendar').fullCalendar('updateEvent',event);
-                            },
-                            error: function(e){
-                              alert('Error processing your request: '+e.responseText);
+                        $.post('{{path('admin_academico_editar_eventos')}}', {evento: $("#titulo").val(), id_evento: $(evet).attr("name"), est_evento: $("#estado").val()}, function(data) {
+                          if(data == 1){
+                              mensaje_cisc( "notice", "PROCESO EXITOSO!!");
+                              location.href = '{{path('admin_academico_home')}}';
+                              $('#calendar').fullCalendar( 'refetchEvents' );
+                            }else{
+                                mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
                             }
-                          });
+                        });
                         return false;
                     }
                 });
-          }
-        });
+            $("#titulo").val($(evet).attr("id"));
+        }//end function
 
-        /* ADDING EVENTS */
-        var currColor = "#3c8dbc"; //Red by default
-        //Color chooser button
-        var colorChooser = $("#color-chooser-btn");
-        $("#color-chooser > li > a").click(function (e) {
-          e.preventDefault();
-          //Save color
-          currColor = $(this).css("color");
-          //Add color effect to button
-          $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
-        });
+        function modificar_eventos_calendario(date,end,id_evento,id_calendario,estado){
+            // date = new Date(date);
+            if(end == ''){
+              end = date;
+            }
+            $.post('{{path('admin_academico_modificar_eventos')}}', {start: date, end: end, id_evento: id_evento,id_calendario:id_calendario,estado:estado}, function(data) {
+              if(data == 1){
+                mensaje_cisc( "notice", "EVENTO ACTUALIZADO CON ÉXITO");
+                $('#calendar').fullCalendar( 'refetchEvents' );
+              }else{
+                  mensaje_cisc( "error", "En estos momentos tenemos problemas con los servidores, lamentamos los inconvenientes");
+              }
+            });
+        }
 
-        $("#add-new-event").click(function (e) {
-          e.preventDefault();
-          //Get value and make sure it is not null
-          var val = $("#new-event").val();
-          if (val.length == 0) {
-            return;
-          }
-
-          //Create events
-          var event = $("<div />");
-          event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
-          event.html(val);
-
-          $('#external-events').prepend(event);
-
-          //Add draggable funtionality
-          ini_events(event,'www.google.com');
-
-          //Remove event from text input
-          $("#new-event").val("");
-        });
-      });
     </script>
+
 {% endblock %}

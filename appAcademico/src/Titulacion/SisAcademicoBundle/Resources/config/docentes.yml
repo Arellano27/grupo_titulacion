@@ -9,22 +9,26 @@ docentes_listado_materias:
 docentes_listado_alumnos_materia:
     pattern:  /materias/alumnos/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria}
-
-docentes_notas_alumnos_materia:
-    pattern:  /materias/notas/
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria }
-
-docentes_consulta_notas:
-    pattern:  /materias/notas/
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:consultaNotas }
     
 docentes_consulta_notas_materia:
     pattern:  /materias/notas/listado
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listadoNotasAlumnosMateria }
     
+docentes_notas_crear_xls:
+    pattern:  /exportar/notas/listado/{idMateria}/{idParcial}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:exportarListadoNotasAlumnosMateria }
+    
+docentes_asistencias_crear_xls:
+    pattern:  /exportar/asistencias/listado/{idCarrera}/{idParalelo}/{idMateria}/{fechaInicio}/{fechaFin}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:exportarListadoAsistenciasAlumnosMateria }
+    
 docentes_vision_materia:
     pattern:  /materias/visionGeneral/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria }
+  
+docentes_notas_alumnos_materia:
+    pattern:  /materias/notas/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria }
     
 docentes_mostrar_alumnos:
     pattern:  /alumnos/
@@ -45,3 +49,35 @@ docentes_ingreso_notas:
 docentes_ingreso_notas2:
     pattern:  /notas2/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresonotas2 }
+    
+docentes_alumnos_asistencias:
+    pattern:  /materias/asistencias/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:tabDocAsistencias }
+    
+docentes_ingreso_asistencia:
+    pattern:  /ingreso/asistencia
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresarAsistencia }
+    
+docentes_asistencia_alumnos:
+    pattern:  /asistencia/alumnos
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:IngresoAsistencia }
+    
+docentes_ingresar_nota:
+    pattern:  /ingresar/nota
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresarNota }
+    
+docentes_actualiza_asis:
+    pattern:  /actualiza/asis
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizaAsis }
+    
+docentes_actualiza_asistencia:
+    pattern:  /actualizar/asistencias
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizarAsistencia}
+    
+admin_lista_estudiantes:
+    pattern:  /listar/estudiantes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listaEstudiantes}
+    
+admin_cmb_materias:
+    pattern:  /combo/materias
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:cmbMaterias}

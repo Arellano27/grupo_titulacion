@@ -4,7 +4,7 @@
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\HttpFoundation\Request;
-    use Symfony\Component\HttpFoundation\JsonResponse; 
+    use Symfony\Component\HttpFoundation\JsonResponse;
     use Titulacion\SisAcademicoBundle\Helper\UgServices;
 
 /**
@@ -33,7 +33,7 @@ class HomeController extends Controller
 
 
        // $email = "arellano.torres27gmail.com"; #quemado por el momento
-           
+
           if($email != '')
           {
                 $source = 'abcdefghijklmnopqrstuvwxyz';
@@ -55,18 +55,18 @@ class HomeController extends Controller
                 ->setTo($email)
                 ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:link_cambio_clave.html.twig',  array('clave' => $rstr)),'text/html', 'utf8');
                 $resp = $this->get('mailer')->send($message);
-         
+
                    // echo "<respuesta envio>";
                    //     var_dump($resp);
-                   //    echo "</respuesta envio>"; 
+                   //    echo "</respuesta envio>";
                    //   exit();
-                
+
                 if($resp == 1){
-  
+
                     $salt    = "µ≈α|⊥ε¢ʟ@δσ";
                     $password = password_hash($rstr, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
                     $dataMant = $UgServices->mantenimientoUsuario($user,'','','',$password,'O');
-                    
+
                     if ( is_object($dataMant))
                     {
                      $estado = $dataMant ->PI_ESTADO;
@@ -77,8 +77,8 @@ class HomeController extends Controller
                     // var_dump($estado.'-----'.$message);
                     // echo "</pre>";
                     // exit();
-                   
-                    
+
+
                 }
 
               echo $estado; exit();
@@ -92,15 +92,16 @@ class HomeController extends Controller
           //      "Codigo" => $estado ,
           //      "Mensaje" => $message,
           //   );
-            
+
           // return new Response(json_encode($respuesta));
 
     }
 
-    public function ingresarAction(Request $request)
-    {
 
-        $perfil = 1;
+	public function ingresarAction(Request $request)
+         {
+
+        $perfil = '';
 
         if($request->getMethod()=="POST")
         {
@@ -108,15 +109,19 @@ class HomeController extends Controller
             $perfilEst   = $this->container->getParameter("perfilEst");
             $perfilDoc   = $this->container->getParameter("perfilDoc");
             $perfilAdmin = $this->container->getParameter("perfilAdmin");
+            $perfilCordi = $this->container->getParameter("perfilCordi");
             #obtenemos los datos enviados por get
             $username    = $request->request->get('user');
             //$password    = $request->request->get('pass');
             $contrasenia = $request->request->get('pass');
-            
+
+            $rol_secretario = '';
+            $rol_coordinador = "";
+
 
             $salt    = "µ≈α|⊥ε¢ʟ@δσ";
             $password = password_hash($contrasenia, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
-            
+
 
 
             #llamamos a la consulta del webservice
@@ -133,40 +138,72 @@ class HomeController extends Controller
                     $idUsuario     = $data[0]['usuario'];
                     $nombreUsuario = $data[0]['nombreusuario'];
                     $cedula        = $data[0]['cedula'];
-                    //$mail          = $data[0]['mail'];
+
+                    $mail          = $data[0]['mail'];
                     $descRol       = $data[0]['descrol'];
+
+                    if ($perfilAdmin == $perfil) {
+                      $rol_secretario = $perfil;
+                    }elseif ($perfilCordi == $perfil) {
+                      $rol_coordinador = $perfil;
+                    }
+
+
                 }else{
+
 
 
                     foreach ($data as $login) {
                         $idUsuario     = $login['usuario'];
                         $nombreUsuario = $login['nombreusuario'];
                         $cedula        = $login['cedula'];
-                        //$mail          = $login['mail'];
+                        $mail          = $login['mail'];
                         $descRol       = $login['descrol'];
+                        $perfil       .=  $login['idrol'];
 
-                        if ($login['idrol'] == $perfilAdmin) {
-                            $perfil = (int)$perfil + (int)$perfilAdmin;
-                        }elseif ($login['idrol'] == $perfilEst) {
-                            $perfil = (int)$perfil + (int)$perfilEst;
-                        }elseif ($login['idrol'] == $perfilDoc) {
-                            $perfil = (int)$perfil + (int)$perfilDoc;
+                        if ($perfilAdmin == $login['idrol']) {
+                          $rol_secretario = $login['idrol'];
+                        }elseif ($perfilCordi == $login['idrol']) {
+                          $rol_coordinador = $login['idrol'];
                         }
-                    }
+
+                    }#end foreach
                 }
+
+
+                // if ($rol_secretario  != "") {
+                //   // $data_secretario = $UgServices->getRolesAdmin($idUsuario,$rol_secretario);
+                //   $session->set("rol_secretario",$rol_secretario);
+                // }elseif ($rol_coordinador != "") {
+                //   // $data_coordinador = $UgServices->getRolesAdmin($idUsuario,$rol_coordinador);
+                //   $session->set("data_coordinador",$data_coordinador);
+                // }
+
                 $session=$request->getSession();
                 $session->set("id_user",$idUsuario);
                 $session->set("perfil",$perfil); //idrol
                 $session->set("nom_usuario",$nombreUsuario);
                 $session->set("cedula",$cedula);
-                //$session->set("mail",$mail);
+                $session->set("mail",$mail);
                 $session->set("descRol",$descRol);//nombre rol
 
-                return new Response($perfil);
+                $respuesta = array(
+                  "Perfil" => $perfil ,
+                  "NombreUsuario" => $nombreUsuario,
+                );
+                return new Response(json_encode($respuesta));
+
+                //return new Response($perfil);
             }else{
                 $perfil = 5;# error usuario y contraseña no
-                return new Response('05');
-                // return new Response($password);
+
+                 $respuesta = array(
+                  "Perfil" => '05' ,
+                  "NombreUsuario" => '',
+                );
+
+                return new Response(json_encode($respuesta));
+                //return new Response('05');
             }
 
 
@@ -174,7 +211,7 @@ class HomeController extends Controller
 
         }else{
 
-        return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+        return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig', array('data_secretario' => $data_secretario, 'data_coordinador' => $data_coordinador));
         }
 
     }#end function

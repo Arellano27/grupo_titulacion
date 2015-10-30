@@ -9,11 +9,16 @@ parameters:
     mailer_host: smtp.gmail.com
     mailer_user: titulacion.php@gmail.com
     mailer_password: sc123456
-
     secret: ThisTokenIsNotSoSecretChangeIt
     perfilEst: 1
     perfilDoc: 2
     perfilAdmin: 3
-    perfilEstDoc: 4
-    perfilEstAdm: 5
-    perfilDocAdm: 6
+    perfilCordi: 4
+    perfilEstDoc: 12
+    perfilEstAdm: 13
+    perfilDocAdm: 23
+    perfilEstCordi: 14
+    perfilDocCordi: 24
+    perfilAdminCordi: 34
+    # rol_secretario: 0
+    # rol_coordinador: 0

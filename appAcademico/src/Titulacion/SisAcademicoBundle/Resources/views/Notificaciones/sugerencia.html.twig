@@ -1,0 +1,93 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig' %}
+
+
+{% block contenido %}
+  
+    
+          <div>       
+        <section>
+
+             <form id="form-enviar" method="post" action="{{ path('dayscript_Sugerencia') }}" runat="server"> 
+              <div class="main">
+                 
+<!-- -->
+
+        <div class="contentedit2">
+
+        <section class="content">
+          <div >
+             
+            
+           
+            <div class="col-md-12">
+           
+                                    
+                                       
+                  <div class="contentedit2">
+
+    
+
+     <section class="content-header">
+          <h3>
+            Configuración General  
+         
+          </h3>
+         
+        </section>
+         <!-- Main content -->
+        <section class="content">
+          <div>
+            <div class="col-md-3">
+               <div class="box box-solid">
+                <div class="box-body no-padding">
+                 <ul class="nav nav-pills nav-stacked">
+                    <li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-user-plus"></i> Perfil <span class="label label-primary pull-right"></span></a></li>
+                     {# <li ><a href="{{ path('dayscript_CambioContraseña') }}"><i class="fa fa-key"></i> Cambio de Contraseña</a></li>#}
+                      <li  class="active"><a href="{{ path('dayscript_Sugerencia') }}"><i class="fa fa-envelope-o"></i> Sugerencia</a></li>
+                  
+                  </ul>
+                </div><!-- /.box-body -->
+              </div><!-- /. box -->
+            
+            </div><!-- /.col -->
+            <div class="col-md-7">
+           
+                                    
+                                       
+                               
+				                      <div class="box-header with-border">
+                                      <h4 class="box-title">Sugerencia</h4>
+                  
+                                 </div><!-- /.box-header -->
+			                         
+                   <textarea class="form-control" rows="10" id="sugerencia" name="sugerencia" placeholder="Escriba su Comentario o Sugerencia "></textarea>
+                              <br />         
+                      <button type="submit" class="btn btn-success">Enviar</button>
+                    
+                
+                                   
+            </div>
+
+            
+            </div>
+        </section><!-- /.content -->
+
+      </div>              
+                                      
+                                   
+            </div>
+        
+          </div>
+        </section><!-- /.content -->
+
+      </div>
+                   </div>
+            </form>
+
+        </section><!-- /.content -->
+      </div>
+        
+     
+{% endblock %}
+
+

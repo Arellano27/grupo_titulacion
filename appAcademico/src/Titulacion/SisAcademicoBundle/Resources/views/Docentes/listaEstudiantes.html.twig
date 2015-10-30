@@ -1,0 +1,174 @@
+<script src="{{ asset('js/sistemau.functions.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('js/jqueryValidate/demo/css/screen.css') }}">
+	
+	<script src="{{ asset('js/jqueryValidate/dist/jquery.validate.js') }}"></script>
+        <script src="{{ asset('js/jqueryValidate/dist/additional-methods.js') }}"></script>
+{#<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>#}
+<form id="form-listaEstudiantes" name="form-listaEstudiantes" method="post" action="{{ path('docentes_actualiza_asistencia') }}" onsubmit="return false;">     
+<div class="row" id="tabla1">
+                <div class="col-xs-12">
+                  <div ng-controller="AppCtrl">
+ 
+   
+</div>
+                      
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                          <div class="row" >
+                            <div class="row " style="padding-left: 25px;">
+                                <div class="row" style="padding-top: 25px;width: 43%;">
+                                      <label class="control-label" >Docente :</label>
+                                        <select id="idDocente" name="idDocente" onchange="changeSelect(this.id, '{{ path('admin_cmb_materias') }}')" required title="Debes seleccionar un docente">   
+                                                 {{ docente | raw }}                       
+                                         </select>
+                                 </div>
+                                 <div id="content-idDocente" class="row" style="padding-top: 25px;width: 26%;">
+                                      <label class="control-label" >Materia :</label>
+                                        <select id="idMateria" name="idMateria" required title="Debes seleccionar una materia">   
+                                                 {{ materia | raw }}                       
+                                         </select>
+                                 </div>
+                                 <div class="col-xs-2" style="padding-top: 20px;"><button id="consultaAsistencia" class="btn btn-primary" type="button">Consultar</button></div>
+                            </div><!---->
+                            {#<div class="col-lg-3">
+                            55     <label class="control-label" >parcial :</label>
+                                   <select id="combofecha" name="combofecha" onchange="mostrarAlumnos('notas','{{ path('docentes_actualizar_asistencia') }}','2345');" >   
+                                          <option value="1"># 1</option>
+                                            <option value="2"># 2</option>                       
+                                    </select>
+                            </div>#}
+                            
+                            <div class="col-lxs-12" style="margin-bottom: 20px;">
+                                &nbsp;
+                            </div>
+                            <div class="dataTable_wrapper col-xs-12 div-scroll-y" id="content-ingresonota">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center " style="vertical-align: middle" >Codigo</th>
+                                            <th style="text-align: center;vertical-align: middle">Estudiante</th>
+                                           <th style="text-align: center;vertical-align: middle"></th>
+                                        </tr>
+                                     
+                                    </thead>
+                                    <tbody>
+                                        <input type = "hidden" value = "{{ idCarrera }}" id = "hdCarrera" name = "hdCarrera" />
+                                {%for count ,alumnos in arr_datos %}
+                                       <tr class="odd gradeX">
+                                           <td width = "5%" >{{ alumnos.id_sg_usuario }}</td>
+                                            <td width = "20%">{{ alumnos.nombres }} <input type = "hidden" value = "{{ alumnos.nombres }}" name = "{{ alumnos.id_sg_usuario }}" /></td>
+                                            <td width = "20%"> <span class="button-checkbox">
+                                                                    <button type="button" class="btn" data-color="primary">Asistio</button>
+                                                                    <input type="checkbox" class="hidden" value="{{ alumnos.id_sg_usuario }}" name="{{ alumnos.nombres }}" checked />
+                                                                </span></td>
+                                       </tr>
+                                {% endfor %}
+                                <input type = "hidden" value = "{{arr_datos|length}}" name = "hdcountalm" />
+                                   </tbody>
+                                </table>
+                            </div>
+                                    </div>
+                            <!-- /.table-responsive -->
+                    
+                        </div>
+                    
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+<div class="well">
+     <h4>Nota :</h4>
+     <p>Por su seguridad se recomienda verificar que las asistencias ingresadas sean las correctas</p>
+     <div class="text-center ">
+     <button type="button" class="btn btn-primary" id="btn-guardar" onclick="confirm('actualizaAsis')" >Actualizar</button>
+     </div>
+ </div>
+                                   <div id="content-ingresonotas">
+                                       </div>
+
+</form>
+           <script>                
+   $(".ingresoNota").click(function(){
+     var nombre =$(this).attr('id'); 
+     var codigo =$(this).attr('name');
+     
+   //alert(nombre);
+       mostrarAlumnos('ingresonotas','{{ path('docentes_ingreso_notas') }}',codigo,nombre);
+     
+   });
+	
+
+
+	$(document).ready(function() {
+        /*   $("#btn-guardar").click(function(){
+$("#formulario").submit();  
+});*/
+
+		// validate signup form on keyup and submit
+		$("#form-listaEstudiantes").validate({
+                    
+			rules: {
+                                idMateria: { required: true},
+				idDocente: { required: true},
+				agree: "required"
+			},
+			messages: {
+				idDocente: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
+				idMateria: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
+				topic: "Please select at least 2 topics"
+			}
+		});
+                
+                // propose username by combining first- and lastname
+		$("#academicos_1").focus(function() {
+			close_modal('ingresonotas');
+		});
+
+		// propose username by combining first- and lastname
+		$("#username").focus(function() {
+			var firstname = $("#firstname").val();
+			var lastname = $("#lastname").val();
+			if (firstname && lastname && !this.value) {
+				this.value = firstname + "." + lastname;
+			}
+		});
+
+		//code to hide topic selection, disable for demo
+		var newsletter = $("#newsletter");
+		// newsletter topics are optional, hide at first
+		var inital = newsletter.is(":checked");
+		var topics = $("#newsletter_topics")[inital ? "removeClass" : "addClass"]("gray");
+		var topicInputs = topics.find("input").attr("disabled", !inital);
+		// show when newsletter is checked
+		newsletter.click(function() {
+			topics[this.checked ? "removeClass" : "addClass"]("gray");
+			topicInputs.attr("disabled", !this.checked);
+		});
+	});
+	</script>
+	<style>
+	#commentForm {
+		width: 500px;
+	}
+	#commentForm label {
+		width: 250px;
+	}
+	#commentForm label.error, #commentForm input.submit {
+		margin-left: 253px;
+	}
+	#signupForm {
+		width: 670px;
+	}
+	#signupForm label.error {
+		margin-left: 10px;
+		width: auto;
+		display: inline;
+	}
+	#newsletter_topics label.error {
+		display: none;
+		margin-left: 103px;
+	}
+	</style>                             
+                                   
+
+

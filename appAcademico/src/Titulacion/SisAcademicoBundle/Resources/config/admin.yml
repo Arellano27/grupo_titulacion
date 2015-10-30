@@ -11,7 +11,7 @@ admin_academico_cargar_eventos:
     path:     /cargar_eventos
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos }
 admin_academico_cargar_eventos_user:
-    path:     /nuevo_pass
+    path:     /calendario_usuarios
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos_carrera_user }
 admin_registro_ordenpago:
     path:     /registroordenpago
@@ -45,4 +45,35 @@ admin_anulacion_listar:
 admin_anulacion_detalle:
     path:     /anulacion_detalle
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:anulacion_detalle }
-
+admin_listar_ordenpago:
+    path:     /listarordenpago
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:listarordenpago }
+admin_actualiza_ordenpago:
+    path:     /actualizaordenpago
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:actualizaordenpago }
+    # path:     /eventos_user
+    # defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos_carrera_user }
+admin_academico_crear_eventos:
+    path:     /crear_evento
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:crear_eventos_academicos }
+admin_academico_insertar_eventos:
+    path:     /insertar_evento
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:insertar_eventos_calendario }
+admin_academico_estudiante_carrera:
+    path:     /estudiantesCarrera
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_estudiantes_carrera }
+admin_academico_estudiante_carrera_selected:
+    path:     /consultaEstadoEstudiante
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:estudiante_carrera_selected }
+admin_academico_estudiante_carrera_pdf:
+    path:     /pdf/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfEstudiantes_InscritosMatriculados }
+admin_academico_cambio_pass_interno:
+    path:     /restablecer_pass_interno
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cambio_password }
+admin_academico_editar_eventos:
+    path:     /editar_evento
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:editar_eventos_calendario }
+admin_academico_modificar_eventos:
+    path:     /modificar_evento
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:modificar_eventos_calendario }

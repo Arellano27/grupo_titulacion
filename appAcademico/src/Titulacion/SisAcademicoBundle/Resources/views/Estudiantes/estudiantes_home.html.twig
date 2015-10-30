@@ -19,7 +19,7 @@
                               <div class="panel panel-default">
                                   <div class="panel-heading">  
                                       <h4 class="panel-title">
-                                          <a data-toggle="collapse" data-parent="#accordion" href="#{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera' id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_f" >{{ facultad.Nombre }}</a>
+                                          <a data-toggle="collapse" data-parent="#accordion" href="#{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera' id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_{{ facultad.idCiclo }}_f" >{{ facultad.Nombre }}</a>
                                       </h4>
                                   </div>
 
@@ -30,10 +30,12 @@
                                                           <div class="panel-body" id ="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_tab">
                                                               <!-- Nav tabs -->
                                                               <ul class="nav nav-tabs" id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_tabs">
-                                                                  <li class="active_a"><a data-toggle="tab" class='tabnotas' id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}"><b>Notas Actuales</b></a>
+                                                                  <li class="active_a"><a data-toggle="tab" class='tabnotas' id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_{{ facultad.idCiclo }}"><b>Notas Actuales</b></a>
                                                                   </li>
-                                                                  <li class='temporal'><a data-toggle="tab" class='tabnotas' id="nh_{{ facultad.Carrera }}_{{ facultad.Facultad }}"><b>Historico de Notas</b></a>
+                                                                  <li class='temporal'><a data-toggle="tab" class='tabnotas' id="nh_{{ facultad.Carrera }}_{{ facultad.Facultad }}_{{ facultad.idCiclo }}"><b>Historico de Notas</b></a>
                                                                   </li>
+                                                                  <!-- <li class='temporal'><a data-toggle="tab" class='tabnotas' id="re_{{ facultad.Carrera }}_{{ facultad.Facultad }}_{{ facultad.idCiclo }}"><b>Resumen</b></a>
+                                                                  </li> -->
                                                               </ul>
 
                                                               <div class="tab-content" style="border: 0px !important;height: 450px;overflow-x:hidden; overflow-y:scroll;">
@@ -80,11 +82,11 @@
           $(".tabnotas, .tabscarrera").click(function(){
             
           var splitCarrera =$(this).attr('id').split('_'); 
-          console.log(splitCarrera);
           var idIndica  = splitCarrera[0];
            var idCarrera  = splitCarrera[1];
            var idFacultad  = splitCarrera[2];
-           var indicaClase  = splitCarrera[3];
+           var idCiclo  = splitCarrera[3];
+           var indicaClase  = splitCarrera[4];
            var idEstudiante  = {{idEstudiante}}; 
            var tablaNotasa = $('#ctn_'+idCarrera+'_'+idFacultad);
            if(indicaClase!=null )
