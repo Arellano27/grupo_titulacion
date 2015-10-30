@@ -881,5 +881,19 @@ public function modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_
         $response=$this->ws->GuardaMensaje($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
         return $response;
 }#end function
+
+      public function Datos($idCarrera){
+      $this->tipo    = "26";
+
+      $this->source  = $this->sourceConsultas;
+
+      $this->urlWS   = $this->url.$this->urlConsulta;
+      $trama         = "<id_carrera>".$idCarrera."</id_carrera>";
+      $XML           = NULL;
+      $response=$this->ws->doRequestDatos($trama,'jdbc/saugConsTmp',$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+
+      return $response;
+   }#end function Docentes_getMaterias()
+
 }#end class
 

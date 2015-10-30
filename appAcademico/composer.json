@@ -60,11 +60,7 @@
         },
         "branch-alias": {
             "dev-master": "2.7-dev"
-        },
-	"require": {
-    ...
-
-    "tfox/mpdf-port-bundle": "1.2.*"
-	}
+        }
+	
     }
 }

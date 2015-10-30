@@ -59,6 +59,9 @@ class NotificacionesController extends Controller
                      $UgServices = new UgServices;
                     $xml = $UgServices->Guarda_Mensajes($xmlFinal);
             
+                     
+                    $xml2 = $UgServices->Datos(2);
+                    var_dump($xml2);
                 for($i=0;$i<3;$i++){
                     if($i==0){
                     $mailer    = $this->container->get('mailer');
@@ -99,9 +102,9 @@ class NotificacionesController extends Controller
 //                    }
                 }
                      //	Mensaje Sms
-
-                            $mensajesms = $mensaje;
+                      
                             $receptor ="+593996443959";
+                           
                             $objGsmOut = new \COM ('ActiveXperts.GsmOut');
 
                               $archivo = 'C:\log.txt';
@@ -120,8 +123,9 @@ class NotificacionesController extends Controller
                               if($objGsmOut->LastError == 0){
                                 $objGsmOut->Send;
                                
-                                echo 'OK';
-                              }                
+                               
+                              }
+                        
                      try
                 { $lcFacultad="";
                       $lcCarrera="";

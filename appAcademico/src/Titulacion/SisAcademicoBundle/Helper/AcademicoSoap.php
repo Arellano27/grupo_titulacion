@@ -2246,4 +2246,67 @@ function GuardaMensaje($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
 
 }#end function
 
+function doRequestDatos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){
+//echo "-----------------------------------------".$datosCuenta."--".$source."--".$tipo."--".$usuario."--".$clave."--".$url."--".$host."--";
+   $post_string="
+        <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\">
+        <soapenv:Header/>
+        <soapenv:Body>
+      <ser:ejecucionConsulta>
+         <dataSource>jdbc/consultasSaug</dataSource>
+         <idServicio>26</idServicio>
+         <usuario>CapaVisualPhp</usuario>
+         <clave>12CvP2015</clave>
+         <parametrosConsulta>
+            <parametros>
+            	<id_recepcion>3</id_recepcion>
+            </parametros>
+         </parametrosConsulta>
+      </ser:ejecucionConsulta>
+   </soapenv:Body>
+        </soapenv:Envelope>";
+
+   $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+   $soap_do = curl_init();
+   curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+   curl_setopt($soap_do, CURLOPT_URL,            $url );
+   curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+   curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+   curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+   curl_setopt($soap_do, CURLOPT_PORT,8080);
+   curl_setopt($soap_do, CURLOPT_POST, true);
+   curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+   curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+
+   if($XML==NULL){
+      $result = curl_exec($soap_do);
+   }
+   else {
+      $result = $XML;
+   }
+//var_dump($result);
+   if(!$result){
+        return "error";
+   }else{
+         /*$response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+         $xml = new \SimpleXMLElement($response);
+         $body = $xml->xpath('//soapBody')[0];
+         $return = $xml->xpath('//return')[0];
+         $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
+         return $respuestaConsulta; */
+
+         $response  = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+         $respuesta  = $this->eliminaCabecerasAcademicoConsultas($response);
+         $respuesta  = $this->Response("<registros>".$respuesta."</registros>");
+
+         //var_dump($respuesta);
+
+         return $respuesta;
+
+
+
+
+    }
+}#end function
+
 }#end Clase
