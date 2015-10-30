@@ -24,17 +24,17 @@ class UgServices
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
 
-      $this->usuario       = "abc";
-      $this->clave         = "123";
-      $this->source        = "jdbc/procedimientosSaug";
-      //$this->url           = "http://186.101.66.2:8080/";
-      $this->url           = "http://192.168.100.11:8080/";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      $this->urlWS         = "";
-      //$this->host          = "186.101.66.2:8080";
-      $this->host          = "192.168.100.11:8080";
-      $this->sourceConsultas= "jdbc/consultasSaug";
+//      $this->usuario       = "abc";
+//      $this->clave         = "123";
+//      $this->source        = "jdbc/procedimientosSaug";
+//      //$this->url           = "http://186.101.66.2:8080/";
+//      $this->url           = "http://192.168.100.11:8080/";
+//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//      $this->urlWS         = "";
+//      //$this->host          = "186.101.66.2:8080";
+//      $this->host          = "192.168.100.11:8080";
+//      $this->sourceConsultas= "jdbc/consultasSaug";
 
 
 
@@ -92,30 +92,30 @@ class UgServices
       $this->clave           = "123";
       $this->source          = "jdbc/procedimientosSaug";
       $this->sourceConsultas = "jdbc/consultasSaug";
-      $this->url             = "http://192.168.100.11:8080/";
-      $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      $this->urlWS           = "";
-      $this->host            = "192.168.100.11:8080";
+//      $this->url             = "http://192.168.100.11:8080/";
+//      $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+//      $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//      $this->urlWS           = "";
+//      $this->host            = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-//       $this->usuario       = "usr_tesis";
-//       $this->clave         = "Tesis2015";
-//       $this->url           = "http://186.101.66.2:8080/";
-//       /*Saug Temporal*/
-//       // $this->source           = "jdbc/saugProcTmp";
-//       // $this->sourceConsultas  = "jdbc/saugConsTmp";
-//       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-//       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-//       $this->host          = "186.101.66.2:8080";
+       //$this->usuario       = "usr_tesis";
+       //$this->clave         = "Tesis2015";
+       $this->url           = "http://186.101.66.2:8080/";
+       /*Saug Temporal*/
+       //$this->source           = "jdbc/saugProcTmp";
+       //$this->sourceConsultas  = "jdbc/saugConsTmp";
+       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+       $this->host          = "186.101.66.2:8080";
 
 // // //      /*Preproduccion*/
 //      $this->source        = "jdbc/procedimientosSaug";
 //      $this->sourceConsultas  = "jdbc/consultasSaug";
 
-     // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-     // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+     $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
 // //
 //       $this->urlWS         = "";
 
@@ -135,9 +135,11 @@ class UgServices
    }
 
    public function getLogin($username,$password){
+       var_dump($username);
       $this->tipo    = "8";
       $this->urlWS   = $this->url.$this->urlProcedim;
       $trama         = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
+      
       $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
 // echo '<pre>'; var_dump($response); exit();
       return $response;
