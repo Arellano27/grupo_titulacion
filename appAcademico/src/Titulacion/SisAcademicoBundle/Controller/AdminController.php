@@ -18,8 +18,8 @@ class AdminController extends Controller
 
         $UgServices   = new UgServices;
         $session=$request->getSession();
-        // $id_usuario = $session->get("id_user");
-        $id_usuario = 3;
+        $id_usuario = $session->get("id_user");
+        // $id_usuario = 3;
         $id_rol     = $session->get("perfil");
 
         if(strlen($id_rol)>1){
@@ -27,7 +27,7 @@ class AdminController extends Controller
         }else{
           $id_rol = $id_rol;
         }
-
+        // $id_rol = 3;
 
         $rsCarrera = $UgServices->getConsultaCarreras($id_usuario,$id_rol);
         // echo '<pre>'; var_dump($rsCarrera); exit();

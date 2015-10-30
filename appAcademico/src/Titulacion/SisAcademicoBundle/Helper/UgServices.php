@@ -40,8 +40,8 @@ class UgServices
     //  //$this->sourceConsultas= "jdbc/saugConsTmp";
 
 
-      $this->usuario         = "abc";
-      $this->clave           = "123";
+      $this->usuario         = "CapaVisualPhp";
+      $this->clave           = "T3pZx1520pHp";
       $this->source          = "jdbc/procedimientosSaug";
       $this->sourceConsultas = "jdbc/consultasSaug";
       $this->url             = "http://192.168.100.11:8080/";
@@ -528,8 +528,8 @@ public function getConsultaSoloEventos($idEventos){
            $source     = $this->source;
            $url        = $this->url.$this->urlProcedim;
            $host       = $this->host;
-           
-          
+
+
                $XML        = <<<XML
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
    <soap:Body>
@@ -553,10 +553,10 @@ public function getConsultaSoloEventos($idEventos){
    </soap:Body>
 </soap:Envelope>
 XML;
-           
-           
-                   
-           
+
+
+
+
            $response=$ws->doRequestSreReceptaTransacionConsultasdoc2($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
@@ -571,8 +571,8 @@ XML;
            $url        = $this->url.$this->urlConsulta;
            $host       = $this->host;
            /*$trama      = "<idDocente>".$idDocente."</idDocente>";
-           
-          
+
+
                $XML        = <<<XML
 <soap:Envelope
 xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -623,15 +623,15 @@ xmlns:ns2="http://servicios.ug.edu.ec/">
 </soap:Body>
 </soap:Envelope>
 XML;*/
-           
+
            $XML=null;
-                   
-           
+
+
            $response=$ws->doRequestConsultaAlumnos($trama,'jdbc/saugConsTmp',$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
    }#end function
-   
+
        public function Docentes_ingresoNotas($trama){
            $ws         = new AcademicoSoap();
            $tipo       = "14";
@@ -640,10 +640,10 @@ XML;*/
            $source     =$this->source;
            $url        = $this->url.$this->urlProcedim;
            $host       = $this->host;
-           
+
            $XML=null;
-                   
-           
+
+
            $response=$ws->doRequestIngresoNotas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
@@ -656,15 +656,15 @@ XML;*/
            $source     =$this->source;
            $url        = $this->url.$this->urlProcedim;
            $host       = $this->host;
-           
+
            $XML=null;
-                   
-           
+
+
            $response=$ws->doRequestIngresoNotas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
    }#end function
-   
+
  public function Docentes_getfechasparcial($trama){
            $ws         = new AcademicoSoap();
            $tipo       = "21";
@@ -674,8 +674,8 @@ XML;*/
            $url        = $this->url.$this->urlConsulta;
            $host       = $this->host;
           // $trama      = "<idDocente>".$Parcial."</idDocente>";
-           
-          
+
+
                $XML        = <<<XML
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
    <soap:Body>
@@ -702,10 +702,10 @@ XML;*/
    </soap:Body>
 </soap:Envelope>
 XML;
-           
+
            //$XML =null;
-                   
-           
+
+
            $response=$ws->doRequestConsultaFechas($trama,'jdbc/saugConsTmp',$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
@@ -754,14 +754,14 @@ public function getConsultaEstudiantes_InscritosMatriculados($idCiclo, $idCarrer
         $source     = "jdbc/saugConsTmp";
         $url        = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
         $host       = "186.101.66.2:8080";
-        $trama      = "<estadoMatricula>".$idEstadoMatricula."</estadoMatricula><identificacion>".$identificacion."</identificacion><idCiclo>".$idCiclo."</idCiclo><carrera>".$idCarrera."</carrera>"; 
+        $trama      = "<estadoMatricula>".$idEstadoMatricula."</estadoMatricula><identificacion>".$identificacion."</identificacion><idCiclo>".$idCiclo."</idCiclo><carrera>".$idCarrera."</carrera>";
         $this->urlWS   = $this->url.$this->urlConsulta;
         $XML        = NULL;
         $response=$this->ws->doRequestSreReceptaEstudiantes_InscritosMatriculados($trama,$this->sourceConsultas,$tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
-        
 
-        return $response; 
-            
+
+        return $response;
+
 }#end function
 
 public function getEstadosMatricula(){
@@ -776,8 +776,8 @@ public function getEstadosMatricula(){
         $XML        = NULL;
         $this->urlWS   = $this->url.$this->urlConsulta;
         $response=$this->ws->doRequestEstadosMatricula($trama,$this->sourceConsultas,$tipo,$this->usuario,$this->clave,$this->urlWS,$this->host ,$XML);
-        return $response; 
-            
+        return $response;
+
 }#end function
 
 public function modificarEventos($evento,$idparametro,$estado){
@@ -791,7 +791,7 @@ public function modificarEventos($evento,$idparametro,$estado){
 
   $idtipoparametro = 1;
   $usuario = 1;
-  
+
   $opcion = "A";
   $this->tipo       = "31";
   $this->urlWS   = $this->url.$this->urlProcedim;
@@ -861,9 +861,9 @@ public function getConsulta_listado_OrdenPago($idEstudiante,$idCarrera,$idCiclo,
         $trama      = "<PV_TIPO_ID>".$modoConsulta."</PV_TIPO_ID><PV_ID>".$idEstudiante."</PV_ID><PI_ID_SA_PARAMETRO_ESTADO>".$idEstado."</PI_ID_SA_PARAMETRO_ESTADO>";
         //$response=$ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doRequestsListarOrdenPago($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        
-        return $response; 
-            
+
+        return $response;
+
 }#end function
 public function setActualizaOrden($trama){
         /*$ws=new AcademicoSoap();
@@ -908,9 +908,9 @@ public function getConsultaHorario_examen($idEstudiante,$idCarrera,$idCiclo,$mod
         $trama      = "<PV_ID>".$idEstudiante."</PV_ID><PI_ID_SA_PARAMETRO_ESTADO>".$idEstado."</PI_ID_SA_PARAMETRO_ESTADO>";
         //$response=$ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
         $response=$this->ws->doRequestsEstudianteHorariosExamen($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        
-        return $response; 
-            
+
+        return $response;
+
 }#end function
    public function Docentes_getDocentes($idCarrera){
       $this->tipo    = "27";
@@ -937,9 +937,22 @@ public function getConsultaHorario_examen($idEstudiante,$idCarrera,$idCiclo,$mod
         $trama      = "<idCiclo>".$idCiclo."</idCiclo><carrera>".$idCarrera."</carrera>";
         $this->urlWS   = $this->url.$this->urlConsulta;
         $response=$this->ws->doRequestEstadosMatricula($trama,$this->sourceConsultas,$tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response; 
-            
-}#end function
+        return $response;
+
+  }#end function
+
+  public function getRolesAdmin($idUser,$idRol){
+
+        $this->tipo       = "38";
+        $this->urlWS      = $this->url.$this->urlProcedim;
+        $trama      = "<PI_id_usuario>".$idUser."</PI_id_usuario><PI_rol>".$idRol."</PI_rol>";
+        // echo '<pre>'; var_dump($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host); exit();
+        $response=$this->ws->doSelectRolAdmin($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+
+        return $response;
+
+  }#end function
+
 }#end class
 
 
