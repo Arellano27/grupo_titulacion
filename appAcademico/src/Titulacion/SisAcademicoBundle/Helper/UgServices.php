@@ -23,6 +23,7 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
+
       $this->usuario       = "abc";
       $this->clave         = "123";
       $this->source        = "jdbc/procedimientosSaug";
@@ -86,6 +87,33 @@ class UgServices
 //// //      /*Preproduccion*/
 //     $this->source        = "jdbc/procedimientosSaug";
 //     $this->sourceConsultas  = "jdbc/consultasSaug";
+
+      $this->usuario         = "abc";
+      $this->clave           = "123";
+      $this->source          = "jdbc/procedimientosSaug";
+      $this->sourceConsultas = "jdbc/consultasSaug";
+      $this->url             = "http://192.168.100.11:8080/";
+      $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlWS           = "";
+      $this->host            = "192.168.100.11:8080";
+      /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
+
+      /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
+//       $this->usuario       = "usr_tesis";
+//       $this->clave         = "Tesis2015";
+//       $this->url           = "http://186.101.66.2:8080/";
+//       /*Saug Temporal*/
+//       // $this->source           = "jdbc/saugProcTmp";
+//       // $this->sourceConsultas  = "jdbc/saugConsTmp";
+//       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+//       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//       $this->host          = "186.101.66.2:8080";
+
+// // //      /*Preproduccion*/
+//      $this->source        = "jdbc/procedimientosSaug";
+//      $this->sourceConsultas  = "jdbc/consultasSaug";
+
      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
 // //
@@ -111,7 +139,7 @@ class UgServices
       $this->urlWS   = $this->url.$this->urlProcedim;
       $trama         = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
       $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-
+// echo '<pre>'; var_dump($response); exit();
       return $response;
    }#end function
 
@@ -412,7 +440,8 @@ public function getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$idCiclo)
     $this->tipo    = "10";
     $usuario    = "CapaVisualPhp";
     $clave      = "12CvP2015";
-    $this->source  = "jdbc/consultasSaug";
+    //$this->source  = "jdbc/consultasSaug";
+    $this->source  = "jdbc/saugConsTmp";
     $this->urlWS   = $this->url.$this->urlConsulta;
     $trama      = "<usuario>".$login."</usuario>";
     $XML        = NULL;
@@ -425,7 +454,8 @@ public function getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$idCiclo)
     $tipo       = "21";
     $usuario    = "CapaVisual";
     $clave      = "123";
-    $source     = "jdbc/procedimientosSaug";
+    //$source     = "jdbc/procedimientosSaug";
+    $source     = "jdbc/saugProcTmp";
     $url        = $this->url.$this->urlProcedim;
     $host       = $this->host;
     $trama      = "<PX_XML><items><item><usuario>".$username."</usuario><contrasena>".$password."</contrasena><id_usuario>".$idUsuario."</id_usuario><estado>".$estado."</estado><nuevacontrasenia>".$nuevoPassword."</nuevacontrasenia></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
@@ -809,6 +839,45 @@ public function insertarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_h
   return $response;
 }#end function
 
+
+//-----------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------//
+
+public function getConsultaEstudiantes_InscritosMatriculados($idCiclo, $idCarrera,$idEstadoMatricula,$identificacion){
+        $ws=new AcademicoSoap();
+        $tipo       = "23";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = "jdbc/saugConsTmp";
+        $url        = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
+        $host       = "186.101.66.2:8080";
+        $trama      = "<estadoMatricula>".$idEstadoMatricula."</estadoMatricula><identificacion>".$identificacion."</identificacion><idCiclo>".$idCiclo."</idCiclo><carrera>".$idCarrera."</carrera>"; 
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $XML        = NULL;
+        $response=$this->ws->doRequestSreReceptaEstudiantes_InscritosMatriculados($trama,$this->sourceConsultas,$tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+        
+
+        return $response; 
+            
+}#end function
+
+public function getEstadosMatricula(){
+        $ws=new AcademicoSoap();
+        $tipo       = "24";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = "jdbc/saugConsTmp";
+        $url        = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
+        $host       = "186.101.66.2:8080";
+        $trama      = "<parametro>16</parametro>";
+        $XML        = NULL;
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $response=$this->ws->doRequestEstadosMatricula($trama,$this->sourceConsultas,$tipo,$this->usuario,$this->clave,$this->urlWS,$this->host ,$XML);
+        return $response; 
+            
+}#end function
+
 public function modificarEventos($evento,$idparametro,$estado){
 // echo 'UGSERVICE<pre>'; var_dump($evento,$idparametro,$estado); exit();
 
@@ -873,6 +942,7 @@ public function modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_
       return $response;
    }#end function Docentes_getMaterias()
 
+
    public function Guarda_Mensajes($trama){
        
         $this->tipo       = "37 ";
@@ -895,5 +965,23 @@ public function modificarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_
       return $response;
    }#end function Docentes_getMaterias()
 
+
+   public function getConsultaPorcentajeEstudianteCarrera($idCiclo, $idCarrera){
+
+        $ws=new AcademicoSoap();
+        $tipo       = "28";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = "jdbc/saugConsTmp";
+        $url        = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
+        $host       = "186.101.66.2:8080";
+        $trama      = "<idCiclo>".$idCiclo."</idCiclo><carrera>".$idCarrera."</carrera>";
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $response=$this->ws->doRequestEstadosMatricula($trama,$this->sourceConsultas,$tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response; 
+            
+}#end function
+
 }#end class
+
 

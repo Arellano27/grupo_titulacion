@@ -6,7 +6,7 @@
       {% if app.session.get('perfil') == perfilDoc or app.session.get('perfil') == perfilEstDoc or app.session.get('perfil') == perfilDocAdm %}
       <li class="treeview">
         <a href="{{path('SisAcademico_Docentes_home')}}">
-          <i class="fa fa-laptop"></i><span>Docente</span>
+          <i class="fa fa-edit"></i><span>Docente</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
@@ -21,7 +21,7 @@
       {% if app.session.get('perfil') == perfilEst or app.session.get('perfil') == perfilEstDoc or app.session.get('perfil') == perfilEstAdm %}
       <li class="treeview">
         <a href="#">
-          <i class="fa fa-edit"></i> <span>Estudiantes</span>
+          <i class="fa fa-laptop"></i> <span>Estudiantes</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
@@ -36,12 +36,13 @@
       {% if app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm %}
       <li class="treeview">
         <a href="#">
-          <i class="fa fa-edit"></i> <span>Administración</span>
+          <i class="fa fa-gears"></i> <span>Administración</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
           <li><a href="{{path('admin_academico_home')}}"><i class="fa fa-circle-o"></i> Calendario por Carrera </a></li>
           <li><a href="{{path('admin_carreras_ordenpago')}}"><i class="fa fa-circle-o"></i> Orden de Pago </a></li>
+          <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Estudiantes por Carrera</a></li>
 
         </ul>
       </li>
