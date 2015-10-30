@@ -171,14 +171,13 @@ class HomeController extends Controller
                 }
 
 
-                if ($rol_secretario  != "") {
-                  $data_secretario = $UgServices->getRolesAdmin($idUsuario,$rol_secretario);
-                  echo 'dd<pre>'; var_dump(count($data["opcion"])); exit();
-
-                }elseif ($rol_coordinador != "") {
-                  $data_coordinador = $UgServices->getRolesAdmin($idUsuario,$rol_coordinador);
-                  echo '<pre>'; var_dump($data); exit();
-                }
+                // if ($rol_secretario  != "") {
+                //   // $data_secretario = $UgServices->getRolesAdmin($idUsuario,$rol_secretario);
+                //   $session->set("rol_secretario",$rol_secretario);
+                // }elseif ($rol_coordinador != "") {
+                //   // $data_coordinador = $UgServices->getRolesAdmin($idUsuario,$rol_coordinador);
+                //   $session->set("data_coordinador",$data_coordinador);
+                // }
 
                 $session=$request->getSession();
                 $session->set("id_user",$idUsuario);
@@ -212,7 +211,7 @@ class HomeController extends Controller
 
         }else{
 
-        return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+        return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig', array('data_secretario' => $data_secretario, 'data_coordinador' => $data_coordinador));
         }
 
     }#end function
