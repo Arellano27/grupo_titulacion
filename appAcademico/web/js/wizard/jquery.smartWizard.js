@@ -309,6 +309,7 @@ function SmartWizard(target, options) {
             }
              if (1 == $this.curStepIdx) {
                 $($this.buttons.next).addClass("buttonDisabled");
+                $($this.buttons.next).hide();
                 }
                 if (2 == $this.curStepIdx) {
                 $($this.buttons.previous).addClass("buttonDisabled");
