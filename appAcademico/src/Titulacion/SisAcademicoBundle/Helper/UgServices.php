@@ -25,17 +25,17 @@ class UgServices
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
 
 
-    //  $this->usuario       = "abc";
-    //  $this->clave         = "123";
-    //  $this->source        = "jdbc/procedimientosSaug";
-    //  //$this->source        = "jdbc/saugProcTmp";
-    //  //$this->url           = "http://186.101.66.2:8080/";
-    // $this->url           = "http://192.168.100.11:8080/";
-    //  $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-    //  $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-    //  $this->urlWS         = "";
-    //  //$this->host          = "186.101.66.2:8080";
-    //  $this->host          = "192.168.100.11:8080";
+     $this->usuario       = "abc";
+     $this->clave         = "123";
+     $this->source        = "jdbc/procedimientosSaug";
+     //$this->source        = "jdbc/saugProcTmp";
+     //$this->url           = "http://186.101.66.2:8080/";
+    $this->url           = "http://192.168.100.11:8080/";
+     $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+     $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+     $this->urlWS         = "";
+     //$this->host          = "186.101.66.2:8080";
+     $this->host          = "192.168.100.11:8080";
     //  $this->sourceConsultas= "jdbc/consultasSaug";
     //  //$this->sourceConsultas= "jdbc/saugConsTmp";
 
@@ -52,15 +52,15 @@ class UgServices
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "usr_tesis";
-      $this->clave         = "Tesis2015";
-      $this->url           = "http://186.101.66.2:8080/";
-      /*Saug Temporal*/
-      $this->source           = "jdbc/saugProcTmp";
-      $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      $this->host          = "186.101.66.2:8080";
+      // $this->usuario       = "usr_tesis";
+      // $this->clave         = "Tesis2015";
+      // $this->url           = "http://186.101.66.2:8080/";
+      // /*Saug Temporal*/
+      // $this->source           = "jdbc/saugProcTmp";
+      // $this->sourceConsultas  = "jdbc/saugConsTmp";
+      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      // $this->host          = "186.101.66.2:8080";
 
 // // //      /*Preproduccion*/
 //      $this->source        = "jdbc/procedimientosSaug";
