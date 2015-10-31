@@ -13,7 +13,7 @@ class UgServices
    private $url;
    private $urlConsulta;
    private $urlProcedim;
-   public $urlWS;
+   public  $urlWS;
    private $host;
    private $sourceConsultas;
 
@@ -23,31 +23,33 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-      // $this->usuario         = "abc";
-      // $this->clave           = "123";
-      // $this->source          = "jdbc/procedimientosSaug";
-      // $this->sourceConsultas = "jdbc/consultasSaug";
-      // $this->url             = "http://192.168.100.11:8080/";
-      // $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
-      // $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      // $this->urlWS           = "";
-      // $this->host            = "192.168.100.11:8080";
+      $this->usuario         = "abc";
+      $this->clave           = "123";
+      $this->source          = "jdbc/procedimientosSaug";
+      $this->sourceConsultas = "jdbc/consultasSaug";
+      $this->url             = "http://192.168.100.11:8080/";
+      $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlWS           = "";
+      $this->host            = "192.168.100.11:8080";
+
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "usr_tesis";
-      $this->clave         = "Tesis2015";
-      $this->url           = "http://186.101.66.2:8080/";
-      /*Saug Temporal*/
-      // $this->source           = "jdbc/saugProcTmp";
+      // $this->usuario       = "CapaVisualPhp";
+      // $this->clave         = "12CvP2015";
+      // $this->url           = "http://186.101.66.2:8080/";
+      // /*Saug Temporal*/
+      // $this->source        = "jdbc/saugProcTmp";
       // $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      $this->host          = "186.101.66.2:8080";
+      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      // $this->urlWS         = "";
+      // $this->host          = "186.101.66.2:8080";
 
 // //      /*Preproduccion*/
-     $this->source        = "jdbc/procedimientosSaug";
-     $this->sourceConsultas  = "jdbc/consultasSaug";
+     // $this->source        = "jdbc/procedimientosSaug";
+     // $this->sourceConsultas  = "jdbc/consultasSaug";
      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
 // //
@@ -365,29 +367,29 @@ public function getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$idCiclo)
   }#end function
 
     public function getConsultaCorreo($login){
-    $this->tipo    = "10";
-    $usuario    = "CapaVisualPhp";
-    $clave      = "12CvP2015";
+    $this->tipo      = "10";
+    //$usuario       = "CapaVisualPhp";
+    //$clave         = "12CvP2015";
     //$this->source  = "jdbc/consultasSaug";
-    $this->source  = "jdbc/saugConsTmp";
+    //$this->source  = "jdbc/saugConsTmp";
     $this->urlWS   = $this->url.$this->urlConsulta;
     $trama      = "<usuario>".$login."</usuario>";
     $XML        = NULL;
-    $response=$this->ws->doRequestSreReceptaTransacionConsultasCorreo($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $XML);
+    $response=$this->ws->doRequestSreReceptaTransacionConsultasCorreo($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $XML);
     return $response;
   }#end function para obtener el correo del usuario()
 
   public function mantenimientoUsuario($username,$password,$idUsuario,$estado,$nuevoPassword,$opcion){
-    $ws=new AcademicoSoap();
-    $tipo       = "21";
-    $usuario    = "CapaVisual";
-    $clave      = "123";
+    //$ws=new AcademicoSoap();
+    $this->tipo   = "21";
+    //$usuario    = "CapaVisual";
+    //$clave      = "123";
     //$source     = "jdbc/procedimientosSaug";
-    $source     = "jdbc/saugProcTmp";
-    $url        = $this->url.$this->urlProcedim;
-    $host       = $this->host;
-    $trama      = "<PX_XML><items><item><usuario>".$username."</usuario><contrasena>".$password."</contrasena><id_usuario>".$idUsuario."</id_usuario><estado>".$estado."</estado><nuevacontrasenia>".$nuevoPassword."</nuevacontrasenia></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
-    $response=$ws->doRequestSreReceptaTransacionMantUsuario($trama,$source,$tipo,$usuario,$clave,$url,$host);
+    //$source     = "jdbc/saugProcTmp";
+    //$host       = $this->host;
+    $this->urlWS  = $this->url.$this->urlProcedim;
+    $trama        = "<PX_XML><items><item><usuario>".$username."</usuario><contrasena>".$password."</contrasena><id_usuario>".$idUsuario."</id_usuario><estado>".$estado."</estado><nuevacontrasenia>".$nuevoPassword."</nuevacontrasenia></item></items></PX_XML><PC_OPCION>".$opcion."</PC_OPCION>";
+    $response     = $this->ws->doRequestSreReceptaTransacionMantUsuario($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
      //pruebas
     return $response;
 
