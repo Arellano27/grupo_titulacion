@@ -49,10 +49,20 @@ estudiantes_pdf_ordenpago:
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfordenpago}
 estudiantes_subir_archivos:
     pattern:  /subirarchivos/{idEstudiante}
+
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:subirarchivos} 
 estudiantes_listar_solicitudes:
     pattern:  /listarsolicitudes
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes} 
+
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:subirarchivos}  
+estudiantes_pdf_anulamateria:
+    pattern:  /pdfAnulacionMaterias/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfAnulacionMaterias}    
+estudiantes_pdf_horarioexamen:
+    pattern:  /pdfHorarioExamen/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfHorarioExamen}
+
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes

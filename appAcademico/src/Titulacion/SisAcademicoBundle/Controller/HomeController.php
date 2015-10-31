@@ -109,10 +109,14 @@ class HomeController extends Controller
             $perfilEst   = $this->container->getParameter("perfilEst");
             $perfilDoc   = $this->container->getParameter("perfilDoc");
             $perfilAdmin = $this->container->getParameter("perfilAdmin");
+            $perfilCordi = $this->container->getParameter("perfilCordi");
             #obtenemos los datos enviados por get
             $username    = $request->request->get('user');
             //$password    = $request->request->get('pass');
             $contrasenia = $request->request->get('pass');
+
+            $rol_secretario = '';
+            $rol_coordinador = "";
 
 
             $salt    = "µ≈α|⊥ε¢ʟ@δσ";
@@ -136,7 +140,14 @@ class HomeController extends Controller
                     $cedula        = $data[0]['cedula'];
 
                     $mail          = $data[0]['mail'];
-                     $descRol       = $data[0]['descrol'];
+                    $descRol       = $data[0]['descrol'];
+
+                    if ($perfilAdmin == $perfil) {
+                      $rol_secretario = $perfil;
+                    }elseif ($perfilCordi == $perfil) {
+                      $rol_coordinador = $perfil;
+                    }
+
 
                 }else{
 
@@ -150,8 +161,23 @@ class HomeController extends Controller
                         $descRol       = $login['descrol'];
                         $perfil       .=  $login['idrol'];
 
+                        if ($perfilAdmin == $login['idrol']) {
+                          $rol_secretario = $login['idrol'];
+                        }elseif ($perfilCordi == $login['idrol']) {
+                          $rol_coordinador = $login['idrol'];
+                        }
+
                     }#end foreach
                 }
+
+
+                // if ($rol_secretario  != "") {
+                //   // $data_secretario = $UgServices->getRolesAdmin($idUsuario,$rol_secretario);
+                //   $session->set("rol_secretario",$rol_secretario);
+                // }elseif ($rol_coordinador != "") {
+                //   // $data_coordinador = $UgServices->getRolesAdmin($idUsuario,$rol_coordinador);
+                //   $session->set("data_coordinador",$data_coordinador);
+                // }
 
                 $session=$request->getSession();
                 $session->set("id_user",$idUsuario);
@@ -185,7 +211,7 @@ class HomeController extends Controller
 
         }else{
 
-        return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+        return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig', array('data_secretario' => $data_secretario, 'data_coordinador' => $data_coordinador));
         }
 
     }#end function
