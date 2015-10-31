@@ -12,7 +12,7 @@ class AcademicoSoap {
  * [funcion que permite receptar el xml del webservice de los procedimientos]
  */
 function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
-
+    var_dump($datosCuenta);
     $post_string="
     <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\">
     <soapenv:Header/>
