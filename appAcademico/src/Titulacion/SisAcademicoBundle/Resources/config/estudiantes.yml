@@ -66,3 +66,7 @@ estudiantes_pdf_horarioexamen:
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes
+
+estudiantes_pdf_solicitudes:
+    pattern:  /PdfSolicitudes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:PdfSolicitudes }

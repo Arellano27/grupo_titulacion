@@ -222,13 +222,10 @@ class UgServices
       $this->urlWS   = $this->url.$this->urlProcedim;
       $datosConsulta["idParalelo"]  = 0;  /* ES NECESARIO PARA LA TRAMA ACTUAL */
       $datosConsulta["ciclo"]       = $datosConsulta["idCarrera"];  /* ESTE REEMPLAZO ES NECESARIO*/
-
-
       $trama         =  "<fechaInicio>".$datosConsulta["fechaInicio"]."</fechaInicio><fechaFin>".$datosConsulta["fechaFin"]."</fechaFin>".
                         "<idProfesor>".$datosConsulta["idDocente"]."</idProfesor><idMateria>".$datosConsulta["idMateria"]."</idMateria><idParalelo>".$datosConsulta["idParalelo"]."</idParalelo>".
                         "<anio>".$datosConsulta["anio"]."</anio><ciclo>".$datosConsulta["ciclo"]."</ciclo><idCarrera>".$datosConsulta["idCarrera"]."</idCarrera>";
       $XML           = NULL;
-
       $xmlData["XML_test"] = $XML;
       $xmlData["bloqueRegistros"]   = 'asistencia';
       $xmlData["bloqueSalida"]      = 'px_salida';
@@ -1113,6 +1110,20 @@ public function getConsultaHorario_examen($idEstudiante,$idCarrera,$idCiclo,$mod
 
         return $response;
 
+  }#end function
+  
+    public function Docentes_Horarios($idUser){
+        $this->tipo    = "30";
+
+      $this->source  = $this->sourceConsultas;
+
+      $this->urlWS   = $this->url.$this->urlConsulta;
+       $trama      = "<id_sg_usuario>$idUser</id_sg_usuario><id_sa_ciclo_detalle>19</id_sa_ciclo_detalle>";
+      $XML           = NULL;
+      $response=$this->ws->doSelectHorariosDocente($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+
+        return $response;
+       
   }#end function
 
 

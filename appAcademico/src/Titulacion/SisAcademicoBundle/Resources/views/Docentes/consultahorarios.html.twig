@@ -29,7 +29,7 @@
 				        <thead>
 				        <tr>
 					        <th> Codigo </th>	
-                                                <th> Curso </th>	
+                                                <th> Docente </th>	
 					        <th> Descripcion   </th>					       
                                                 <th style="text-align: center">Descargar</th>
 				        </tr>
@@ -38,10 +38,10 @@
                    
                            
                                 <tr>
-                                    <td>Horario</td>   
-                                     <td>S6k</td> 
-                                    <td>Curso Robotica</td>
-                                    <td style="text-align: center">  <a href="{{path('docentes_pdfhorarios')}}" id="Mensaje_1" name="Mensaje_1">
+                                      <td>{{app.session.get('id_user')}}</td> 
+                                    <td>{{app.session.get('nom_usuario')}}</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('docentes_pdfhorarios')}}" id="Mensaje_1" name="Mensaje_1">
                                     <i class="fa fa-download"></i>                                                           
                                     </a></td>
                                 </tr>

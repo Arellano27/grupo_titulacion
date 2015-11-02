@@ -2051,19 +2051,22 @@
             $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
             $estudiante  = $session->get('nom_usuario'); 
-           
+            $idUsuario  = $session->get('id_user');
+            $UgServices    = new UgServices;
+            $datosHorarios  = $UgServices->Docentes_Horarios($idUsuario);
+          
                  $pdf= " <html> 
                                             <body>
                                             <img width='5%' src='images/menu/ug_logo.png'/>
                                             <table align='center'>
                                             <tr>
                                               <td align='center'>
-                                                <b> Registro de Matricula</b>
+                                                <b> Horario de clases</b>
                                               </td>
                                             <tr>
                                             <tr>
                                             <td>
-                                              <b> e </b>
+                                              <b> $estudiante </b>
                                             </td>
                                             </tr>
                                             </table>
@@ -2075,21 +2078,22 @@
                                                                 <th colspan='5'   style='text-align: center !important;background-color: #337AB7 !important;color: white!important;'>Periodo  </th>
                                                         </tr>
                                                         <tr>
-                                                            <th style='text-align: center !important;'>Nivel</th>
-                                                            <th style='text-align: center !important;'>Id Materias</th>
-                                                            <th style='text-align: center !important;'>Nombre Materias</th>
-                                                            <th style='text-align: center !important;'>Veces</th>
+                                                            <th style='text-align: center !important;'>Dia</th>
+                                                            <th style='text-align: center !important;'>Materia</th>
+                                                            <th style='text-align: center !important;'>Desde</th>
+                                                            <th style='text-align: center !important;'>Hasta</th>
                                                             <th style='text-align: center !important;'>Curso</th> 
                                                         </tr>";
 
-                                                  
+                                                   foreach($datosHorarios as $Horario) {
                                                  $pdf.="<tr>
-                                                            <td align='center'>1</td>
-                                                            <td align='center'>2</td>
-                                                            <td align='center'>Gabriel</td>
-                                                            <td align='center'>4</td>
-                                                            <td align='center'>3</td>
+                                                            <td align='center'>".$Horario['dia']."</td>
+                                                            <td align='center'>".$Horario['materia']."</td>
+                                                            <td align='center'>".$Horario['curso']."</td>
+                                                            <td align='center'>".$Horario['hora_desde']."</td>
+                                                            <td align='center'>".$Horario['hora_hasta']."</td>
                                                         </tr>";
+                                                   }
                                             
 
                                             $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
@@ -2099,7 +2103,7 @@
                                                       <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
                                                     </tr>
 
-                                                    <tr><td align='center' ><b>GAbriel Huayamabe</b></td>
+                                                    <tr><td align='center' ><b>$estudiante</b></td>
                                                     <td >&nbsp;</td>
                                                    <td align='center'><b>SECRETARÍA</b></td></tr>
                                                     </table>";

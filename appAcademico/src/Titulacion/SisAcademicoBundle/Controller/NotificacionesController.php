@@ -60,72 +60,118 @@ class NotificacionesController extends Controller
                     $xml = $UgServices->Guarda_Mensajes($xmlFinal);
             
                      
-                    $xml2 = $UgServices->Datos(2);
-                    var_dump($xml2);
-                for($i=0;$i<3;$i++){
-                    if($i==0){
-                    $mailer    = $this->container->get('mailer');
-                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-                                ->setUsername('titulacion.php@gmail.com')
-                                ->setPassword('sc123456');
-                   //$mailer  = \Swift_Mailer($transport);
-                    $message = \Swift_Message::newInstance('test')
-                                ->setSubject($Asunto)
-                                ->setFrom('titulacion.php@gmail.com',$Emisor)
-                                ->setTo('ghuayamabe89@gmail.com')
-                                ->setBody($mensaje);
-                    $this->get('mailer')->send($message);
-                   }else{
-                      $mailer    = $this->container->get('mailer');
-                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-                                ->setUsername('titulacion.php@gmail.com')
-                                ->setPassword('sc123456');
-                   //$mailer  = \Swift_Mailer($transport);
-                    $message = \Swift_Message::newInstance('test')
-                                ->setSubject($Asunto)
-                                ->setFrom('titulacion.php@gmail.com',$Emisor)
-                                ->setTo('bria1994.am@gmail.com')
-                                ->setBody($mensaje);
-                    $this->get('mailer')->send($message);
-                   }
-//                         $mailer    = $this->container->get('mailer');
-//                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-//                                ->setUsername('ugacademico@gmail.com')
-//                                ->setPassword('SisAcademico');
-//                   //$mailer  = \Swift_Mailer($transport);
-//                    $message = \Swift_Message::newInstance('test')
-//                                ->setSubject($Asunto)
-//                                ->setFrom('ugacademico@gmail.com')
-//                                ->setTo('gabrielhuayamabe@hotmail.com')
-//                                ->setBody($mensaje);
-//                    $this->get('mailer')->send($message);
-//                    }
-                }
-                     //	Mensaje Sms
-                      
-                            $receptor ="+593996443959";
-                           
+                    $Correos_Numeros = $UgServices->Datos(3);
+                    var_dump($Correos_Numeros);
+                    
+                        
+                   $i=0;
+                   foreach($Correos_Numeros as $Correos_Numeros_) {
+                              
+                         if($i < 10){                             
+                              $mailer    = $this->container->get('mailer');
+                            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                    ->setUsername('titulacion.php@gmail.com')
+                                    ->setPassword('sc123456');
+    //                   //$mailer  = \Swift_Mailer($transport);
+                        $message = \Swift_Message::newInstance('test')
+                                    ->setSubject($Asunto)
+                                    ->setFrom('titulacion.php@gmail.com',$Emisor)
+                                    ->setTo($Correos_Numeros_['correo_institucional'])
+                                   ->setBody($mensaje);
+                        $this->get('mailer')->send($message);
+                        
+                           //sms mensajes sms 
+                        
+                           $receptor =$Correos_Numeros_['celular'];
+//                           
                             $objGsmOut = new \COM ('ActiveXperts.GsmOut');
 
                               $archivo = 'C:\log.txt';
                               $dispositivo =  'SAMSUNG Mobile USB Modem';
 
-
-                              $velocidad = 0;
+                             $velocidad = 0;
 
                               $objGsmOut->LogFile          = $archivo; 
                               $objGsmOut->Device           = $dispositivo;
                               $objGsmOut->DeviceSpeed      = $velocidad; 
 
                               $objGsmOut->MessageRecipient = $receptor;
-                              $objGsmOut->MessageData      = $mensajesms;
+                             $objGsmOut->MessageData      = $mensaje;
 
                               if($objGsmOut->LastError == 0){
                                 $objGsmOut->Send;
                                
                                
-                              }
+                             }
                         
+                        
+                         }
+                    $i = $i+1;
+                    }
+//                for($i=0;$i<3;$i++){
+//                    if($i==0){
+//                    $mailer    = $this->container->get('mailer');
+//                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+//                                ->setUsername('titulacion.php@gmail.com')
+//                                ->setPassword('sc123456');
+//                   //$mailer  = \Swift_Mailer($transport);
+//                    $message = \Swift_Message::newInstance('test')
+//                                ->setSubject($Asunto)
+//                                ->setFrom('titulacion.php@gmail.com',$Emisor)
+//                                ->setTo('ghuayamabe89@gmail.com')
+//                                ->setBody($mensaje);
+//                    $this->get('mailer')->send($message);
+//                   }else{
+//                      $mailer    = $this->container->get('mailer');
+//                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+//                                ->setUsername('titulacion.php@gmail.com')
+//                                ->setPassword('sc123456');
+//                   //$mailer  = \Swift_Mailer($transport);
+//                    $message = \Swift_Message::newInstance('test')
+//                                ->setSubject($Asunto)
+//                                ->setFrom('titulacion.php@gmail.com',$Emisor)
+//                                ->setTo('bria1994.am@gmail.com')
+//                                ->setBody($mensaje);
+//                    $this->get('mailer')->send($message);
+//                   }
+////                         $mailer    = $this->container->get('mailer');
+////                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+////                                ->setUsername('ugacademico@gmail.com')
+////                                ->setPassword('SisAcademico');
+////                   //$mailer  = \Swift_Mailer($transport);
+////                    $message = \Swift_Message::newInstance('test')
+////                                ->setSubject($Asunto)
+////                                ->setFrom('ugacademico@gmail.com')
+////                                ->setTo('gabrielhuayamabe@hotmail.com')
+////                                ->setBody($mensaje);
+////                    $this->get('mailer')->send($message);
+////                    }
+//                }
+//                     //	Mensaje Sms
+//                      
+//                            $receptor ="+593996443959";
+//                           
+//                            $objGsmOut = new \COM ('ActiveXperts.GsmOut');
+//
+//                              $archivo = 'C:\log.txt';
+//                              $dispositivo =  'SAMSUNG Mobile USB Modem';
+//
+//
+//                              $velocidad = 0;
+//
+//                              $objGsmOut->LogFile          = $archivo; 
+//                              $objGsmOut->Device           = $dispositivo;
+//                              $objGsmOut->DeviceSpeed      = $velocidad; 
+//
+//                              $objGsmOut->MessageRecipient = $receptor;
+//                              $objGsmOut->MessageData      = $mensaje;
+//
+//                              if($objGsmOut->LastError == 0){
+//                                $objGsmOut->Send;
+//                               
+//                               
+//                              }
+//                        
                      try
                 { $lcFacultad="";
                       $lcCarrera="";
