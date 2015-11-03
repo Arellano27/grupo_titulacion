@@ -165,9 +165,9 @@ function login(){
                                             location.href = '{{path('SisAcademico_Docentes_home')}}';
                                             break;
                                         case '{{perfilAdmin}}':
-                                            mensaje_cisc( "error", "Perfil NO habilitado");
-                                            //alertify.success("Bienvenido "+$("#username").val());
-                                            //location.href = '{#{path('dayscript_minisitio_login')}#}';
+                                            // mensaje_cisc( "error", "Perfil NO habilitado");
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
+                                            location.href = '{{path('admin_anulacion')}}';
                                             break;
                                         case '{{perfilEstDoc}}':
                                             $.growl({ title: "Bienvenido!", message: nombreUsuario });
@@ -180,6 +180,11 @@ function login(){
                                         case '{{perfilDocAdm}}':
                                             $.growl({ title: "Bienvenido!", message: nombreUsuario });
                                             location.href = '{{path('SisAcademico_Docentes_home')}}';
+                                            break;
+                                        case '{{perfilCordi}}':
+                                            // mensaje_cisc( "error", "Perfil NO habilitado");
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
+                                            location.href = '{{path('admin_academico_home')}}';
                                             break;
                                         default:
                                             mensaje_cisc( "error", "Usuario o constraseña incorrecto/a.");
