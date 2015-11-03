@@ -47,14 +47,11 @@
               {% if event.id_sg_opcion == ReporteEstudiantePorCarrera %}
                 <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Estudiante Por Carrera </a></li>
               {% endif %}
-              {% if event.id_sg_opcion == MateriasAprobadasPorEstudiante %}
-                <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Materias Aprobadas Por Estudiante </a></li>
-              {% endif %}
               {% if event.id_sg_opcion == ReporteInscritosMatriculados %}
                 <li><a href="#"><i class="fa fa-circle-o"></i> Reporte Inscritos Matriculados </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ReporteMateriasAprobada %}
-                <li><a href="#"><i class="fa fa-circle-o"></i> Reporte Materias Aprobada </a></li>
+                <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Reporte Materias Aprobada </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaEstudiantesMateriaParalelo %}
                 <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Estudiantes Materia Paralelo </a></li>
@@ -113,8 +110,6 @@
                 <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Horarios Examen Personalizados </a></li>
               {% endif %}
           {% endfor %}
-
->>>>>>> e0a083b210521e9b50bae810829cf64092ec8fa5
         </ul>
       </li>
       {% endif %}
