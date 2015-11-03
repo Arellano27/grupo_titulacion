@@ -186,6 +186,16 @@ function login(){
                                             $.growl({ title: "Bienvenido!", message: nombreUsuario });
                                             location.href = '{{path('admin_academico_home')}}';
                                             break;
+                                        case '{{perfilEstCordi}}':
+                                            // mensaje_cisc( "error", "Perfil NO habilitado");
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
+                                            location.href = '{{path('admin_academico_home')}}';
+                                            break;
+                                        case '{{perfilDocCordi}}':
+                                            // mensaje_cisc( "error", "Perfil NO habilitado");
+                                            $.growl({ title: "Bienvenido!", message: nombreUsuario });
+                                            location.href = '{{path('admin_academico_home')}}';
+                                            break;
                                         default:
                                             mensaje_cisc( "error", "Usuario o constraseña incorrecto/a.");
                                             break;
