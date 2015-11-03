@@ -1,0 +1,280 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig' %}
+
+{% block home %}  
+
+{% if(estudianteCarrera.mostrar=="SI") %}    
+<div class="col-lg-12">
+  <div class="panel  panel-primary">
+    <div class="panel-body"><h2 align="center">
+      <b>REPORTE DE MATERIAS APROBADAS POR EL ESTUDIANTE</b></h2>
+      <div class="panel-group" id="accordion">
+        {% for  carrera in estudianteCarrera.carreras%} 
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion"  href="#{{ carrera.idCarrera }}_{{ carrera.idCiclo }}" class='tabscarrera' id="na_{{ carrera.idCarrera }}_{{ carrera.idCiclo }}" >{{ carrera.nombre }}</a></h4>
+          </div>
+          <div  id="{{ carrera.idCarrera }}_{{ carrera.idCiclo }}" class="panel-collapse collapse" >
+            <div  class="panel-body">
+              <input id="valida_{{ carrera.idCarrera }}" type="hidden" value="0">
+              <div id="parametrosBusqueda_{{ carrera.idCarrera }}" class="col-lg-12">
+                <div class="col-lg-7" style="margin-bottom: 20px;">
+                  <div class="col-lg-1" style="padding-top: 5px;">Cédula:  </div>
+                  <div class="col-lg-3"><input type="text" id="ident_{{ carrera.idCarrera }}" maxlength="10" ></div>
+                  <div class="col-lg-4" style="padding-top: 5px;" id="txt_nombre_{{ carrera.idCarrera }}">&nbsp;</div>
+                  <div class="col-lg-1"><button type="button" id="btn_buscar_{{ carrera.idCarrera }}" class="btn btn-primary" >Buscar</button></div>
+                </div>
+                <div class="col-lg-5" style="margin-bottom: 20px;">
+                  <div class="col-lg-3" style="padding-top: 5px;"><select disabled="true" id="cmb_ciclo_{{ carrera.idCarrera }}"><option value="0" >-- Ciclo --</option></select></div>
+                  <div class="col-lg-3" style="padding-top: 5px;"><select disabled="true" id="cmb_nivel_{{ carrera.idCarrera }}"><option value="0" >-- Nivel --</option></select></div>
+                  <div class="col-lg-1"><a class="btn btn-success" href="{{path('admin_academico_estudiante_materias_pdf', {'idCarrera':carrera.idCarrera,'ciclo':carrera.idCiclo,'carrera':carrera.nombre})}}" target="_blank">PDF</a></div>
+                </div>
+              </div> 
+              <div class="row">
+                <div class="col-md-8">
+                  <div id="tabla_{{ carrera.idCarrera }}"></div>
+                  <table id="tblEstudiantes_{{ carrera.idCarrera }}" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Ciclo</th>
+                        <th>Nivel</th>
+                        <th>Materia</th>
+                        <th>Promedio</th>
+                      </tr>
+                    </thead>
+                  </table> 
+                </div>
+                <div class="col-md-4">
+                  <div class="box box-primary">
+                    <div class="box-header with-border"><i class="fa fa-bar-chart-o"></i><h3 class="box-title">Estadisticas</h3></div>
+                    <div class="box-body">
+                      <div id="bar-chart" style="height: 300px;"></div>
+                    </div><!-- /.box-body-->
+                  </div><!-- /.box -->  
+                </div>
+
+              </div>
+          </div>
+        </div>
+        
+
+
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() { 
+    $('.tabscarrera').click(function() {
+
+    var splitCarrera =$(this).attr('id').split('_'); 
+    var carrera  = splitCarrera[1];
+    var ciclo  = splitCarrera[2];
+    $("#txt_nombre_"+carrera).html('Debe buscar un estudiante');
+    if($('#valida_'+carrera).val() == "0")
+    {
+      $('#valida_'+carrera).val("1");
+      $('#tblEstudiantes_'+carrera).DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "autoWidth": false,
+        "language": {
+          "sProcessing":     "Procesando...",
+          "sLengthMenu":     "Mostrar _MENU_ registros",
+          "sZeroRecords":    "No se encontraron resultados",
+          "sEmptyTable":     "Ningún dato disponible en esta tabla",
+          "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", 
+          "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix":    "",
+          "sSearch":         "Buscar:",
+          "sUrl":            "",
+          "sInfoThousands":  ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+            "sFirst":    "Primero",
+            "sLast":     "Último",
+            "sNext":     "Siguiente",
+            "sPrevious": "Anterior"
+          }
+        }
+      });
+      $('#btn_buscar_'+carrera).click(function() {
+        var identificacion = $('#ident_'+carrera).val();
+
+        $.ajax({
+          url:   '{{path('admin_academico_estudiante_materias_busqueda')}}',
+          data: {carrera: carrera,opcion:"T",identificacion:identificacion},
+          dataType: 'json',
+          type:  'post',
+          
+          beforeSend: function () {
+
+          },
+          
+          error:function(){ 
+          alert("ERROR");
+          },
+
+          success:  function (dataResponse) {
+            if(dataResponse.mostrar == "SI"){
+              $("#txt_nombre_"+carrera).html(dataResponse.nombre[0]);
+              var select_ciclo=$("#cmb_ciclo_"+carrera);
+              select_ciclo.removeAttr("disabled");
+              /* VACIAMOS EL SELECT Y PONEMOS UNA OPCION QUE DIGA CARGANDO... */
+              select_ciclo.find('option').remove().end().append('Cargando..,').val('');
+              var opciones= "<option value='0' >Seleccione</option>";
+
+              $(dataResponse.listadoCiclos).each(function(index){
+                opciones = opciones +"<option value='"+$(this).attr('valor')[0]+"' >"+$(this).attr('descripcion')[0]+"</option>";
+              });
+              
+              select_ciclo.html(opciones);
+              var select_nivel=$("#cmb_nivel_"+carrera);
+              select_nivel.removeAttr("disabled");
+              select_nivel.find('option').remove().end().append('Cargando..,').val('');
+              opciones= "<option value='0' >Seleccione</option>";
+
+              $(dataResponse.listadoNiveles).each(function(index){
+                opciones = opciones +"<option value='"+$(this).attr('valor')[0]+"' >"+$(this).attr('descripcion')[0]+"</option>";
+              });
+              
+              select_nivel.html(opciones);
+              var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+
+              oTable.fnClearTable();
+              $(dataResponse.listadoEstudiante).each(function(index){
+                var addData = [];
+                addData.push($(this).attr('ciclo')[0]);
+                addData.push($(this).attr('nivel')[0]);
+                addData.push($(this).attr('materia')[0]);  
+                addData.push($(this).attr('promedio')[0]); 
+                oTable.fnAddData(addData);
+              });
+              var obj = [];
+              $(dataResponse.porcentajes).each(function(index){
+                obj.push([$(this).attr('descripcion')[0],$(this).attr('valor')[0]]);
+              });
+              var bar_data = {
+                label: "Porcentaje de Materias Aprobadas por Nivel",
+                data: obj,
+                color: "#3c8dbc"
+              };
+              $.plot("#bar-chart", [bar_data], {
+                grid: {
+                  borderWidth: 1,
+                  borderColor: "#f3f3f3",
+                  tickColor: "#f3f3f3",
+                  hoverable: true
+                },
+                series: {
+                  bars: {
+                    show: true,
+                    barWidth: 0.5,
+                    align: "center"
+                  }
+                },
+                xaxis: {
+                  mode: "categories",
+                  tickLength: 0
+                },
+                yaxis: {
+                  tickFormatter: function (v, axis) { return v + "%"; }
+                },
+              });
+
+              var previousPoint = null, previousLabel = null;
+              $("#bar-chart").bind("plothover", function (event, pos, item) {
+                if (item) {
+                  if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex)) {
+                    previousPoint = item.dataIndex;
+                    previousLabel = item.series.label;
+                    $("#tooltip").remove();
+                    var x = item.datapoint[0];
+                    var y = item.datapoint[1];
+                    var color = item.series.color;             
+                    showTooltip(item.pageX,
+                    item.pageY,
+                    color,
+                    "<strong>" + item.series.label + "</strong><br>" + item.series.xaxis.ticks[x].label + " : <strong>" + y + "</strong> %");
+                  }
+                } else {
+                  $("#tooltip").remove();
+                  previousPoint = null;
+                }
+              });
+            }else{
+              var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+              oTable.fnClearTable();
+            }
+          },
+        });
+      });
+
+      $('#cmb_ciclo_'+carrera+', #cmb_nivel_'+carrera).change(function() {
+        var cicloDetalle =  $('#cmb_ciclo_'+carrera).val(); 
+        var nivel = $('#cmb_nivel_'+carrera).val();
+        var identificacion = $('#ident_'+carrera).val();
+        var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+
+        $.ajax({
+          url:   '{{path('admin_academico_estudiante_materias_filtro')}}',
+          data: {carrera: carrera,opcion:"F",identificacion:identificacion,cicloDetalle: cicloDetalle,nivel: nivel},
+          dataType: 'json',
+          type:  'post',
+        
+          beforeSend: function () {
+
+          },
+          
+          error:function(){
+            alert("ERROR");
+          },
+
+          success:  function (dataResponse) {
+            oTable.fnClearTable();
+            $(dataResponse.listadoEstudiante).each(function(index){
+              var addData = [];
+              addData.push($(this).attr('ciclo')[0]);
+              addData.push($(this).attr('nivel')[0]);
+              addData.push($(this).attr('materia')[0]);  
+              addData.push($(this).attr('promedio')[0]); 
+              oTable.fnAddData(addData);
+            });
+          }
+        });
+      });
+    }
+  });
+});
+
+function showTooltip(x, y, color, contents) {
+  $('<div id="tooltip">' + contents + '</div>').css({
+    position: 'absolute',
+    display: 'none',
+    top: y - 40,
+    left: x - 120,
+    border: '2px solid ' + color,
+    padding: '3px',
+    'font-size': '9px',
+    'border-radius': '5px',
+    'background-color': '#fff',
+    'font-family': 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+    opacity: 0.9
+  }).appendTo("body").fadeIn(200);
+} 
+
+</script>
+
+
+{% endif %}
+{% if(estudianteCarrera.mostrar!="SI") %}
+  <div class="panel panel-primary"> No se encontraron estudiantes en este ciclo.</div>
+{% endif %}
+{% endblock %}

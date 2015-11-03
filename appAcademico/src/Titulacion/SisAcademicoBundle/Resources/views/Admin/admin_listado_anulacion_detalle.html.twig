@@ -1,0 +1,49 @@
+<style type="text/css">
+#divordentemp pre
+{
+    display: block;
+    padding: 0 !important;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #FFFFFF !important;
+    border: 0px !important;
+    border-radius: 0px;
+}
+     
+</style>
+
+<table  align='center' border='1' id="table-listarpago">
+<thead>
+    <tr>
+        <td colspan='6'><div style="background-color: #0B2161; color: white;font-size:15pt ;" align="center">Estudiante: {{NombreEstudiante}}</div></td>
+    </tr>
+    <tr>
+        <th style="text-align:center" >Materia</th>
+        <th style="text-align:center" >Id Materia-Paralelo</th>
+        <th style="text-align:center" ></th>
+    </tr>
+</thead>
+<tbody>
+    {% for listado in inscripcion %}    
+         <tr class="odd gradeX">
+            <td   align="center"   width='5%' id="materia_{{ listado.descripcion }}">{{ listado.descripcion }}</td>
+            <td   align="center"   width='5%' id="idmatepara_{{ listado.identificador }}">{{ listado.identificador }}</td>
+            <td   align="center"   width='5%' id="idmatepara_{{ listado.identificador }}"><input type="checkbox" name="ord_orden_select" /></td>
+         </tr>
+    {% endfor %}  
+</tbody>
+  <tfoot>
+                            
+                    <tr>
+                            <td width='5%' colspan='6' align="right">
+                              <a class="btn btn-success " id='btnlegalorden'>Legalizar</a>
+                            </td>
+                    </tr>
+               
+        </tfoot>
+
+</table>
