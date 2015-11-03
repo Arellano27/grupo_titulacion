@@ -111,18 +111,18 @@
             <li class="user-header">
               <img src="{{ asset('theme/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
               <p>
-                {{app.session.get('nom_usuario')}} - Developer
-                <small>En actividad desde Sept. 2015</small>
+                 {{app.session.get('nom_usuario')}} <br /><span id="perfilActualUsuario"></span>
+                {#<small>En actividad desde Sept. 2015</small>#}
               </p>
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
-              <div class="pull-left">
-                
-              </div>
-              <div class="pull-right">
-                <a href="{{path('titulacion_sis_academico_logout')}}" class="btn btn-default btn-flat">Sign out</a>
-              </div>
+               <div id="editarPerfil" class="pull-left" style="display: none;">
+                  <a href="{{path('titulacion_usuario_editar_perfil')}}" class="btn btn-default btn-flat">Editar Perfil</a>
+               </div>
+               <div class="pull-right">
+                  <a href="{{path('titulacion_sis_academico_logout')}}" class="btn btn-default btn-flat">Salir</a>
+               </div>
             </li>
           </ul>
         </li>

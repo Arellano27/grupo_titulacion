@@ -198,13 +198,16 @@
     <!-- /.col-lg-4 -->
 	<script type="text/javascript">
       $(document).ready(function(){
+         
+         $("#perfilActualUsuario").html("<b>Docente<b>");
+         $("#editarPerfil").show();
          $(".listaAsistenciasMateria").on('click', function(event){
             event.preventDefault();
             
             var idCarrera  = $("#idCarreradeMateriaSelected").val();
             var idMateria  = $("#idMateriaSelected").val();
             var obj_data = {'idMateria':idMateria,'idCarrera':idCarrera};
-	    var optionSelect = $("#panelCarrera-"+idCarrera);
+            var optionSelect = $("#panelCarrera-"+idCarrera);
 	    
             var jumpOption = '{{path('docentes_listado_alumnos_materia')}}';
 

@@ -169,6 +169,99 @@ class UgServices
       return $response;
    }#end function Docentes_getParcialesCarrera()
    
+   public function Titulacion_getConsultaPerfilUsuario($datosConsulta){
+      $this->tipo    = "0000000";
+      //$this->urlWS   = $this->url.$this->urlConsulta;
+      $trama         = "<usuario>".$datosConsulta["idUsuario"]."</usuario>";
+      $XML           = NULL;
+      $XML        = <<<XML
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+         <return>
+            <codigoRespuesta>0</codigoRespuesta>
+            <estado>F</estado>
+            <idHistorico>1099</idHistorico>
+            <mensajeRespuesta>ok</mensajeRespuesta>
+            <respuestaConsulta>
+               <registros>
+                  <registro>
+                     <id_usuario>31</id_usuario>
+                     <img_usuario>/foto_usuario/usuario1.jpg</img_usuario>
+                     <primer_nombre>Nancy</primer_nombre>
+                     <segundo_nombre>Lenis</segundo_nombre>
+                     <primer_apellido>Acosta</primer_apellido>
+                     <segundo_apellido>Zambrano</segundo_apellido>
+                     <direccion>Urdesa Central</direccion>
+                     <telefono>0998825201</telefono>
+                     <correo_personal>nancy.personal@correo.com</correo_personal>
+                     <correo_institucional>nancy.instituc@correo.com</correo_institucional>
+                     <estado_civil>Casada</estado_civil>
+                     <sexo>femenino</sexo>
+                     <nacionalidad>ecuatoriana</nacionalidad>
+                     <pais>ecuador</pais>
+                     <fecha_nacimiento>08/05/1974</fecha_nacimiento>
+                     <tipo_sangre>O+</tipo_sangre>
+                  </registro>
+               </registros>
+            </respuestaConsulta>
+         </return>
+      </ns2:ejecucionConsultaResponse>
+   </soap:Body>
+</soap:Envelope>
+XML;
+
+      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+
+      return $response;
+   }#end function Docentes_getConsultaPerfilUsuario()
+   
+   public function Titulacion_getConsultaPerfilUsuarioEditar($datosConsulta){
+      $this->tipo    = "0000000";
+      //$this->urlWS   = $this->url.$this->urlConsulta;
+      $trama         = "<usuario>".$datosConsulta["idUsuario"]."</usuario>";
+      $XML           = NULL;
+      $XML        = <<<XML
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+         <return>
+            <codigoRespuesta>0</codigoRespuesta>
+            <estado>F</estado>
+            <idHistorico>1099</idHistorico>
+            <mensajeRespuesta>ok</mensajeRespuesta>
+            <respuestaConsulta>
+               <registros>
+                  <registro>
+                     <id_usuario>31</id_usuario>
+                     <img_usuario>/foto_usuario/usuario1.jpg</img_usuario>
+                     <primer_nombre>Nancy</primer_nombre>
+                     <segundo_nombre>Lenis</segundo_nombre>
+                     <primer_apellido>Acosta</primer_apellido>
+                     <segundo_apellido>Zambrano</segundo_apellido>
+                     <direccion>Urdesa Central</direccion>
+                     <telefono>0998825201</telefono>
+                     <correo_personal>nancy.personal@correo.com</correo_personal>
+                     <correo_institucional>nancy.instituc@correo.com</correo_institucional>
+                     <estado_civil>Casada</estado_civil>
+                     <sexo>femenino</sexo>
+                     <nacionalidad>ecuatoriana</nacionalidad>
+                     <pais>ecuador</pais>
+                     <fecha_nacimiento>08/05/1974</fecha_nacimiento>
+                     <tipo_sangre>O+</tipo_sangre>
+                  </registro>
+               </registros>
+            </respuestaConsulta>
+         </return>
+      </ns2:ejecucionConsultaResponse>
+   </soap:Body>
+</soap:Envelope>
+XML;
+
+      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+
+      return $response;
+   }#end function Docentes_getConsultaPerfilUsuarioEditar()
    
    public function Docentes_getAlumnos($idDocente, $idCarrera){
        $ws         = new AcademicoSoap();

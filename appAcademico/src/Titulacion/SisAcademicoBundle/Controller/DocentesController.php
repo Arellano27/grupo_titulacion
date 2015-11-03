@@ -19,7 +19,7 @@
       public function indexAction(Request $request) //(Request $request)
       {
          $session=$request->getSession();
-
+         
          $perfilEst   = $this->container->getParameter('perfilEst');
          $perfilDoc   = $this->container->getParameter('perfilDoc');
          $perfilAdmin = $this->container->getParameter('perfilAdmin');
@@ -682,7 +682,9 @@
          catch(Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
          }
-      }      // getMateriasListado()
+      }      // exportarListadoAsistenciasAlumnosMateriaAction()
+
+      
 
              public function mostraralumnosAction(Request $request)
         {

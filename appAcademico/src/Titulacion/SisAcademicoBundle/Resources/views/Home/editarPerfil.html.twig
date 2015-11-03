@@ -1,0 +1,310 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+   
+   <style>
+      #previewImg {
+         display: none;
+         float: left;
+         margin-left: 24px;
+         margin-top: 8px;
+      }
+      
+      #imagen_perfil_prev {
+          height: 175px;
+          width: 140px;
+      }
+      
+      .col-lg-3 {
+         display: none !important;
+      }
+
+      .col-lg-9 {
+         width: 100% !important;
+      }
+
+      .content-header {
+         padding: 15px 0 15px 0;
+         position: relative;
+      }
+      
+      .data-edit {
+         margin-left: -6px;
+         margin-right: -6px;
+      }
+      
+      .cel-data-edit {
+         padding-top: 7px;
+      }
+      
+      .item-edit-usuario {
+         background-color: #fff;
+         border-bottom: 1px solid #ddd;
+         border-top: 1px solid #ddd;
+         display: block;
+         margin-bottom: -1px;
+         padding: 10px 15px;
+         position: relative;
+      }
+      
+      .mensajeError {
+         padding-top: 10px;
+         padding-bottom: 10px;
+      }
+      
+      .mensajeExito {
+         padding-top: 10px;
+         padding-bottom: 10px;
+      }
+      
+      .fileUpload {
+         float: left;
+         position: relative;
+         overflow: hidden;
+         {#margin: 10px;#}
+      }
+      .fileUpload input.upload {
+         position: absolute;
+         top: 0;
+         right: 0;
+         margin: 0;
+         padding: 0;
+         font-size: 20px;
+         cursor: pointer;
+         opacity: 0;
+         filter: alpha(opacity=0);
+      }
+   </style>
+   <script type="text/javascript">
+      var modelessPerfilEditar = new $.flavr({
+                                       modal   : true,
+                                       content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                       buttons     : {}
+                                    });
+   </script>                                          
+   <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/datatables/dataTables.bootstrap.css') }}">
+   
+   <script type="text/javascript">
+      $(document).ready(function(){
+         var imageLoader = document.getElementById('imagen_perfil');
+         imageLoader.addEventListener('change', handleImage, false);
+
+         var canvas = document.getElementById('imagen_perfil_prev');
+         var ctx = canvas.getContext('2d');
+
+         modelessPerfilEditar.close();
+
+         function handleImage(e){
+            var reader = new FileReader();
+            reader.onload = function(event){
+                var img = new Image();
+                img.onload = function(){
+                     //canvas.width = img.width;
+                     //canvas.height = img.height;
+                     //ctx.drawImage(img,0,0);
+                     canvas.width = 140;
+                     canvas.height = 175;
+                     ctx.drawImage(img,0,0, 140, 175);
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(e.target.files[0]);
+            $("#previewImg").fadeIn();
+            
+         }         
+      });
+
+   </script>
+   
+   <link rel="stylesheet" href="{{ asset('theme/plugins/datepicker/datepicker3.css') }}">
+   <script src="{{ asset('theme/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+   <link rel="stylesheet" href="{{ asset('theme/plugins/daterangepicker/daterangepicker-bs3.css') }}">
+   <script src="{{ asset('theme/plugins/daterangepicker/daterangepicker.js') }}"></script>
+   
+   <div class="col-lg-12">
+      <section class="content-header" style="text-align: center">
+      <h1> Perfil del Usuario </h1>
+      </section>
+      {#{{dump(dataDocente)}}#}
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+         <div class="row">
+            <!-- Profile Image -->
+            <div class="box box-primary">
+               <div class="box-body box-profile">
+                  <form id="formEditarPerfil" name="formEditarPerfil">
+                     <img class="profile-user-img img-responsive img-circle" src="{{ asset('images/avatar/user.png')}}" alt="User profile picture">
+                     <h3 class="profile-username text-center">{{dataUsuario.primer_nombre}} {{dataUsuario.segundo_nombre}}<br/>{{dataUsuario.primer_apellido}} {{dataUsuario.segundo_apellido}}</h3>
+                     <p class="text-muted text-center" style="display: none;">Titulo</p>
+                     <div class="box-header with-border">
+                        <h3 class="box-title">Foto de Perfil</h3>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-4 cel-data-edit">
+                           <b><i class="fa fa-camera margin-r-5"></i> Nueva Foto del Perfil</b> <i class="fa fa-question-circle" style="font-size: 19px; margin-left: 20px;"></i>
+                        </div>
+                        <div class="col-xs-8">
+                           <div id="espacioInputFile" class="fileUpload btn btn-primary">
+                              <span>Seleccionar Foto</span>
+                              <input id="imagen_perfil" name="imagen_perfil" type="file" placeholder="Foto" class="pull-right form-control upload" style="padding: 0 7px;" />
+                           </div>
+                           <div id="previewImg">
+                                 <div>Vista Preliminar:</div>
+                                 <canvas id="imagen_perfil_prev"></canvas>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="box-header with-border">
+                        <h3 class="box-title">Información Básica</h3>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-9 cel-data-edit">
+                           <b><i class="fa fa-birthday-cake margin-r-5"></i> Fecha de Nacimiento</b>
+                        </div>
+                        <div class="col-xs-3">
+                           <input id="fecha_nacimiento" name="fecha_nacimiento" type="text" value="{{dataUsuario.fecha_nacimiento}}" class="pull-right form-control" />
+                        </div>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-9 cel-data-edit">
+                           <b><i class="fa fa-heart margin-r-5"></i> Tipo de Sangre</b>
+                        </div>
+                        <div class="col-xs-3">
+                           <select id="tipo_sangre" name="tipo_sangre" class="pull-right form-control"><option value="25">{{dataUsuario.tipo_sangre}}</option></select>
+                        </div>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-9 cel-data-edit">
+                           <b><i class="fa fa-male margin-r-5"></i> Sexo</b>
+                        </div>
+                        <div class="col-xs-3">
+                           <select id="sexo" name="sexo" class="pull-right form-control"><option value="28">{{dataUsuario.sexo|capitalize}}</option></select>
+                        </div>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-9 cel-data-edit">
+                           <b><i class="fa fa-diamond margin-r-5"></i> Estado Civil</b>
+                        </div>
+                        <div class="col-xs-3">
+                           <select id="estado_civil" name="estado_civil" class="pull-right form-control"><option value="16">{{dataUsuario.estado_civil|capitalize}}</option></select>
+                        </div>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-9 cel-data-edit">
+                           <b><i class="fa fa-map-marker margin-r-5"></i> Nacionalidad</b>
+                        </div>
+                        <div class="col-xs-3">
+                           <select id="nacionalidad" name="nacionalidad" class="pull-right form-control"><option value="25">{{dataUsuario.nacionalidad|capitalize}}</option></select>
+                        </div>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-9 cel-data-edit">
+                           <b><i class="fa fa-map-marker margin-r-5"></i> Pais</b>
+                        </div>
+                        <div class="col-xs-3">
+                           <select id="pais" name="pais" class="pull-right form-control"><option value="25">{{dataUsuario.pais|capitalize}}</option></select>
+                        </div>
+                     </div>
+
+                     <div class="box-header with-border">
+                        <h3 class="box-title">Información de los Medios de Contacto</h3>
+                     </div>
+
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-7 cel-data-edit">
+                           <b><i class="fa fa-map margin-r-5"></i> Dirección</b>
+                        </div>
+                        <div class="col-xs-5">
+                           <input id="direccion" name="direccion" type="text" value="{{dataUsuario.direccion|capitalize}}" class="pull-right form-control" />
+                        </div>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-7 cel-data-edit">
+                           <b><i class="fa fa-phone margin-r-5"></i> Teléfono</b>
+                        </div>
+                        <div class="col-xs-5">
+                           <input id="telefono" name="telefono" type="text" value="{{dataUsuario.telefono}}" class="pull-right form-control" />
+                        </div>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-7 cel-data-edit">
+                           <b><i class="fa fa-envelope margin-r-5"></i> Correo Personal</b>
+                        </div>
+                        <div class="col-xs-5">
+                           <input id="correo_personal" name="correo_personal" type="text" value="{{dataUsuario.correo_personal}}" class="pull-right form-control" />
+                        </div>
+                     </div>
+                     <div class="row item-edit-usuario data-edit">
+                        <div class="col-xs-7 cel-data-edit">
+                           <b><i class="fa fa-envelope margin-r-5"></i> Correo Institucional</b>
+                        </div>
+                        <div class="col-xs-5">
+                           <input id="correo_institucional" name="correo_institucional" type="text" value="{{dataUsuario.correo_institucional}}" class="pull-right form-control" />
+                        </div>
+                     </div>
+                     <button id="grabarDataPerfil" name="grabarDataPerfil" class="btn btn-primary btn-block"><b>Actualizar la información del perfil</b></button>
+                  </form>
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+         </div><!-- /.col -->
+      </div>
+	</div>
+	<!-- /.col-lg-9 -->
+   <script type="text/javascript">
+      var modelessGrabarPerfil;
+      
+      $( "#fecha_nacimiento" ).datepicker({ format: 'dd/mm/yyyy' });
+      //$( "#fecha_nacimiento" ).val('{{dataUsuario.fecha_nacimiento}}');
+      $( "#fecha_nacimiento" ).datepicker('update');
+
+      $("#grabarDataPerfil").on('click', function(event){
+         event.preventDefault();
+         var objectEditPerfil = $("#formEditarPerfil").serializeArray();
+         var Pic;
+         if ($('#previewImg').css('display') != 'none') {
+            //var Pic = document.getElementById("imagen_perfil_prev").toDataURL("image/png");
+            var Pic = document.getElementById("imagen_perfil_prev").toDataURL();
+            //Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "");
+            var obj_data            = {'dataPerfil':objectEditPerfil, 'imagenPerfil':Pic};
+         }
+         else {
+            var obj_data            = {'dataPerfil':objectEditPerfil};
+         }
+         //console.log(obj_data);
+         var jumpOption          = '{{path('docentes_editar_perfil_grabarFormActualiza')}}';
+               
+         $.ajax({
+            url:  jumpOption,
+            type: 'post',
+            data: obj_data,
+            async: false,
+            beforeSend: function () {
+              $("#grabarDataPerfil").html("<i class=\"fa fa-refresh fa-spin\"></i> &nbsp;<b>Actualizando la información del perfil</b>");
+            },
+            error: function(){
+               $("#grabarDataPerfil").html("<b>Actualizar la información del perfil</b>");
+               modelessGrabarPerfil = new $.flavr({
+                  modal   : true,
+                  content : '<div class="mensajeError">Lo sentimos. Se  presentó un problema para grabar la información de su perfil.</div>',
+                  buttons : {
+                        primary : { text: 'Aceptar', style: 'primary' }
+                  }
+               });
+            },
+            success:  function (dataResponse) {
+               {#console.log(dataResponse.idMensaje);
+               console.log(dataResponse.infoMensaje);#}
+               $("#grabarDataPerfil").html("<b>Actualizar la información del perfil</b>");
+               modelessGrabarPerfil = new $.flavr({
+                  modal   : true,
+                  content : '<div class="mensajeExito">'+dataResponse.infoMensaje+'</div>',
+                  buttons : {
+                        primary : { text: 'Aceptar', style: 'primary' }
+                  }
+               });
+            },
+            dataType:'json'
+         });      
+      });
+   </script>
+{% endblock %}
