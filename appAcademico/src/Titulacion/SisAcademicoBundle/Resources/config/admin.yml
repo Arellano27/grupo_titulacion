@@ -51,4 +51,15 @@ admin_academico_editar_eventos:
 admin_academico_modificar_eventos:
     path:     /modificar_evento
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:modificar_eventos_calendario }
-
+admin_academico_estudiante_materias:
+    path:     /reporteMateriasEstudiante
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_materias_aprobadas_estudiante }
+admin_academico_estudiante_materias_busqueda:
+    path:     /reporteMateriasEstudiantebusqueda
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_materias_aprobadas_estudiante_busqueda }
+admin_academico_estudiante_materias_filtro:
+    path:     /reporteMateriasEstudiantefiltro
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_materias_aprobadas_estudiante_filtro }
+admin_academico_estudiante_materias_pdf:
+    path:     /pdfMaterias/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_materias_aprobadas_estudiante_pdf }

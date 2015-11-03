@@ -7,28 +7,28 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/menu/ug_logo.png') }}" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     
-      <link href="{{ asset('css/custom.css')}}" rel="stylesheet"> <!-- Libreria de form wizart matriculacion -->
-    <link type="text/css" rel="stylesheet" href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}">
+    <link href="{{ asset('css/custom.css')}}" rel="stylesheet"> <!-- Libreria de form wizart matriculacion -->
     <!-- daterange picker -->
     <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/daterangepicker/daterangepicker-bs3.css') }}">  
     <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/colorpicker/bootstrap-colorpicker.min.css') }}">  
     <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/timepicker/bootstrap-timepicker.min.css') }}">  
-    <link type="text/css" rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') }}">
-    <link type="text/css" rel="stylesheet" href="{{ asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
-    <link type="text/css" rel="stylesheet" href="{{ asset('theme/dist/css/AdminLTE.min.css') }}">
-    <link type="text/css" rel="stylesheet" href="{{ asset('theme/dist/css/skins/_all-skins.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
-
-    <link type="text/css" rel="stylesheet" href="{{ asset('theme/main.css') }}">
-
 
      <!-- fullCalendar 2.2.5-->
     <link rel="stylesheet" href="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/plugins/fullcalendar/fullcalendar.print.css') }}" media="print">
-  <link type="text/css" rel="stylesheet" href="{{ asset('css/growl/jquery.growl.css') }}" >
-  <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/growl/jquery.growl.css') }}" >
 
-  
+  <!-- INICIO - theme -->
+    <!-- SIEMPRE ESTE BLOQUE DEBE QUEDAR AL FINAL-->
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/dist/css/AdminLTE.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/dist/css/skins/_all-skins.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('theme/main.css') }}">
+    <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+  <!-- FIN - theme -->
 
   </head>
 
@@ -68,42 +68,40 @@
     </div><!-- ./wrapper -->
 
 {% block javascripts %}
+  <!-- INICIO - theme -->
+  <!-- SIEMPRE ESTE BLOQUE DEBE QUEDAR AL INICIO-->
+  <script src="{{ asset('theme/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/fastclick/fastclick.min.js') }}"></script>
+  <script src="{{ asset('theme/dist/js/app.min.js') }}"></script>
+  <script src="{{ asset('theme/dist/js/demo.js') }}"></script>
+  <!-- FIN - theme -->
     
-    <script src="{{ asset('theme/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/script/jquery-ui.js') }}"></script>
-    <script src="{{ asset('theme/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/fastclick/fastclick.min.js') }}"></script>
-    <script src="{{ asset('theme/dist/js/app.min.js') }}"></script>
-    <script src="{{ asset('theme/dist/js/demo.js') }}"></script>
-    <script src="{{ asset('js/flavr/flavr.min.js') }}"></script>
-
-    <script src="{{ asset('js/sistemau.functions.js') }}"></script>
-    <script src="{{ asset('js/academico.alerts.js') }}"></script>
-    <script src="{{ asset('js/mensajes.js') }}"></script>
-    
-    <script type="text/javascript" src="{{ asset('js/wizard/jquery.smartWizard.js') }}"></script> <!-- Matriculacion-->
- <!-- fullCalendar 2.2.5 -->
-    <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/growl/jquery.growl.js') }}"></script>
-    <script src="{{ asset('theme/plugins/chartjs/Chart.min.js') }}"></script>
-   
-   <script src="{{ asset('theme/plugins/select2/select2.full.min.js') }}"></script>
-   <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.js') }}"></script>
-   <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
-   <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
-
-      <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
-   <script src="{{ asset('theme/plugins/daterangepicker/daterangepicker.js') }}"></script>
-   <script src="{{ asset('theme/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
-   <script src="{{ asset('theme/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
-   <script src="{{ asset('theme/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
-   <script src="{{ asset('theme/plugins/iCheck/icheck.min.js') }}"></script>
-   <script src="{{ asset('theme/plugins/fastclick/fastclick.min.js') }}"></script>
-   <script src="{{ asset('theme/dist/js/app.min.js') }}"></script>
-   <script src="{{ asset('theme/dist/js/demo.js') }}"></script>
+  <script src="{{ asset('js/script/jquery-ui.js') }}"></script>
+  <script src="{{ asset('js/flavr/flavr.min.js') }}"></script>
+  <script src="{{ asset('js/sistemau.functions.js') }}"></script>
+  <script src="{{ asset('js/academico.alerts.js') }}"></script>
+  <script src="{{ asset('js/mensajes.js') }}"></script>
+  <script src="{{ asset('js/wizard/jquery.smartWizard.js') }}"></script> <!-- Matriculacion-->
+<!-- fullCalendar 2.2.5 -->
+  <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+  <script src="{{ asset('js/growl/jquery.growl.js') }}"></script>
+  <script src="{{ asset('theme/plugins/chartjs/Chart.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.js') }}"></script>
+  <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
+  <script src="{{ asset('theme/plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+  <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/daterangepicker/daterangepicker.js') }}"></script>
+  <script src="{{ asset('theme/plugins/colorpicker/bootstrap-colorpicker.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/iCheck/icheck.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/flot/jquery.flot.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/flot/jquery.flot.resize.min.js') }}"></script>
+  <script src="{{ asset('theme/plugins/flot/jquery.flot.categories.min.js') }}"></script>
 
 
 <script type="text/javascript">
