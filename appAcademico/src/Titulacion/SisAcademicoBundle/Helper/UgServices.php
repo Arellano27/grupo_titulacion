@@ -33,8 +33,6 @@ class UgServices
       // $this->urlWS           = "";
       // $this->host            = "192.168.100.11:8080";
 
-      /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
-
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
       $this->usuario       = "CapaVisualPhp";
       $this->clave         = "12CvP2015";
@@ -494,6 +492,56 @@ public function getConsultaSoloEventos($idEventos){
 
   $response = $this->ws->doRequestReceptaSoloEventosAcademicos($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
   return $response;
+}#end function
+
+//INSCRIPCION ADMIN
+public function getConsultaCarrerasInscripcion($idUsuario,$idRol)
+{
+        $this->tipo    = "3";
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $trama      = "<usuario>".$idUsuario."</usuario><rol>".$idRol."</rol>";
+        $response=$this->ws->doRequestSreReceptaTransacionCarrerasInscripcion($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
+public function getConsulta_listado_inscripcion($idEstudiante,$idCarrera,$idCiclo)
+{
+        $this->tipo       = "36";
+        $this->urlWS   = $this->url.$this->urlProcedim;
+        $trama      = "<PV_ID_ESTUDIANTE>".$idEstudiante."</PV_ID_ESTUDIANTE><PI_ID_CARRERA>".$idCarrera."</PI_ID_CARRERA><PI_ID_CICLO>".$idCiclo."</PI_ID_CICLO>";
+        $response=$this->ws->doRequestsListarInscripcion($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response; 
+            
+}#end function
+public function setActualizaInscripcion($trama){
+        $this->tipo       = "28";
+        $this->urlWS   = $this->url.$this->urlProcedim;
+        $response=$this->ws->doSetActualizaInscripcion($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
+
+//ANULACION ADMIN
+public function getConsultaCarrerasAnulacion($idUsuario,$idRol)
+{
+        $this->tipo    = "3";
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $trama      = "<usuario>".$idUsuario."</usuario><rol>".$idRol."</rol>";
+        $response=$this->ws->doRequestSreReceptaTransacionCarrerasAnulacion($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
+public function getConsulta_listado_anulacion($fechaInicio,$fechaFin,$idCarrera,$tipo_solicitud)
+{
+        $this->tipo    = "25";
+        $this->urlWS   = $this->url.$this->urlConsulta;
+        $trama      = "<fecha_desde>".$fechaInicio."</fecha_desde><fecha_hasta>".$fechaFin."</fecha_hasta><carrera>".$idCarrera."</carrera><tipo_solicitud>".$tipo_solicitud."</tipo_solicitud>";
+        $response=$this->ws->doRequestSreReceptaTransacionAnulacion_Listar($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
+public function getConsulta_listado_anulacion_detalle($id_sa_solicitud,$id_tipo_solicitud){
+        $this->tipo       = "34";
+        $this->urlWS   = $this->url.$this->urlProcedim;
+        $trama      = "<solicitud>".$id_sa_solicitud."</solicitud><id_tipo_solicitud>".$id_tipo_solicitud."</id_tipo_solicitud>";
+        $response=$this->ws->doSetListado_Anulacion_Detalle($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
 }#end function
 
  public function Docentes_gettareaxparcial($trama){

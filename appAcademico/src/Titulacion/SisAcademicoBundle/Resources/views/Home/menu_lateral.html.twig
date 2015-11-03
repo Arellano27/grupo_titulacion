@@ -17,6 +17,7 @@
         </ul>
       </li>
       {% endif %}
+      {#{ dump(app.session.get('data_secretario').opcion) }#}
       {% if app.session.get('perfil') == perfilEst or app.session.get('perfil') == perfilEstDoc or app.session.get('perfil') == perfilEstAdm %}
       <li class="treeview">
         <a href="#">
@@ -30,19 +31,90 @@
 
           <li><a href="{{path('estudiantes_notas_actuales')}}"><i class="fa fa-circle-o"></i> Consulta de Notas</a></li>
         </ul>
-      </li>      
-      {% endif %}     
-      {% if app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm %}
+      </li>
+      {% endif %}
+      {% if app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm or  app.session.get('perfil') == perfilAdmin %}
       <li class="treeview">
         <a href="#">
           <i class="fa fa-gears"></i> <span>Administración</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{path('admin_academico_home')}}"><i class="fa fa-circle-o"></i> Calendario Academico </a></li>
-          <li><a href="{{path('admin_carreras_ordenpago')}}"><i class="fa fa-circle-o"></i> Orden de Pago </a></li>
-          <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Estudiantes por Carrera</a></li>
-          <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i>Materias Aprobadas por Estudiante</a></li>
+
+          
+          {%for event in app.session.get('data_secretario').opcion %}
+              {#{dump(event.id_sg_opcion)}#}
+              {% if event.id_sg_opcion == ReporteEstudiantePorCarrera %}
+                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Estudiante Por Carrera </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == MateriasAprobadasPorEstudiante %}
+                <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Materias Aprobadas Por Estudiante </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == ReporteInscritosMatriculados %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Reporte Inscritos Matriculados </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == ReporteMateriasAprobada %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Reporte Materias Aprobada </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == ConsultaEstudiantesMateriaParalelo %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Estudiantes Materia Paralelo </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == AprobacionInscripcion %}
+                <li><a href="{{path('admin_inscripcion')}}"><i class="fa fa-circle-o"></i> Aprobacion Inscripcion </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == LegalizacionOrdenPago %}
+                <li><a href="{{path('admin_carreras_ordenpago')}}"><i class="fa fa-circle-o"></i> Legalizacion Orden Pago </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == AnulacionMateria %}
+                <li><a href="{{path('admin_anulacion')}}"><i class="fa fa-circle-o"></i> Anulacion Materia </a></li>
+              {% endif %}
+          {% endfor %}
+          <!-- <li><a href="{#{path('admin_academico_home')}#}"><i class="fa fa-circle-o"></i> Calendario Academico </a></li> -->
+          <!-- <li><a href="{#{path('admin_carreras_ordenpago')}#}"><i class="fa fa-circle-o"></i> Orden de Pago </a></li> -->
+          <!-- <li><a href="{#{path('admin_inscripcion')}#}"><i class="fa fa-circle-o"></i> Inscripcion </a></li> -->
+          <!-- <li><a href="{#{path('admin_anulacion')}#}"><i class="fa fa-circle-o"></i> Anulaciones </a></li> -->
+          <!-- <li><a href="{#{path('admin_academico_estudiante_carrera')}#}"><i class="fa fa-circle-o"></i> Estudiantes por Carrera</a></li> -->
+          {# <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i>Materias Aprobadas por Estudiante</a></li> #}
+        </ul>
+      </li>
+      {% endif %}
+
+      {% if app.session.get('perfil') == perfilCordi or app.session.get('perfil') == perfilEstCordi or  app.session.get('perfil') == perfilDocCordi %}
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-gears"></i> <span>Coordinación</span>
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          {%for event in app.session.get('data_coordinador').opcion %}
+              {#{dump(event.id_sg_opcion)}#}
+              {% if event.id_sg_opcion == GeneracionCalendarioAcademico %}
+                <li><a href="{{path('admin_academico_home')}}"><i class="fa fa-circle-o"></i> Generacion Calendario Academico </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == GeneracionHorariosClases %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Generacion Horarios Clases </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == GeneracionHorariosExamen %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Generacion Horarios Examen </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == SubirSolicitudes %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Subir Solicitudes </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == ConsultaHorariosClases %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Horarios Clases </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == ConsultaHorariosExamen %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Horarios Examen </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == ConsultaHorariosClasesPersonalizados %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> ConsultaHorarios Clases Personalizados </a></li>
+              {% endif %}
+              {% if event.id_sg_opcion == ConsultaHorariosExamenPersonalizados %}
+                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Horarios Examen Personalizados </a></li>
+              {% endif %}
+          {% endfor %}
+
+>>>>>>> e0a083b210521e9b50bae810829cf64092ec8fa5
         </ul>
       </li>
       {% endif %}
@@ -96,7 +168,7 @@
             var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";
             var inicioCiclo         = $("#inicioCiclo-Carrera_"+idCarrera).val();
             var finCiclo            = $("#finCiclo-Carrera_"+idCarrera).val();
-            
+
             if(idOpcionMateria.indexOf("asistencia")>0){
                var jumpOption                = '{{path('docentes_listado_alumnos_materia')}}';
                var obj_data                  = {'idMateria':idMateria,'idCarrera':idCarrera, 'inicioCiclo':inicioCiclo, 'finCiclo':finCiclo};
@@ -113,7 +185,7 @@
                var obj_data                  = {'idDocente': idDocente,'idMateria':idMateria};
                var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentó un problema para cargar la vista general de la materia."
             }
-            
+
             if(jumpOption!=null){
                $.ajax({
                   url:   jumpOption,
@@ -144,7 +216,7 @@
                   dataType:'html'
                });
             }
-            
+
          }
       }
 
