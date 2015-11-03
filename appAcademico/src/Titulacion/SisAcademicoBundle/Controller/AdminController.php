@@ -630,10 +630,10 @@ class AdminController extends Controller
         $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
         $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
 
-         /*if ($session->has("perfil")) 
+         if ($session->has("perfil")) 
          {
-                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
-                {*/ 
+                if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm) 
+                {
                     try
                     {
                           $lcFacultad="";
@@ -641,9 +641,17 @@ class AdminController extends Controller
                           $idUsuario="";
                           $idRol="";
                           $idUsuario=$session->get("id_user");
-                          $idRol=$perfilAdmin;
-                          $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
-                          $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                          $idRol=$session->get("perfil");
+                          if(strlen($idRol)>1)
+                          {
+                            $idRol = mb_substr($idRol,0,1);
+                          }
+                          else
+                          {
+                          $idRol = $idRol;
+                          }
+                          //$idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                          //$idRol=1; //ROL DE SESION ADMIN CAMBIAR
                           
                           $Carreras = array();
                           $UgServices = new UgServices;
@@ -686,7 +694,7 @@ class AdminController extends Controller
                                                   'carreras' => $Carreras,
                                                   'bolcorrecto'=>$bolCorrecto
                                                ));
-            /*}
+            }
             else
             {
                    $this->get('session')->getFlashBag()->add(
@@ -703,7 +711,7 @@ class AdminController extends Controller
                                'Los datos ingresados no son válidos'
                            );
              return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-     }*/
+     }
     }#termina funcion
     
      public function inscripcion_datosAction(Request $request)
@@ -724,10 +732,10 @@ class AdminController extends Controller
         $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
         $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
 
-          /*if ($session->has("perfil")) 
+          if ($session->has("perfil")) 
          {
-                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
-                {*/ 
+                if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm) 
+                {
                         try
                         {
                               $lcFacultad="";
@@ -735,7 +743,15 @@ class AdminController extends Controller
                               $idUsuario="";
                               $idRol="";
                               $idUsuario=$session->get("id_user");
-                              $idRol=$perfilAdmin;
+                              $idRol=$session->get("perfil");
+                              if(strlen($idRol)>1)
+                              {
+                                $idRol = mb_substr($idRol,0,1);
+                              }
+                              else
+                              {
+                              $idRol = $idRol;
+                              }
                               $idEstudiante  = $request->request->get('idEstudiante');
                               $idCarrera  = $request->request->get('idCarrera');
                               $idCiclo=$request->request->get('idCiclo');
@@ -801,7 +817,7 @@ class AdminController extends Controller
                                                           'idCarrera'=>$idCarrera,
                                                           'idCiclo'=>$idCiclo
                                                        ));
-           /*}
+           }
                     else
                     {
                            $this->get('session')->getFlashBag()->add(
@@ -818,7 +834,7 @@ class AdminController extends Controller
                                        'Los datos ingresados no son válidos'
                                    );
                      return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-             }*/
+             }
         }
         
         public function inscripcion_registrarAction(Request $request)
@@ -872,10 +888,10 @@ class AdminController extends Controller
         $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
         $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
 
-         /*if ($session->has("perfil")) 
+         if ($session->has("perfil")) 
          {
-                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
-                {*/ 
+                if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm) 
+                {
                     try
                     {
                           $lcFacultad="";
@@ -883,9 +899,17 @@ class AdminController extends Controller
                           $idUsuario="";
                           $idRol="";
                           $idUsuario=$session->get("id_user");
-                          $idRol=$perfilAdmin;
-                          $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
-                          $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                          $idRol=$session->get("perfil");
+                          if(strlen($idRol)>1)
+                          {
+                            $idRol = mb_substr($idRol,0,1);
+                          }
+                          else
+                          {
+                          $idRol = $idRol;
+                          }
+                          //$idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                          //$idRol=1; //ROL DE SESION ADMIN CAMBIAR
                           
                           $Carreras = array();
                           $UgServices = new UgServices;
@@ -928,7 +952,7 @@ class AdminController extends Controller
                                                   'carreras' => $Carreras,
                                                   'bolcorrecto'=>$bolCorrecto
                                                ));
-            /*}
+            }
             else
             {
                    $this->get('session')->getFlashBag()->add(
@@ -945,7 +969,7 @@ class AdminController extends Controller
                                'Los datos ingresados no son válidos'
                            );
              return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-     }*/
+     }
     }#termina funcion
       public function anulacion_datosAction(Request $request)
     {
@@ -964,10 +988,10 @@ class AdminController extends Controller
         $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
         $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
 
-          /*if ($session->has("perfil")) 
+          if ($session->has("perfil")) 
          {
-                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
-                {*/ 
+                if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm) 
+                { 
                         try
                         {
                               $lcFacultad="";
@@ -975,9 +999,17 @@ class AdminController extends Controller
                               $idUsuario="";
                               $idRol="";
                               $idUsuario=$session->get("id_user");
-                              $idRol=$perfilAdmin;
-                              $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
-                              $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                              $idRol=$session->get("perfil");
+                              if(strlen($idRol)>1)
+                              {
+                                $idRol = mb_substr($idRol,0,1);
+                              }
+                              else
+                              {
+                              $idRol = $idRol;
+                              }
+                              //$idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                              //$idRol=1; //ROL DE SESION ADMIN CAMBIAR
                               $idEstudiante  = $request->request->get('idEstudiante');
                               $idCarrera  = $request->request->get('idCarrera');
                               $idCiclo=$request->request->get('idCiclo');
@@ -1032,7 +1064,7 @@ class AdminController extends Controller
                                                           'idCarrera'=>$idCarrera,
                                                           'idCiclo'=>$idCiclo
                                                        ));
-           /*}
+           }
                     else
                     {
                            $this->get('session')->getFlashBag()->add(
@@ -1049,7 +1081,7 @@ class AdminController extends Controller
                                        'Los datos ingresados no son válidos'
                                    );
                      return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-             }*/
+             }
         }
          public function anulacion_detalleAction(Request $request)
     {
@@ -1061,10 +1093,10 @@ class AdminController extends Controller
         $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
         $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
 
-          /*if ($session->has("perfil")) 
+          if ($session->has("perfil")) 
          {
-                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
-                {*/ 
+                if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm) 
+                {
                         try
                         {
                               $lcFacultad="";
@@ -1072,9 +1104,17 @@ class AdminController extends Controller
                               $idUsuario="";
                               $idRol="";
                               $idUsuario=$session->get("id_user");
-                              $idRol=$perfilAdmin;
-                              $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
-                              $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                              $idRol=$session->get("perfil");
+                              if(strlen($idRol)>1)
+                              {
+                                $idRol = mb_substr($idRol,0,1);
+                              }
+                              else
+                              {
+                              $idRol = $idRol;
+                              }
+                              //$idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                              //$idRol=1; //ROL DE SESION ADMIN CAMBIAR
                               //$idEstudiante  = $request->request->get('idEstudiante');
                               $NombreEstudiante  = $request->request->get('nombreEst');
                               $idCarrera  = $request->request->get('idCarrera');
@@ -1128,7 +1168,7 @@ class AdminController extends Controller
                                                           'idCiclo'=>$idCiclo,
                                                            'NombreEstudiante'=>$NombreEstudiante
                                                        ));
-           /*}
+           }
                     else
                     {
                            $this->get('session')->getFlashBag()->add(
@@ -1145,7 +1185,7 @@ class AdminController extends Controller
                                        'Los datos ingresados no son válidos'
                                    );
                      return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-             }*/
+             }
         }
 
 
