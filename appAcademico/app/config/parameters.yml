@@ -24,6 +24,24 @@ parameters:
     perfilDocCordi: 24
     perfilAdminCordi: 34
 
+
     # rol_secretario: 0
     # rol_coordinador: 0
+
+
+    ReporteEstudiantePorCarrera: 1
+    ReporteInscritosMatriculados: 2
+    ReporteMateriasAprobada: 3
+    ConsultaEstudiantesMateriaParalelo: 4
+    AprobacionInscripcion: 5
+    LegalizacionOrdenPago: 6
+    AnulacionMateria: 7
+    GeneracionCalendarioAcademico: 8
+    GeneracionHorariosClases: 9
+    GeneracionHorariosExamen: 10
+    SubirSolicitudes: 11
+    ConsultaHorariosClases: 12
+    ConsultaHorariosExamen: 13
+    ConsultaHorariosClasesPersonalizados: 14
+    ConsultaHorariosExamenPersonalizados: 15
 

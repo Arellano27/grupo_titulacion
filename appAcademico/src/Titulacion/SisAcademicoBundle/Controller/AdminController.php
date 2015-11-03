@@ -22,20 +22,6 @@ class AdminController extends Controller
         // $id_usuario = 3;
         $id_rol     = $session->get("perfil");
 
-        if(strlen($id_rol)>1){
-            $id_rol = mb_substr($id_rol,0,1);
-        }else{
-          $id_rol = $id_rol;
-        }
-        // $id_rol = 3;
-
-        $rsCarrera = $UgServices->getConsultaCarreras($id_usuario,$id_rol);
-        // echo '<pre>'; var_dump($rsCarrera); exit();
-        $resultadoObjeto = json_encode($rsCarrera);
-        $xml_array = json_decode($resultadoObjeto,TRUE);
-
-        $session->set("îdcarrera_calendar",$xml_array["registros"]["registro"]["id_sa_carrera"]);
-        $session->set("îdciclo_calendar",$xml_array["registros"]["registro"]["id_sa_ciclo_detalle"]);
 
         $rsEventos = $UgServices->getConsultaSoloEventos(1); #como parametros enviaremos siempre 1
 
@@ -109,6 +95,8 @@ class AdminController extends Controller
     public function cargar_eventosAction(Request $request)
     {
         $session=$request->getSession();
+
+
         $id_ciclo = $session->get("îdciclo_calendar");
         $id_usuario = $session->get("id_user");
         // echo '<pre>'; var_dump($id_ciclo); exit();
@@ -629,6 +617,537 @@ class AdminController extends Controller
             }
        return $this->render('TitulacionSisAcademicoBundle:Admin:consultaEstudiantesXCarrera.html.twig', array('estudianteCarrera' => $datos  = array('mostrar' =>  'NO' )));
     }
+    
+    
+    //INSCRIPCION 
+    public function inscripcionAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+         /*if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+                {*/ 
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          $idUsuario="";
+                          $idRol="";
+                          $idUsuario=$session->get("id_user");
+                          $idRol=$perfilAdmin;
+                          $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                          $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                          
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarrerasInscripcion($idUsuario,$idRol);
+                            if ( is_object($xml))
+                            {
+                                  foreach($xml->registros->registro as $lcCarreras) 
+                                  {
+                                          $lcFacultad="";
+                                          $lcCarrera=$lcCarreras->id_sa_carrera;
+                                          $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                     'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                     'Carrera'=>$lcCarreras->id_sa_carrera,
+                                                                     'Ciclo'=>$lcCarreras->id_sa_ciclo_detalle
+                                                                    );
+                                          array_push($Carreras, $materiaObject); 
+                                  } 
+    
+                                  $bolCorrecto=1;
+                                  $cuantos=count($Carreras);
+                                  if ($cuantos==0)
+                                  {
+                                        $bolCorrecto=0;
+                                  }    
+                            }
+                            else
+                            {
+    
+                              throw new \Exception('Un error');
+                            }    
+                 }
+                 catch (\Exception $e)
+                 {
+    
+                        $bolCorrecto=0;
+                        $cuantos=0;
+    
+                 }    
+                 return $this->render('TitulacionSisAcademicoBundle:Admin:carreras_inscripcion.html.twig',array(
+                                                  'carreras' => $Carreras,
+                                                  'bolcorrecto'=>$bolCorrecto
+                                               ));
+            /*}
+            else
+            {
+                   $this->get('session')->getFlashBag()->add(
+                                 'mensaje',
+                                 'Los datos ingresados no son válidos'
+                             );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+    }
+    else
+    {
+         $this->get('session')->getFlashBag()->add(
+                              'mensaje',
+                               'Los datos ingresados no son válidos'
+                           );
+             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+     }*/
+    }#termina funcion
+    
+     public function inscripcion_datosAction(Request $request)
+    {
+        $idCarrera  = $request->request->get('idCarrera');
+        $idCiclo  = $request->request->get('idCiclo');
+
+        return $this->render('TitulacionSisAcademicoBundle:Admin:admin_buscar_inscripcion.html.twig', array('idCarrera'=>$idCarrera,'idCiclo'=>$idCiclo));
+    }
+    
+    public function inscripcion_listarAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+          /*if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+                {*/ 
+                        try
+                        {
+                              $lcFacultad="";
+                              $lcCarrera="";
+                              $idUsuario="";
+                              $idRol="";
+                              $idUsuario=$session->get("id_user");
+                              $idRol=$perfilAdmin;
+                              $idEstudiante  = $request->request->get('idEstudiante');
+                              $idCarrera  = $request->request->get('idCarrera');
+                              $idCiclo=$request->request->get('idCiclo');
+                              //$modoConsulta  = $request->request->get('criterio');
+                              
+                              $arrInscripcion = array();
+                              $UgServices = new UgServices;
+                              $lcNombre="";
+                              $lcApellidos="";
+                              $lcCedula="";
+                              $idUsuarioEst="";
+                              $bolCorrecto=0;
+                              $cuantos=0;
+                              $xml1 = $UgServices->getConsulta_listado_inscripcion($idEstudiante,$idCarrera,$idCiclo);
+                              
+                                if ( is_object($xml1))
+                                {
+                                    foreach($xml1->PX_SALIDA as $xml)
+                                    {  
+                                                        $lcNombre=$xml->registros->registro->estudiante->nombres;
+                                                        $lcApellidos=$xml->registros->registro->estudiante->apellidos;
+                                                        $lcCedula=$xml->registros->registro->estudiante->cedula;
+                                                        $lcEstadoAlumno=$xml->registros->registro->estudiante->estado_alumno;
+                                                        $idUsuarioEst=$xml->registros->registro->estudiante->id_sg_usuario;
+                                                        
+                                                          foreach($xml->registros->registro->materias as $lsmaterias) 
+                                                          {
+    
+                                                                foreach($lsmaterias->materia as $lsmateria) 
+                                                                {
+                                                                          $lcFacultad="";
+                                                                          $lcCarrera="";
+                                                                          $materiaObject = array( 'id_sa_materia' => $lsmateria->id_sa_materia,
+                                                                                                     'nombre'=> $lsmateria->nombre,
+                                                                                                     'nivel'=>$lsmateria->nivel,
+                                                                                                     'curso'=>$lsmateria->curso,
+                                                                                                     'veces'=>$lsmateria->veces
+                                                                                                    );
+                                                                          array_push($arrInscripcion, $materiaObject);
+                                                                  }
+                                                            }  
+                                    }
+                                }
+                                else
+                                {
+                                  throw new \Exception('Un error');
+                                }    
+                     }
+                     catch (\Exception $e)
+                     {
+
+                            $bolCorrecto=0;
+                            $cuantos=0;
+
+                     }    
+                      return $this->render('TitulacionSisAcademicoBundle:Admin:admin_listado_inscripcion.html.twig',array(
+                                                          'inscripcion' => $arrInscripcion,
+                                                          'idUsuarioEst' => $idUsuarioEst,
+                                                          'estudiante'=>$lcNombre,
+                                                          'estudiante_ap'=>$lcApellidos,
+                                                          'identificacion'=>$lcCedula,
+                                                          'EstadoAlumno'=>$lcEstadoAlumno,
+                                                          'idCarrera'=>$idCarrera,
+                                                          'idCiclo'=>$idCiclo
+                                                       ));
+           /*}
+                    else
+                    {
+                           $this->get('session')->getFlashBag()->add(
+                                         'mensaje',
+                                         'Los datos ingresados no son válidos'
+                                     );
+                             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+                    }
+            }
+            else
+            {
+                 $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                       'Los datos ingresados no son válidos'
+                                   );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+             }*/
+        }
+        
+        public function inscripcion_registrarAction(Request $request)
+        {
+            $session=$request->getSession();    
+            $respuesta= new Response("",200);
+            $idEstudiante  = $request->request->get('idUsuarioEst');
+            $idCiclo  = $request->request->get('idCiclo');
+            //$idUser=$session->get('id_user'); USUARIO LOGONEADO  <id_sg_usuario_modifica>" .$idUser."</id_sg_usuario_modifica>
+                
+            $datosCuenta="<PX_XML><items> "; 
+            $datosCuenta.= "<item>
+                                        <id_sg_usuario>".$idEstudiante."</id_sg_usuario>
+                                        <id_sa_ciclo_detalle>".$idCiclo."</id_sa_ciclo_detalle>
+                            </item>"; 
+            $datosCuenta.="</items></PX_XML><pc_opcion>1</pc_opcion>"; 
+              
+            $UgServices = new UgServices;
+            $xml = $UgServices->setActualizaInscripcion($datosCuenta);
+
+            
+            $Estado=0;
+            $Mensaje="";
+            if ( is_object($xml))
+             {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+             }
+    
+    
+                $arrayProceso=array();
+                $arrayProceso['codigo_error']=$Estado;
+                $arrayProceso['mensaje']=$Mensaje;
+                $jarray=json_encode($arrayProceso);
+                
+                $respuesta->setContent($jarray);
+                return $respuesta;
+        }
+        
+        //ANULACION
+          public function anulacionAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+         /*if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+                {*/ 
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          $idUsuario="";
+                          $idRol="";
+                          $idUsuario=$session->get("id_user");
+                          $idRol=$perfilAdmin;
+                          $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                          $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                          
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarrerasAnulacion($idUsuario,$idRol);
+                            if ( is_object($xml))
+                            {
+                                  foreach($xml->registros->registro as $lcCarreras) 
+                                  {
+                                          $lcFacultad="";
+                                          $lcCarrera=$lcCarreras->id_sa_carrera;
+                                          $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                     'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                     'Carrera'=>$lcCarreras->id_sa_carrera,
+                                                                     'Ciclo'=>$lcCarreras->id_sa_ciclo_detalle
+                                                                    );
+                                          array_push($Carreras, $materiaObject); 
+                                  } 
+    
+                                  $bolCorrecto=1;
+                                  $cuantos=count($Carreras);
+                                  if ($cuantos==0)
+                                  {
+                                        $bolCorrecto=0;
+                                  }    
+                            }
+                            else
+                            {
+    
+                              throw new \Exception('Un error');
+                            }    
+                 }
+                 catch (\Exception $e)
+                 {
+    
+                        $bolCorrecto=0;
+                        $cuantos=0;
+    
+                 }    
+                 return $this->render('TitulacionSisAcademicoBundle:Admin:carreras_anulacion.html.twig',array(
+                                                  'carreras' => $Carreras,
+                                                  'bolcorrecto'=>$bolCorrecto
+                                               ));
+            /*}
+            else
+            {
+                   $this->get('session')->getFlashBag()->add(
+                                 'mensaje',
+                                 'Los datos ingresados no son válidos'
+                             );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+    }
+    else
+    {
+         $this->get('session')->getFlashBag()->add(
+                              'mensaje',
+                               'Los datos ingresados no son válidos'
+                           );
+             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+     }*/
+    }#termina funcion
+      public function anulacion_datosAction(Request $request)
+    {
+        $idCarrera  = $request->request->get('idCarrera');
+        $idCiclo  = $request->request->get('idCiclo');
+
+        return $this->render('TitulacionSisAcademicoBundle:Admin:admin_buscar_anulacion.html.twig', array('idCarrera'=>$idCarrera,'idCiclo'=>$idCiclo));
+    }
+     public function anulacion_listarAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+          /*if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+                {*/ 
+                        try
+                        {
+                              $lcFacultad="";
+                              $lcCarrera="";
+                              $idUsuario="";
+                              $idRol="";
+                              $idUsuario=$session->get("id_user");
+                              $idRol=$perfilAdmin;
+                              $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                              $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                              $idEstudiante  = $request->request->get('idEstudiante');
+                              $idCarrera  = $request->request->get('idCarrera');
+                              $idCiclo=$request->request->get('idCiclo');
+                              $mes  = $request->request->get('criterio_mes');
+                              $anio  = $request->request->get('criterio_anio');
+                              $mes_h  = $request->request->get('criterio_mes_h');
+                              $anio_h  = $request->request->get('criterio_anio_h');
+                              $fechaInicio="01-".$mes."-".$anio;
+                              $fechaFin="31-".$mes_h."-".$anio_h;
+                              $tipo_solicitud=82; //solocitudes de anulaciones
+                              
+                              $arrInscripcion = array();
+                              $UgServices = new UgServices;
+                              $bolCorrecto=0;
+                              $cuantos=0;
+                              $xml1 = $UgServices->getConsulta_listado_anulacion($fechaInicio,$fechaFin,$idCarrera,$tipo_solicitud);
+                              
+                                if ( is_object($xml1))
+                                {
+                                        foreach($xml1->registros as $xml)
+                                        {  
+                                                              foreach($xml->registro as $lsregistros) 
+                                                              {
+                                                                              
+                          
+                                                                              $materiaObject = array( 'id_sa_solicitud' => $lsregistros->id_sa_solicitud,
+                                                                                                         'id_tipo_solicitud'=> $lsregistros->id_tipo_solicitud,
+                                                                                                         'tipo'=>$lsregistros->tipo,
+                                                                                                         'solicitante'=>$lsregistros->solicitante,
+                                                                                                         'estado'=>$lsregistros->estado,
+                                                                                                         'id_estado'=>$lsregistros->id_estado
+                                                                                                        );
+                                                                              array_push($arrInscripcion, $materiaObject); 
+                                                                }  
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                  throw new \Exception('Un error');
+                                }    
+                     }
+                     catch (\Exception $e)
+                     {
+
+                            $bolCorrecto=0;
+                            $cuantos=0;
+
+                     }    
+                      return $this->render('TitulacionSisAcademicoBundle:Admin:admin_listado_anulacion.html.twig',array(
+                                                          'inscripcion' => $arrInscripcion,
+                                                          'idCarrera'=>$idCarrera,
+                                                          'idCiclo'=>$idCiclo
+                                                       ));
+           /*}
+                    else
+                    {
+                           $this->get('session')->getFlashBag()->add(
+                                         'mensaje',
+                                         'Los datos ingresados no son válidos'
+                                     );
+                             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+                    }
+            }
+            else
+            {
+                 $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                       'Los datos ingresados no son válidos'
+                                   );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+             }*/
+        }
+         public function anulacion_detalleAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+          /*if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+                {*/ 
+                        try
+                        {
+                              $lcFacultad="";
+                              $lcCarrera="";
+                              $idUsuario="";
+                              $idRol="";
+                              $idUsuario=$session->get("id_user");
+                              $idRol=$perfilAdmin;
+                              $idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                              $idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                              //$idEstudiante  = $request->request->get('idEstudiante');
+                              $NombreEstudiante  = $request->request->get('nombreEst');
+                              $idCarrera  = $request->request->get('idCarrera');
+                              $idCiclo=$request->request->get('idCiclo');
+                              $id_sa_solicitud=$request->request->get('id_sa_solicitud');
+                              $id_tipo_solicitud=$request->request->get('id_tipo_solicitud');
+                              
+                              $arrInscripcion = array();
+                              $UgServices = new UgServices;
+                              $bolCorrecto=0;
+                              $cuantos=0;
+                              $xml1 = $UgServices->getConsulta_listado_anulacion_detalle($id_sa_solicitud,$id_tipo_solicitud);
+                              
+                                if ( is_object($xml1))
+                                {
+                                        foreach($xml1->px_Salida as $xml)
+                                        {  
+                                                              
+                                                              foreach($xml->detalle as $lsregistros) 
+                                                              {
+                              
+                          
+                                                                              $materiaObject = array( 'id_solicitud_detalle' => $lsregistros->id_solicitud_detalle,
+                                                                                                         'identificador'=> $lsregistros->identificador,
+                                                                                                         'aprobada'=>$lsregistros->aprobada,
+                                                                                                         'descripcion'=>$lsregistros->descripcion
+                                                                                                        );
+                                                                              array_push($arrInscripcion, $materiaObject); 
+                                                                                                                       echo "<pre>";
+                                 
+                                                                }  
+                                                                
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                  throw new \Exception('Un error');
+                                }    
+                     }
+                     catch (\Exception $e)
+                     {
+
+                            $bolCorrecto=0;
+                            $cuantos=0;
+
+                     }    
+                      return $this->render('TitulacionSisAcademicoBundle:Admin:admin_listado_anulacion_detalle.html.twig',array(
+                                                          'inscripcion' => $arrInscripcion,
+                                                          'idCarrera'=>$idCarrera,
+                                                          'idCiclo'=>$idCiclo,
+                                                           'NombreEstudiante'=>$NombreEstudiante
+                                                       ));
+           /*}
+                    else
+                    {
+                           $this->get('session')->getFlashBag()->add(
+                                         'mensaje',
+                                         'Los datos ingresados no son válidos'
+                                     );
+                             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+                    }
+            }
+            else
+            {
+                 $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                       'Los datos ingresados no son válidos'
+                                   );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+             }*/
+        }
+
 
 
 
@@ -797,5 +1316,642 @@ class AdminController extends Controller
         // echo '<pre>'; var_dump($rsInsertEvent); exit();
         return new Response($rsInsertEvent);
     }#end function
+
+
+/* INICIO SPRINT ARELLANO 4.1 */
+public function consulta_materias_aprobadas_estudianteAction(Request $request){
+
+           $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+           
+            //$datos = array();        
+           if ($session->has("perfil")) 
+           {
+               if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilEstAdm || $session->get('perfil') == $perfilDocAdm) 
+               {  $Carreras = array();
+                    try
+                    {
+                          $lcCarrera=""; 
+                          // $idAdministrador=$session->get("id_user");
+                          $idAdministrador= "24";
+                          // $idRol=$perfilAdmin;
+                          $idRol= "3";
+                          $ciclo = "";
+                          $nombreCarrera = "";
+                          $idCarrera = "";
+                          $tienePermiso = "0";
+                          $lsEstudiantes = array();
+                          $lsOpciones = array();
+                        
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarreras($idAdministrador,$idRol);
+  
+                            if ( is_object($xml))
+                            {
+
+                              foreach($xml->registros->registro as $lcCarreras) 
+                              {
+                                $idCarrera=$lcCarreras->id_sa_carrera;
+                                $nombreCarrera = $lcCarreras->nombre;
+                                $ciclo = $lcCarreras->id_sa_ciclo_detalle;
+                                $carreraObject = array( 'nombre' => $nombreCarrera,
+                                                           'idCarrera'=> $idCarrera,
+                                                           'idCiclo'=> $ciclo,
+                                                          );
+                                array_push($Carreras, $carreraObject); 
+                              } 
+                            
+                              $cuantos=count($Carreras);
+                              if ($cuantos!=0)
+                              {
+                                 $datos =  array( 'carreras' =>  $Carreras,
+                                                   'mostrar' =>  'SI');
+                              // echo "<pre>";
+                              // var_dump(array('estudianteCarrera' => $datos));
+                              // echo "</pre>";
+                              // exit();
+                                 return $this->render('TitulacionSisAcademicoBundle:Admin:consulta_materia_aprobadas_estudiantes.html.twig', array('estudianteCarrera' => $datos =array('mostrar' =>  'SI', 'carreras' =>  $Carreras)));
+                              }
+                           }
+                              
+                     }
+                     catch (\Exception $e)
+                     {
+                       return $this->render('TitulacionSisAcademicoBundle:Admin:consulta_materia_aprobadas_estudiantes.html.twig', array('estudianteCarrera' => $datos   = array('mostrar' =>  'SI', 'carreras' =>  $Carreras)));
+         
+                     }
+               }
+               else
+               {
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }
+           else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+
+                       return $this->render('TitulacionSisAcademicoBundle:Admin:consulta_materia_aprobadas_estudiantes.html.twig', array('estudianteCarrera' => $datos   = array('mostrar' =>  'SI', 'carreras' =>  $Carreras)));
+         
+
+    }
+
+
+
+     public function consulta_materias_aprobadas_estudiante_busquedaAction(Request $request){
+
+           $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+            $datos  = array('mostrar' =>  'NO' );
+
+            $idCarrera = $request->request->get('carrera');
+            $opcion = $request->request->get('opcion');
+            $identificacion = $request->request->get('identificacion');
+            $session->set("identificacion_materias".$idCarrera,$identificacion);
+             $session->set("nivel_materias".$idCarrera,"0");
+             $session->set("cicloDetalle_materias".$idCarrera,"0");
+
+   
+                  
+        
+           if ($session->has("perfil")) 
+           {
+               if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilEstAdm || $session->get('perfil') == $perfilDocAdm) 
+               {
+                    try
+                    {
+                           $lcCarrera=""; 
+                           $tienePermiso = "0";
+                           $lsEstudiantes = array();
+                           $lsOpciones = array();
+                           $lsMaterias = array();
+                           $lsNivel = array();
+                           $lsCiclo = array();
+                           $lsPorcentaje = array();
+                           $UgServices = new UgServices;
+                           $xml = $UgServices->getConsultaMateriasAprobadasEstudianteAdmin($opcion,$identificacion, $idCarrera, "", "");
+
+
+                         
+                            
+        if ( is_object($xml)) {
+                                $estado = $xml ->PI_ESTADO;
+                                $message = $xml ->PV_MENSAJE;
+
+                          /*        foreach( $xml->PX_Salida->datosAlumno as $lcMaterias) 
+                                     {
+                                          $materia=$lcMaterias->materia;
+                                          $nivel = $lcMaterias->nivel;
+                                          $ciclo = $lcMaterias->ciclo;
+                                          $promedio = $lcMaterias->porcentaje;
+
+                                          echo "<pre>";
+                                var_dump( $materia);
+                                echo "</pre>";
+                                exit();
+                                         
+                                     } */ 
+
+                                $xmlAlumno = $xml->PX_Salida->datosAlumno->materias;
+
+
+
+                        
+
+                                if(is_object($xmlAlumno))
+                                {
+                                     
+
+                                     foreach($xmlAlumno->materia as $lcMaterias) 
+                                     {
+                          
+                                          $materia=$lcMaterias->materia;
+                                          $nivel = $lcMaterias->nivel;
+                                          $ciclo = $lcMaterias->ciclo;
+                                          $promedio = $lcMaterias->promedio;
+                                          $materiasObject = array( 'materia' => $materia,
+                                                                     'nivel'=> $nivel,
+                                                                     'ciclo'=> $ciclo,
+                                                                     'promedio'=> $promedio
+                                                                    );
+
+                                          array_push($lsMaterias, $materiasObject); 
+                                     } 
+
+                                }
+
+
+                
+                                $xmlNivel = $xml->PX_Salida->datosAlumno->niveles;
+
+
+                                if(is_object($xmlNivel))
+                                {
+                                     
+                                     foreach($xmlNivel->nivel as $lcNivel) 
+                                     {
+                                          $codigo=$lcNivel->nivel;
+                                          $descripcion = $lcNivel->nombreNivel;
+
+                                          $nivelObject = array( 'valor' => $codigo,
+                                                                     'descripcion'=> $descripcion
+                                                               );
+                                          array_push($lsNivel, $nivelObject); 
+                                     } 
+
+                                }
+
+                            
+                                $xmlCiclo = $xml->PX_Salida->datosAlumno->ciclos;
+
+                                if(is_object($xmlCiclo))
+                                {
+                                     
+                                     foreach($xmlCiclo->ciclo as $lcCiclo) 
+                                     {
+                                          $codigo=$lcCiclo->idCiclo;
+                                          $descripcion = $lcCiclo->descripcion;
+
+                                          $cicloObject = array( 'valor' => $codigo,
+                                                                     'descripcion'=> $descripcion
+                                                               );
+                                          array_push($lsCiclo, $cicloObject); 
+                                     } 
+
+                                }
+
+                                $xmlPorcentaje = $xml->PX_Salida->datosAlumno->porcentajes;
+
+                                if(is_object($xmlPorcentaje))
+                                {
+                                     
+                                     foreach($xmlPorcentaje->porcentaje as $lcPorcentaje) 
+                                     {
+                                          $codigo=$lcPorcentaje->totalPorcentaje;
+                                          $descripcion = $lcPorcentaje->nivel;
+
+                                          $porcentajeObject = array( 'valor' => $codigo,
+                                                                     'descripcion'=> $descripcion
+                                                               );
+                                          array_push($lsPorcentaje, $porcentajeObject); 
+                                     } 
+
+                                }
+
+
+
+                            }
+
+
+
+                            
+                              $cuantos=count($lsMaterias);
+
+
+                              if ($cuantos!=0)
+                              {
+
+
+                                 $datos =  array( 'nombre' =>   $xml->PX_Salida->datosAlumno->nombreEstudiante,
+                                                  'listadoCiclos' =>  $lsCiclo,
+                                                  'listadoNiveles' =>  $lsNivel,
+                                                  'listadoEstudiante' =>  $lsMaterias,
+                                                  'porcentajes' =>  $lsPorcentaje,
+                                                   'mostrar' =>  'SI');
+                
+
+                                 
+                             
+
+                              
+
+
+                              }
+                          
+                           
+
+                           
+                              
+                     }
+                     catch (\Exception $e)
+                     {
+                       $datos  = array('mostrar' =>  'NO' );
+         
+                     }
+
+
+                     return new Response(json_encode($datos));
+               }
+               else
+               {
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }
+           else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+
+         
+
+    }
+
+
+    public function consulta_materias_aprobadas_estudiante_filtroAction(Request $request){
+
+           $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+            $datos  = array('mostrar' =>  'NO' );
+
+            $idCarrera = $request->request->get('carrera');
+            $opcion = $request->request->get('opcion');
+            $identificacion = $request->request->get('identificacion');
+            $nivel = $request->request->get('nivel');
+            $ciclo = $request->request->get('cicloDetalle');
+
+            $session->set("identificacion_materias".$idCarrera,$identificacion);
+             $session->set("nivel_materias".$idCarrera,$nivel);
+             $session->set("cicloDetalle_materias".$idCarrera,$ciclo);
+
+
+
+                /*  echo "<pre>";
+                                var_dump($session->set("identificacion"+$idCarrera,$identificacion),
+             $session->set("nivel"+$idCarrera,$nivel),
+             $session->set("cicloDetalle"+$idCarrera,$ciclo));
+                                echo "</pre>";
+                                exit();*/
+                  
+        
+           if ($session->has("perfil")) 
+           {
+               if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilEstAdm || $session->get('perfil') == $perfilDocAdm) 
+               {
+                    try
+                    {
+                           $lcCarrera=""; 
+                           $tienePermiso = "0";
+                           $lsEstudiantes = array();
+                           $lsOpciones = array();
+                           $lsMaterias = array();
+                           $lsNivel = array();
+                           $lsCiclo = array();
+                           $lsPorcentaje = array();
+                           $UgServices = new UgServices;
+                           $xml = $UgServices->getConsultaMateriasAprobadasEstudianteAdmin($opcion,$identificacion, $idCarrera, $ciclo, $nivel);
+
+
+                         
+                            
+                               if ( is_object($xml)) {
+                                $estado = $xml ->PI_ESTADO;
+                                $message = $xml ->PV_MENSAJE;
+
+                          /*        foreach( $xml->PX_Salida->datosAlumno as $lcMaterias) 
+                                     {
+                                          $materia=$lcMaterias->materia;
+                                          $nivel = $lcMaterias->nivel;
+                                          $ciclo = $lcMaterias->ciclo;
+                                          $promedio = $lcMaterias->porcentaje;
+
+                                          echo "<pre>";
+                                var_dump( $materia);
+                                echo "</pre>";
+                                exit();
+                                         
+                                     } */ 
+
+                                $xmlAlumno = $xml->PX_Salida->alumno;
+
+
+
+                        
+
+                                if(is_object($xmlAlumno))
+                                {
+                                     
+
+                                     foreach($xmlAlumno->materia as $lcMaterias) 
+                                     {
+                          
+                                          $materia=$lcMaterias->materia;
+                                          $nivel = $lcMaterias->nivel;
+                                          $ciclo = $lcMaterias->ciclo;
+                                          $promedio = $lcMaterias->promedio;
+                                          $materiasObject = array( 'materia' => $materia,
+                                                                     'nivel'=> $nivel,
+                                                                     'ciclo'=> $ciclo,
+                                                                     'promedio'=> $promedio
+                                                                    );
+
+                                          array_push($lsMaterias, $materiasObject); 
+                                     } 
+
+                                }
+
+
+                
+                              
+
+
+
+                            }
+
+
+
+                            
+                              $cuantos=count($lsMaterias);
+
+
+                              if ($cuantos!=0)
+                              {
+
+                                
+                                 $datos =  array( 'listadoEstudiante' =>  $lsMaterias,
+                                  
+                                                   'mostrar' =>  'SI');
+                
+
+                                 
+                             /*
+                                           echo "<pre>";
+                                var_dump( $datos);
+                                echo "</pre>";
+                                exit();
+*/
+                              
+
+
+                              }
+                          
+                           
+
+                           
+                              
+                     }
+                     catch (\Exception $e)
+                     {
+                       $datos  = array('mostrar' =>  'NO' );
+         
+                     }
+
+
+                     return new Response(json_encode($datos));
+               }
+               else
+               {
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }
+           else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+
+
+         
+
+    }
+
+
+     public function consulta_materias_aprobadas_estudiante_pdfAction(Request $request,$idCarrera, $ciclo,$carrera){
+
+           $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+            $datos  = array('mostrar' =>  'NO' );
+
+            $identificacion =$session->get('identificacion_materias'.$idCarrera);
+            $nivel =   $session->get('nivel_materias'.$idCarrera);
+            $ciclo =  $session->get('cicloDetalle_materias'.$idCarrera);
+
+                  // echo "<pre>";
+                  //               var_dump( $ciclo);
+                  //               echo "</pre>";
+                  //               exit();
+                  
+        
+           if ($session->has("perfil")) 
+           {
+               if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilEstAdm || $session->get('perfil') == $perfilDocAdm) 
+               {
+                    try
+                    {
+                           $lcCarrera=""; 
+                           $tienePermiso = "0";
+                           $lsEstudiantes = array();
+                           $lsOpciones = array();
+                           $lsMaterias = array();
+                           $lsNivel = array();
+                           $lsCiclo = array();
+                           $lsPorcentaje = array();
+                           $pdf="";
+                           $UgServices = new UgServices;
+
+                            // echo "<pre>";
+                            //     var_dump($identificacion, $idCarrera, $ciclo, $nivel);
+                            //     echo "</pre>";
+                            //     exit();
+                  
+                           $xml = $UgServices->getConsultaMateriasAprobadasEstudianteAdmin("F",$identificacion, $idCarrera, $ciclo, $nivel);
+
+
+                  // echo "<pre>";
+                  //               var_dump($xml);
+                  //               echo "</pre>";
+                  //               exit();
+                  
+                         
+                            
+                               if ( is_object($xml)) {
+                                $estado = $xml ->PI_ESTADO;
+                                $message = $xml ->PV_MENSAJE;
+
+                                if($estado == "1")
+                                { 
+                                $xmlAlumno = $xml->PX_Salida->alumno;
+                     
+
+                                if(is_object($xmlAlumno))
+                                {
+                                      $pdf= " <html> 
+                                            <body>
+                                            <img width='5%' src='images/menu/ug_logo.png'/>
+                                            <table align='center'>
+                                            <tr>
+                                              <td align='center'>
+                                                <b>Materias del Estudiante</b>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                            <td>
+                                              <b>".$carrera."</b>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            <div class='col-lg-12'>
+                                            <br><br><br><br>
+                                            <table class='table table-striped table-bordered' border='1' width='100%' >
+                                                     <thead>
+                                                        <tr>
+                                                                <th colspan='4'   style='text-align: center !important;background-color: #337AB7 !important;color: white!important;'>REPORTE DEL CLICLO</th>
+                                                        </tr>
+                                                        <tr>
+                                                            
+                                                            <th style='text-align: center !important;'>Ciclo</th> 
+                                                            <th style='text-align: center !important;'>Nivel</th>
+                                                            <th style='text-align: center !important;'>Materia</th>
+                                                             <th style='text-align: center !important;'>Promedio</th>
+                                                           
+                                                        </tr>";
+
+                                     foreach($xmlAlumno->materia as $lcMaterias) 
+                                     {
+                          
+                                          $materia=$lcMaterias->materia;
+                                          $nivel = $lcMaterias->nivel;
+                                          $ciclo = $lcMaterias->ciclo;
+                                          $promedio = $lcMaterias->promedio;
+                                           $pdf.="<tr><td>".$ciclo."</td><td>".$nivel."</td><td>".$materia."</td><td>".$promedio."</td></tr>";
+                                     } 
+
+                                
+                                     $pdf.="</table>";
+                                     $pdf.="</div></body></html>";
+                                }
+
+}else
+{$pdf.="<p>No existen datos</p>";
+       
+
+}}
+
+                  $mpdfService = $this->get('tfox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  
+                  return new response($mPDF->Output());
+                
+                                           
+                     }
+                     catch (\Exception $e)
+                     {
+                       
+                     }
+
+
+  
+               }
+               else
+               {
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }
+           else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+
+      // return $this->render('TitulacionSisAcademicoBundle:Admin:consulta_materia_aprobadas_estudiantes.html.twig', array('estudianteCarrera' => $datos  = array('mostrar' =>  'NO' )));
+         
+
+    }
+
+/* FIN SPRINT ARELLANO 4.1 */
 
 }
