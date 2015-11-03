@@ -35,19 +35,22 @@ class UgServices
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "CapaVisualPhp";
-      $this->clave         = "12CvP2015";
+      $this->usuario       = "usr_tesis";
+      $this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
-//      $this->source        = "jdbc/saugProcTmp";
-//      $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      $this->urlWS         = "";
       $this->host          = "186.101.66.2:8080";
       /*Saug Temporal*/
+      $this->source           = "jdbc/saugProcTmp";
+      $this->sourceConsultas  = "jdbc/saugConsTmp";
+      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      
+      /*Saug Temporal*/
       //      /*Preproduccion*/
-      $this->source        = "jdbc/procedimientosSaug";
-      $this->sourceConsultas  = "jdbc/consultasSaug";
+//      $this->source        = "jdbc/procedimientosPre";
+//      $this->sourceConsultas  = "jdbc/consultasPre";
+//      $this->source        = "jdbc/procedimientosSaug";
+//      $this->sourceConsultas  = "jdbc/consultasSaug";
 //      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
 //      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
@@ -493,14 +496,14 @@ public function getConsultaSoloEventos($idEventos){
  public function Docentes_gettareaxparcial($trama){
            $ws         = new AcademicoSoap();
            $tipo       = "24";
-           $usuario    = "CapaVisual";
-           $clave      = "123";
+           $usuario    = $this->usuario;
+           $clave      = $this->clave;
            $source     = $this->source;
            $url        = $this->url.$this->urlProcedim;
            $host       = $this->host;
            
           
-               $XML        = <<<XML
+    $XML        = <<<XML
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
    <soap:Body>
       <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
@@ -523,9 +526,37 @@ public function getConsultaSoloEventos($idEventos){
    </soap:Body>
 </soap:Envelope>
 XML;
-           
-           
-                   
+  /*             
+$XML  = <<<XML
+<registros>
+    <registro>
+        <cantParciales>1</cantParciales>
+        <notaMinima>6.50</notaMinima>
+        <periodos>
+            <periodo>
+                <parcial>PARCIAL1</parcial>
+                <totalizar>SI</totalizar>
+                <componentePeriodo>
+                    <idNota>51</idNota>
+                    <componente>GESTIÓN FORMATIVA</componente>
+                    <idNota>52</idNota>
+                    <componente>GESTIÓN PRÁCTICA</componente>
+                    <idNota>53</idNota>
+                    <componente>ACREDITACIÓN</componente>
+                </componentePeriodo>
+            </periodo>
+        </periodos>
+        <idProfesor>5</idProfesor>
+        <profesor>BARRETO BARRETO KATIUSKA ELIZABETH </profesor>
+        <idMateria>30</idMateria>
+        <materia>Investigación Operaciones</materia>
+        <idParalelo>65</idParalelo>
+        <paralelo>S5K</paralelo>
+    </registro>
+</registros>
+XML;*/
+        
+     $XML=null;              
            
            $response=$ws->doRequestSreReceptaTransacionConsultasdoc2($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
@@ -597,7 +628,7 @@ XML;*/
            $XML=null;
                    
            
-           $response=$ws->doRequestConsultaAlumnos($trama,'jdbc/saugConsTmp',$tipo,$usuario,$clave,$url,$host, $XML);
+           $response=$ws->doRequestConsultaAlumnos($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
    }#end function
@@ -658,11 +689,11 @@ XML;*/
             <respuestaConsulta>
                <registros>
                   <registro>
-                     <fecha>2015-10-17</fecha>
+                     <fecha>2015-11-03</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                   <registro>
-                     <fecha>2015-10-20</fecha>
+                     <fecha>2015-10-28</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                </registros>
@@ -676,7 +707,7 @@ XML;
            //$XML =null;
                    
            
-           $response=$ws->doRequestConsultaFechas($trama,'jdbc/saugConsTmp',$tipo,$usuario,$clave,$url,$host, $XML);
+           $response=$ws->doRequestConsultaFechas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
    }#end function
@@ -719,9 +750,29 @@ public function insertarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_h
       $this->urlWS   = $this->url.$this->urlConsulta;
       $trama         = "<id_carrera>".$idCarrera."</id_carrera>";
       $XML           = NULL;
-      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,'jdbc/saugConsTmp',$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
 
       return $response;
    }#end function Docentes_getMaterias()
+   
+ public function getConsultaHorario_examendoc($trama){
+       /* $ws=new AcademicoSoap();
+        $tipo       = "7";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = "jdbc/consultasSaug";
+        $url        = "http://192.168.100.11:8080/consultas/ServicioWebConsultas?wsdl";
+        $host       = "192.168.100.11:8080";*/
+        $this->tipo       = "43";
+        $this->urlWS   = $this->url.$this->urlProcedim;
+//           echo $trama."--".$this->source."--".$this->tipo."--".$this->usuario."--".$this->clave."--".$this->urlWS."--".$this->host;
+//        exit();
+        //$response=$ws->doRequestSreReceptaTransacionRegistroMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        $response=$this->ws->doRequestDocenteHorariosExamen($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+     
+        
+        return $response; 
+            
+}#end function
 }#end class
 

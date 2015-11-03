@@ -26,7 +26,7 @@
          mostrarInfoTabsNotas('panelNotasCarrera_{{idCarrera}}','{{ path('docentes_consulta_notas_materia') }}', obj_data);
       }
       if (condition == 'ingresonotas'){
-         tabdocentes('panelNotasCarrera_{{idCarrera}}','{{ path('docentes_mostrar_alumnos') }}','2345');
+         tabdocentes('panelNotasCarrera_{{idCarrera}}','{{ path('docentes_mostrar_alumnos') }}','{{idMateria}}','1');
       }
      {#mostrarAlumnos('alumnos3','{ path('docentes_mostrarAlumnoexamen') }','2345');#}
    });
@@ -34,22 +34,24 @@
    $(".tabNotas").click(function(){
      var tabs =$(this).attr('id'); 
      var idhtml="";
+     
+      var idMateria     = '{{ idMateria }}';
+         var idCarrera     = '{{ idCarrera }}';
 
      if(tabs === 'notas' ) {
        idhtml='notas';
 
-       var obj_data = {"idMateria" : "{{idMateria}}", "idCarrera" : "{{idCarrera}}"};
+       var obj_data = {"idMateria" : idMateria, "idCarrera" : "{{idCarrera}}"};
 
        mostrarInfoTabsNotas('panelNotasCarrera_{{idCarrera}}','{{ path('docentes_consulta_notas_materia') }}', obj_data);
      }
      if(tabs ==='ingreso1'){
-        var materia= '{{idMateria}}';
-       // alert(materia);
-       tabdocentes('panelNotasCarrera_{{idCarrera}}','{{ path('docentes_mostrar_alumnos') }}',materia);
+       // alert(idMateria);
+       tabdocentes('panelNotasCarrera_{{idCarrera}}','{{ path('docentes_mostrar_alumnos') }}',idMateria,idCarrera);
      }
      else if(tabs==='ingreso2'){
        
-       tabdocentes('panelNotasCarrera_{{idCarrera}}','{{ path('admin_lista_estudiantes') }}','{{idCarrera}}');
+       tabdocentes('panelNotasCarrera_{{idCarrera}}','{{ path('admin_lista_estudiantes') }}',idMateria,idCarrera);
      }
      else if(tabs==='ingreso3'){
        
