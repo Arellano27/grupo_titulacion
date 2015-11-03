@@ -37,21 +37,7 @@ class UgServices
       $this->usuario       = "usr_tesis";
       $this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
-<<<<<<< HEAD
-      $this->host          = "186.101.66.2:8080";
-      /*Saug Temporal*/
-      $this->source           = "jdbc/saugProcTmp";
-      $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      
-      /*Saug Temporal*/
-      //      /*Preproduccion*/
-//      $this->source        = "jdbc/procedimientosPre";
-//      $this->sourceConsultas  = "jdbc/consultasPre";
-//      $this->source        = "jdbc/procedimientosSaug";
-//      $this->sourceConsultas  = "jdbc/consultasSaug";
-=======
+
       /*Saug Temporal*/
       $this->source        = "jdbc/saugProcTmp";
       $this->sourceConsultas  = "jdbc/saugConsTmp";
@@ -72,7 +58,7 @@ class UgServices
       //      /*Preproduccion*/
       // $this->source        = "jdbc/procedimientosSaug";
       // $this->sourceConsultas  = "jdbc/consultasSaug";
->>>>>>> a6ce973b15851cbe0c5f47638a707fd05aaa6090
+
 //      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
 //      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - FIN */
@@ -568,15 +554,10 @@ public function getConsulta_listado_anulacion_detalle($id_sa_solicitud,$id_tipo_
            $source     = $this->source;
            $url        = $this->url.$this->urlProcedim;
            $host       = $this->host;
-<<<<<<< HEAD
-           
-          
-    $XML        = <<<XML
-=======
+
 
 
                $XML        = <<<XML
->>>>>>> a6ce973b15851cbe0c5f47638a707fd05aaa6090
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
    <soap:Body>
       <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
@@ -599,7 +580,7 @@ public function getConsulta_listado_anulacion_detalle($id_sa_solicitud,$id_tipo_
    </soap:Body>
 </soap:Envelope>
 XML;
-<<<<<<< HEAD
+
   /*             
 $XML  = <<<XML
 <registros>
@@ -632,12 +613,6 @@ XML;*/
         
      $XML=null;              
            
-=======
-
-
-
-
->>>>>>> a6ce973b15851cbe0c5f47638a707fd05aaa6090
            $response=$ws->doRequestSreReceptaTransacionConsultasdoc2($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
 
            return $response;
@@ -706,15 +681,10 @@ xmlns:ns2="http://servicios.ug.edu.ec/">
 XML;*/
 
            $XML=null;
-<<<<<<< HEAD
-                   
+              
            
            $response=$ws->doRequestConsultaAlumnos($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
-=======
 
-
-           $response=$ws->doRequestConsultaAlumnos($trama,'jdbc/saugConsTmp',$tipo,$usuario,$clave,$url,$host, $XML);
->>>>>>> a6ce973b15851cbe0c5f47638a707fd05aaa6090
 
            return $response;
    }#end function
@@ -791,15 +761,9 @@ XML;*/
 XML;
 
            //$XML =null;
-<<<<<<< HEAD
-                   
-           
+       
            $response=$ws->doRequestConsultaFechas($trama,$source,$tipo,$usuario,$clave,$url,$host, $XML);
-=======
 
-
-           $response=$ws->doRequestConsultaFechas($trama,'jdbc/saugConsTmp',$tipo,$usuario,$clave,$url,$host, $XML);
->>>>>>> a6ce973b15851cbe0c5f47638a707fd05aaa6090
 
            return $response;
    }#end function
