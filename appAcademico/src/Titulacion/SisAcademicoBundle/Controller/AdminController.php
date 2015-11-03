@@ -22,20 +22,6 @@ class AdminController extends Controller
         // $id_usuario = 3;
         $id_rol     = $session->get("perfil");
 
-        if(strlen($id_rol)>1){
-            $id_rol = mb_substr($id_rol,0,1);
-        }else{
-          $id_rol = $id_rol;
-        }
-        // $id_rol = 3;
-
-        $rsCarrera = $UgServices->getConsultaCarreras($id_usuario,$id_rol);
-        // echo '<pre>'; var_dump($rsCarrera); exit();
-        $resultadoObjeto = json_encode($rsCarrera);
-        $xml_array = json_decode($resultadoObjeto,TRUE);
-
-        $session->set("îdcarrera_calendar",$xml_array["registros"]["registro"]["id_sa_carrera"]);
-        $session->set("îdciclo_calendar",$xml_array["registros"]["registro"]["id_sa_ciclo_detalle"]);
 
         $rsEventos = $UgServices->getConsultaSoloEventos(1); #como parametros enviaremos siempre 1
 
@@ -109,6 +95,8 @@ class AdminController extends Controller
     public function cargar_eventosAction(Request $request)
     {
         $session=$request->getSession();
+
+
         $id_ciclo = $session->get("îdciclo_calendar");
         $id_usuario = $session->get("id_user");
         // echo '<pre>'; var_dump($id_ciclo); exit();

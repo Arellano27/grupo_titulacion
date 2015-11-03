@@ -12,7 +12,7 @@ class AcademicoSoap {
  * [funcion que permite receptar el xml del webservice de los procedimientos]
  */
 function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
-
+// echo '<pre>'; var_dump($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host); exit();
     $post_string="
     <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\">
     <soapenv:Header/>
@@ -78,7 +78,7 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
 // XML;
 
 
-
+// echo '<pre>'; var_dump($result); exit();
 
     if(!$result){
         return "error";
@@ -2138,6 +2138,22 @@ function doInsertEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
+
+                    $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+                    $xml = new \SimpleXMLElement($response);
+                    $body = $xml->xpath('//soapBody')[0];
+                    $return = $xml->xpath('//return')[0];
+
+                    $resultadoObjeto = $xml->xpath('//parametrosSalida')[0];
+
+                    $resultadoObjeto = json_encode($resultadoObjeto);
+                    $xml_array = json_decode($resultadoObjeto,TRUE);
+                    // $resultadoObjeto = $this->Response($resultadoObjeto);
+                    // $resultadoObjeto = $xml->xpath('//PV_MENSAJE')[0];
+                    // $resultadoObjeto = $this->Response($resultadoObjeto);
+                    // echo '<pre>'; var_dump($xml_array); exit();
+                    // return $xml_array;
+                    return $xml_array["PI_ESTADO"];
 }#end function   
 
 
