@@ -25,8 +25,16 @@
                   <div class="col-lg-1"><button type="button" id="btn_buscar_{{ carrera.idCarrera }}" class="btn btn-primary" >Buscar</button></div>
                 </div>
                 <div class="col-lg-5" style="margin-bottom: 20px;">
-                  <div class="col-lg-3" style="padding-top: 5px;"><select disabled="true" id="cmb_ciclo_{{ carrera.idCarrera }}"><option value="0" >-- Ciclo --</option></select></div>
-                  <div class="col-lg-3" style="padding-top: 5px;"><select disabled="true" id="cmb_nivel_{{ carrera.idCarrera }}"><option value="0" >-- Nivel --</option></select></div>
+                  <div class="col-lg-3" style="padding-top: 5px;">
+                    <select disabled="true" id="cmb_ciclo_{{ carrera.idCarrera }}">
+                      <option value="0" > -- Ciclo -- </option>
+                    </select>
+                  </div>
+                  <div class="col-lg-3" style="padding-top: 5px;">
+                    <select disabled="true" id="cmb_nivel_{{ carrera.idCarrera }}">
+                      <option value="0" > -- Nivel -- </option>
+                    </select>
+                  </div>
                   <div class="col-lg-1"><a class="btn btn-success" href="{{path('admin_academico_estudiante_materias_pdf', {'idCarrera':carrera.idCarrera,'ciclo':carrera.idCiclo,'carrera':carrera.nombre})}}" target="_blank">PDF</a></div>
                 </div>
               </div> 
@@ -139,7 +147,7 @@
               select_ciclo.removeAttr("disabled");
               /* VACIAMOS EL SELECT Y PONEMOS UNA OPCION QUE DIGA CARGANDO... */
               select_ciclo.find('option').remove().end().append('Cargando..,').val('');
-              var opciones= "<option value='0' >Seleccione</option>";
+              var opciones= "<option value='0' > -- Ciclo -- </option>";
 
               $(dataResponse.listadoCiclos).each(function(index){
                 opciones = opciones +"<option value='"+$(this).attr('valor')[0]+"' >"+$(this).attr('descripcion')[0]+"</option>";
@@ -149,7 +157,7 @@
               var select_nivel=$("#cmb_nivel_"+carrera);
               select_nivel.removeAttr("disabled");
               select_nivel.find('option').remove().end().append('Cargando..,').val('');
-              opciones= "<option value='0' >Seleccione</option>";
+              opciones= "<option value='0' > -- Nivel -- </option>";
 
               $(dataResponse.listadoNiveles).each(function(index){
                 opciones = opciones +"<option value='"+$(this).attr('valor')[0]+"' >"+$(this).attr('descripcion')[0]+"</option>";
