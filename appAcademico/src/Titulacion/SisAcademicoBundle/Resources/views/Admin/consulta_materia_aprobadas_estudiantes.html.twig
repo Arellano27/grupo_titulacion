@@ -74,6 +74,9 @@
     var splitCarrera =$(this).attr('id').split('_'); 
     var carrera  = splitCarrera[1];
     var ciclo  = splitCarrera[2];
+    var materiasAprobadasEstudiantes;
+    var materiasAprobadasEstudiantesChange;
+
     $("#txt_nombre_"+carrera).html('Debe buscar un estudiante');
     if($('#valida_'+carrera).val() == "0")
     {
@@ -115,14 +118,21 @@
           type:  'post',
           
           beforeSend: function () {
+            materiasAprobadasEstudiantes = new $.flavr({
+                                modal   : true,
+                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                buttons     : {}
+                                });
 
           },
           
           error:function(){ 
-          alert("ERROR");
+            materiasAprobadasEstudiantes.close();
+            alert("ERROR");
           },
 
           success:  function (dataResponse) {
+            materiasAprobadasEstudiantes.close();
             if(dataResponse.mostrar == "SI"){
               $("#txt_nombre_"+carrera).html(dataResponse.nombre[0]);
               var select_ciclo=$("#cmb_ciclo_"+carrera);
@@ -230,14 +240,21 @@
           type:  'post',
         
           beforeSend: function () {
+            materiasAprobadasEstudiantesChange = new $.flavr({
+                                modal   : true,
+                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                buttons     : {}
+                                });
 
           },
           
           error:function(){
+            materiasAprobadasEstudiantesChange.close();
             alert("ERROR");
           },
 
           success:  function (dataResponse) {
+            materiasAprobadasEstudiantesChange.close();
             oTable.fnClearTable();
             $(dataResponse.listadoEstudiante).each(function(index){
               var addData = [];
