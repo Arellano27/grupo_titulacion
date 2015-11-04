@@ -136,6 +136,7 @@
                       $lcCarrera="";
                        $Carreras_inscribir = array();
                        $idRol=$perfilEst;
+                       $lnCuantos=0;
                        //$idEstudiante=17;
                        //$estudiante='Jeferson Bohorquez';
                         $UgServices = new UgServices;
@@ -169,12 +170,13 @@
                           //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
                         }
 
-
+                        $lnCuantos=count($Carreras_inscribir);
                    
                    return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_carrerasmatricula.html.twig',array(
                                                     'nomEstudiante' =>  $estudiante,
                                                     'idEstudiante' => $idEstudiante,
-                                                    'carreras_inscribir'=>$Carreras_inscribir
+                                                    'carreras_inscribir'=>$Carreras_inscribir,
+                                                    'lnCuantos'=>$lnCuantos
 
                                                  ));
 
@@ -463,7 +465,7 @@
                                                                        
                    $bolCorrecto=1;
                    $cuantos=count($listaMaterias);
-                   if($cuantos==0 && $idIndica=='re'  )
+                   if($cuantos==0 || $idIndica=='re'  )
                    {
                     $bolCorrecto=0;
                    }
@@ -707,10 +709,12 @@
                       $CicloMatricula="";
                       $anio="";
                       $xml2 = $UgServices->getConsultaDatos_Turno($idEstudiante,$idCarrera);
+
                       $ciclo="";
                       $parveces='2';
                     
                       $Materias_inscribir = array();
+
                        
                        if ( is_object($xml2))
                           {
@@ -726,21 +730,23 @@
                               
                           }
 
+
+
                       $lcFacultad="";
                       $lcCarrera="";
                       
                       $idRol=$perfilEst;
 
                       $CicloMatricula=$anio." - Ciclo ".$ciclo; 
-                     
+
 
                         if ($banderaMatricula==4)
                         {
 
-
                             $UgServices = new UgServices;
 
                              $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$Idciclo);
+                             
                             $solicitudenProceso=0;
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
@@ -774,6 +780,10 @@
 
 
                         }
+                        else
+                        {
+                           $banderaMatricula=0;
+                        }
                         
                           
                     }catch (\Exception $e)
@@ -794,7 +804,6 @@
                                                     'cicloencurso'=>$CicloMatricula,
                                                     'idciclo'=>$Idciclo,
                                                     'parveces'=>$parveces,
-                                                    'solicitudenProceso'=>$solicitudenProceso,
                                                     'carrera'=>$carrera 
 
                                                  ));
@@ -1852,212 +1861,539 @@
            }  
     }#end function
 
-    // public function pdfHorarioExamenAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera)
-    // {     
-    //         $session=$request->getSession();
-    //         $perfilEst   = $this->container->getParameter('perfilEst');
-    //         $perfilDoc   = $this->container->getParameter('perfilDoc');
-    //         $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
-    //         $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
-    //         $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
-    //         $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
-    //         $estudiante  = $session->get('nom_usuario'); 
+
+
+
+    public function pdfHorarioExamenAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
           
 
-    //        if ($session->has("perfil")) {
-    //            if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
 
 
-    //             $UgServices = new UgServices;
-    //             $xml1 = $UgServices->getConsultaHorario_examen($idEstudiante,$idCarrera,$ciclo);
-    //           //obtenet el ciclo de matriculacion del XML
-    //             $pdfGen="";
-    //             $mpdfService = $this->get('tfox.mpdfport');
-    //             $mPDF = $mpdfService->getMpdf();
-    //             $mPDF->AddPage('','','1','i','on');
-    //             $lnPage=1;
-    //             $lnCuenta=0;
-    //             $lnhasta=0;
-    //             $arrDias=array();
-    //             $arrHoras=array();
-    //             $arrMaterias=array();
-                
-    //            //var_dump($xml1);
-    //            if ( is_object($xml1))
-    //               {
-    //                         foreach($xml1->PX_SALIDA as $xml)
-    //                          {  
-                                  
-    //                               foreach($xml->horarios as $lscabHorarios)
-    //                               {
+                $UgServices = new UgServices;
+                $xml1 = $UgServices->getConsultaHorario_examen($idEstudiante,$idCarrera,$ciclo);
+              //obtenet el ciclo de matriculacion del XML
+                $pdfGen="";
+                $mpdfService = $this->get('tfox.mpdfport');
+                $mPDF = $mpdfService->getMpdf();
+                $mPDF->AddPage('','','1','i','on');
+                $lnPage=1;
+                $lnCuenta=0;
+                $lnhasta=0;
+                $arrDias=array();
+                $arrHoras=array();
+                $arrMaterias=array();
+                $arrPresentar=array();
+                //var_dump($xml1);
+                // var_dump($xmlCursos);
+                //   exit();
+               //var_dump($xml1);
+               if ( is_object($xml1))
+                  {
+                            foreach($xml1->PX_Salida as $xml)
+                             {  
+                                  foreach($xml->cursos as $xmlCursos)
+                                    { 
 
-    //                                     $lnhasta=count ($lscabHorarios->Horarios);
-    //                                     $pdf= " <html> 
-    //                                               <body>
-    //                                               <table class='table table-striped table-bordered' border='1' width='100%'  >
-    //                                               <thead><tr>";
-    //                                     foreach($lscabHorarios->dias->dia as $Horarios) 
-    //                                       {
-    //                                         $arrDatos=('Dia'=>$Horarios->Nombre,
-    //                                                     'idDia'=>$Horarios->id_dia);
-    //                                           array_push($arrDias, $arrDatos);
-    //                                         }
-    //                                         $c=count($arrDias);
+                                            foreach($xmlCursos->curso as $lscabHorarios)
+                                            {
+                                              $nombreCurso=$lscabHorarios->descripcion;
+                                              $arrDias=array();
+                                              $arrHoras=array();
+                                              $arrMaterias=array();
+                                              $arrPresentar=array();
+                                              $arrProfesores=array();
 
-    //                                         foreach($lscabHorarios->horas->hora as $Horarios) 
-    //                                         {
-    //                                           $arrDatos=('Hora'=>$Horarios->descripcion_hora,
-    //                                                       'idHora'=>$Horarios->id_hora);
-    //                                             array_push($arrHoras, $arrDatos);
-    //                                         } 
-    //                                         $f=count($arrHoras);
-    //                                         for($i = 0; $i < $f; $i++)
-    //                                         {
-    //                                           for($j = 0; $j < $c; $j++)
-    //                                           {
-    //                                             $arrhorario[$i][$j]="";
-    //                                           }
-    //                                         }
-    //                                         foreach($lscabHorarios->materias->materia as $Horarios) 
-    //                                         {
-    //                                           $arrDatos=('Materia'=>$Horarios->descripcion_materia,
-    //                                                       'idHora'=>$Horarios->id_hora,
-    //                                                       'idDia'=>$Horarios->id_dia);
-    //                                             array_push($arrMaterias, $arrDatos);
-    //                                         } 
+                                                  $lnhasta=count ($lscabHorarios);
+                                                  foreach($lscabHorarios->dias->dia as $Horarios) 
+                                                    {
+                                                          $arrDatos=array('Dia'=>(string)$Horarios->nombre,
+                                                                  'idDia'=>(string)$Horarios->id_dia);
+                                                          array_push($arrDias, $arrDatos);
+                                                      }
 
-    //                                          foreach ($arrMaterias as $key => $value) {
-                                                  
-    //                                           }
+                                                      foreach($lscabHorarios->horas->hora as $Horariosh) 
+                                                      {
+                                                        $arrDatos=array('Hora'=>(string)$Horariosh->nombre,
+                                                                    'idHora'=>(string)$Horariosh->id_hora);
+                                                          array_push($arrHoras, $arrDatos);
+                                                      } 
+                                                      
+                                                      
+                                                      $c=count($arrDias);
+                                                      $f=count($arrHoras);
 
+                                                      for($i = 0; $i < $f; $i++)
+                                                      {
+                                                        for($j = 0; $j < $c; $j++)
+                                                        {
+                                                          $arrPresentar[$i][$j]="";
+                                                        }
+                                                      }
+                                                      foreach($lscabHorarios->materias->materia as $Horariosm) 
+                                                      {
+                                                        $arrDatos=array('Materia'=>(string) $Horariosm->descripcion_materia,
+                                                                    'idMateria'=> (string)$Horariosm->id_materia,
+                                                                    'idHora'=> (string)$Horariosm->id_hora,
+                                                                    'idDia'=> (string)$Horariosm->id_dia);
+                                                          array_push($arrMaterias, $arrDatos);
+                                                      } 
+                                                      foreach($lscabHorarios->profesores->profesor as $Horariosp) 
+                                                      {
+                                                        $arrDatos=array('Materia'=>(string) $Horariosp->nombre_materia,
+                                                                    'Profesor'=> (string)$Horariosp->nombre);
+                                                          array_push($arrProfesores, $arrDatos);
+                                                      } 
+                                                      
+                                                      $lncuantosp=count($arrProfesores);
+                                                      $lncuantosp=ceil($lncuantosp/2);
+                                                       foreach ($arrMaterias as $key => $Detalle) 
+                                                       {
+                                                            $idDia=$Detalle['idDia'];
+                                                            $idHora=$Detalle['idHora'];
+                                                            $Materia=$Detalle['Materia'];
 
-    //                                          foreach($lscabHorarios->horas->hora as $Horarios) 
-    //                                         {
-    //                                           $arrDatos=('Hora'=>$Horarios->descripcion_hora,
-    //                                                       'idHora'=>$Horarios->id_hora);
-    //                                             array_push($arrHoras, $arrDatos);
-    //                                           } 
+                                                            //$poscol=array_search($idDia, $arrCol);
+                                                            //echo $idDia;
+                                                            foreach ($arrHoras as $keyf => $Filas) 
+                                                            {
+                                                                if ((string) $Filas['idHora']==$idHora)
+                                                                {
+                                                                  $posFil=$keyf;
+                                                                   break;
+                                                                }
+                                                             }
+                                                            foreach ($arrDias as $keyc => $Filas) 
+                                                            {
+                                                                if ((string) $Filas['idDia']==$idDia)
+                                                                {
+                                                                  $posCol=$keyc;
+                                                                   break;
+                                                                }
+                                                            }
+                                                            
+                                                            $arrPresentar[$posFil][$posCol]=$Materia;
+                                                          }
 
+                                                          $presenta="<html> 
+                                                      <body>
+                                                      <br/>
+                                                      <img width='5%' src='images/menu/ug_logo.png'/>
+                                                      <table align='center'>
+                                                      <tr>
+                                                        <td align='center'>
+                                                          <b> Horario de Examen Curso : $nombreCurso </b>
+                                                        </td>
+                                                      <tr>
+                                                      <tr>
+                                                      <td>
+                                                        <b> $carrera </b>
+                                                      </td>
+                                                      </tr>
+                                                      </table><table class='table table-striped table-bordered' border='1' width='100%'>";
+                                                          $presenta.="<thead><tr>";
+                                                          $presenta.="<th>Horario</th>";
+                                                          //var_dump($arrCol);
+                                                            foreach ($arrDias as $key => $value) {
+                                                              $presenta.="<th>".$value['Dia']."</th>";
+                                                            }
+                                                          $presenta.="</tr></thead>";
+                                                          
+                                                          foreach ($arrPresentar as $key => $value) {
+                                                            $presenta.="<tr>";
+                                                            $presenta.="<td>".$arrHoras[$key]['Hora']."</td>";
+                                                            //var_dump($value);
+                                                            foreach ($value as $key2 => $value2) {
+                                                              $presenta.="<td>".$value2."</td>";
+                                                              //echo $key2;
+                                                            }
+                                                            $presenta.="</tr>";
+                                                            //$presenta.="<tr><td>".$value[$key]."</td></tr>";
+                                                            //var_dump($value);
+                                                          }
+                                                          $presenta.="</table>";
+                                                          $presenta.="<table class='table table-striped table-bordered' border='0' width='100%'>";
+                                                          $i=1;
+                                                           $presenta.="<thead>"; 
+                                                           $presenta.="<tr><th colspan=1>Detalle de Profesores por Materia</th></tr>";
+                                                           $presenta.="</thead>";
+                                                          foreach ($arrProfesores as $key => $value) {
+                                                                  if ($i%2!=0)
+                                                                  {
+                                                                    $presenta.="<tr>";
+                                                                  }
+                                                                  $presenta.="<td style='font-size:10px; line-height:1;'> ".$value['Materia']." - ".$value['Profesor']."</td>";
+                                                                  if ($i%2==0)
+                                                                  {
+                                                                    $presenta.="<tr>";
+                                                                  }
+                                                                  $i=$i+1;
+                                                                }
 
-    //                                         $pdf.= "<th style='text-align: center !important;' >".$nombreDia."</th>";
+                                                            $presenta.="</table>";
 
-    //                                           $lnCuenta=$lnCuenta+1;
-    //                                           $NumOrden= (string ) $lsOrden->numero_orden;
-    //                                           $FecOrden= (string ) $lsOrden->fecha_limite_pago;
-    //                                           $ValorOrden=(string ) $lsOrden->valor_total;
-    //                                           $pdf= " <html> 
-    //                                               <body>
-    //                                               <table class='table table-striped table-bordered' border='1' width='100%'  >
-    //                                               <tr>
-    //                                               <td width='100%'>
-    //                                                 <img width='5%' src='images/menu/ug_logo.png'/>
-    //                                                 <b> $carrera </b>
-    //                                               </td>
-    //                                               </tr>
-    //                                               <tr>
-    //                                               <td width='100%'>
-    //                                                 <table align='center'>
-    //                                                 <tr>
-    //                                                   <td align='left'>
-    //                                                     <b> Orden de Pago  N° </b>
-    //                                                   </td>
-    //                                                   <td>
-    //                                                     $NumOrden
-    //                                                   </td>
-    //                                                 </tr>
-    //                                                 </table>
-    //                                               </td>
-    //                                             </tr>
-    //                                             <tr>
-    //                                             <td width='105%'>    
-    //                                                 <table  border='1' width='100%' align='center'>
-    //                                                             <tr>
-    //                                                                     <th colspan='2' > Detalle de Orden de Pago  </th>
-    //                                                             </tr>
-    //                                                             <tr>
-    //                                                                 <th  align='center'>Detalle</th>
-    //                                                                 <th  align='center'>Valor</th>
-    //                                                             </tr>"; 
-
-
-    //                                          foreach($lsOrden->Detalles->Detalle as $lsDetOrden) 
-    //                                             {
-    //                                               $Rubro=$lsDetOrden->Rubro;
-    //                                               $Valor=$lsDetOrden->valor;
-    //                                               $pdf.="<tr>
-    //                                                         <td  width='100%' align='center'>$Rubro</td>
-    //                                                         <td  width='100%' align='center'>$Valor</td>
-    //                                                     </tr>"; 
-    //                                             } 
-    //                                              $pdf.="</table>";
-
-    //                                            $pdf.="</td>
-    //                                                     </tr>
-    //                                                   </table> <br><br><br><br>
-    //                                            </body></html>";
-    //                                            //$pdfGen.=$pdf;
-                                               
-    //                                            if ($lnPage==3)
-    //                                            {
-    //                                               $lnPage=1;
-    //                                               $mPDF->AddPage('','','1','i','on');
-                                                  
-    //                                            }
-    //                                            else
-    //                                            {
-    //                                             $lnPage=$lnPage+1;
-    //                                             if ($lnhasta==$lnCuenta)
-    //                                               {
-    //                                                 $mPDF->AddPage('','','1','i','on'); 
-                                                    
-    //                                               }
-    //                                            }
-                                               
-
-    //                                            $mPDF->WriteHTML($pdf);
-                                               
-    //                                       }
-    //                                   }
-    //                               }
-                                      
-    //               }
+                                                          $presenta.="</body></html>";
+                                                          $mPDF->WriteHTML($presenta);
+                                                          //echo $presenta;
+                                                      //var_dump($arrPresentar);
+                                                      //exit();
+                                                    }
+                                            }
+                                      }
+                  }
                  
-    //               //$mPDF->WriteHTML($pdfGen);
+                  //$mPDF->WriteHTML($pdfGen);
                   
-    //               //$mPDF->AddPage('','','1','i','on');
-    //               //$mPDF->WriteHTML($pdf);
-    //               //$mPDF->Output();
-    //               if ($lnhasta<=0)
-    //               {
-    //                 $mPDF->WriteHTML("No existen Datos para Generar");
-    //               }
-    //               return new response($mPDF->Output());
-    //                // $html =  $pdf;
+                  //$mPDF->AddPage('','','1','i','on');
+                  //$mPDF->WriteHTML($pdf);
+                  //$mPDF->Output();
+                  if ($lnhasta<=0)
+                  {
+                    $mPDF->WriteHTML("No existen Datos para Generar");
+                  }
+                  return new response($mPDF->Output());
+ 
 
-    //                 //$mpdfService->SetTitle("Acme Trading Co. - Invoice");
-    //                 //$mpdfService->Output("Pruebas.pdf")
+        } else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+     }else{
+          $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+              return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+     }  
+    }#end function
+
+    public function carrerasHorariosAction(Request $request)
+    {
+           $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+        
+           if ($session->has("perfil")) 
+           {
+               if ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) 
+               {
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          //$idEstudiante=3;
+                          $idEstudiante=$session->get("id_user");
+                          //$idEstudiante=3;
+                          $idRol=$perfilEst;
+                          
+                          //$idRol=$session->get("perfil");
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarreras($idEstudiante,$idRol);
+                             
+                            if ( is_object($xml))
+                            {
+                              foreach($xml->registros->registro as $lcCarreras) 
+                              {
+                                      $lcFacultad=$lcCarreras->id_sa_facultad;
+                                      $lcCarrera=$lcCarreras->id_sa_carrera;
+                                      $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                 'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                 'Carrera'=>$lcCarreras->id_sa_carrera,
+                                                                 'idCiclo'=>$lcCarreras->id_sa_ciclo_detalle
+                                                                );
+                                      array_push($Carreras, $materiaObject); 
+                              } 
+
+                              $bolCorrecto=1;
+                              $cuantos=count($Carreras);
+                              if ($cuantos==0)
+                              {
+                                $bolCorrecto=0;
+                              }
+                              return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_carrerashorarios.html.twig',array(
+                                                      'facultades' =>  $Carreras,
+                                                      'idEstudiante'=>$idEstudiante,
+                                                      'idFacultad'=>$lcFacultad,
+                                                      'idCarrera'=>$lcCarrera,
+                                                      'cuantos'=>$cuantos,
+                                                      'bolcorrecto'=>$bolCorrecto
+                                                   ));
+                            }
+                            else
+                            {
+                              throw new \Exception('Un error');
+                            }    
+                     }
+                     catch (\Exception $e)
+                     {
+                            $bolCorrecto=0;
+                            $cuantos=0;
+                            return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_carrerashorarios.html.twig',array(
+                                                      'facultades' =>  $Carreras,
+                                                      'idEstudiante'=>$idEstudiante,
+                                                      'idFacultad'=>$lcFacultad,
+                                                      'idCarrera'=>$lcCarrera,
+                                                      'cuantos'=>$cuantos,
+                                                      'bolcorrecto'=>$bolCorrecto
+                                                   ));
+
+                            //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                     }
+               }
+               else
+               {
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }
+           else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+        }
+
+public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+          
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
 
 
-    //                 //$response = $mpdfService->generatePdfResponse($html);
-    //                 //return $response;
+                $UgServices = new UgServices;
+                $xml1 = $UgServices->getConsultaHorario_General($idEstudiante,$idCarrera,$ciclo);
 
+              //obtenet el ciclo de matriculacion del XML
+                $pdfGen="";
+                $mpdfService = $this->get('tfox.mpdfport');
+                $mPDF = $mpdfService->getMpdf();
+                $mPDF->AddPage('','','1','i','on');
+                $lnPage=1;
+                $lnCuenta=0;
+                $lnhasta=0;
+                $arrDias=array();
+                $arrHoras=array();
+                $arrMaterias=array();
+                $arrPresentar=array();
+                
+               //var_dump($xml1);
+               if ( is_object($xml1))
+                  {
+                    
+                            foreach($xml1->PX_Salida as $xml)
+                             {  
+                              foreach($xml->cursos as $xmlCursos)
+                                    { 
 
+                                  
+                                                foreach($xmlCursos->curso as $lscabHorarios)
+                                                {
 
-    //     } else{
-    //               $this->get('session')->getFlashBag()->add(
-    //                             'mensaje',
-    //                             'Los datos ingresados no son válidos'
-    //                         );
-    //                 return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-    //            }
-    //        }else{
-    //             $this->get('session')->getFlashBag()->add(
-    //                                   'mensaje',
-    //                                   'Los datos ingresados no son válidos'
-    //                               );
-    //                 return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-    //        }  
-    // }#end function
+                                                  $nombreCurso=$lscabHorarios->descripcion;
+                                                  $arrDias=array();
+                                                  $arrHoras=array();
+                                                  $arrMaterias=array();
+                                                  $arrPresentar=array();
+                                                  $arrProfesores=array();
+
+                                                      $lnhasta=count ($lscabHorarios);
+                                                      foreach($lscabHorarios->dias->dia as $Horarios) 
+                                                        {
+                                                              $arrDatos=array('Dia'=>(string)$Horarios->nombre,
+                                                                      'idDia'=>(string)$Horarios->id_dia);
+                                                              array_push($arrDias, $arrDatos);
+                                                          }
+
+                                                          foreach($lscabHorarios->horas->hora as $Horariosh) 
+                                                          {
+                                                            $arrDatos=array('Hora'=>(string)$Horariosh->nombre,
+                                                                        'idHora'=>(string)$Horariosh->id_hora);
+                                                              array_push($arrHoras, $arrDatos);
+                                                          } 
+                                                          
+                                                          
+                                                          $c=count($arrDias);
+                                                          $f=count($arrHoras);
+
+                                                          for($i = 0; $i < $f; $i++)
+                                                          {
+                                                            for($j = 0; $j < $c; $j++)
+                                                            {
+                                                              $arrPresentar[$i][$j]="";
+                                                            }
+                                                          }
+                                                          foreach($lscabHorarios->materias->materia as $Horariosm) 
+                                                          {
+                                                            $arrDatos=array('Materia'=>(string) $Horariosm->descripcion_materia,
+                                                                        'idMateria'=> (string)$Horariosm->id_materia,
+                                                                        'idHora'=> (string)$Horariosm->id_hora,
+                                                                        'idDia'=> (string)$Horariosm->id_dia);
+                                                              array_push($arrMaterias, $arrDatos);
+                                                          } 
+                                                          foreach($lscabHorarios->profesores->profesor as $Horariosp) 
+                                                          {
+                                                            $arrDatos=array('Materia'=>(string) $Horariosp->nombre_materia,
+                                                                        'Profesor'=> (string)$Horariosp->nombre);
+                                                              array_push($arrProfesores, $arrDatos);
+                                                          } 
+                                                          
+                                                          $lncuantosp=count($arrProfesores);
+                                                         // $lncuantosp=ceil($lncuantosp/2);
+                                                           foreach ($arrMaterias as $key => $Detalle) 
+                                                           {
+                                                                $idDia=$Detalle['idDia'];
+                                                                $idHora=$Detalle['idHora'];
+                                                                $Materia=$Detalle['Materia'];
+
+                                                                //$poscol=array_search($idDia, $arrCol);
+                                                                //echo $idDia;
+                                                                foreach ($arrHoras as $keyf => $Filas) 
+                                                                {
+                                                                    if ((string) $Filas['idHora']==$idHora)
+                                                                    {
+                                                                      $posFil=$keyf;
+                                                                       break;
+                                                                    }
+                                                                 }
+                                                                foreach ($arrDias as $keyc => $Filas) 
+                                                                {
+                                                                    if ((string) $Filas['idDia']==$idDia)
+                                                                    {
+                                                                      $posCol=$keyc;
+                                                                       break;
+                                                                    }
+                                                                }
+                                                                
+                                                                $arrPresentar[$posFil][$posCol]=$Materia;
+                                                              }
+
+                                                              $presenta="<html> 
+                                                          <body>
+                                                          <br/>
+                                                          <img width='5%' src='images/menu/ug_logo.png'/>
+                                                          <table align='center'>
+                                                          <tr>
+                                                            <td align='center'>
+                                                              <b> Horario de Clases Curso : $nombreCurso </b>
+                                                            </td>
+                                                          <tr>
+                                                          <tr>
+                                                          <td>
+                                                            <b> $carrera </b>
+                                                          </td>
+                                                          </tr>
+                                                          </table><table class='table table-striped table-bordered' border='1' width='100%'>";
+                                                              $presenta.="<thead><tr>";
+                                                              $presenta.="<th>Horario</th>";
+                                                              //var_dump($arrCol);
+                                                                foreach ($arrDias as $key => $value) {
+                                                                  $presenta.="<th>".$value['Dia']."</th>";
+                                                                }
+                                                              $presenta.="</tr></thead>";
+                                                              
+                                                              foreach ($arrPresentar as $key => $value) {
+                                                                $presenta.="<tr>";
+                                                                $presenta.="<td>".$arrHoras[$key]['Hora']."</td>";
+                                                                //var_dump($value);
+                                                                foreach ($value as $key2 => $value2) {
+                                                                  $presenta.="<td>".$value2."</td>";
+                                                                  //echo $key2;
+                                                                }
+                                                                $presenta.="</tr>";
+                                                                //$presenta.="<tr><td>".$value[$key]."</td></tr>";
+                                                                //var_dump($value);
+                                                              }
+                                                              $presenta.="</table>";
+                                                              $presenta.="<table class='table table-striped table-bordered' border='0' width='100%'>";
+                                                              $i=1;
+                                                               $presenta.="<thead>"; 
+                                                               $presenta.="<tr><th colspan=1>Detalle de Profesores por Materia</th></tr>";
+                                                               $presenta.="</thead>";
+                                                              foreach ($arrProfesores as $key => $value) {
+                                                                      if ($i%2!=0)
+                                                                      {
+                                                                        $presenta.="<tr>";
+                                                                      }
+                                                                      $presenta.="<td style='font-size:10px; line-height:1;'> ".$value['Materia']." - ".$value['Profesor']."</td>";
+                                                                      if ($i%2==0)
+                                                                      {
+                                                                        $presenta.="<tr>";
+                                                                      }
+                                                                      $i=$i+1;
+                                                                    }
+
+                                                                $presenta.="</table>";
+
+                                                              $presenta.="</body></html>";
+                                                              $mPDF->WriteHTML($presenta);
+                                                              //echo $presenta;
+                                                          //var_dump($arrPresentar);
+                                                          //exit();
+                                                }
+                                          }
+                                      }
+                  }
+                 
+                  //$mPDF->WriteHTML($pdfGen);
+                  
+                  //$mPDF->AddPage('','','1','i','on');
+                  //$mPDF->WriteHTML($pdf);
+                  //$mPDF->Output();
+                  if ($lnhasta<=0)
+                  {
+                    $mPDF->WriteHTML("No existen Datos para Generar");
+                  }
+                  return new response($mPDF->Output());
+ 
+
+        } else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+     }else{
+          $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+              return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+     }  
+    }#end function        
 
 
     }

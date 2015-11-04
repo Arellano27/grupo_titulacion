@@ -1,0 +1,63 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+
+      {% block home %}
+
+        {% if(bolcorrecto==1) %}
+        <div class="col-lg-9">
+          <div class="panel  panel-primary">
+            <!--<div class="panel-heading">
+              Collapsible Accordion Panel Group
+            </div>-->
+            <!-- .panel-heading -->
+            <div class="panel-body">
+                      <h2 align="center"><b>Horarios - Seleccion de Carreras</b></h2>
+              <div class="panel-group" id="accordion">
+                
+                  
+                    
+                          {% for facultad in facultades %} 
+                              <div class="panel panel-default">
+                                  <div class="panel-heading">  
+                                      <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion" href="#{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera' id="na_{{ facultad.Carrera }}_{{ facultad.Facultad }}_{{ facultad.idCiclo }}_f" >{{ facultad.Nombre }}</a>
+                                      </h4>
+                                  </div>
+
+                                  <div id="{{ facultad.Carrera }}_{{ facultad.Facultad }}" class="panel-collapse collapse">
+                                     <div class="table-responsive">
+                                            <table class="table table-striped table-bordered" align="center">
+                                                <tr>
+                                                  <td align="center">
+                                                      <a class="btn btn-success "id="pdfSolAnula" href="{{ path('estudiantes_pdf_horarioexamen',{ 'idEstudiante': idEstudiante,'idCarrera':facultad.Carrera,'ciclo':facultad.idCiclo,'carrera':facultad.Nombre }) }}" target="_blank">Imprimir Horario de Examen</a>
+                                                  
+                                                  
+                                                      <a class="btn btn-success "id="pdfSolAnula" href="{{ path('estudiantes_pdf_horariogeneral',{ 'idEstudiante': idEstudiante,'idCarrera':facultad.Carrera,'ciclo':facultad.idCiclo,'carrera':facultad.Nombre }) }}" target="_blank">Imprimir Horario de Clases</a>
+                                                  </td>
+                                                </tr>
+                                            </table>
+
+                                                  <!--/div-->
+                                          </div>
+                                      </div>
+                                   
+                              </div>
+                          {% endfor %}   
+                      </div>
+              </div>
+            </div>
+            <!-- .panel-body -->
+          </div>
+          <!-- /.panel -->
+        <!-- /.col-lg-9 -->
+         <div class='menu_derecho' id='div_derecho'>
+              {% block menu_2 %}
+                  {{ include( 'TitulacionSisAcademicoBundle:Estudiantes:menu_estudiantes.html.twig' ) }}
+               {% endblock %}
+          </div>
+          <!-- /.col-lg-4 -->
+    {% endif %}
+ {% if(bolcorrecto==0) %}
+  <div class="panel panel-primary"> No se encontraron Registros de Carreras</div>
+{% endif %}
+{% endblock %}
+ 
