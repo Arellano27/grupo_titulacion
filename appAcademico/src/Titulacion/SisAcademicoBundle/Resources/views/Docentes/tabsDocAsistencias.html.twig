@@ -37,25 +37,27 @@
 
    $(".tabNotas").click(function(){
      var tabs =$(this).attr('id'); 
+     
+        var idMateria     = '{{ idMateria }}';
+         var idCarrera     = '{{ idCarrera }}';
 
      if(tabs === 'consulta' ) {
-         var idMateria     = '{{ idMateria }}';
-         var idCarrera     = '{{ idCarrera }}';
+         
          var inicioCiclo    ='{{ inicioCiclo }}';
          var finCiclo      = '{{ finCiclo }}';
          var obj_data      = {'idMateria':idMateria,'idCarrera':idCarrera, 'inicioCiclo':inicioCiclo, 'finCiclo':finCiclo};
        mostrarInfoTabsNotas('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_listado_alumnos_materia') }}', obj_data);
      }
      if(tabs ==='ingreso'){
-         var idMateria     = '{{ idMateria }}';
-       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_asistencia_alumnos') }}',idMateria);
+         
+       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_asistencia_alumnos') }}',idMateria,idCarrera);
      }
      if(tabs ==='actualiza'){
-       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_actualiza_asis') }}','2345');
+       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_actualiza_asis') }}',idMateria,idCarrera);
      }
      if(tabs ==='ingreso2'){
          var idMateria     = '{{ idMateria }}';
-       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('admin_lista_estudiantes') }}',idMateria);
+       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('admin_lista_estudiantes') }}',idMateria,idCarrera);
      }
      
    });

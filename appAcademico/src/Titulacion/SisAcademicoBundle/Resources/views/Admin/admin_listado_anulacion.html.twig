@@ -1,0 +1,85 @@
+<div class="col-lg-12 divordentemp" >
+    <h4 class="StepTitle" align="center" >Listado de Anulaciones</h4>
+        <div class="panel panel-default" >
+            <!-- /.panel-heading -->
+            <div class="panel-body" >
+
+                <div class="col-lg-12">
+                    <div class="table-responsive"  id="divordentemp">
+                    
+                    <table  align='center' border='1' >
+                        <thead>
+                            <tr>
+                                <td colspan='6'><div style="background-color: #0B2161; color: white;font-size:15pt ;" align="center">Solicitudes</div></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center" >Id Tipo Solicitud</th>
+                                <th style="text-align:center" >Tipo Solicitud</th>
+                                <th style="text-align:center">Estudiante</th>
+                                <th style="text-align:center">Estado</th>
+                                <th style="text-align:center">Id estado</th>
+                                <th style="text-align:center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                               {% for listado in inscripcion %}    
+                                 <tr class="odd gradeX">
+                                    <td   align="center"   width='5%' id="tipo_solicitud_{{ listado.id_tipo_solicitud }}">{{ listado.id_tipo_solicitud }}</td>
+                                    <td   align="center"   width='5%' id="tipo_{{ listado.tipo }}">{{ listado.tipo }}</td>
+                                    <td align="center" width='5%' id="nombre_{{ listado.solicitante }}">{{ listado.solicitante }}</td>
+                                    <td align="center" width='5%' id="estado_{{ listado.estado }}">{{ listado.estado }}</td>
+                                    <td align="center" width='5%' id="idestado_{{ listado.id_estado }}">{{ listado.id_estado }}</td>
+                                    <td align="center" width='5%' ><a class="btn btn-success " id='idbtn_{{ listado.id_sa_solicitud }}_{{ listado.id_tipo_solicitud }}'>Detalle</a></td>
+                                </tr>
+                            {% endfor %}  
+                        </tbody>
+                    
+                    </table>
+                </div>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+
+        <!-- /.panel -->
+
+    </div>
+
+ <script>
+         {% for listado in inscripcion %}    
+            $("#idbtn_{{ listado.id_sa_solicitud }}_{{ listado.id_tipo_solicitud }}").on("click",function(event){
+                    var materiaAnulada = $('#divordentemp');
+                    var idCarrera='{{idCarrera}}';
+                    var idCiclo='{{idCiclo}}';
+                    var solicitante='{{ listado.solicitante }}';
+                    var id_sa_solicitud='{{ listado.id_sa_solicitud }}';
+                    var id_tipo_solicitud='{{ listado.id_tipo_solicitud }}';
+                    var obj_data = {'idCarrera':idCarrera,'idCiclo':idCiclo,'nombreEst':solicitante,'id_sa_solicitud':id_sa_solicitud,'id_tipo_solicitud':id_tipo_solicitud};
+                     var jumpAction = '{{path('admin_anulacion_detalle')}}';
+                      $.ajax({
+                         url:   jumpAction,
+                         data: obj_data,
+                         type:  'post',
+                         async: true,
+                         beforeSend: function () {
+                            materiaAnulada.html("Cargando, espere por favor...");
+                         },
+                         success:  function (dataResponse) {
+                             materiaAnulada.html(dataResponse);
+                         },
+                          error: function(dataResponse)
+                          {
+                            form="accordion";
+                            msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                            $( '#'+form ).append( msg_alert );
+                                            $('#modal-'+form).modal('show');
+                          },
+                
+
+                         dataType:'html'
+                      });
+
+               }); 
+        {% endfor %}
+</script>

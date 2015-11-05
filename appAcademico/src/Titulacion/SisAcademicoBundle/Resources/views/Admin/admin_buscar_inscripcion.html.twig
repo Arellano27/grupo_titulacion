@@ -1,0 +1,108 @@
+<div class="col-lg-12">
+<div class="table-responsive">
+
+    <table align='center'>
+            <thead>
+                <tr>
+                    <th align='center' colspan='4'>
+                          <h4 align="center"><b>Registro de Inscripcion</b></h4>  
+                    </th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">
+                          Criterio de Consulta
+                    </th>
+                  
+                    <th style="text-align:center">
+                          Numero de Cedula
+                    </th>
+                </tr>
+            </thead>
+            <tr>
+                    
+                    <td align='left' valign='center'>
+                        
+                        <select  name='selconsulta'>
+                          <option value="cedula" > Cedula de Identicada</option>
+                        </select >
+               
+                    <td align='left'>
+                           <input onkeyup = "if(event.keyCode == 13) onkeydato()" style="height:22px" type="text" id="busquedaest" /> 
+                    </td>
+                    
+            </tr>
+            <tr>
+                    
+                    
+            </tr>
+            <tr>
+                    <td align='center' colspan='3'>
+                             <br/>
+                            <a class="btn btn-success " id='btnconsultarest'>Consultar</a>
+                              <!-- <input type="submit" name="btnconsultarest" id="btnconsultarest" value="Inscribir"> -->
+
+                    </td>
+            </tr>
+    </table>
+</div>
+</div>
+<div id='divodenespagos'>
+
+</div>
+
+<script language="javascript">
+        $(document).ready(function() {
+            $('#btnconsultarest').on("click",function(event){
+                onkeydato();
+            });
+        })
+    
+    function onkeydato() 
+    {
+                var elecmentocombo = document.getElementsByName("selconsulta"); 
+                var indice=elecmentocombo[0].options.selectedIndex;
+                var criterio =elecmentocombo[0].options[indice].value;
+                var valorBuscado=$("#busquedaest").val();
+                var idCarrera='{{idCarrera}}';
+                var idCiclo='{{idCiclo}}';
+                var obj_data = {'idEstudiante':valorBuscado,'idCarrera':idCarrera,'idCiclo':idCiclo,'criterio':criterio};
+                var resultado = $('#divodenespagos');
+                var jumpAction = '{{path('admin_inscripcion_listar')}}';
+          // Enviamos el formulario usando AJAX
+                if (valorBuscado.length!=0)
+                {
+                     $.ajax({
+                           url:   jumpAction,
+                           data: obj_data,
+                           type:  'post',
+                           async: true,
+                           beforeSend: function () 
+                           {
+                             resultado.html("Cargando, espere por favor...");
+                           },
+                           success:  function (dataResponse) 
+                           {
+                             resultado.html(dataResponse);
+                           },
+                           error: function(dataResponse)
+                           {
+                              form="accordion";
+                              msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                      $( '#'+form ).append( msg_alert );
+                                      $('#modal-'+form).modal('show');
+                           },
+                           dataType:'html'
+                        });
+                }
+                else
+                {
+                     modelessActualizadOrden= new $.flavr({
+                                                   modal   : true,
+                                                   content : 'Por favor, ingrese un dato para consultar',
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', style: 'primary' }
+                                                   }
+                                                });
+                }
+            }            
+</script>

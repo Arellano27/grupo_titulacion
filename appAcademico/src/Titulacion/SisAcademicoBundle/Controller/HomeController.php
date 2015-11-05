@@ -109,11 +109,18 @@ class HomeController extends Controller
             $perfilEst   = $this->container->getParameter("perfilEst");
             $perfilDoc   = $this->container->getParameter("perfilDoc");
             $perfilAdmin = $this->container->getParameter("perfilAdmin");
+            $perfilCordi = $this->container->getParameter("perfilCordi");
             #obtenemos los datos enviados por get
             $username    = $request->request->get('user');
             //$password    = $request->request->get('pass');
             $contrasenia = $request->request->get('pass');
 
+
+
+            $rol_secretario = '';
+            $rol_coordinador = "";
+            $data_secretario = "";
+            $data_coordinador = "";
 
             $salt    = "µ≈α|⊥ε¢ʟ@δσ";
             $password = password_hash($contrasenia, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
@@ -123,7 +130,7 @@ class HomeController extends Controller
             #llamamos a la consulta del webservice
             $UgServices = new UgServices;
             $data = $UgServices->getLogin($username,$password);
-
+// echo '<pre>'; var_dump($data); exit();
             if ($data) {
                 $login_act     =array();
                 $perfilUsuario = null;
@@ -136,7 +143,14 @@ class HomeController extends Controller
                     $cedula        = $data[0]['cedula'];
 
                     $mail          = $data[0]['mail'];
-                     $descRol       = $data[0]['descrol'];
+                    $descRol       = $data[0]['descrol'];
+
+                    if ($perfilAdmin == $perfil) {
+                      $rol_secretario = $perfil;
+                    }elseif ($perfilCordi == $perfil) {
+                      $rol_coordinador = $perfil;
+                    }
+
 
                 }else{
 
@@ -150,9 +164,17 @@ class HomeController extends Controller
                         $descRol       = $login['descrol'];
                         $perfil       .=  $login['idrol'];
 
+                        if ($perfilAdmin == $login['idrol']) {
+                          $rol_secretario = $login['idrol'];
+                        }elseif ($perfilCordi == $login['idrol']) {
+                          $rol_coordinador = $login['idrol'];
+                        }
+
                     }#end foreach
                 }
 
+
+                $id_rol = $perfil;
                 $session=$request->getSession();
                 $session->set("id_user",$idUsuario);
                 $session->set("perfil",$perfil); //idrol
@@ -160,6 +182,31 @@ class HomeController extends Controller
                 $session->set("cedula",$cedula);
                 $session->set("mail",$mail);
                 $session->set("descRol",$descRol);//nombre rol
+
+
+                if ($rol_secretario  != "") {
+                  $data_secretario = $UgServices->getRolesAdmin($idUsuario,$rol_secretario);
+                  // echo '<pre>'; var_dump($data_secretario); exit();
+                  $session->set("data_secretario",$data_secretario);
+                }elseif ($rol_coordinador != "") {
+                  $data_coordinador = $UgServices->getRolesAdmin($idUsuario,$rol_coordinador);
+                  $session->set("data_coordinador",$data_coordinador);
+                }
+
+                if(strlen($id_rol)>1){
+                    $id_rol = mb_substr($id_rol,0,1);
+                }else{
+                  $id_rol = $id_rol;
+                }
+                // $id_rol = 3;
+
+                $rsCarrera = $UgServices->getConsultaCarreras($idUsuario,$id_rol);
+                // echo '<pre>'; var_dump($rsCarrera); exit();
+                $resultadoObjeto = json_encode($rsCarrera);
+                $xml_array = json_decode($resultadoObjeto,TRUE);
+
+                $session->set("îdcarrera_calendar",$xml_array["registros"]["registro"]["id_sa_carrera"]);
+                $session->set("îdciclo_calendar",$xml_array["registros"]["registro"]["id_sa_ciclo_detalle"]);
 
                 $respuesta = array(
                   "Perfil" => $perfil ,
@@ -179,8 +226,6 @@ class HomeController extends Controller
                 return new Response(json_encode($respuesta));
                 //return new Response('05');
             }
-
-
 
 
         }else{

@@ -12,7 +12,7 @@ class AcademicoSoap {
  * [funcion que permite receptar el xml del webservice de los procedimientos]
  */
 function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
-
+// echo '<pre>'; var_dump($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host); exit();
     $post_string="
     <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\">
     <soapenv:Header/>
@@ -78,7 +78,7 @@ function doRequestSreReceptaTransacionProcedimientos($datosCuenta,$source,$tipo,
 // XML;
 
 
-
+// echo '<pre>'; var_dump($result); exit();
 
     if(!$result){
         return "error";
@@ -1319,8 +1319,9 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
         $result = curl_exec($soap_do);
       
-        //var_dump($result);
-         $result = $XML;
+//        var_dump($result);
+//        exit();
+//         $result = $XML;
          
          
          $xmlData["bloqueRegistros"]   = 'registros';
@@ -1802,6 +1803,309 @@ function doInsertEventosAcademicos($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     return $xml_array["PI_ESTADO"];
 }#end function
 
+
+//INSCRIPCION ADMIN
+function doRequestSreReceptaTransacionCarrerasInscripcion($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
+{
+
+$post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:ejecucionConsulta>
+         <dataSource>".$source."</dataSource>
+         <idServicio>".$tipo."</idServicio>
+         <usuario>".$usuario."</usuario>
+         <clave>".$clave."</clave>
+         <parametrosConsulta>
+            <parametros>
+                ".$datosCuenta."
+            </parametros>
+         </parametrosConsulta>
+      </ser:ejecucionConsulta>
+   </soapenv:Body>
+</soapenv:Envelope> ";
+
+        $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+        $soap_do = curl_init();
+        curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+        curl_setopt($soap_do, CURLOPT_URL,            $url );
+        curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+        curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt($soap_do, CURLOPT_PORT,8080);
+        curl_setopt($soap_do, CURLOPT_POST, true);
+        curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+        curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+        $result = curl_exec($soap_do);
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+
+        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+        $xml = new \SimpleXMLElement($response);
+        $body = $xml->xpath('//soapBody')[0];
+        $return = $xml->xpath('//return')[0];
+        $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
+        return $respuestaConsulta;
+    }
+}#end function
+
+function doRequestsListarInscripcion($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
+{
+
+$post_string="
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+               <soapenv:Header/>
+               <soapenv:Body>
+                  <ser:ejecucionObjeto>
+                      <dataSource>".$source."</dataSource>
+                     <idServicio>".$tipo."</idServicio>
+                     <usuario>".$usuario."</usuario>
+                     <clave>".$clave."</clave>
+                     <parametrosObjeto>
+                        <parametros>
+                           ".$datosCuenta."
+                      </parametros>
+                     </parametrosObjeto>
+                  </ser:ejecucionObjeto>
+               </soapenv:Body>
+            </soapenv:Envelope>";
+                    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+                    $soap_do = curl_init();
+                    curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+                    curl_setopt($soap_do, CURLOPT_URL,            $url );
+                    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+                    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+                    curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+                    curl_setopt($soap_do, CURLOPT_PORT,8080);
+                    curl_setopt($soap_do, CURLOPT_POST, true);
+                    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+                    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+                    $result = curl_exec($soap_do);
+
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+        $response  = $this->ReemplazaCaracteres($result);
+        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+        $xml = new \SimpleXMLElement($response);
+        $body = $xml->xpath('//soapBody')[0];
+        $return = $xml->xpath('//return')[0];
+        $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
+        $respuestaConsulta = $xml->xpath('//parametrosSalida')[0];
+        return $respuestaConsulta;
+    }
+}#end function
+function doSetActualizaInscripcion($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){
+
+ $post_string="
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+               <soapenv:Header/>
+               <soapenv:Body>
+                  <ser:ejecucionObjeto>
+                      <dataSource>".$source."</dataSource>
+                     <idServicio>".$tipo."</idServicio>
+                     <usuario>".$usuario."</usuario>
+                     <clave>".$clave."</clave>
+                     <parametrosObjeto>
+                        <parametros>
+                            ".$datosCuenta."
+                      </parametros>
+                     </parametrosObjeto>
+                  </ser:ejecucionObjeto>
+               </soapenv:Body>
+            </soapenv:Envelope>";
+            $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+            $soap_do = curl_init();
+            curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+            curl_setopt($soap_do, CURLOPT_URL,            $url );
+            curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+            curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+            curl_setopt($soap_do, CURLOPT_PORT,8080);
+            curl_setopt($soap_do, CURLOPT_POST, true);
+            curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+            curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+            $result = curl_exec($soap_do);
+
+
+            if(!$result)
+            {
+                return "error";
+            }
+            else
+            {
+
+                $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+                $xml = new \SimpleXMLElement($response);
+                $body = $xml->xpath('//soapBody')[0];
+                $return = $xml->xpath('//return')[0];
+                $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
+                return $respuestaConsulta;
+            }
+
+}#end function
+
+//ANULACION ADMIN
+function doRequestSreReceptaTransacionCarrerasAnulacion($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
+{
+
+$post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:ejecucionConsulta>
+         <dataSource>".$source."</dataSource>
+         <idServicio>".$tipo."</idServicio>
+         <usuario>".$usuario."</usuario>
+         <clave>".$clave."</clave>
+         <parametrosConsulta>
+            <parametros>
+                ".$datosCuenta."
+            </parametros>
+         </parametrosConsulta>
+      </ser:ejecucionConsulta>
+   </soapenv:Body>
+</soapenv:Envelope> ";
+
+        $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+        $soap_do = curl_init();
+        curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+        curl_setopt($soap_do, CURLOPT_URL,            $url );
+        curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+        curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt($soap_do, CURLOPT_PORT,8080);
+        curl_setopt($soap_do, CURLOPT_POST, true);
+        curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+        curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+        $result = curl_exec($soap_do);
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+
+        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+        $xml = new \SimpleXMLElement($response);
+        $body = $xml->xpath('//soapBody')[0];
+        $return = $xml->xpath('//return')[0];
+        $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
+        return $respuestaConsulta;
+    }
+}#end function
+
+
+function doRequestSreReceptaTransacionCarrerasOrden($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
+{ 
+
+$post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:ejecucionConsulta>
+         <dataSource>".$source."</dataSource>
+         <idServicio>".$tipo."</idServicio>
+         <usuario>".$usuario."</usuario>
+         <clave>".$clave."</clave>
+         <parametrosConsulta>
+            <parametros>
+                ".$datosCuenta."
+            </parametros>
+         </parametrosConsulta>
+      </ser:ejecucionConsulta>
+   </soapenv:Body>
+</soapenv:Envelope> ";
+
+        $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+        $soap_do = curl_init();
+        curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+        curl_setopt($soap_do, CURLOPT_URL,            $url );
+        curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+        curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt($soap_do, CURLOPT_PORT,8080);
+        curl_setopt($soap_do, CURLOPT_POST, true);
+        curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+        curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+        $result = curl_exec($soap_do);
+
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+
+        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+        $xml = new \SimpleXMLElement($response);
+        $body = $xml->xpath('//soapBody')[0];
+        $return = $xml->xpath('//return')[0];
+        $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
+        return $respuestaConsulta;
+    }
+}#end function
+
+
+function doSetListado_Anulacion_Detalle($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
+{
+
+$post_string="
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+               <soapenv:Header/>
+               <soapenv:Body>
+                  <ser:ejecucionObjeto>
+                      <dataSource>".$source."</dataSource>
+                     <idServicio>".$tipo."</idServicio>
+                     <usuario>".$usuario."</usuario>
+                     <clave>".$clave."</clave>
+                     <parametrosObjeto>
+                        <parametros>
+                           ".$datosCuenta." 
+                      </parametros>
+                     </parametrosObjeto>
+                  </ser:ejecucionObjeto>
+               </soapenv:Body>
+            </soapenv:Envelope>";
+                    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+                    $soap_do = curl_init();
+                    curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+                    curl_setopt($soap_do, CURLOPT_URL,            $url );
+                    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+                    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+                    curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+                    curl_setopt($soap_do, CURLOPT_PORT,8080);
+                    curl_setopt($soap_do, CURLOPT_POST, true);
+                    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+                    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+                    $result = curl_exec($soap_do);
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+        $response  = $this->ReemplazaCaracteres($result);
+        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+        $xml = new \SimpleXMLElement($response);
+        $body = $xml->xpath('//soapBody')[0];
+        $return = $xml->xpath('//return')[0];
+        $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
+        $respuestaConsulta = $xml->xpath('//parametrosSalida')[0];
+        return $respuestaConsulta;
+    }
+}#end function
+
 /**
  * [Funcion para insertar un evento al calendario]
  */
@@ -1835,8 +2139,26 @@ function doInsertEventosCalendario($datosCuenta,$source,$tipo,$usuario,$clave,$u
                     curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
+
+                    $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+                    $xml = new \SimpleXMLElement($response);
+                    $body = $xml->xpath('//soapBody')[0];
+                    $return = $xml->xpath('//return')[0];
+
+                    $resultadoObjeto = $xml->xpath('//parametrosSalida')[0];
+
+                    $resultadoObjeto = json_encode($resultadoObjeto);
+                    $xml_array = json_decode($resultadoObjeto,TRUE);
+                    // $resultadoObjeto = $this->Response($resultadoObjeto);
+                    // $resultadoObjeto = $xml->xpath('//PV_MENSAJE')[0];
+                    // $resultadoObjeto = $this->Response($resultadoObjeto);
+                    // echo '<pre>'; var_dump($xml_array); exit();
+                    // return $xml_array;
+                    return $xml_array["PI_ESTADO"];
 }#end function   
-function doRequestSreReceptaTransacionCarrerasOrden($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
+
+
+function doRequestSreReceptaTransacionAnulacion_Listar($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
 {
 
 $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
@@ -1868,34 +2190,6 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
         curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
         $result = curl_exec($soap_do);
-
-
-// $result =  <<<XML
-// <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-//    <soap:Body>
-//       <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-//          <return>
-//             <codigoRespuesta>0</codigoRespuesta>
-//             <estado>F</estado>
-//             <idHistorico>1079</idHistorico>
-//             <mensajeRespuesta>ok</mensajeRespuesta>
-//             <respuestaConsulta>
-//                <registros>
-//                   <registro>
-//                      <id_sa_carrera>3</id_sa_carrera>
-//                      <nombre>CARRERA DE INGENIERIA EN SISTEMAS</nombre>
-//                      <id_sa_facultad>3</id_sa_facultad>
-//                   </registro>
-
-//                </registros>
-//             </respuestaConsulta>
-//          </return>
-//       </ns2:ejecucionConsultaResponse>
-//    </soap:Body>
-// </soap:Envelope>
-// XML;
-
-
 
     if(!$result)
     {
@@ -2643,7 +2937,8 @@ function doRequestConsultaPorcentajeEstudianteCarrera($datosCuenta,$source,$tipo
         return $respuesta;   
     }
 
-}#end function   
+}#end function 
+
 function doRequestsEstudianteHorariosGeneral($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
 {
 
@@ -2954,6 +3249,443 @@ $post_string="
 //      </soap:Body>
 //  </soap:Envelope>
 // XML;
+
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+        $response  = $this->ReemplazaCaracteres($result);
+        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+        $xml = new \SimpleXMLElement($response);
+        $body = $xml->xpath('//soapBody')[0];
+        $return = $xml->xpath('//return')[0];
+        $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
+        $respuestaConsulta = $xml->xpath('//parametrosSalida')[0];
+        return $respuestaConsulta;
+    }
+
+
+
+
+}#end function
+
+
+function doSelectRolAdmin($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
+{
+// echo '<pre>'; var_dump($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host); exit();
+$post_string="
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+               <soapenv:Header/>
+               <soapenv:Body>
+                  <ser:ejecucionObjeto>
+                      <dataSource>".$source."</dataSource>
+                     <idServicio>".$tipo."</idServicio>
+                     <usuario>".$usuario."</usuario>
+                     <clave>".$clave."</clave>
+                     <parametrosObjeto>
+                        <parametros>
+                           ".$datosCuenta." 
+                      </parametros>
+                     </parametrosObjeto>
+                  </ser:ejecucionObjeto>
+               </soapenv:Body>
+            </soapenv:Envelope>";
+            $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+            $soap_do = curl_init();
+            curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+            curl_setopt($soap_do, CURLOPT_URL,            $url );
+            curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+            curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+            curl_setopt($soap_do, CURLOPT_PORT,8080);
+            curl_setopt($soap_do, CURLOPT_POST, true);
+            curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+            curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+            $result = curl_exec($soap_do);
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+        $response  = $this->ReemplazaCaracteres($result);
+        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+
+        $xml = new \SimpleXMLElement($response);
+        $respuestaConsulta = $xml->xpath('//opciones')[0];
+
+        $resultadoObjeto = json_encode($respuestaConsulta);
+        $xml_array = json_decode($resultadoObjeto,TRUE);
+
+        return $xml_array;
+    }
+
+
+}#end function
+
+/* INICIO SPRINT ARELLANO 4.1 */
+function doRequestConsultaMateriasAprobadasEstudianteAdmin($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host){  
+
+ $post_string="
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+               <soapenv:Header/>
+               <soapenv:Body>
+                  <ser:ejecucionObjeto>
+                      <dataSource>".$source."</dataSource>
+                     <idServicio>".$tipo."</idServicio>
+                     <usuario>".$usuario."</usuario>
+                     <clave>".$clave."</clave>
+                     <parametrosObjeto>
+                        <parametros>
+                           ".$datosCuenta." 
+                      </parametros>
+                     </parametrosObjeto>
+                  </ser:ejecucionObjeto>
+               </soapenv:Body>
+            </soapenv:Envelope>";
+                    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+                    $soap_do = curl_init();
+                    curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+                    curl_setopt($soap_do, CURLOPT_URL,            $url );
+                    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+                    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+                    curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+                    curl_setopt($soap_do, CURLOPT_PORT,8080);
+                    curl_setopt($soap_do, CURLOPT_POST, true);
+                    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+                    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+                $result = curl_exec($soap_do);
+
+    if(!$result)
+    {
+        return "error";
+    }
+    else
+    {
+        $response  = $this->ReemplazaCaracteres($result);
+        $response= preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+        $xml = new \SimpleXMLElement($response);
+         $respuesta = $xml->xpath('//resultadoObjeto')[0];
+        $respuesta = $xml->xpath('//parametrosSalida')[0]; 
+        return $respuesta;
+    }
+}#end function   
+/* FIN SPRINT ARELLANO 4.1 */
+
+function doRequestDocenteHorariosExamen($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host)
+{
+
+$post_string="
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+               <soapenv:Header/>
+               <soapenv:Body>
+                  <ser:ejecucionObjeto>
+                      <dataSource>".$source."</dataSource>
+                     <idServicio>".$tipo."</idServicio>
+                     <usuario>".$usuario."</usuario>
+                     <clave>".$clave."</clave>
+                     <parametrosObjeto>
+                        <parametros>
+                                ".$datosCuenta." 
+                      </parametros>
+                     </parametrosObjeto>
+                  </ser:ejecucionObjeto>
+               </soapenv:Body>
+            </soapenv:Envelope>";
+                    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+                    $soap_do = curl_init();
+                    curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+                    curl_setopt($soap_do, CURLOPT_URL,            $url );
+                    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+                    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+                    curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+                    curl_setopt($soap_do, CURLOPT_PORT,8080);
+                    curl_setopt($soap_do, CURLOPT_POST, true);
+                    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+                    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+                    $result = curl_exec($soap_do);
+                
+$result2 =  <<<XML
+ <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+            <return>
+                <codigoRespuesta>0</codigoRespuesta>
+                <estado>F</estado>
+                <idHistorico>58</idHistorico>
+                <mensajeRespuesta>ok</mensajeRespuesta>
+                <resultadoObjeto>
+                    <parametrosSalida>
+                        <PX_SALIDA>
+                            <cursos>
+                                  <curso>
+                                    <descripcion>S6A</descripcion>
+                                    <dias>
+                                      <dia>
+                                        <nombre>LUNES</nombre>
+                                        <id_dia>1</id_dia>
+                                      </dia>
+                                      <dia>
+                                        <nombre>MARTES</nombre>
+                                        <id_dia>2</id_dia>
+                                      </dia>
+                                      <dia>
+                                        <nombre>MIERCOLES</nombre>
+                                        <id_dia>3</id_dia>
+                                      </dia>
+                                      <dia>
+                                        <nombre>VIERNES</nombre>
+                                        <id_dia>4</id_dia>
+                                      </dia>
+                                      <dia>
+                                        <nombre>SABADO</nombre>
+                                        <id_dia>5</id_dia>
+                                      </dia>
+                                    </dias>
+                                    <horas>
+                                      <hora>
+                                        <nombre>07:00 - 08:00</nombre>
+                                        <id_hora>1</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>08:00 - 09:00</nombre>
+                                        <id_hora>2</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>09:00 - 10:00</nombre>
+                                        <id_hora>3</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>10:00 - 11:00</nombre>
+                                        <id_hora>4</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>11:00 - 12:00</nombre>
+                                        <id_hora>5</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>17:00 - 18:00</nombre>
+                                        <id_hora>6</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>18:00 - 19:00</nombre>
+                                        <id_hora>7</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>19:00 - 20:00</nombre>
+                                        <id_hora>8</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>20:00 - 21:00</nombre>
+                                        <id_hora>9</id_hora>
+                                      </hora>
+                                    </horas>
+                                    <materias>
+                                      <materia>
+                                        <id_materia>30</id_materia>
+                                        <descripcion_materia>Investigación Operaciones</descripcion_materia>
+                                        <id_hora>4</id_hora>
+                                        <id_dia>5</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>39</id_materia>
+                                        <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+                                        <id_hora>4</id_hora>
+                                        <id_dia>1</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>40</id_materia>
+                                        <descripcion_materia>Sistemas Operativos</descripcion_materia>
+                                        <id_hora>1</id_hora>
+                                        <id_dia>2</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>42</id_materia>
+                                        <descripcion_materia>Redes de Computadoras</descripcion_materia>
+                                        <id_hora>5</id_hora>
+                                        <id_dia>2</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>43</id_materia>
+                                        <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+                                        <id_hora>1</id_hora>
+                                        <id_dia>6</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>44</id_materia>
+                                        <descripcion_materia>Legislación Informática</descripcion_materia>
+                                        <id_hora>2</id_hora>
+                                        <id_dia>3</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>45</id_materia>
+                                        <descripcion_materia>Electiva III</descripcion_materia>
+                                        <id_hora>3</id_hora>
+                                        <id_dia>3</id_dia>
+                                      </materia>
+                                    </materias>
+                                    <profesores>
+                                      <profesor>
+                                        <nombre_materia>Investigación Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Sistemas Operativos</nombre_materia><nombre>SANTOS FREILE  ROSA GRACIELA</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Redes de Computadoras</nombre_materia><nombre>CHAVEZ ATOCHA  JUAN VICTOR</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Legislación Informática</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Electiva III</nombre_materia><nombre>CASTANIO MENDEZ  ADIEL</nombre></profesor>
+                                    </profesores>
+                                  </curso>
+                                  <curso>
+                                    <descripcion>S6J</descripcion>
+                                    <dias>
+                                      <dia>
+                                        <nombre>LUNES</nombre>
+                                        <id_dia>1</id_dia>
+                                      </dia>
+                                      <dia>
+                                        <nombre>MARTES</nombre>
+                                        <id_dia>2</id_dia>
+                                      </dia>
+                                      <dia>
+                                        <nombre>MIERCOLES</nombre>
+                                        <id_dia>3</id_dia>
+                                      </dia>
+                                      <dia>
+                                        <nombre>VIERNES</nombre>
+                                        <id_dia>4</id_dia>
+                                      </dia>
+                                      <dia>
+                                        <nombre>SABADO</nombre>
+                                        <id_dia>5</id_dia>
+                                      </dia>
+                                    </dias>
+                                    <horas>
+                                      <hora>
+                                        <nombre>07:00 - 08:00</nombre>
+                                        <id_hora>1</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>08:00 - 09:00</nombre>
+                                        <id_hora>2</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>09:00 - 10:00</nombre>
+                                        <id_hora>3</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>10:00 - 11:00</nombre>
+                                        <id_hora>4</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>11:00 - 12:00</nombre>
+                                        <id_hora>5</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>17:00 - 18:00</nombre>
+                                        <id_hora>6</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>18:00 - 19:00</nombre>
+                                        <id_hora>7</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>19:00 - 20:00</nombre>
+                                        <id_hora>8</id_hora>
+                                      </hora>
+                                      <hora>
+                                        <nombre>20:00 - 21:00</nombre>
+                                        <id_hora>9</id_hora>
+                                      </hora>
+                                    </horas>
+                                    <materias>
+                                      <materia>
+                                        <id_materia>38</id_materia>
+                                        <descripcion_materia>Simulación de Sistemas</descripcion_materia>
+                                        <id_hora>7</id_hora>
+                                        <id_dia>1</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>39</id_materia>
+                                        <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+                                        <id_hora>7</id_hora>
+                                        <id_dia>2</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>40</id_materia>
+                                        <descripcion_materia>Sistemas Operativos</descripcion_materia>
+                                        <id_hora>9</id_hora>
+                                        <id_dia>2</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>41</id_materia>
+                                        <descripcion_materia>Desarrollo de Aplicaciones Web</descripcion_materia>
+                                        <id_hora>9</id_hora>
+                                        <id_dia>5</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>42</id_materia>
+                                        <descripcion_materia>Redes de Computadoras</descripcion_materia>
+                                        <id_hora>6</id_hora>
+                                        <id_dia>2</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>43</id_materia>
+                                        <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+                                        <id_hora>8</id_hora>
+                                        <id_dia>1</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>44</id_materia>
+                                        <descripcion_materia>Legislación Informática</descripcion_materia>
+                                        <id_hora>9</id_hora>
+                                        <id_dia>3</id_dia>
+                                      </materia>
+                                      <materia>
+                                        <id_materia>45</id_materia>
+                                        <descripcion_materia>Electiva III</descripcion_materia>
+                                        <id_hora>7</id_hora>
+                                        <id_dia>3</id_dia>
+                                      </materia>
+                                    </materias>
+                                    <profesores>
+                                      <profesor>
+                                        <nombre_materia>Simulación de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Sistemas Operativos</nombre_materia><nombre>GAIBOR ESPIN  GENARO</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Desarrollo de Aplicaciones Web</nombre_materia><nombre>RODRIGUEZ CARRIEL  JOSE LUIS </nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Redes de Computadoras</nombre_materia><nombre>ESPINNOZA VILLAGOMEZ  LUISA EVANGELINA</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Legislación Informática</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
+                                      <profesor>
+                                        <nombre_materia>Electiva III</nombre_materia><nombre>CERCADO BARRAGAN  DARWIN BOLIVAR</nombre></profesor>
+                                    </profesores>
+                                  </curso>
+                                </cursos>
+                 </PX_SALIDA>
+                     </parametrosSalida>
+                 </resultadoObjeto>
+             </return>
+         </ns2:ejecucionObjetoResponse>
+     </soap:Body>
+ </soap:Envelope>
+XML;
+>>>>>>> 955ae6646680b48e12db21b7f2b823a3d70f6783
 
 
     if(!$result)
