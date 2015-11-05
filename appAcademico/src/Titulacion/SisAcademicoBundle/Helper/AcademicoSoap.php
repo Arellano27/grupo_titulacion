@@ -3409,283 +3409,282 @@ $post_string="
                     curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
                     $result = curl_exec($soap_do);
                 
-$result2 =  <<<XML
- <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-        <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-            <return>
-                <codigoRespuesta>0</codigoRespuesta>
-                <estado>F</estado>
-                <idHistorico>58</idHistorico>
-                <mensajeRespuesta>ok</mensajeRespuesta>
-                <resultadoObjeto>
-                    <parametrosSalida>
-                        <PX_SALIDA>
-                            <cursos>
-                                  <curso>
-                                    <descripcion>S6A</descripcion>
-                                    <dias>
-                                      <dia>
-                                        <nombre>LUNES</nombre>
-                                        <id_dia>1</id_dia>
-                                      </dia>
-                                      <dia>
-                                        <nombre>MARTES</nombre>
-                                        <id_dia>2</id_dia>
-                                      </dia>
-                                      <dia>
-                                        <nombre>MIERCOLES</nombre>
-                                        <id_dia>3</id_dia>
-                                      </dia>
-                                      <dia>
-                                        <nombre>VIERNES</nombre>
-                                        <id_dia>4</id_dia>
-                                      </dia>
-                                      <dia>
-                                        <nombre>SABADO</nombre>
-                                        <id_dia>5</id_dia>
-                                      </dia>
-                                    </dias>
-                                    <horas>
-                                      <hora>
-                                        <nombre>07:00 - 08:00</nombre>
-                                        <id_hora>1</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>08:00 - 09:00</nombre>
-                                        <id_hora>2</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>09:00 - 10:00</nombre>
-                                        <id_hora>3</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>10:00 - 11:00</nombre>
-                                        <id_hora>4</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>11:00 - 12:00</nombre>
-                                        <id_hora>5</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>17:00 - 18:00</nombre>
-                                        <id_hora>6</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>18:00 - 19:00</nombre>
-                                        <id_hora>7</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>19:00 - 20:00</nombre>
-                                        <id_hora>8</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>20:00 - 21:00</nombre>
-                                        <id_hora>9</id_hora>
-                                      </hora>
-                                    </horas>
-                                    <materias>
-                                      <materia>
-                                        <id_materia>30</id_materia>
-                                        <descripcion_materia>Investigación Operaciones</descripcion_materia>
-                                        <id_hora>4</id_hora>
-                                        <id_dia>5</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>39</id_materia>
-                                        <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
-                                        <id_hora>4</id_hora>
-                                        <id_dia>1</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>40</id_materia>
-                                        <descripcion_materia>Sistemas Operativos</descripcion_materia>
-                                        <id_hora>1</id_hora>
-                                        <id_dia>2</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>42</id_materia>
-                                        <descripcion_materia>Redes de Computadoras</descripcion_materia>
-                                        <id_hora>5</id_hora>
-                                        <id_dia>2</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>43</id_materia>
-                                        <descripcion_materia>Matemáticas Financieras</descripcion_materia>
-                                        <id_hora>1</id_hora>
-                                        <id_dia>6</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>44</id_materia>
-                                        <descripcion_materia>Legislación Informática</descripcion_materia>
-                                        <id_hora>2</id_hora>
-                                        <id_dia>3</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>45</id_materia>
-                                        <descripcion_materia>Electiva III</descripcion_materia>
-                                        <id_hora>3</id_hora>
-                                        <id_dia>3</id_dia>
-                                      </materia>
-                                    </materias>
-                                    <profesores>
-                                      <profesor>
-                                        <nombre_materia>Investigación Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Sistemas Operativos</nombre_materia><nombre>SANTOS FREILE  ROSA GRACIELA</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Redes de Computadoras</nombre_materia><nombre>CHAVEZ ATOCHA  JUAN VICTOR</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Legislación Informática</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Electiva III</nombre_materia><nombre>CASTANIO MENDEZ  ADIEL</nombre></profesor>
-                                    </profesores>
-                                  </curso>
-                                  <curso>
-                                    <descripcion>S6J</descripcion>
-                                    <dias>
-                                      <dia>
-                                        <nombre>LUNES</nombre>
-                                        <id_dia>1</id_dia>
-                                      </dia>
-                                      <dia>
-                                        <nombre>MARTES</nombre>
-                                        <id_dia>2</id_dia>
-                                      </dia>
-                                      <dia>
-                                        <nombre>MIERCOLES</nombre>
-                                        <id_dia>3</id_dia>
-                                      </dia>
-                                      <dia>
-                                        <nombre>VIERNES</nombre>
-                                        <id_dia>4</id_dia>
-                                      </dia>
-                                      <dia>
-                                        <nombre>SABADO</nombre>
-                                        <id_dia>5</id_dia>
-                                      </dia>
-                                    </dias>
-                                    <horas>
-                                      <hora>
-                                        <nombre>07:00 - 08:00</nombre>
-                                        <id_hora>1</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>08:00 - 09:00</nombre>
-                                        <id_hora>2</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>09:00 - 10:00</nombre>
-                                        <id_hora>3</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>10:00 - 11:00</nombre>
-                                        <id_hora>4</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>11:00 - 12:00</nombre>
-                                        <id_hora>5</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>17:00 - 18:00</nombre>
-                                        <id_hora>6</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>18:00 - 19:00</nombre>
-                                        <id_hora>7</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>19:00 - 20:00</nombre>
-                                        <id_hora>8</id_hora>
-                                      </hora>
-                                      <hora>
-                                        <nombre>20:00 - 21:00</nombre>
-                                        <id_hora>9</id_hora>
-                                      </hora>
-                                    </horas>
-                                    <materias>
-                                      <materia>
-                                        <id_materia>38</id_materia>
-                                        <descripcion_materia>Simulación de Sistemas</descripcion_materia>
-                                        <id_hora>7</id_hora>
-                                        <id_dia>1</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>39</id_materia>
-                                        <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
-                                        <id_hora>7</id_hora>
-                                        <id_dia>2</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>40</id_materia>
-                                        <descripcion_materia>Sistemas Operativos</descripcion_materia>
-                                        <id_hora>9</id_hora>
-                                        <id_dia>2</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>41</id_materia>
-                                        <descripcion_materia>Desarrollo de Aplicaciones Web</descripcion_materia>
-                                        <id_hora>9</id_hora>
-                                        <id_dia>5</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>42</id_materia>
-                                        <descripcion_materia>Redes de Computadoras</descripcion_materia>
-                                        <id_hora>6</id_hora>
-                                        <id_dia>2</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>43</id_materia>
-                                        <descripcion_materia>Matemáticas Financieras</descripcion_materia>
-                                        <id_hora>8</id_hora>
-                                        <id_dia>1</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>44</id_materia>
-                                        <descripcion_materia>Legislación Informática</descripcion_materia>
-                                        <id_hora>9</id_hora>
-                                        <id_dia>3</id_dia>
-                                      </materia>
-                                      <materia>
-                                        <id_materia>45</id_materia>
-                                        <descripcion_materia>Electiva III</descripcion_materia>
-                                        <id_hora>7</id_hora>
-                                        <id_dia>3</id_dia>
-                                      </materia>
-                                    </materias>
-                                    <profesores>
-                                      <profesor>
-                                        <nombre_materia>Simulación de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Sistemas Operativos</nombre_materia><nombre>GAIBOR ESPIN  GENARO</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Desarrollo de Aplicaciones Web</nombre_materia><nombre>RODRIGUEZ CARRIEL  JOSE LUIS </nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Redes de Computadoras</nombre_materia><nombre>ESPINNOZA VILLAGOMEZ  LUISA EVANGELINA</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Legislación Informática</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
-                                      <profesor>
-                                        <nombre_materia>Electiva III</nombre_materia><nombre>CERCADO BARRAGAN  DARWIN BOLIVAR</nombre></profesor>
-                                    </profesores>
-                                  </curso>
-                                </cursos>
-                 </PX_SALIDA>
-                     </parametrosSalida>
-                 </resultadoObjeto>
-             </return>
-         </ns2:ejecucionObjetoResponse>
-     </soap:Body>
- </soap:Envelope>
-XML;
->>>>>>> 955ae6646680b48e12db21b7f2b823a3d70f6783
+// $result2 =  <<<XML
+//  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//     <soap:Body>
+//         <ns2:ejecucionObjetoResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//             <return>
+//                 <codigoRespuesta>0</codigoRespuesta>
+//                 <estado>F</estado>
+//                 <idHistorico>58</idHistorico>
+//                 <mensajeRespuesta>ok</mensajeRespuesta>
+//                 <resultadoObjeto>
+//                     <parametrosSalida>
+//                         <PX_SALIDA>
+//                             <cursos>
+//                                   <curso>
+//                                     <descripcion>S6A</descripcion>
+//                                     <dias>
+//                                       <dia>
+//                                         <nombre>LUNES</nombre>
+//                                         <id_dia>1</id_dia>
+//                                       </dia>
+//                                       <dia>
+//                                         <nombre>MARTES</nombre>
+//                                         <id_dia>2</id_dia>
+//                                       </dia>
+//                                       <dia>
+//                                         <nombre>MIERCOLES</nombre>
+//                                         <id_dia>3</id_dia>
+//                                       </dia>
+//                                       <dia>
+//                                         <nombre>VIERNES</nombre>
+//                                         <id_dia>4</id_dia>
+//                                       </dia>
+//                                       <dia>
+//                                         <nombre>SABADO</nombre>
+//                                         <id_dia>5</id_dia>
+//                                       </dia>
+//                                     </dias>
+//                                     <horas>
+//                                       <hora>
+//                                         <nombre>07:00 - 08:00</nombre>
+//                                         <id_hora>1</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>08:00 - 09:00</nombre>
+//                                         <id_hora>2</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>09:00 - 10:00</nombre>
+//                                         <id_hora>3</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>10:00 - 11:00</nombre>
+//                                         <id_hora>4</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>11:00 - 12:00</nombre>
+//                                         <id_hora>5</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>17:00 - 18:00</nombre>
+//                                         <id_hora>6</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>18:00 - 19:00</nombre>
+//                                         <id_hora>7</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>19:00 - 20:00</nombre>
+//                                         <id_hora>8</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>20:00 - 21:00</nombre>
+//                                         <id_hora>9</id_hora>
+//                                       </hora>
+//                                     </horas>
+//                                     <materias>
+//                                       <materia>
+//                                         <id_materia>30</id_materia>
+//                                         <descripcion_materia>Investigación Operaciones</descripcion_materia>
+//                                         <id_hora>4</id_hora>
+//                                         <id_dia>5</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>39</id_materia>
+//                                         <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+//                                         <id_hora>4</id_hora>
+//                                         <id_dia>1</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>40</id_materia>
+//                                         <descripcion_materia>Sistemas Operativos</descripcion_materia>
+//                                         <id_hora>1</id_hora>
+//                                         <id_dia>2</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>42</id_materia>
+//                                         <descripcion_materia>Redes de Computadoras</descripcion_materia>
+//                                         <id_hora>5</id_hora>
+//                                         <id_dia>2</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>43</id_materia>
+//                                         <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+//                                         <id_hora>1</id_hora>
+//                                         <id_dia>6</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>44</id_materia>
+//                                         <descripcion_materia>Legislación Informática</descripcion_materia>
+//                                         <id_hora>2</id_hora>
+//                                         <id_dia>3</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>45</id_materia>
+//                                         <descripcion_materia>Electiva III</descripcion_materia>
+//                                         <id_hora>3</id_hora>
+//                                         <id_dia>3</id_dia>
+//                                       </materia>
+//                                     </materias>
+//                                     <profesores>
+//                                       <profesor>
+//                                         <nombre_materia>Investigación Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Sistemas Operativos</nombre_materia><nombre>SANTOS FREILE  ROSA GRACIELA</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Redes de Computadoras</nombre_materia><nombre>CHAVEZ ATOCHA  JUAN VICTOR</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Legislación Informática</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Electiva III</nombre_materia><nombre>CASTANIO MENDEZ  ADIEL</nombre></profesor>
+//                                     </profesores>
+//                                   </curso>
+//                                   <curso>
+//                                     <descripcion>S6J</descripcion>
+//                                     <dias>
+//                                       <dia>
+//                                         <nombre>LUNES</nombre>
+//                                         <id_dia>1</id_dia>
+//                                       </dia>
+//                                       <dia>
+//                                         <nombre>MARTES</nombre>
+//                                         <id_dia>2</id_dia>
+//                                       </dia>
+//                                       <dia>
+//                                         <nombre>MIERCOLES</nombre>
+//                                         <id_dia>3</id_dia>
+//                                       </dia>
+//                                       <dia>
+//                                         <nombre>VIERNES</nombre>
+//                                         <id_dia>4</id_dia>
+//                                       </dia>
+//                                       <dia>
+//                                         <nombre>SABADO</nombre>
+//                                         <id_dia>5</id_dia>
+//                                       </dia>
+//                                     </dias>
+//                                     <horas>
+//                                       <hora>
+//                                         <nombre>07:00 - 08:00</nombre>
+//                                         <id_hora>1</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>08:00 - 09:00</nombre>
+//                                         <id_hora>2</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>09:00 - 10:00</nombre>
+//                                         <id_hora>3</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>10:00 - 11:00</nombre>
+//                                         <id_hora>4</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>11:00 - 12:00</nombre>
+//                                         <id_hora>5</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>17:00 - 18:00</nombre>
+//                                         <id_hora>6</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>18:00 - 19:00</nombre>
+//                                         <id_hora>7</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>19:00 - 20:00</nombre>
+//                                         <id_hora>8</id_hora>
+//                                       </hora>
+//                                       <hora>
+//                                         <nombre>20:00 - 21:00</nombre>
+//                                         <id_hora>9</id_hora>
+//                                       </hora>
+//                                     </horas>
+//                                     <materias>
+//                                       <materia>
+//                                         <id_materia>38</id_materia>
+//                                         <descripcion_materia>Simulación de Sistemas</descripcion_materia>
+//                                         <id_hora>7</id_hora>
+//                                         <id_dia>1</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>39</id_materia>
+//                                         <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+//                                         <id_hora>7</id_hora>
+//                                         <id_dia>2</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>40</id_materia>
+//                                         <descripcion_materia>Sistemas Operativos</descripcion_materia>
+//                                         <id_hora>9</id_hora>
+//                                         <id_dia>2</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>41</id_materia>
+//                                         <descripcion_materia>Desarrollo de Aplicaciones Web</descripcion_materia>
+//                                         <id_hora>9</id_hora>
+//                                         <id_dia>5</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>42</id_materia>
+//                                         <descripcion_materia>Redes de Computadoras</descripcion_materia>
+//                                         <id_hora>6</id_hora>
+//                                         <id_dia>2</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>43</id_materia>
+//                                         <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+//                                         <id_hora>8</id_hora>
+//                                         <id_dia>1</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>44</id_materia>
+//                                         <descripcion_materia>Legislación Informática</descripcion_materia>
+//                                         <id_hora>9</id_hora>
+//                                         <id_dia>3</id_dia>
+//                                       </materia>
+//                                       <materia>
+//                                         <id_materia>45</id_materia>
+//                                         <descripcion_materia>Electiva III</descripcion_materia>
+//                                         <id_hora>7</id_hora>
+//                                         <id_dia>3</id_dia>
+//                                       </materia>
+//                                     </materias>
+//                                     <profesores>
+//                                       <profesor>
+//                                         <nombre_materia>Simulación de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Sistemas Operativos</nombre_materia><nombre>GAIBOR ESPIN  GENARO</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Desarrollo de Aplicaciones Web</nombre_materia><nombre>RODRIGUEZ CARRIEL  JOSE LUIS </nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Redes de Computadoras</nombre_materia><nombre>ESPINNOZA VILLAGOMEZ  LUISA EVANGELINA</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Legislación Informática</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
+//                                       <profesor>
+//                                         <nombre_materia>Electiva III</nombre_materia><nombre>CERCADO BARRAGAN  DARWIN BOLIVAR</nombre></profesor>
+//                                     </profesores>
+//                                   </curso>
+//                                 </cursos>
+//                  </PX_SALIDA>
+//                      </parametrosSalida>
+//                  </resultadoObjeto>
+//              </return>
+//          </ns2:ejecucionObjetoResponse>
+//      </soap:Body>
+//  </soap:Envelope>
+// XML;
 
 
     if(!$result)
