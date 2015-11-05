@@ -64,8 +64,17 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
 }
 
     function mostrarAlumnos(id,section,codigo,alumno){
-       //alert(alumno+"gg");
-        var obj_data = {"codigo" : codigo,"alumno" : alumno,"parcial":$("#hdparcial").val()};
+       
+      //alert(id);
+      var CargandoDocentes;
+      //$("#hdciclo").val()
+      //$("#hdciclo_des").val()
+       if (id === 'listaEstudiantes'){
+           var obj_data = {"docente" : $("#idDocente").val(),"materia":$("#idMateria").val()};
+       }
+       else {
+        var obj_data = {"codigo" : codigo,"alumno" : alumno,"parcial":$("#hdparcial").val(),"ciclo":$("#hdciclo").val(),"materia":$("#hdmateria").val()};
+             }
         $.ajax
         ({
             type: 'post',
@@ -73,14 +82,21 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
             data: obj_data,
             dataType: "json",
             beforeSend: function( )
-            { $( "#content-"+id ).html("Cargando, espere por favor...");
+            { 
+               CargandoDocentes = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
                 //$( "#content-"+id ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
                 
             },
             success: function(data) 
             {
+                 CargandoDocentes.close();
                
 		if(data.error === true){
+                    
                     $( "#loading-bar-spinner-relative" ).remove();
                     msg_alert = alert_bootstrap( id, 'Atenci&oacute;n', data.msg, 'sm', 'alert');
                     $( "#content-"+id ).append( msg_alert );
@@ -98,13 +114,25 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
                 else{
                     $( "#content-"+id ).html(data.html);
                     }
-            }
+            },
+            error: function()
+        {
+                CargandoDocentes.close();
+
+                var title = 'Error';
+                var content = 'En este momento nos encontramos en matenimiento, por favor intenta nuevamente m&aacute;s tarde.';
+                var type = 'alert';
+                var size = 'sm';
+
+                createModalOverBody(title, content, size, type);
+        }
         });
     }
 	
-    function tabdocentes(id,section,codigo,alumno){
-      
-        var obj_data = {"codigo" : codigo,"alumno" : alumno,"parcial":$("#hdparcial").val()};
+    function tabdocentes(id,section,materia,carrera){
+        var CargandoDocentes;
+        
+        var obj_data = {"materia" : materia,"carrera" : carrera,"parcial":$("#hdparcial").val(),"ciclo":$("#Ciclo-Detalle_"+carrera).val(),"desc-ciclo":$("#Ciclo-Descripcion_"+carrera).val()};
         $.ajax
         ({
             type: 'post',
@@ -112,12 +140,17 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
             data: obj_data,
             dataType: "json",
             beforeSend: function( )
-            { $( "#content-"+id ).html("Cargando, espere por favor...");
+            { 
+                CargandoDocentes = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
                 //$( "#content-"+id ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
                 
             },
             success: function(data) 
-            {
+            { CargandoDocentes.close();
                
 		if(data.error === true){
                     $( "#loading-bar-spinner-relative" ).remove();
@@ -137,12 +170,24 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
                 else{
                     $( "#"+id ).html(data.html);
                     }
-            }
+            },
+            error: function()
+        {
+                CargandoDocentes.close();
+
+                var title = 'Error';
+                var content = 'En este momento nos encontramos en matenimiento, por favor intenta nuevamente m&aacute;s tarde.';
+                var type = 'alert';
+                var size = 'sm';
+
+                createModalOverBody(title, content, size, type);
+        }
         });
     }
         
 function confirm(form, item)
     {     //alert("55");
+        var CargandoDocentes;
         var msg_alert = "", msg = "", functions = "";
         
         $( "#modal-"+form ).remove();
@@ -195,7 +240,7 @@ function confirm(form, item)
     
            function formularioCargar(id,section){
 	
-        
+        var CargandoDocentes;
           close_modal(id);
 		//var obj_data = {'tipo':$("#tipo_agendamiento").val()};
                 var obj_data = {'tipo':"hola"};
@@ -208,18 +253,35 @@ function confirm(form, item)
             dataType: "html",
             beforeSend: function( )
             {
+                CargandoDocentes = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
                 $( "#content-"+id ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
             },
             success: function(data) 
-            {
+            { CargandoDocentes.close();
 				$( "#content-"+id ).html( data );
-            }
+            },
+            error: function()
+        {
+                CargandoDocentes.close();
+
+                var title = 'Error';
+                var content = 'En este momento nos encontramos en matenimiento, por favor intenta nuevamente m&aacute;s tarde.';
+                var type = 'alert';
+                var size = 'sm';
+
+                createModalOverBody(title, content, size, type);
+        }
         });
         return false;
 	} 
         
    function send_form(form, removeModalBody)
     { 
+        var CargandoDocentes;
         formSubmitted = form;
         
         $.validator.setDefaults
@@ -266,6 +328,11 @@ function confirm(form, item)
 						dataType: "json",
 						beforeSend: function( )
 						{
+                                                    CargandoDocentes = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                                        });
 							if(deleteModalBody == 'S')
 							{
 								deleteModalOverBody();
@@ -287,7 +354,7 @@ function confirm(form, item)
 							$('#modal-'+form).modal('show');
 						},
 						success: function(data) 
-						{
+						{  CargandoDocentes.close();
 							modal_size = data.btnSize || 'sm';
 							
 							$( "#modal-"+form ).remove();
@@ -353,18 +420,17 @@ function confirm(form, item)
 							
 							$( "#loading-bar-spinner" ).remove();
 						},
-						error: function()
-						{
-							$( "#loading-bar-spinner" ).remove();
-							$( "#modal-"+form ).remove();
-							
-							var title = 'Error';
-							var content = 'Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.';
-							var type = 'alert';
-							var size = 'sm';
+                                                    error: function()
+                                                {
+                                                        CargandoDocentes.close();
 
-							createModalOverBody(title, content, size, type);
-						}
+                                                        var title = 'Error';
+                                                        var content = 'En este momento nos encontramos en matenimiento, por favor intenta nuevamente m&aacute;s tarde.';
+                                                        var type = 'alert';
+                                                        var size = 'sm';
+
+                                                        createModalOverBody(title, content, size, type);
+                                                }
 					});
 				}
             }
@@ -378,6 +444,7 @@ function confirm(form, item)
  
    function send_form2(form, removeModalBody)
     {  
+        var CargandoDocentes;
            var arr_checked = [];
            var arr_unchecked = [];
 		var i=0;
@@ -427,6 +494,11 @@ function confirm(form, item)
 						dataType: "json",
 						beforeSend: function( )
 						{
+                                                    CargandoDocentes = new $.flavr({
+                                                                                modal   : true,
+                                                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                                                buttons     : {}
+                                                                             });
 							if(deleteModalBody == 'S')
 							{
 								deleteModalOverBody();
@@ -443,6 +515,7 @@ function confirm(form, item)
 						},
 						success: function(data) 
 						{ 
+                                                        CargandoDocentes.close();
 							modal_size = data.btnSize || 'sm';
 							
 							$( "#modal-"+form ).remove();
@@ -513,11 +586,11 @@ function confirm(form, item)
 						},
 						error: function()
 						{
-							$( "#loading-bar-spinner" ).remove();
+							CargandoDocentes.close();
 							$( "#modal-"+form ).remove();
 							
 							var title = 'Error';
-							var content = 'Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.';
+							var content = 'En este momento nos encontramos en matenimiento, por favor intenta nuevamente m&aacute;s tarde.';
 							var type = 'alert';
 							var size = 'sm';
 
@@ -567,6 +640,7 @@ function confirm(form, item)
     
     function changeSelect(id, path)
     {
+        var CargandoDocentes;
         /*if(id != 'main-services')
         {*/
         var selected = $("#"+id).val();
@@ -580,12 +654,49 @@ function confirm(form, item)
             dataType: "json",
             beforeSend: function()
             {
+                CargandoDocentes = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
                 $( "#content-"+id ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
             },
             success: function(data) 
             {
+                    CargandoDocentes.close();
                     $( "#content-"+id ).html( data.html );
                 
             }
         });
     }
+    
+  function hrefdocentes(path){
+      var CargandoDocentes;
+     //  alert($("#idMateria").val());
+     var datos = {'docente':$("#idDocente").val(),'materia':$("#idMateria").val()};
+        $.ajax
+        ({
+            type: 'post',
+            url: path,
+            data: datos,
+            dataType: "json",
+            beforeSend: function()
+            {
+                CargandoDocentes = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
+                $( "#content-main-services" ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+            },
+            success: function(data) 
+            {   CargandoDocentes.close();	
+		//window.location.href = data.section;
+                window.open(data.section,'_blank');
+                // window.open(data.section,'_blank');
+                //window.open(data.section);
+				
+            }
+        });
+    }
+    

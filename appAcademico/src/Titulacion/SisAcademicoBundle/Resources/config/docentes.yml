@@ -93,3 +93,23 @@ admin_cmb_materias:
     pattern:  /combo/materias
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:cmbMaterias}
 
+    
+admin_muestra_estudiantes:
+    pattern:  /muestra/estudiantes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:muestraEstudiantes}
+    
+admin_exportaPDF_estudiantes:
+    pattern:  /PDF/estudiantes/{docente}/{materia}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ExportarPDFEstudiantes}
+    
+admin_cargar_pagina:
+    pattern:  /carga/pagina
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:cargaPagina}
+    
+docentes_horarios:
+    pattern:  /carrerasHorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:carrerasHorarios}
+    
+docentes_pdf_horarioexamen:
+    pattern:  /pdfHorarioExamen/{idDocente}/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:pdfHorarioExamen}

@@ -13,6 +13,7 @@
           <li><a href="{{path('SisAcademico_Docentes_home')}}"><i class="fa fa-circle-o"></i> Datos Generales</a></li>
           <li><a id="menuizqDoc_asistencia" href="#"><i class="fa fa-circle-o"></i> Asistencia de Alumnos</a></li>
           <li><a id="menuizqDoc_listadonotas" href="#"><i class="fa fa-circle-o"></i> Listado de Notas</a></li>
+          <li><a href="{{path('docentes_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Examen</a></li>
           <li><a id="menuizqDoc_vistageneral" href="#"><i class="fa fa-circle-o"></i> Vista por Asignatura</a></li>
           <li><a id="menuizqDoc_vistageneral" href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Clases</a></li>
         </ul>
@@ -46,17 +47,17 @@
           
           {%for event in app.session.get('data_secretario').opcion %}
               {#{dump(event.id_sg_opcion)}#}
-              {% if event.id_sg_opcion == ReporteEstudiantePorCarrera %}
+              {#% if event.id_sg_opcion == ReporteEstudiantePorCarrera %}
                 <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Estudiante Por Carrera </a></li>
-              {% endif %}
+              {% endif %#}
               {% if event.id_sg_opcion == ReporteInscritosMatriculados %}
-                <li><a href="#"><i class="fa fa-circle-o"></i> Reporte Inscritos Matriculados </a></li>
+                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Inscritos Matriculados </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ReporteMateriasAprobada %}
                 <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Reporte Materias Aprobada </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaEstudiantesMateriaParalelo %}
-                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Estudiantes Materia Paralelo </a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Estud. Materia Paralelo </a></li>
               {% endif %}
               {% if event.id_sg_opcion == AprobacionInscripcion %}
                 <li><a href="{{path('admin_inscripcion')}}"><i class="fa fa-circle-o"></i> Aprobacion Inscripcion </a></li>

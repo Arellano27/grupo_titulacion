@@ -115,9 +115,12 @@ class HomeController extends Controller
             //$password    = $request->request->get('pass');
             $contrasenia = $request->request->get('pass');
 
+
+
             $rol_secretario = '';
             $rol_coordinador = "";
-
+            $data_secretario = "";
+            $data_coordinador = "";
 
             $salt    = "µ≈α|⊥ε¢ʟ@δσ";
             $password = password_hash($contrasenia, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
@@ -225,11 +228,9 @@ class HomeController extends Controller
             }
 
 
-
-
         }else{
 
-        return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig', array('data_secretario' => $data_secretario, 'data_coordinador' => $data_coordinador));
+        return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
         }
 
     }#end function

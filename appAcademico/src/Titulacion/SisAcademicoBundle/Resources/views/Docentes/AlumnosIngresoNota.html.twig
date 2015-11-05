@@ -1,6 +1,6 @@
 
-<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>
-<form id="form-home" name="form-ingresonota" method="post" action="{{ path('docentes_ingreso_notas') }}" >     
+{#<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>
+#}<form id="form-home" name="form-ingresonota" method="post" action="{{ path('docentes_ingreso_notas') }}" >     
 <div class="row" id="tabla1">
                 <div class="col-lg-12">
                   <div ng-controller="AppCtrl">
@@ -17,7 +17,7 @@
                             </div>
                             <div class="col-xs-3">
                                 <label>Periodo :</label>
-                                <input class="form-control" id="disabledInput" type="text" placeholder="Ciclo 2" disabled>
+                                <input class="form-control" id="disabledInput" type="text" value="{{ciclo_des}}" disabled>
                             </div>
                             <div class="col-xs-3">
                                 <label>Asignatura :</label>
@@ -53,6 +53,9 @@
                                 {% endfor %}
                                 <input type = "hidden" value = "{{arr_datos|length}}" name = "hdcountalm" id="hdcountalm"/>
                                 <input type = "hidden" value = "{{parcial}}" name = "hdparcial"  id="hdparcial"/>
+                                <input type = "hidden" value = "{{ciclo}}" name = "hdciclo"  id="hdciclo"/>
+                                {#<input type = "hidden" value = "{{ciclo_des}}" name = "hdciclo_des"  id="hdciclo_des"/>#}
+                                <input type = "hidden" value = "{{id_materia}}" name = "hdmateria"  id="hdmateria"/>
                                    </tbody>
                                 </table>
                             </div>
@@ -73,6 +76,7 @@
    $(".ingresoNota").click(function(){
      var nombre =$(this).attr('id'); 
      var codigo =$(this).attr('name');
+    
        mostrarAlumnos('ingresonotas','{{ path('docentes_ingreso_notas') }}',codigo,nombre);
      
    });

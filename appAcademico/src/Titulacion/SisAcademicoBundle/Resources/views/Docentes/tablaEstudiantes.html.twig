@@ -1,0 +1,21 @@
+
+    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+        <thead>
+            <tr>
+                <th class="text-center " style="vertical-align: middle" >Codigo</th>
+                <th style="text-align: center;vertical-align: middle">Estudiante</th>
+            </tr>
+
+        </thead>
+        <tbody>
+    {%for count ,alumnos in arr_datos %}
+           <tr class="odd gradeX">
+               <td width = "40%" style="text-align: center;vertical-align: middle">{{ alumnos.id_sg_usuario }}</td>
+                <td width = "60%" style="text-align: center;vertical-align: middle">{{ alumnos.nombres }} </td>
+               
+           </tr>
+    {% endfor %}
+       </tbody>
+       <input type = "hidden" value = "{{arr_datos|length}}" name = "hdcountalm" />
+    </table>
+                            
