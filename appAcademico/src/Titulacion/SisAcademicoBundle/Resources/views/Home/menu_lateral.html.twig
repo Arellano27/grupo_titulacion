@@ -45,17 +45,17 @@
           
           {%for event in app.session.get('data_secretario').opcion %}
               {#{dump(event.id_sg_opcion)}#}
-              {% if event.id_sg_opcion == ReporteEstudiantePorCarrera %}
+              {#% if event.id_sg_opcion == ReporteEstudiantePorCarrera %}
                 <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Estudiante Por Carrera </a></li>
-              {% endif %}
+              {% endif %#}
               {% if event.id_sg_opcion == ReporteInscritosMatriculados %}
-                <li><a href="#"><i class="fa fa-circle-o"></i> Reporte Inscritos Matriculados </a></li>
+                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Inscritos Matriculados </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ReporteMateriasAprobada %}
                 <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Reporte Materias Aprobada </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaEstudiantesMateriaParalelo %}
-                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Estudiantes Materia Paralelo </a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Estud. Materia Paralelo </a></li>
               {% endif %}
               {% if event.id_sg_opcion == AprobacionInscripcion %}
                 <li><a href="{{path('admin_inscripcion')}}"><i class="fa fa-circle-o"></i> Aprobacion Inscripcion </a></li>
