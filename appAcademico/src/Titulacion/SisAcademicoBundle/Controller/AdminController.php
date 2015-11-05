@@ -1166,7 +1166,8 @@ class AdminController extends Controller
                                                           'inscripcion' => $arrInscripcion,
                                                           'idCarrera'=>$idCarrera,
                                                           'idCiclo'=>$idCiclo,
-                                                           'NombreEstudiante'=>$NombreEstudiante
+                                                           'NombreEstudiante'=>$NombreEstudiante,
+                                                            'IdSolicitudCab'=>$id_sa_solicitud
                                                        ));
            }
                     else
@@ -1202,7 +1203,8 @@ class AdminController extends Controller
             $materias  = $request->request->get('arrMaterias');
             $idEstudiante  = $request->request->get('idEstudiante');
             $idCarrera  = $request->request->get('idCarrera');
-            $idCiclo  = $request->request->get('idciclo');
+            $idCiclo  = $request->request->get('idCiclo');
+            $idSolicitudCab  = $request->request->get('idSolicitudCab');
             $idRol=$session->get("perfil");
               if(strlen($idRol)>1)
               {
@@ -1225,8 +1227,8 @@ class AdminController extends Controller
                     $datosCuenta=""; 
                      foreach ($materias as $key => $value) {
                           $datosCuenta.= "<item>
-                                          <id_solicitud_detalle>". $value['idSolicitud'] . "</id_solicitud_detalle>
-                                            <identificador>" . $value['idMateria'] . "</identificador>
+                                          <id_solicitud_detalle>".$value['idSolicitud']."</id_solicitud_detalle>
+                                            <identificador>".$value['idMateria']."</identificador>
                                             <aprobada>1</aprobada>
                                             <opcion>A</opcion>
                                           </item> 
@@ -1234,7 +1236,7 @@ class AdminController extends Controller
                       }
                       $xmlFinal="
                                 <cabecera>
-                                  <id_solicitud></id_solicitud> 
+                                  <id_solicitud>".$idSolicitudCab."</id_solicitud> 
                                   <estado>75</estado>
                                   <usuario_estudiante></usuario_estudiante>
                                   <carrera>".$idCarrera."</carrera>

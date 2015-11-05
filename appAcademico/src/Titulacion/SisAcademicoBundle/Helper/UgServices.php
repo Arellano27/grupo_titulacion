@@ -545,6 +545,21 @@ public function getConsulta_listado_anulacion_detalle($id_sa_solicitud,$id_tipo_
         $response=$this->ws->doSetListado_Anulacion_Detalle($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
         return $response;
 }#end function
+public function setSolicitudAnula_Detalle($trama){
+        /*$ws=new AcademicoSoap();
+        $tipo       = "15";
+        $usuario    = "CapaVisualPhp";
+        $clave      = "12CvP2015";
+        $source     = "jdbc/procedimientosSaug";
+        $url        = "http://192.168.100.11:8080/WSObjetosUg/ServicioWebObjetos?wsdl";
+        $host       = "192.168.100.11";*/
+        //$trama      = "<usuario>".$idEstudiante."</usuario><rol>".$idRol."</rol>";
+        $this->tipo       = "33";
+        $this->urlWS   = $this->url.$this->urlProcedim;
+        //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        $response=$this->ws->doSetSolicitudAnula_Detalle($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+        return $response;
+}#end function
 
  public function Docentes_gettareaxparcial($trama){
            $ws         = new AcademicoSoap();

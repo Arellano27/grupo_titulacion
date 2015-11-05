@@ -22,6 +22,7 @@
         <td colspan='6'><div style="background-color: #0B2161; color: white;font-size:15pt ;" align="center">Estudiante: {{NombreEstudiante}}</div></td>
     </tr>
     <tr>
+        <th style="text-align:center" >Solicitud</th>
         <th style="text-align:center" >Materia</th>
         <th style="text-align:center" >Id Materia-Paralelo</th>
         <th style="text-align:center" ></th>
@@ -30,10 +31,10 @@
 <tbody>
     {% for listado in inscripcion %}    
          <tr class="odd gradeX">
-            <td   align="center"   width='5%' id="materia_{{ listado.descripcion }}">{{ listado.descripcion }}</td>
-            <td   align="center"   width='5%' >{{ listado.identificador }}</td>
-            <td   align="center"   width='5%' id="idMateria_{{ listado.identificador }}"><input type="checkbox" name="Sel_anula_materia" id="codmateria_{{ listado.identificador }}" /></td>
-            <input type="hidden" id="idSolicitud_{{ listado.id_solicitud_detalle }}" />
+            <td   align="center"   width='5%' id="idSolicitud_{{ listado.id_solicitud_detalle }}">{{ listado.id_solicitud_detalle }}</td>
+            <td   align="center"   width='5%' id="idDescrip_{{ listado.descripcion }}">{{ listado.descripcion }}</td>
+            <td   align="center"   width='5%' id="idMateria_{{ listado.identificador }}">{{ listado.identificador }}</td>
+            <td   align="center"   width='5%' id="sel_{{ listado.identificador }}"><input type="checkbox" name="Sel_anula_materia"  value="" id="selid_{{ listado.identificador }}" /></td>
          </tr>
     {% endfor %}  
 </tbody>
@@ -57,6 +58,7 @@
                 var Materia = "";
                 var idCiclo='{{idCiclo}}';
                 var idCarrera='{{idCarrera}}';
+                var idSolicitudCab='{{IdSolicitudCab}}';
                 var valida = 0;
                 var myArray = {};
                 var elementochk = document.getElementsByName("Sel_anula_materia"); 
@@ -67,18 +69,19 @@
                                 {
                                     valida=valida+1;
 
-                                    $(this).children("td").each(function (index2) 
+                                    $(this).children("td").each(function (index) 
                                     {
                                         Celda=$(this).attr("id");
-                                        Celda=Celda.split('_');
+                                        Celda=Celda.split("_");
                                         Celda=Celda[0];
                                         //alert(Elemento);
                                         switch (Celda) 
                                         {
-                                            case "idMateria": idMateria = $(this).text()
-                                                    //alert(idMateria);
-                                                    break;   
                                             case "idSolicitud": idSolicitud = $(this).text()
+                                                    //alert(idMateria);
+                                                     //console.log(idSolicitud);
+                                                    break;   
+                                            case "idMateria": idMateria = $(this).text()
                                                     //alert(idMateria);
                                                     break;          
                                         }
@@ -88,14 +91,12 @@
                                         var arrValores = {};
                                          arrValores["idSolicitud"]=idSolicitud;
                                          arrValores["idMateria"]=idMateria;
-                                         arrValores["idCarrera"]=idCarrera;
-                                         arrValores["idCiclo"]=idCiclo;
                                          myArray[index]=arrValores;
                                     
                                 }
                                
                             })
-                                 var obj_data = {'arrMaterias': myArray,'idCarrera':idCarrera,'idCiclo':idCiclo};
+                                 var obj_data = {'arrMaterias': myArray,'idCarrera':idCarrera,'idCiclo':idCiclo,'idSolicitudCab':idSolicitudCab};
                                  var jumpAction = '{{path('admin_anulacion_detalle_2')}}';
                                   $.ajax({
                                      url:   jumpAction,
@@ -108,6 +109,7 @@
                                      success:  function (dataResponse) {
                                         
                                        var respuesta=jQuery.parseJSON(dataResponse);
+                                        console.log(respuesta);
                                        if (respuesta.codigo_error!=1)
                                        {
                                             $("#btnsolanula").attr("disabled", false);
