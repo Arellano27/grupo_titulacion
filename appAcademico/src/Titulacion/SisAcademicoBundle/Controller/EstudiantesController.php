@@ -1153,38 +1153,96 @@
            $idEstudiante  = $request->request->get('idEstudiante');
            $idCarrera  = $request->request->get('idCarrera');
            $idCiclo  = $request->request->get('idciclo');
-            
-
-          $datosCuenta=""; 
-         foreach ($materias as $key => $value) {
-              $datosCuenta.= "<id_materia_paralelo>" . $value['Idcurso'] . "</id_materia_paralelo>"; 
-          }
-            $xmlFinal="
-                      <matricula>
-                         <matriculacion>
-                             <idEstudiante>".$idEstudiante."</idEstudiante>
-                             <idCarrera>".$idCarrera."</idCarrera>
-                             <idCiclo>".$idCiclo."</idCiclo>
-                             <item>
-                                   ".$datosCuenta." 
-                             </item>
-                          </matriculacion>
-                       </matricula>";
-
-           $UgServices = new UgServices;
-            $xml = $UgServices->setMatricula_Estudiante($xmlFinal);
-
-            $Estado="";
-            $Mensaje="";
-             if ( is_object($xml))
+           $noPrimerasBase=0;
+           $noPrimerasPantalla=0;
+           $lnCuantassel=0;
+           $maxmaterias=7;
+          
+           $xmlPendientes = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idCarrera,$idCiclo);
+                          
+            //obtenet el ciclo de matriculacion del XML
+             if ( is_object($xmlPendientes))
                 {
-                    foreach($xml->parametrosSalida as $datos)
-                     {  
-                        $Estado=(int) $datos->PI_ESTADO;
-                        $Mensaje=(string) $datos->PV_MENSAJE;
-                     }
-                    
+                          foreach($xmlPendientes->PX_SALIDA as $xml)
+                           {  
+
+                                foreach($xml->registros as $lsciclo) 
+                                  {
+
+                                        foreach($lsciclo->registro as $lsdetallematerias) 
+                                        {
+                                                $Veces=(int) $lsdetallematerias->veces;
+                                                if ($Veces>1)
+                                                {
+                                                  $noPrimerasBase=$noPrimerasBase+1;
+                                                }
+                                         }
+                                  }
+                            }
+                  }
+
+          foreach ($materias as $key => $value) {
+              $Veces=(int) $value['Veces'];
+              if ($Veces>1)
+              {
+                $noPrimerasPantalla=$noPrimerasPantalla+1;
+              }
+              $lnCuantassel=$lnCuantassel+1;
+          }
+          $BanderaGrabar=1;
+          if ($noPrimerasPantalla!=$noPrimerasBase)
+          {
+            $BanderaGrabar=2;
+          }
+          if ($lnCuantassel>$maxmaterias)
+          {
+            $BanderaGrabar=3;
+          }
+          if ($BanderaGrabar==1)
+          {
+                $datosCuenta=""; 
+
+               foreach ($materias as $key => $value) {
+                    $datosCuenta.= "<id_materia_paralelo>" . $value['Idcurso'] . "</id_materia_paralelo>"; 
                 }
+                  $xmlFinal="
+                            <matricula>
+                               <matriculacion>
+                                   <idEstudiante>".$idEstudiante."</idEstudiante>
+                                   <idCarrera>".$idCarrera."</idCarrera>
+                                   <idCiclo>".$idCiclo."</idCiclo>
+                                   <item>
+                                         ".$datosCuenta." 
+                                   </item>
+                                </matriculacion>
+                             </matricula>";
+
+                 $UgServices = new UgServices;
+                  $xml = $UgServices->setMatricula_Estudiante($xmlFinal);
+
+                  $Estado="";
+                  $Mensaje="";
+                   if ( is_object($xml))
+                      {
+                          foreach($xml->parametrosSalida as $datos)
+                           {  
+                              $Estado=(int) $datos->PI_ESTADO;
+                              $Mensaje=(string) $datos->PV_MENSAJE;
+                           }
+                          
+                      }
+            }
+            if($BanderaGrabar==2)
+            {
+              $Estado=12;
+              $Mensaje="Las materias que fueron vistas y no aprobadas en ciclos anteriores deben ser seleccionadas en el ciclo actual";
+            }
+
+            if($BanderaGrabar==3)
+            {
+              $Estado=13;
+              $Mensaje="El máximo de materias a matricularse es de : ".$maxmaterias;
+            }
 
 
             $arrayProceso=array();
