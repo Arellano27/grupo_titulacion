@@ -45,6 +45,9 @@ admin_anulacion_listar:
 admin_anulacion_detalle:
     path:     /anulacion_detalle
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:anulacion_detalle }
+admin_anulacion_detalle_2:
+    path:     /anulacion_detalle_materia
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:anulacion_detalle_2 }
 admin_listar_ordenpago:
     path:     /listarordenpago
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:listarordenpago }

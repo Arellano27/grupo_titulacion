@@ -1187,6 +1187,122 @@ class AdminController extends Controller
                      return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
              }
         }
+        
+   public function anulacion_detalle_2Action(Request $request)
+        {
+             
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $respuesta= new Response("",200);
+            $materias  = $request->request->get('arrMaterias');
+            $idEstudiante  = $request->request->get('idEstudiante');
+            $idCarrera  = $request->request->get('idCarrera');
+            $idCiclo  = $request->request->get('idciclo');
+            $idRol=$session->get("perfil");
+              if(strlen($idRol)>1)
+              {
+                $idRol = mb_substr($idRol,0,1);
+              }
+              else
+              {
+              $idRol = $idRol;
+                  }
+
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm){
+                     $matricula_dis=array();
+                     
+                 try
+                {
+                    
+
+                    $datosCuenta=""; 
+                     foreach ($materias as $key => $value) {
+                          $datosCuenta.= "<item>
+                                          <id_solicitud_detalle>". $value['idSolicitud'] . "</id_solicitud_detalle>
+                                            <identificador>" . $value['idMateria'] . "</identificador>
+                                            <aprobada>1</aprobada>
+                                            <opcion>A</opcion>
+                                          </item> 
+                                          "; 
+                      }
+                      $xmlFinal="
+                                <cabecera>
+                                  <id_solicitud></id_solicitud> 
+                                  <estado>75</estado>
+                                  <usuario_estudiante></usuario_estudiante>
+                                  <carrera>".$idCarrera."</carrera>
+                                  <tipo_solicitud>82</tipo_solicitud> 
+                                  <usuario_registro>".$idRol."</usuario_registro>
+                                </cabecera>
+                                <detalle> 
+                                    ".$datosCuenta." 
+                                </detalle>";
+
+
+
+                     //$estudiante  = $session->get('nom_usuario');
+                      $Mensaje="";
+                      $Estado=0;
+                      $UgServices = new UgServices;
+                      $xml2 = $UgServices->setSolicitudAnula($xmlFinal);
+
+                       
+                       if ( is_object($xml2))
+                          {
+                              foreach($xml2->parametrosSalida as $datos)
+                               {  
+                                  $Mensaje=(string) $datos->PV_MENSAJE;
+                                  $Estado=(int) $datos->PI_ESTADO;
+                               }
+                              
+                          }
+
+
+                        $arrayProceso=array();
+                        $arrayProceso['codigo_error']=$Estado;
+                        $arrayProceso['mensaje']=$Mensaje;
+                        $jarray=json_encode($arrayProceso);
+                        
+                        $respuesta->setContent($jarray);
+                        return $respuesta;
+                          
+                    }catch (\Exception $e)
+                        {
+                         $Estado=0;
+                         $arrayProceso=array();
+                          $arrayProceso['codigo_error']=0;
+                          $arrayProceso['mensaje']="Problemas al ejecutar la solicitud";
+                          $jarray=json_encode($arrayProceso);
+                          $respuesta->setContent($jarray);
+                          return $respuesta;
+                          //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                        }
+                     
+                   
+
+             }else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }
+                                
+        }  
 
 
 
