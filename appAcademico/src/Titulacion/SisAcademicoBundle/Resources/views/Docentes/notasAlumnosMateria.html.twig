@@ -5,7 +5,7 @@
   <ul class="nav nav-tabs">
     <li class="active"><a  data-toggle="tab" class="tabNotas" id="notas">Consulta de Notas</a></li>
     {%for count, parcial in arr_parcial %}
-    <li><a data-toggle="tab" class="tabNotas"  id="ingreso{{count}}">{{parcial.parcial}}</a></li>
+    <li><a data-toggle="tab" class="tabNotas"  id="ingreso{{count}}">Ingreso de Notas del {{parcial.parcial}}</a></li>
     {% endfor %}
     <li><a data-toggle="tab" class="tabNotas"  id="ingreso2">Listar Alumnos</a></li>
   </ul>
