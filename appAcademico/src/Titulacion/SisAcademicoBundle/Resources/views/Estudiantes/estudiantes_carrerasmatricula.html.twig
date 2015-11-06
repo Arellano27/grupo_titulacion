@@ -1,99 +1,122 @@
 {% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
 {% block home %}
-<div class='menu_derecho' id='div_derecho'>
-    
-</div>
-
-
-  <div class="col-lg-12">
-    <div class="panel  panel-primary">
-      <!--<div class="panel-heading">
-        Collapsible Accordion Panel Group
-      </div>-->
-      <!-- .panel-heading -->
-      <div class="panel-body">
-                <h2 align="center"><b>Carreras en Proceso de Matriculacion</b></h2>
-        <div class="panel-group" id="accordion">
+{% if (lnCuantos!=0) %}
+      <div class='menu_derecho' id='div_derecho'>
           
-            
-              
-                    {% for facultad in carreras_inscribir %} 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">  
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#mat_{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera_matricula' id="mat1_{{ facultad.Carrera }}_{{ facultad.Facultad }}_f" name="{{ facultad.Nombre }}" >{{ facultad.Nombre }}</a>
-                                </h4>
-                            </div>
-
-                            <div id="mat_{{ facultad.Carrera }}_{{ facultad.Facultad }}" class="panel-collapse collapse">
-                                   <div class="table-responsive">
-                                             <div class="tab-pane fade in active" id="ctnmat_{{ facultad.Carrera }}_{{ facultad.Facultad }}" style="width: 100% !important">
-                                                
-                                            </div>
-                                    </div>
-                             
-                        </div>
-                        </div>
-                    {% endfor %}   
-                
-        </div>
       </div>
-      <!-- .panel-body -->
-    </div>
-     </div>
-     
-    <!-- /.panel -->
-  <!-- /.col-lg-9 -->
-<script>
-    $(".tabscarrera_matricula").click(function(){
-      
-    var splitCarrera =$(this).attr('id').split('_'); 
-    console.log(splitCarrera);
-    var idIndica  = splitCarrera[0];
-     var idCarrera  = splitCarrera[1];
-     var idFacultad  = splitCarrera[2];
-     var indicaClase  = splitCarrera[3];
-     var idEstudiante  = {{idEstudiante}}; 
-     var carrera =$(this).attr('name');
 
-     var tablaNotasa = $('#ctnmat_'+idCarrera+'_'+idFacultad);
-     
-     if(indicaClase!=null )
-     {
 
-      $('.active_a').addClass('active');
-      $('.temporal').removeClass('active');
-     }
+        <div class="col-lg-12">
+          <div class="panel  panel-primary">
+            <!--<div class="panel-heading">
+              Collapsible Accordion Panel Group
+            </div>-->
+            <!-- .panel-heading -->
+            <div class="panel-body">
+                      <h2 align="center"><b>Carreras en Proceso de Matriculacion</b></h2>
+              <div class="panel-group" id="accordion">
+                
+                  
+                    
+                          {% for facultad in carreras_inscribir %} 
+                              <div class="panel panel-default">
+                                  <div class="panel-heading">  
+                                      <h4 class="panel-title">
+                                          <a data-toggle="collapse" data-parent="#accordion" href="#mat_{{ facultad.Carrera }}_{{ facultad.Facultad }}" class='tabscarrera_matricula' id="mat1_{{ facultad.Carrera }}_{{ facultad.Facultad }}_f" name="{{ facultad.Nombre }}" >{{ facultad.Nombre }}</a>
+                                      </h4>
+                                  </div>
 
-    var obj_data = {'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idIndica':idIndica,'idFacultad':idFacultad,'carrera':carrera};
-       var jumpAction = '{{path('estudiantes_proceso_matricula')}}';
-        $.ajax({
-           url:   jumpAction,
-           data: obj_data,
-           type:  'post',
-           async: true,
-           beforeSend: function () {
-             tablaNotasa.html("Cargando, espere por favor...");
-			 //notificacionIndex = cargandoSitio(null, null, null);
-    
-           },
-           success:  function (dataResponse) {
-             tablaNotasa.html(dataResponse);
-			 
-           },
-             error: function(dataResponse)
-        {
-          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
-          form="accordion";
-          msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
-                  $( '#'+form ).append( msg_alert );
-                  $('#modal-'+form).modal('show');
-        },
-   //         timeout: 50000
-           dataType:'html'
-        });
-        
-        
-    });
-</script>
+                                  <div id="mat_{{ facultad.Carrera }}_{{ facultad.Facultad }}" class="panel-collapse collapse">
+                                         <div class="table-responsive">
+                                                   <div class="tab-pane fade in active" id="ctnmat_{{ facultad.Carrera }}_{{ facultad.Facultad }}" style="width: 100% !important">
+                                                      
+                                                  </div>
+                                          </div>
+                                   
+                              </div>
+                              </div>
+                          {% endfor %}   
+                      
+              </div>
+            </div>
+            <!-- .panel-body -->
+          </div>
+           </div>
+           
+          <!-- /.panel -->
+        <!-- /.col-lg-9 -->
+      <script>
+          $(".tabscarrera_matricula").click(function(){
+            
+          var splitCarrera =$(this).attr('id').split('_'); 
+          console.log(splitCarrera);
+          var idIndica  = splitCarrera[0];
+           var idCarrera  = splitCarrera[1];
+           var idFacultad  = splitCarrera[2];
+           var indicaClase  = splitCarrera[3];
+           var idEstudiante  = {{idEstudiante}}; 
+           var carrera =$(this).attr('name');
+
+           var tablaNotasa = $('#ctnmat_'+idCarrera+'_'+idFacultad);
+           
+           if(indicaClase!=null )
+           {
+
+            $('.active_a').addClass('active');
+            $('.temporal').removeClass('active');
+           }
+
+          var obj_data = {'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idIndica':idIndica,'idFacultad':idFacultad,'carrera':carrera};
+             var jumpAction = '{{path('estudiantes_proceso_matricula')}}';
+             var modelessSeleccion;
+              $.ajax({
+                 url:   jumpAction,
+                 data: obj_data,
+                 type:  'post',
+                 async: true,
+                 beforeSend: function () {
+                    modelessSeleccion = new $.flavr({
+                             modal   : true,
+                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                             buttons     : {}
+                          });
+                   tablaNotasa.html("Cargando, espere por favor...");
+      			 //notificacionIndex = cargandoSitio(null, null, null);
+          
+                 },
+                 success:  function (dataResponse) {
+                    modelessSeleccion.close();
+                   tablaNotasa.html(dataResponse);
+      			 
+                 },
+                   error: function(dataResponse)
+              {
+                //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                modelessSeleccion.close();
+                form="accordion";
+                msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                        $( '#'+form ).append( msg_alert );
+                        $('#modal-'+form).modal('show');
+              },
+         //         timeout: 50000
+                 dataType:'html'
+              });
+              
+              
+          });
+      </script>
+  {% endif %}
+  {% if lnCuantos==0 %}
+      <div class='menu_derecho' id='div_derecho'>
+          <div class="panel-body">
+                      <h2 align="center"><b>Carreras en Proceso de Matriculacion</b></h2>
+                       <div class="panel panel-default">
+                                  <div class="panel-heading"> 
+                                      No existen Carreras en proceso de Matriculacion
+                                  </div>
+                        </div>
+          </div>
+
+      </div>
+  {% endif %}
 {% endblock %}

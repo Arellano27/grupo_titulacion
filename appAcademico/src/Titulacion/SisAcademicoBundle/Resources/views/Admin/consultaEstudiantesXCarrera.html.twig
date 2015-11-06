@@ -125,9 +125,8 @@
             }
           }
         });
-      }
-      
-      $.ajax({
+
+        $.ajax({
         url:   '{{path('admin_academico_estudiante_carrera_selected')}}',
         data: {ciclo: ciclo,carrera: carrera,estadoMatricula:"0",opcion:"1",identificacion:""},
         dataType: 'json',
@@ -166,6 +165,11 @@
           pieChart.Doughnut(dataResponse.listadoPorcentaje);
         }
       });
+      
+
+      }
+      
+      
 
       $('#periodosSelectAsistencia_'+carrera).change(function() {
         var estadoMatricula =  $('#periodosSelectAsistencia_'+carrera).val();
@@ -208,10 +212,11 @@
       $('#buscarEstudiante_'+carrera).click(function() {
         var identificacion = $('#ident_'+carrera).val();
         var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+        var estadoMatricula =  $('#periodosSelectAsistencia_'+carrera).val();
         //alert(identificacion);
         $.ajax({
           url:   '{{path('admin_academico_estudiante_carrera_selected')}}',
-          data: {ciclo: ciclo,carrera: carrera,estadoMatricula:"0",opcion:"2",identificacion:identificacion},
+          data: {ciclo: ciclo,carrera: carrera,estadoMatricula:estadoMatricula,opcion:"2",identificacion:identificacion},
           dataType: 'json',
           type:  'post',
           beforeSend: function () {
@@ -233,6 +238,7 @@
             //    var jsdata = JSON.parse(dataResponse);
             //alert(jsdata);
             $('#tabla_'+carrera).html("");
+
             oTable.fnClearTable();
             $(dataResponse.listadoEstudiante).each(function(index){
               var addData = [];

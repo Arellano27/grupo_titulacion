@@ -96,6 +96,9 @@ modelessEnvioCorreo.close();
 
 }
 
+function enterB(event){var x =event.keyCode;if(x == 13)$('#btn_iniciar').click();}
+function enterT(event){var x =event.keyCode;if(x == 13)$('#password').focus();}
+
 function login(){
 
     btn_login = btn_login +1*1;
@@ -105,11 +108,11 @@ function login(){
      $('.login-are').removeAttr('click');
     var html =
         '   <div class="form-row">' +
-        '       <input id="username" type="text" name="username" maxlength="10"' +
+        '       <input id="username" type="text" name="username" onkeydown="enterT(event)" maxlength="10"' +
         '       placeholder="Username"  required /> <p class="help-block"></p>' +
         '   </div>' +
         '   <div class="form-row">' +
-        '       <input id="password" type="password" name="password" ' +
+        '       <input id="password" type="password" onkeydown="enterB(event)" name="password" ' +
         '       placeholder="Password" required /> <p class="help-block"></p>' +
         '   </div>' +
         '   <div class="form-row">' +

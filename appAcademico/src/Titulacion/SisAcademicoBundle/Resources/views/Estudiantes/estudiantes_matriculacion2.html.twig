@@ -22,6 +22,7 @@
                         var myArray = {};
                         var indicasel=0;
                         var materiassel=0;
+                        var indicaVeces=0;
                             $("#table-matricula tbody tr").each(function (index) 
                             {
                                 //console.log(elecmentocombo[index].options[elecmentocombo[index].selectedIndex].text);
@@ -83,6 +84,28 @@
                                      arrValores["Nivel"]=Nivel;
                                      myArray[index]=arrValores;
                                 }
+                                // else
+                                // {
+
+                                //     $(this).children("td").each(function (index2) 
+                                //     {
+                                //         Celda=$(this).attr("id");
+                                //         Celda=Celda.split('_');
+                                //         Celda=Celda[0];
+                                //         //alert(Elemento);
+                                //         switch (Celda) 
+                                //         {
+                                //             case "veces": Veces = $(this).text() 
+                                //                     //alert("ve"+Veces);
+                                //                      break;
+                                //         }
+                                         
+                                //     })
+                                //     if (Veces!=1) 
+                                //     {
+                                //        indicaVeces=indicaVeces+1; 
+                                //     }
+                                // }
                                
                             })
                         }
@@ -98,7 +121,7 @@
                                 {
                                         modelessMateriasInscribir= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Sr. Estudiante, el maximo de materias para inscribir es de 7.<br/> Por favor revise la seleccion de Materias',
+                                                           content : 'Sr. Estudiante, el maximo de materias para inscribir es de: '+maxmaterias+'.<br/> Por favor revise la seleccion de Materias',
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -132,19 +155,25 @@
                                 // console.log(obj_data);
 
                                  var jumpAction = '{{path('estudiantes_grabar_matricula')}}';
+                                 var modelessSetMatricula;
                                   $.ajax({
                                      url:   jumpAction,
                                      data: obj_data,
                                      type:  'post',
                                      async: true,
                                      beforeSend: function () {
+                                        modelessSetMatricula = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             buttons     : {}
+                                                          });
                                        // alert("dentro");
                                        //tablaNotasa.html("Cargando, espere por favor...");
                                      //notificacionIndex = cargandoSitio(null, null, null);
                               
                                      },
                                      success:  function (dataResponse) {
-                                        
+                                        modelessSetMatricula.close();
                                        var respuesta=jQuery.parseJSON(dataResponse);
                                        $("#div_respuesta").html(respuesta.mensaje);
                                        if (respuesta.codigo_error!=1)
@@ -179,6 +208,7 @@
                                      },
                                       error: function(dataResponse)
                                       {
+                                        modelessSetMatricula.close();
                                           //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
                                           //tablaNotasa.html("No fue posible conectar con el Servidor");
                                         form="accordion";
@@ -269,6 +299,7 @@
                                 var idCiclo = '{{idciclo}}';
                                 var obj_data = {'arrMaterias': myArray,'idEstudiante':idEstudiante,'idCarrera':idCarrera,'idCiclo':idCiclo,'carrera':carrera};
                                 var tablamatricula = $('#tabresumen_2');
+                                var modelessPresentaMatricula;
                                   var jumpAction = '{{path('estudiantes_presenta_matricula')}}'; //cambiar por la ruta nueva; porfa revisa q puede ser porq no me  coge la nueva rut me sale q no existe y ya esat declara y he borrado cahce y nada sale q no existe de ahi ya funciona
                                   $.ajax({
                                      url:   jumpAction,
@@ -276,9 +307,15 @@
                                      type:  'post',
                                      async: true,
                                      beforeSend: function () {
+                                        modelessPresentaMatricula = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                             buttons     : {}
+                                                          });
                                
                                      },
                                      success:  function (dataResponse) {
+                                        modelessPresentaMatricula.close();
                                        //var respuesta=jQuery.parseJSON(dataResponse);
                                        //console.log(respuesta);
                                        //$('#tabresumen_2').html(respuesta.materias);
@@ -286,6 +323,7 @@
                                      },
                                       error: function(dataResponse)
                                       {
+                                        modelessPresentaMatricula.close();
                                         form="accordion";
                                         msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
                                                         $( '#'+form ).append( msg_alert );

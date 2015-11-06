@@ -82,6 +82,7 @@
                 var obj_data = {'idEstudiante':valorBuscado,'idCarrera':idCarrera,'criterio':criterio,'estado':lcEstado};
                 var resultado = $('#divodenespagos');
                 var jumpAction = '{{path('admin_listar_ordenpago')}}';
+                var modelessOrdenPago;
           // Enviamos el formulario usando AJAX
                 if (valorBuscado.length!=0)
                 {
@@ -91,16 +92,23 @@
                            type:  'post',
                            async: true,
                            beforeSend: function () {
+                              modelessOrdenPago = new $.flavr({
+                               modal   : true,
+                               content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                               buttons     : {}
+                            });
                              resultado.html("Cargando, espere por favor...");
                              //notificacionIndex = cargandoSitio(null, null, null);
                     
                            },
                            success:  function (dataResponse) {
+                             modelessOrdenPago.close();
                              resultado.html(dataResponse);
                              
                            },
                              error: function(dataResponse)
                         {
+                          modelessOrdenPago.close();
                           //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
                           form="accordion";
                           msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');

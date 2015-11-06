@@ -62,11 +62,15 @@ estudiantes_pdf_anulamateria:
 estudiantes_pdf_horarioexamen:
     pattern:  /pdfHorarioExamen/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfHorarioExamen}
-
+estudiantes_horarios:
+    pattern:  /carrerasHorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:carrerasHorarios}
+estudiantes_pdf_horariogeneral:
+    pattern:  /pdfHorarioGeneral/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfHorarioGeneral}
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes
-
 estudiantes_pdf_solicitudes:
     pattern:  /PdfSolicitudes
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:PdfSolicitudes }
