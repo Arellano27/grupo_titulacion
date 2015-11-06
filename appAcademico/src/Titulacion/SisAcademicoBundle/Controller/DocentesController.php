@@ -2026,8 +2026,8 @@
             $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
        
            */
-        
-                 $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:listaEstudiantes.html.twig',
+        echo $muestraDocente;
+                 return $this->render('TitulacionSisAcademicoBundle:Docentes:listaEstudiantes.html.twig',
 						  array(
 							 //  'arr_datos'	=> $arr_datos,
                                                            'docente'   => $muestraDocente ,
@@ -2037,16 +2037,16 @@
                                                            'msg'   	=> $this->v_msg
 						  ));
                         
-                        $response->setData(
-                                array(
-					'error' 		=> $this->v_error,
-					'msg'			=> $this->v_msg,
-                                        'html' 			=> $this->v_html,
-                                        'withoutModal' 	=> $withoutModal,
-                                        'recargar'      => '0'
-                                     )
-                              );
-                        return $response;
+//                        $response->setData(
+//                                array(
+//					'error' 		=> $this->v_error,
+//					'msg'			=> $this->v_msg,
+//                                        'html' 			=> $this->v_html,
+//                                        'withoutModal' 	=> $withoutModal,
+//                                        'recargar'      => '0'
+//                                     )
+//                              );
+//                        return $response;
         }
         
         public function cmbMateriasAction(Request $request)
@@ -2204,7 +2204,7 @@
             $Materia =$request->request->get('materia_text');
            list($Materia,$paralelo) = split('[-]', $Materia);
             
-           $Docente= str_replace ( 'CRUZ BONITO STEVEN ANDRES ' , 'CRUZ BONITO STEVEN ANDRES' , $Docente);
+           $Docente= trim($Docente);
             
             $section ='http://localhost/desarrollo/appAcademico/web/docentes/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
             $response->setData(

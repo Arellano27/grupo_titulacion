@@ -764,7 +764,7 @@ XML;*/
             <respuestaConsulta>
                <registros>
                   <registro>
-                     <fecha>2015-11-03</fecha>
+                     <fecha>2015-11-05</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                   <registro>

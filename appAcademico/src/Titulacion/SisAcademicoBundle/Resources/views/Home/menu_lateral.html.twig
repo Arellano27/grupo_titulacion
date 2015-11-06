@@ -56,7 +56,7 @@
                 <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Reporte Materias Aprobada </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaEstudiantesMateriaParalelo %}
-                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Estud. Materia Paralelo </a></li>
+                <li><a href="{{path('admin_lista_estudiantes')}}"><i class="fa fa-circle-o"></i> Consulta Estud. Materia Paralelo </a></li>
               {% endif %}
               {% if event.id_sg_opcion == AprobacionInscripcion %}
                 <li><a href="{{path('admin_inscripcion')}}"><i class="fa fa-circle-o"></i> Aprobacion Inscripcion </a></li>
