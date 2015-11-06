@@ -1395,7 +1395,9 @@ class AdminController extends Controller
                         <th style='text-align: center !important;'>Identificación</th> 
                         <th style='text-align: center !important;'>Nombre Alumno</th>
                         <th style='text-align: center !important;'>Estado Matricula</th>
-                      </tr>";
+                      </tr>
+                    </thead>";
+
       foreach($xmlEstudiante as $lcEstudiantes){
         $lcNombre = $lcEstudiantes['nombrecompleto'];
         $lcEstadoMatricula = $lcEstudiantes['estadoestudiante'];
@@ -1851,7 +1853,9 @@ class AdminController extends Controller
                           <th style='text-align: center !important;'>Nivel</th>
                           <th style='text-align: center !important;'>Materia</th>
                           <th style='text-align: center !important;'>Promedio</th>
-                        </tr>";
+                        </tr>
+                      </thead>";
+                      
                 foreach($xmlAlumno->materia as $lcMaterias){
                   $materia=$lcMaterias->materia;
                   $nivel = $lcMaterias->nivel;

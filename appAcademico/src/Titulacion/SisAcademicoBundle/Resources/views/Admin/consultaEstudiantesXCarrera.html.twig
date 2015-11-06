@@ -25,14 +25,14 @@
           <input id="valida_{{ carrera.idCarrera }}" type="hidden" value="0">
             <div id="parametrosBusqueda_{{ carrera.idCarrera }}" class="col-lg-12">
               <div class="col-lg-6" style="margin-bottom: 20px;">
-                <div class="col-lg-4" style="padding-top: 6px;">Identificación Estudiante:</div>
+                <div class="col-lg-5" style="padding-top: 6px; font-weight: bold;">Identificación Estudiante:</div>
                 <div class="col-lg-4" style="padding-top: 3px;"><input type="text" id="ident_{{ carrera.idCarrera }}"maxlength="10"></div>
                 <div class="col-lg-2"> <a id="buscarEstudiante_{{ carrera.idCarrera }}" class="btn btn-primary">BUSCAR</a></div>
 
               </div>
               <div class="col-lg-6" style="margin-bottom: 20px;">
 
-                <div class="col-lg-4" style="padding-top: 6px;">Estado Matricula:</div>
+                <div class="col-lg-4" style="padding-top: 6px; font-weight: bold;">Estado Matricula:</div>
                 <div class="col-lg-4" style="padding-top: 3px;"><select id="periodosSelectAsistencia_{{ carrera.idCarrera }}">
                           <option value="0">TODOS</option>
                           {% for parametro in estudianteCarrera.parametroCombos %}
