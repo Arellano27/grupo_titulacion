@@ -37,7 +37,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center " style="vertical-align: middle" >Codigo</th>
-                                            <th style="text-align: center;vertical-align: middle">Estudiante</th>
+                                            <th style="text-align: center;vertical-align: middle" >Estudiante</th>
                                            <th style="text-align: center;vertical-align: middle"></th>
                                         </tr>
                                      
@@ -46,9 +46,9 @@
                                         <input type = "hidden" value = "nada" id = "hdservicio" name = "hdservicio" />
                                 {%for count ,alumnos in arr_datos %}
                                        <tr class="odd gradeX">
-                                           <td width = "5%" >{{ alumnos.id_sg_usuario }}</td>
-                                            <td width = "20%">{{ alumnos.nombres }} <input type = "hidden" value = "{{ alumnos.nombres }}" name = "hdalumno_{{count+1}}" /></td>
-                                            <td width = "20%"><button type="button" id="{{ alumnos.nombres }}" name="{{ alumnos.id_sg_usuario }}" class="ingresoNota btn btn-primary" >Ingreso Nota</button></td>
+                                           <td width = "5%" style="text-align: center;">{{ alumnos.id_sg_usuario }}</td>
+                                            <td width = "20%" style="text-align: center;">{{ alumnos.nombres }} <input type = "hidden" value = "{{ alumnos.nombres }}" name = "hdalumno_{{count+1}}" /></td>
+                                            <td width = "20%"><button type="button" id="{{ alumnos.nombres }}" name="{{ alumnos.id_sg_usuario }}" class="ingresoNota btn btn-primary" value="{{ alumnos.id_sa_estudiante_carrera_materia }}" >Ingreso Nota</button></td>
                                        </tr>
                                 {% endfor %}
                                 <input type = "hidden" value = "{{arr_datos|length}}" name = "hdcountalm" id="hdcountalm"/>
@@ -76,8 +76,9 @@
    $(".ingresoNota").click(function(){
      var nombre =$(this).attr('id'); 
      var codigo =$(this).attr('name');
+     var idalumno =$(this).attr('value');
     
-       mostrarAlumnos('ingresonotas','{{ path('docentes_ingreso_notas') }}',codigo,nombre);
+       mostrarAlumnos('ingresonotas','{{ path('docentes_ingreso_notas') }}',codigo,nombre,idalumno);
      
    });
    </script>                                 

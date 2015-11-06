@@ -87,7 +87,7 @@ admin_muestra_estudiantes:
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:muestraEstudiantes}
     
 admin_exportaPDF_estudiantes:
-    pattern:  /PDF/estudiantes/{docente}/{materia}
+    pattern:  /PDF/estudiantes/{docente}/{materia}/{docente_text}/{materia_text}/{paralelo}
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ExportarPDFEstudiantes}
     
 admin_cargar_pagina:

@@ -130,7 +130,7 @@ class HomeController extends Controller
             #llamamos a la consulta del webservice
             $UgServices = new UgServices;
             $data = $UgServices->getLogin($username,$password);
-// echo '<pre>'; var_dump($data); exit();
+//echo '<pre>'; var_dump($data); exit();
             if ($data) {
                 $login_act     =array();
                 $perfilUsuario = null;
@@ -201,6 +201,7 @@ class HomeController extends Controller
                 // $id_rol = 3;
 
                 $rsCarrera = $UgServices->getConsultaCarreras($idUsuario,$id_rol);
+
                 // echo '<pre>'; var_dump($rsCarrera); exit();
                 $resultadoObjeto = json_encode($rsCarrera);
                 $xml_array = json_decode($resultadoObjeto,TRUE);
@@ -212,6 +213,7 @@ class HomeController extends Controller
                   "Perfil" => $perfil ,
                   "NombreUsuario" => $nombreUsuario,
                 );
+                
                 return new Response(json_encode($respuesta));
 
                 //return new Response($perfil);
