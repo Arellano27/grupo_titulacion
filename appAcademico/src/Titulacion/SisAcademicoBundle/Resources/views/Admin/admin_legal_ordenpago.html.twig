@@ -150,19 +150,26 @@
                                  var obj_data = {'arrDetalle': myArray};
                                 
                                  var jumpAction = '{{path('admin_actualiza_ordenpago')}}';
+                                 var modelessSetOrdenPago;
                                   $.ajax({
                                      url:   jumpAction,
                                      data: obj_data,
                                      type:  'post',
                                      async: true,
                                      beforeSend: function () {
+                                        modelessSetOrdenPago = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             buttons     : {}
+                                                          });
                                        // alert("dentro");
                                        //tablaNotasa.html("Cargando, espere por favor...");
                                      //notificacionIndex = cargandoSitio(null, null, null);
                               
                                      },
                                      success:  function (dataResponse) {
-                                        
+
+                                        modelessSetOrdenPago.close();
                                        var respuesta=jQuery.parseJSON(dataResponse);
                                        if (respuesta.codigo_error!=1)
                                        {
@@ -191,6 +198,7 @@
                                       {
                                           //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
                                           //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                          modelessSetOrdenPago.close();
                                         form="accordion";
                                         msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
                                                         $( '#'+form ).append( msg_alert );

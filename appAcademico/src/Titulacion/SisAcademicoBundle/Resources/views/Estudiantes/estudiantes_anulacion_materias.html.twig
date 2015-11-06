@@ -84,20 +84,27 @@
            }
           var obj_data = {'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idIndica':idIndica,'idFacultad':idFacultad,'carrera':carrera};
              var jumpAction = '{{path('estudiantes_anulacion_materias')}}';
+             var modelessMaterias;
               $.ajax({
                  url:   jumpAction,
                  data: obj_data,
                  type:  'post',
                  async: true,
                  beforeSend: function () {
+                   modelessMaterias = new $.flavr({
+                             modal   : true,
+                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                             buttons     : {}
+                          });
                    tablaNotasa.html("Cargando, espere por favor...");
                  },
                  success:  function (dataResponse) {
+                  modelessMaterias.close();
                    tablaNotasa.html(dataResponse);
                  },
                   error: function(dataResponse)
                   {
-                      
+                    modelessMaterias.close(); 
                     tablaNotasa.html("No fue posible conectar con el Servidor");
       				form="accordion";
       			    msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');

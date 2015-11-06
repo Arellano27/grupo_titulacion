@@ -98,17 +98,24 @@
            //console.log('#ctn_'+idCarrera);
           var obj_data = {'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idIndica':idIndica,'idFacultad':idFacultad};
              var jumpAction = '{{path('estudiantes_notas_historico')}}';
+             var modelessNotas;
               $.ajax({
                  url:   jumpAction,
                  data: obj_data,
                  type:  'post',
                  async: true,
                  beforeSend: function () {
+                  modelessNotas = new $.flavr({
+                             modal   : true,
+                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                             buttons     : {}
+                          });
                    tablaNotasa.html("Cargando, espere por favor...");
       			 //notificacionIndex = cargandoSitio(null, null, null);
           
                  },
                  success:  function (dataResponse) {
+                  modelessNotas.close();
                    //sitioCargado(notificacionIndex);
                    //console.log(optionSelect.closest(".panel-body"));
                    tablaNotasa.html(dataResponse);
@@ -116,6 +123,7 @@
                  },
                   error: function(dataResponse)
                   {
+                      modelessNotas.close();
                       //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
                       tablaNotasa.html("No fue posible conectar con el Servidor");
       				form="accordion";
