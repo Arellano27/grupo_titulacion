@@ -693,6 +693,7 @@
             $idEstudiante  = $request->request->get('idEstudiante');
             $idCarrera  = $request->request->get('idCarrera');
             $carrera  = $request->request->get('carrera');
+             $solicitudenProceso=0;
 
             
            if ($session->has("perfil")) {
@@ -747,7 +748,7 @@
 
                              $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$Idciclo);
                              
-                            $solicitudenProceso=0;
+                            
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
@@ -804,6 +805,7 @@
                                                     'cicloencurso'=>$CicloMatricula,
                                                     'idciclo'=>$Idciclo,
                                                     'parveces'=>$parveces,
+                                                    'solicitudenProceso'=>$solicitudenProceso,
                                                     'carrera'=>$carrera 
 
                                                  ));
@@ -1157,7 +1159,7 @@
            $noPrimerasPantalla=0;
            $lnCuantassel=0;
            $maxmaterias=7;
-          
+          $UgServices = new UgServices;
            $xmlPendientes = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idCarrera,$idCiclo);
                           
             //obtenet el ciclo de matriculacion del XML
@@ -1217,7 +1219,7 @@
                                 </matriculacion>
                              </matricula>";
 
-                 $UgServices = new UgServices;
+                 
                   $xml = $UgServices->setMatricula_Estudiante($xmlFinal);
 
                   $Estado="";
@@ -1235,7 +1237,7 @@
             if($BanderaGrabar==2)
             {
               $Estado=12;
-              $Mensaje="Las materias que fueron vistas y no aprobadas en ciclos anteriores deben ser seleccionadas en el ciclo actual";
+              $Mensaje="Las materias que fueron vistas y no aprobadas en ciclos anteriores <br/> deben ser seleccionadas en el ciclo actual";
             }
 
             if($BanderaGrabar==3)
@@ -1850,9 +1852,10 @@
                                                   $Nivel=$lsdetallematerias->nivel;
                                                   $Curso=$lsdetallematerias->curso;
                                                   $Estado=$lsdetallematerias->estado_materia;
+                                                  $idEstado=$lsdetallematerias->id_estado_materia;
                                                   
 
-                                                  if (trim($Estado)!='')
+                                                  if ($idEstado=='119')
                                                   {
                                                        $pdf.="<tr>
                                                                   <td align='center'>$Nivel</td>
