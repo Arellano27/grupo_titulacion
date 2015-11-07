@@ -10,7 +10,9 @@ namespace Titulacion\SisAcademicoBundle\Controller;
 
 class AdminController extends Controller
 {
-
+      var $v_error =false;
+      var $v_html ="";
+      var $v_msg  ="";
 
     public function calendario_carreraAction(Request $request){
 
@@ -528,7 +530,7 @@ class AdminController extends Controller
 
     if ($session->has("perfil")) {
 
-      if ($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstAdm || $session->get('perfil') == $perfilDocAdm){
+      if ($session->get('perfil') == $perfilAdmin ||$session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstAdm || $session->get('perfil') == $perfilDocAdm){
         try{        
           $lcCarrera="";
           $idAdministrador=$session->get("id_user");
@@ -958,6 +960,103 @@ class AdminController extends Controller
              return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
      }
     }#termina funcion
+    
+    
+    public function estudiantesxDocentesAction(Request $request)
+    {
+        $session=$request->getSession();
+        $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+         if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm) 
+                {
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          $idUsuario="";
+                          $idRol="";
+                          $idUsuario=$session->get("id_user");
+                          $idRol=$session->get("perfil");
+                          if(strlen($idRol)>1)
+                          {
+                            $idRol = mb_substr($idRol,0,1);
+                          }
+                          else
+                          {
+                          $idRol = $idRol;
+                          }
+                          //$idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                          //$idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                          
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarrerasAnulacion($idUsuario,$idRol);
+                            if ( is_object($xml))
+                            {
+                                  foreach($xml->registros->registro as $lcCarreras) 
+                                  {
+                                          $lcFacultad="";
+                                          $lcCarrera=$lcCarreras->id_sa_carrera;
+                                          $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                     'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                     'Carrera'=>$lcCarreras->id_sa_carrera,
+                                                                     'Ciclo'=>$lcCarreras->id_sa_ciclo_detalle
+                                                                    );
+                                          array_push($Carreras, $materiaObject); 
+                                  } 
+    
+                                  $bolCorrecto=1;
+                                  $cuantos=count($Carreras);
+                                  if ($cuantos==0)
+                                  {
+                                        $bolCorrecto=0;
+                                  }    
+                            }
+                            else
+                            {
+    
+                              throw new \Exception('Un error');
+                            }    
+                 }
+                 catch (\Exception $e)
+                 {
+    
+                        $bolCorrecto=0;
+                        $cuantos=0;
+    
+                 }    
+                 return $this->render('TitulacionSisAcademicoBundle:Admin:EstudiantesxDocentes.html.twig',array(
+                                                  'carreras' => $Carreras,
+                                                  'bolcorrecto'=>$bolCorrecto
+                                               ));
+            }
+            else
+            {
+                   $this->get('session')->getFlashBag()->add(
+                                 'mensaje',
+                                 'Los datos ingresados no son válidos'
+                             );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+    }
+    else
+    {
+         $this->get('session')->getFlashBag()->add(
+                              'mensaje',
+                               'Los datos ingresados no son válidos'
+                           );
+             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+     }
+    }#termina funcion
+    
+    
       public function anulacion_datosAction(Request $request)
     {
         $idCarrera  = $request->request->get('idCarrera');
@@ -1898,260 +1997,260 @@ class AdminController extends Controller
   /* FIN SPRINT ARELLANO 4.1 */
   /* ------------------------------------------------------------------------------*/
   /* ------------------------------------------------------------------------------*/
-//     public function listaEstudiantesAction(Request $request)
-//        { 
-//           $notas='';
-//            date_default_timezone_set('America/Buenos_Aires');
-//         $withoutModal       = true;
-//                     $profesor='Apolinario';
-//            //$materia='Calculo';
-//            $paralelo='S2A';
-//          
-//            $notas='';
-//            $parcial =$request->request->get('parcial');
-//            $session=$request->getSession();
-//               $session->set("parcial",$parcial);
-//            
-//            
-//            $response   		= new JsonResponse();
-//            $withoutModal       = true;
-//         
-//            $idDocente     = 1;
-//            $carrera  =1;
-//            $UgServices    = new UgServices;
-//            
-//            ////////////////////////////////
-//            
-//            $idDocente  = $session->get('id_user');
-//            //$idDocente  = $request->request->get('idDocente');
-//            $idCarrera  = $request->request->get('carrera');
-//
-//            $datosMaterias	= array();
-//            $datosDocentes	= array();
-//            //$idDocente = "1";
-//            //$idCarrera = "2";
-//
-//            $UgServices    = new UgServices;
-//            
-//            
-//            $datosDocentes  = $UgServices->Docentes_getDocentes($idCarrera);
-//           // print_r($datosDocentes);
-//            
-//            
-//            $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
-//            $muestraDocente="<option value=''>Seleccione Docente</option>";
-//            $muestraMateria="<option value=''>Seleccione Materia</option>";
-//           /*print_r($datosMaterias);
-//           exit();*/
-//             foreach($datosMaterias as $materia) {
-//              ##echo $materia['materia'];
-//                  $muestraMateria .= '<option value="'.$materia['id_sa_materia_paralelo'].'">'.$materia['materia']."--".$materia['paralelo'].'</option>';
-//               
-//            }
-//           
-//             foreach($datosDocentes as $docente) {
-//              
-//                  $muestraDocente .= '<option value="'.$docente['id_sg_usuario'].'">'.$docente['profesor'].'</option>';
-//               
-//            }
-//            
-//            
-//            
-//            ///////////////////////////////////////
-//            //$idDocente="";
-//               //$idCarrera="";
-//            // $materia="2269";
-//       //Menu de Notas por Materia para Profesor
-//         $Parcial='1';
-//             
-//        
-//                 $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Admin:listaEstudiantes.html.twig',
-//						  array(
-//							 //  'arr_datos'	=> $arr_datos,
-//                                                           'docente'   => $muestraDocente ,
-//                                                           'materia'   => $muestraMateria,
-//                                                           'idCarrera'   => $idCarrera,
-//                                                           'cantidad'   => '',
-//                                                           'msg'   	=> $this->v_msg
-//						  ));
-//                        
-//                        $response->setData(
-//                                array(
-//					'error' 		=> $this->v_error,
-//					'msg'			=> $this->v_msg,
-//                                        'html' 			=> $this->v_html,
-//                                        'withoutModal' 	=> $withoutModal,
-//                                        'recargar'      => '0'
-//                                     )
-//                              );
-//                        return $response;
-//        }
-//        
-//        public function cmbMateriasAction(Request $request)
-//        { 
-//             $response   		= new JsonResponse();
-//            $idCarrera =$request->request->get('carrera');
-//            
-//            $idDocente =$request->request->get('docente');
-//             $UgServices    = new UgServices;
-//            $response   		= new JsonResponse();
-//            
-//            $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
-//            $muestraMateria="<option value=''>Seleccione Materia</option>";
-//           /*print_r($datosMaterias);
-//           exit();*/
-//             foreach($datosMaterias as $materia) {
-//              ##echo $materia['materia'];
-//                  $muestraMateria .= '<option value="'.$materia['id_sa_materia_paralelo'].'">'.$materia['materia']."-".$materia['paralelo'].'</option>';
-//               
-//            }
-//           
-//            
-//        
-//			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Admin:cmbMaterias.html.twig',
-//						  array(
-//                                                           'materia'   => $muestraMateria
-//                                                           
-//						  ));
-//                        
-//                        $response->setData(
-//                                array(
-//                                        'html' 			=> $this->v_html
-//                                     )
-//                              );
-//                        return $response;
-//        }
-//        
-//       public function muestraEstudiantesAction(Request $request)
-//        { 
-//             $response   		= new JsonResponse();
-//            
-//            
-//            $idDocente =$request->request->get('docente');
-//            
-//            $idMateria =$request->request->get('materia');
-//            
-//            $Docente =$request->request->get('docente_text');
-//            
-//            $Materia =$request->request->get('materia_text');
-//            $paralelo =$request->request->get('paralelo');
-//            
-//            $Fecha=date('d/m/Y');
-//            
-//            //echo $idDocente."--".$idMateria."--";
-//            
-//            
-//            $response   		= new JsonResponse();
-//            if ($idDocente==="")
-//            {
-//                    $this->v_error	= true; 
-//                    $this->v_msg ='Debe seleccionar un Docente';
-//                 }else {   
-//                    
-//                    if($idMateria==="")
-//                   { 
-//                        $this->v_error	= true; 
-//                          $this->v_msg ='Debe seleccionar una Materia'; 
-//                        }else { 
-//                           // $idMateria="235";
-//                   $trama = "<materiaparalelo>".$idMateria."</materiaparalelo>";
-//                   $UgServices    = new UgServices; 
-//                    $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
-//                   $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Admin:tablaEstudiantes.html.twig',
-//						  array(
-//                                                           'docente_text'   => $Docente,
-//                                                           'materia_text'   => $Materia,
-//                                                           'paralelo'   => $paralelo,
-//                                                           'fecha'   => $Fecha,
-//                                                           'arr_datos'   => $arr_datos
-//                                                           
-//						  ));
-//                     }
-//                     
-//             
-//                 }
-//                       
-//                        
-//                        $response->setData(
-//                                array(
-//                                        'msg'                => $this->v_msg,
-//                                        'error'              => $this->v_error,
-//                                        'html' 		     => $this->v_html
-//                                     )
-//                              );
-//                        return $response;
-//        }
-//        
-//     public function ExportarPDFEstudiantesAction(Request $request,$docente,$materia,$docente_text,$materia_text,$paralelo)
-//        { 
-//             $response   		= new JsonResponse();
-//          //  echo "ttttttttttttttttttt";
-//            
-//            $Fecha=date('d/m/Y');
-//            //echo $idDocente."--".$idMateria."--";
-//            
-//            
-//            $response   		= new JsonResponse();
-//           
-//                           // $idMateria="2269";
-//                   $trama = "<materiaparalelo>".$materia."</materiaparalelo>";
-//                   $UgServices    = new UgServices; 
-//                    $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
-//                   $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Admin:tablaEstudiantes.html.twig',
-//						  array(
-//                                                           'docente_text'   => $docente_text,
-//                                                           'materia_text'   => $materia_text,
-//                                                           'paralelo'   => $paralelo,
-//                                                           'fecha'   => $Fecha,
-//                                                           'arr_datos'   => $arr_datos
-//                                                           
-//						  ));
-//                   
-//                       
-//                        
-//                       /* $response->setData(
-//                                array(
-//                                        'msg'                => $this->v_msg,
-//                                        'error'              => $this->v_error,
-//                                        'html' 		     => $this->v_html
-//                                     )
-//                              );
-//                        return $response;*/
-//                  $mpdfService = $this->get('tfox.mpdfport');
-//                  $mPDF = $mpdfService->getMpdf();
-//                 // $mPDF = $mpdfService->add();
-//                  $mPDF->AddPage('','','1','i','on');
-//                  $mPDF->WriteHTML($this->v_html);
-//                  
-//                  //$mPDF->AddPage('','','1','i','on');
-//                  //$mPDF->WriteHTML($pdf);
-//                  //$mPDF->Output();
-//                  return new response($mPDF->Output());
-//        }
-//        
-//      public function cargaPaginaAction(Request $request)
-//        {
-//			//print_r($_SESSION);
-//            $response = new JsonResponse();
-//            
-//             $idDocente =$request->request->get('docente');
-//            
-//            $idMateria =$request->request->get('materia');
-//            $Docente =$request->request->get('docente_text');
-//            
-//            $Materia =$request->request->get('materia_text');
-//           list($Materia,$paralelo) = split('[-]', $Materia);
-//            
-//           $Docente= trim($Docente);
-//            
-//            $section ='http://localhost/desarrollo/appAcademico/web/docentes/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
-//            $response->setData(
-//                                array(
-//                                        'redirect' => true,
-//                                        'section' => $section
-//                                     )
-//                              );
-//
-//            return $response;
-//        }
+     public function listaEstudiantesAction(Request $request)
+        { 
+           $notas='';
+            date_default_timezone_set('America/Buenos_Aires');
+         $withoutModal       = true;
+                     $profesor='Apolinario';
+            //$materia='Calculo';
+            $paralelo='S2A';
+          
+            $notas='';
+            $parcial =$request->request->get('parcial');
+            $session=$request->getSession();
+               $session->set("parcial",$parcial);
+            
+            
+            $response   		= new JsonResponse();
+            $withoutModal       = true;
+         
+            $idDocente     = 1;
+            $carrera  =1;
+            $UgServices    = new UgServices;
+            
+            ////////////////////////////////
+            
+            $idDocente  = $session->get('id_user');
+            //$idDocente  = $request->request->get('idDocente');
+            $idCarrera  = $request->request->get('carrera');
+
+            $datosMaterias	= array();
+            $datosDocentes	= array();
+            //$idDocente = "1";
+            //$idCarrera = "2";
+
+            $UgServices    = new UgServices;
+            
+            
+            $datosDocentes  = $UgServices->Docentes_getDocentes($idCarrera);
+           // print_r($datosDocentes);
+            
+            
+            $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
+            $muestraDocente="<option value=''>Seleccione Docente</option>";
+            $muestraMateria="<option value=''>Seleccione Materia</option>";
+           /*print_r($datosMaterias);
+           exit();*/
+             foreach($datosMaterias as $materia) {
+              ##echo $materia['materia'];
+                  $muestraMateria .= '<option value="'.$materia['id_sa_materia_paralelo'].'">'.$materia['materia']."--".$materia['paralelo'].'</option>';
+               
+            }
+           
+             foreach($datosDocentes as $docente) {
+              
+                  $muestraDocente .= '<option value="'.$docente['id_sg_usuario'].'">'.$docente['profesor'].'</option>';
+               
+            }
+            
+            
+            
+            ///////////////////////////////////////
+            //$idDocente="";
+               //$idCarrera="";
+            // $materia="2269";
+       //Menu de Notas por Materia para Profesor
+         $Parcial='1';
+             
+        
+                 $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Admin:listaEstudiantes.html.twig',
+						  array(
+							 //  'arr_datos'	=> $arr_datos,
+                                                           'docente'   => $muestraDocente ,
+                                                           'materia'   => $muestraMateria,
+                                                           'idCarrera'   => $idCarrera,
+                                                           'cantidad'   => '',
+                                                           'msg'   	=> $this->v_msg
+						  ));
+                        
+                        $response->setData(
+                                array(
+					'error' 		=> $this->v_error,
+					'msg'			=> $this->v_msg,
+                                        'html' 			=> $this->v_html,
+                                        'withoutModal' 	=> $withoutModal,
+                                        'recargar'      => '0'
+                                     )
+                              );
+                        return $response;
+        }
+        
+        public function cmbMateriasAction(Request $request)
+        { 
+             $response   		= new JsonResponse();
+            $idCarrera =$request->request->get('carrera');
+            
+            $idDocente =$request->request->get('docente');
+             $UgServices    = new UgServices;
+            $response   		= new JsonResponse();
+            
+            $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
+            $muestraMateria="<option value=''>Seleccione Materia</option>";
+           /*print_r($datosMaterias);
+           exit();*/
+             foreach($datosMaterias as $materia) {
+              ##echo $materia['materia'];
+                  $muestraMateria .= '<option value="'.$materia['id_sa_materia_paralelo'].'">'.$materia['materia']."-".$materia['paralelo'].'</option>';
+               
+            }
+           
+            
+        
+			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Admin:cmbMaterias.html.twig',
+						  array(
+                                                           'materia'   => $muestraMateria
+                                                           
+						  ));
+                        
+                        $response->setData(
+                                array(
+                                        'html' 			=> $this->v_html
+                                     )
+                              );
+                        return $response;
+        }
+        
+       public function muestraEstudiantesAction(Request $request)
+        { 
+             $response   		= new JsonResponse();
+            
+            
+            $idDocente =$request->request->get('docente');
+            
+            $idMateria =$request->request->get('materia');
+            
+            $Docente =$request->request->get('docente_text');
+            
+            $Materia =$request->request->get('materia_text');
+            $paralelo =$request->request->get('paralelo');
+            
+            $Fecha=date('d/m/Y');
+            
+            //echo $idDocente."--".$idMateria."--";
+            
+            
+            $response   		= new JsonResponse();
+            if ($idDocente==="")
+            {
+                    $this->v_error	= true; 
+                    $this->v_msg ='Debe seleccionar un Docente';
+                 }else {   
+                    
+                    if($idMateria==="")
+                   { 
+                        $this->v_error	= true; 
+                          $this->v_msg ='Debe seleccionar una Materia'; 
+                        }else { 
+                           // $idMateria="235";
+                   $trama = "<materiaparalelo>".$idMateria."</materiaparalelo>";
+                   $UgServices    = new UgServices; 
+                    $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
+                   $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Admin:tablaEstudiantes.html.twig',
+						  array(
+                                                           'docente_text'   => $Docente,
+                                                           'materia_text'   => $Materia,
+                                                           'paralelo'   => $paralelo,
+                                                           'fecha'   => $Fecha,
+                                                           'arr_datos'   => $arr_datos
+                                                           
+						  ));
+                     }
+                     
+             
+                 }
+                       
+                        
+                        $response->setData(
+                                array(
+                                        'msg'                => $this->v_msg,
+                                        'error'              => $this->v_error,
+                                        'html' 		     => $this->v_html
+                                     )
+                              );
+                        return $response;
+        }
+        
+     public function ExportarPDFEstudiantesAction(Request $request,$docente,$materia,$docente_text,$materia_text,$paralelo)
+        { 
+             $response   		= new JsonResponse();
+          //  echo "ttttttttttttttttttt";
+            
+            $Fecha=date('d/m/Y');
+            //echo $idDocente."--".$idMateria."--";
+            
+            
+            $response   		= new JsonResponse();
+           
+                           // $idMateria="2269";
+                   $trama = "<materiaparalelo>".$materia."</materiaparalelo>";
+                   $UgServices    = new UgServices; 
+                    $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
+                   $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Admin:tablaEstudiantes.html.twig',
+						  array(
+                                                           'docente_text'   => $docente_text,
+                                                           'materia_text'   => $materia_text,
+                                                           'paralelo'   => $paralelo,
+                                                           'fecha'   => $Fecha,
+                                                           'arr_datos'   => $arr_datos
+                                                           
+						  ));
+                   
+                       
+                        
+                       /* $response->setData(
+                                array(
+                                        'msg'                => $this->v_msg,
+                                        'error'              => $this->v_error,
+                                        'html' 		     => $this->v_html
+                                     )
+                              );
+                        return $response;*/
+                  $mpdfService = $this->get('tfox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();
+                 // $mPDF = $mpdfService->add();
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($this->v_html);
+                  
+                  //$mPDF->AddPage('','','1','i','on');
+                  //$mPDF->WriteHTML($pdf);
+                  //$mPDF->Output();
+                  return new response($mPDF->Output());
+        }
+        
+      public function cargaPaginaAction(Request $request)
+        {
+			//print_r($_SESSION);
+            $response = new JsonResponse();
+            
+             $idDocente =$request->request->get('docente');
+            
+            $idMateria =$request->request->get('materia');
+            $Docente =$request->request->get('docente_text');
+            
+            $Materia =$request->request->get('materia_text');
+           list($Materia,$paralelo) = split('[-]', $Materia);
+            
+           $Docente= trim($Docente);
+            
+            $section ='http://localhost/desarrollo/appAcademico/web/admin/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
+            $response->setData(
+                                array(
+                                        'redirect' => true,
+                                        'section' => $section
+                                     )
+                              );
+
+            return $response;
+        }
 }

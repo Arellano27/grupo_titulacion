@@ -1,6 +1,8 @@
-{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
-
-      {% block home %}
+<script src="{{ asset('js/sistemau.functions.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('js/jqueryValidate/demo/css/screen.css') }}">
+	
+	<script src="{{ asset('js/jqueryValidate/dist/jquery.validate.js') }}"></script>
+        <script src="{{ asset('js/jqueryValidate/dist/additional-methods.js') }}"></script>
 {#<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>#}
 <form id="form-listaEstudiantes2" name="form-listaEstudiantes2" method="post" action="{{ path('docentes_actualiza_asistencia') }}" onsubmit="return false;">     
 <div class="row" id="tabla1">
@@ -12,10 +14,11 @@
                       
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+                            <h2 align="center"><b>Listado de Estudiantes por Docentes</b></h2>
                           <div class="row" >
                             {#<div class="row" style="padding-left: 25px;">#}
                                 <div class="row " >
-                                <div style="padding-top: 25px;" class="col-xs-6">
+                                <div style="padding-top: 25px;margin-left: 20px" class="col-xs-6">
                                       <label class="control-label"  >Docente :</label>
                                         <select id="idDocente" name="idDocente" onchange="changeSelect(this.id, '{{ path('admin_cmb_materias') }}')" >   
                                                  {{ docente | raw }}                       
@@ -58,7 +61,7 @@
                                        </div>
 
 </form>
-        {% endblock %}                   
+                           
                                    
 
 
