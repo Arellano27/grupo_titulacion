@@ -92,3 +92,26 @@ admin_academico_estudiante_materias_filtro:
 admin_academico_estudiante_materias_pdf:
     path:     /pdfMaterias/{idCarrera}/{ciclo}/{carrera}
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_materias_aprobadas_estudiante_pdf }
+admin_listar_estudiantes:
+    path:     /listaEstudiantes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:estudiantesxDocentes }
+    
+admin_lista_estudiantes:
+    pattern:  /listar/estudiantes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:listaEstudiantes}
+    
+admin_cmb_materias:
+    pattern:  /combo/materias
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cmbMaterias}
+    
+admin_muestra_estudiantes:
+    pattern:  /muestra/estudiantes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:muestraEstudiantes}
+    
+admin_exportaPDF_estudiantes:
+    pattern:  /PDF/estudiantes/{docente}/{materia}/{docente_text}/{materia_text}/{paralelo}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:ExportarPDFEstudiantes}
+    
+admin_cargar_pagina:
+    pattern:  /carga/pagina
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargaPagina}

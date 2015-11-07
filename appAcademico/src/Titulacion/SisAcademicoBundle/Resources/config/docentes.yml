@@ -74,26 +74,6 @@ docentes_actualiza_asistencia:
     pattern:  /actualizar/asistencias
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizarAsistencia}
     
-admin_lista_estudiantes:
-    pattern:  /listar/estudiantes
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listaEstudiantes}
-    
-admin_cmb_materias:
-    pattern:  /combo/materias
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:cmbMaterias}
-    
-admin_muestra_estudiantes:
-    pattern:  /muestra/estudiantes
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:muestraEstudiantes}
-    
-admin_exportaPDF_estudiantes:
-    pattern:  /PDF/estudiantes/{docente}/{materia}/{docente_text}/{materia_text}/{paralelo}
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ExportarPDFEstudiantes}
-    
-admin_cargar_pagina:
-    pattern:  /carga/pagina
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:cargaPagina}
-    
 docentes_horarios:
     pattern:  /carrerasHorarios
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:carrerasHorarios}
