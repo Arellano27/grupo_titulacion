@@ -17,11 +17,12 @@ class NotificacionesController extends Controller
       var $Curso="";
       var $Asunto="";
       var $mensaje="";
+      var $Correo_enivar = "";
         public function index_notificacionesAction(Request $request)
         {   
             $session=$request->getSession();
             $idUsuario  = $session->get('id_user');
-           
+           $idUsuario = Rtrim($idUsuario); 
             $Emisor   = $request->request->get('Emisor');
             $Universidad   = $request->request->get('Universidad');
             $Estudiantes = $request->request->get('Estudiantes'); 
@@ -56,18 +57,26 @@ class NotificacionesController extends Controller
                             <Opciones>'A,P,U'</Opciones> 
                         </Notificaciones>	
                     </Notificaciones>";
+                  
                      $UgServices = new UgServices;
                     $xml = $UgServices->Guarda_Mensajes($xmlFinal);
-            
-                     
-                    $Correos_Numeros = $UgServices->Datos(3);
-                    var_dump($Correos_Numeros);
-                    
-                        
+                       
+                    $Correos_Numeros = $UgServices->Datos($idUsuario);
+                    //echo var_dump($Correos_Numeros); exit();
+                  
                    $i=0;
+                   
                    foreach($Correos_Numeros as $Correos_Numeros_) {
                               
-                         if($i < 10){                             
+                       if($Correos_Numeros_['correo_institucional']!=""){
+                           $Correo_enivar = $Correos_Numeros_['correo_institucional'];                          
+                       }else{
+                           $Correo_enivar = $Correos_Numeros_['correoestudiante'];
+                       }
+                       
+                       if($Correo_enivar!=""){
+                         if($i < 10){  
+                             
                               $mailer    = $this->container->get('mailer');
                             $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
                                     ->setUsername('titulacion.php@gmail.com')
@@ -76,7 +85,7 @@ class NotificacionesController extends Controller
                         $message = \Swift_Message::newInstance('test')
                                     ->setSubject($Asunto)
                                     ->setFrom('titulacion.php@gmail.com',$Emisor)
-                                    ->setTo($Correos_Numeros_['correo_institucional'])
+                                    ->setTo($Correo_enivar)
                                    ->setBody($mensaje);
                         $this->get('mailer')->send($message);
                         
@@ -107,71 +116,9 @@ class NotificacionesController extends Controller
                         
                          }
                     $i = $i+1;
+                       }
                     }
-//                for($i=0;$i<3;$i++){
-//                    if($i==0){
-//                    $mailer    = $this->container->get('mailer');
-//                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-//                                ->setUsername('titulacion.php@gmail.com')
-//                                ->setPassword('sc123456');
-//                   //$mailer  = \Swift_Mailer($transport);
-//                    $message = \Swift_Message::newInstance('test')
-//                                ->setSubject($Asunto)
-//                                ->setFrom('titulacion.php@gmail.com',$Emisor)
-//                                ->setTo('ghuayamabe89@gmail.com')
-//                                ->setBody($mensaje);
-//                    $this->get('mailer')->send($message);
-//                   }else{
-//                      $mailer    = $this->container->get('mailer');
-//                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-//                                ->setUsername('titulacion.php@gmail.com')
-//                                ->setPassword('sc123456');
-//                   //$mailer  = \Swift_Mailer($transport);
-//                    $message = \Swift_Message::newInstance('test')
-//                                ->setSubject($Asunto)
-//                                ->setFrom('titulacion.php@gmail.com',$Emisor)
-//                                ->setTo('bria1994.am@gmail.com')
-//                                ->setBody($mensaje);
-//                    $this->get('mailer')->send($message);
-//                   }
-////                         $mailer    = $this->container->get('mailer');
-////                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-////                                ->setUsername('ugacademico@gmail.com')
-////                                ->setPassword('SisAcademico');
-////                   //$mailer  = \Swift_Mailer($transport);
-////                    $message = \Swift_Message::newInstance('test')
-////                                ->setSubject($Asunto)
-////                                ->setFrom('ugacademico@gmail.com')
-////                                ->setTo('gabrielhuayamabe@hotmail.com')
-////                                ->setBody($mensaje);
-////                    $this->get('mailer')->send($message);
-////                    }
-//                }
-//                     //	Mensaje Sms
-//                      
-//                            $receptor ="+593996443959";
-//                           
-//                            $objGsmOut = new \COM ('ActiveXperts.GsmOut');
-//
-//                              $archivo = 'C:\log.txt';
-//                              $dispositivo =  'SAMSUNG Mobile USB Modem';
-//
-//
-//                              $velocidad = 0;
-//
-//                              $objGsmOut->LogFile          = $archivo; 
-//                              $objGsmOut->Device           = $dispositivo;
-//                              $objGsmOut->DeviceSpeed      = $velocidad; 
-//
-//                              $objGsmOut->MessageRecipient = $receptor;
-//                              $objGsmOut->MessageData      = $mensaje;
-//
-//                              if($objGsmOut->LastError == 0){
-//                                $objGsmOut->Send;
-//                               
-//                               
-//                              }
-//                        
+          
                      try
                 { $lcFacultad="";
                       $lcCarrera="";
@@ -222,7 +169,7 @@ class NotificacionesController extends Controller
              $idUsuario  = $session->get('id_user');
                 if($session->has("perfil")) {
                      $UgServices = new UgServices;
-                     $Eventos_Recividos = $UgServices->Eventos_Recividos($idUsuario);
+                     $Eventos_Recividos = $UgServices->Eventos_Recibidos($idUsuario);
                     
                 return $this->render('TitulacionSisAcademicoBundle:Notificaciones:eventos_universidad.html.twig',
     									array(
@@ -241,7 +188,7 @@ class NotificacionesController extends Controller
                  $idUsuario  = $session->get('id_user');
                 if($session->has("perfil")) {
                      $UgServices = new UgServices;
-                     $Notificaciones_Recividos = $UgServices->Notificaciones_Recividas($idUsuario);
+                     $Notificaciones_Recividos = $UgServices->Notificaciones_Recibidas($idUsuario);
                      
                 return $this->render('TitulacionSisAcademicoBundle:Notificaciones:notificaciones_universidad.html.twig',	array(
     											'data' => array('Mensajes' => $Notificaciones_Recividos)

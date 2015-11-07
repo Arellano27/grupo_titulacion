@@ -23,12 +23,8 @@ parameters:
     perfilEstCordi: 14
     perfilDocCordi: 24
     perfilAdminCordi: 34
-
-
     # rol_secretario: 0
     # rol_coordinador: 0
-
-
     ReporteEstudiantePorCarrera: 1
     ReporteInscritosMatriculados: 2
     ReporteMateriasAprobada: 3

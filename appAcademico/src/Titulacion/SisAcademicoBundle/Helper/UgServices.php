@@ -62,7 +62,6 @@ class UgServices {
        $this->usuario       = "usr_tesis";
        $this->clave         = "Tesis2015";
        $this->url           = "http://186.101.66.2:8080/";
-
        /*Saug Temporal*/
        $this->source        = "jdbc/saugProcTmp";
        $this->sourceConsultas  = "jdbc/saugConsTmp";
@@ -113,7 +112,6 @@ class UgServices {
 
         return $response;
     }
-
 #end function
 
     public function Docentes_getCarreras($idDocente) {
@@ -466,7 +464,7 @@ class UgServices {
         $this->tipo = "11";
         $this->urlWS = $this->url . $this->urlConsulta;
         $trama = "<id_recepcion>" . $idUsuario . "</id_recepcion>";
-        $response = $this->ws->doRequestSreReceptaTransacionConsultasMensajesEnviados($trama, $this->sourceConsultas, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+        $response = $this->ws->doRequestSreReceptaTransacionConsultasMensajesEnbiados($trama, $this->sourceConsultas, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
         return $response;
     }
 
@@ -483,7 +481,7 @@ class UgServices {
 
 #end function
 
-    public function Eventos_Recividos($idUsuario) {
+    public function Eventos_Recibidos($idUsuario) {
 
         $this->tipo = "17";
         $this->urlWS = $this->url . $this->urlConsulta;
@@ -494,7 +492,7 @@ class UgServices {
 
 #end function
 
-    public function Notificaciones_Recividas($idUsuario) {
+    public function Notificaciones_Recibidas($idUsuario) {
 
         $this->tipo = "15";
         $this->urlWS = $this->url . $this->urlConsulta;
@@ -1139,9 +1137,9 @@ XML;
 
     public function Guarda_Mensajes($trama) {
 
-        $this->tipo = "37 ";
+        $this->tipo = "37";
         $this->urlWS = $this->url . $this->urlProcedim;
-        //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);
+        //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
         $response = $this->ws->GuardaMensaje($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
         return $response;
     }
@@ -1150,13 +1148,12 @@ XML;
 
     public function Datos($idCarrera) {
         $this->tipo = "26";
-
         $this->source = $this->sourceConsultas;
-
         $this->urlWS = $this->url . $this->urlConsulta;
-        $trama = "<id_carrera>" . $idCarrera . "</id_carrera>";
+        $trama = "<id_recepcion>" . $idCarrera . "</id_recepcion>";       
         $XML = NULL;
-        $response = $this->ws->doRequestDatos($trama, 'jdbc/saugConsTmp', $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+        //echo '<pre>'; var_dump($idCarrera); exit();
+        $response = $this->ws->doRequestDatos($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
 
         return $response;
     }

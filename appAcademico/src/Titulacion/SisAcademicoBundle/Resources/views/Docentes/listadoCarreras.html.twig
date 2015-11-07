@@ -40,9 +40,9 @@
                   <input id="Ciclo-Detalle_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.id_sa_ciclo_detalle}}" type="hidden" >
                   <input id="Ciclo-Descripcion_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.ciclo_descripcion}}" type="hidden" >
                   <input id="nombre-Carrera_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.nombre}}" type="hidden" >
-                  <div id="panelCentralCarrera-{{datosCarrera.id_sa_carrera}}" class="panel panel-default">
+                  <div id="panelCentralCarrera-{{datosCarrera.id_sa_carrera}}" class="panel panel-default">#}
 
-                     <div class="panel-heading">
+                    <div class="panel-heading">
                         <h4 class="panel-title">
                            <a id="idCarrera-{{datosCarrera.idcarrera}}" class="linkCarreras" data-toggle="collapse" data-parent="#accordionCarreras" href="#collapse{{countCarreras+1}}">{{datosCarrera.nombreCarrera}}</a>
                            <div style="float:right; margin-top: -7px;">
@@ -54,7 +54,7 @@
                      </div>
                      <div id="collapse{{countCarreras+1}}" class="panel-collapse collapse">
                         <div  id="panelCarrera-{{datosCarrera.idCarrera}}" class="panel-body"></div>
-                     </div>
+                     </div>#}
                   </div>
                {% endfor %}
 				</div>

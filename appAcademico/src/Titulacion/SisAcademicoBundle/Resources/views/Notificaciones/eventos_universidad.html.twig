@@ -22,7 +22,7 @@
                                        
                               
 				        <div class="box-header with-border">
-                <h3 class="box-title">Eventos (Tienes # eventos nuevos)</h3>
+               {# <h3 class="box-title">Eventos (Tienes # eventos nuevos)</h3>#}
                
             </div><!-- /.box-header -->
               <div class="box box-solid">
@@ -37,7 +37,7 @@
 					        <th> Asunto   </th>
 					        <th> Detalle </th>
 					        <th>Fecha de Envio</th>
-                                                <th>Ver Mensajes</th>
+                                                {#<th>Ver Mensajes</th>#}
 				        </tr>
 				        </thead>
 				        <tbody>
@@ -49,7 +49,7 @@
                                 <td style="text-align: center">{{ Mensajes.asunto }}</td>
                                 <td style="text-align: center">{{ Mensajes.mensaje }}</td>
                                 <td style="text-align: center">{{ Mensajes.fecha_registro }}</td>
-                                 <td style="text-align: center">  <a href="{{ path('dayscript_Lectura')}}" id="Mensaje_1" name="Mensaje_1"><i class="fa fa-envelope-o"></i></a></td>
+                                {# <td style="text-align: center">  <a href="{{ path('dayscript_Lectura')}}" id="Mensaje_1" name="Mensaje_1"><i class="fa fa-envelope-o"></i></a></td>#}
                             </tr>
                         {%endfor%}       
                                                      
