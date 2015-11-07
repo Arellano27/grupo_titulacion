@@ -1,5 +1,10 @@
 {% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
 {% block home %}
+   {% set dataForm_error   = 'false' %}
+   
+   {% if dataUsuario is not iterable %}
+      {% set dataForm_error   = 'true' %}
+   {% endif %}
    
    <style>
       .col-lg-3 {
@@ -27,35 +32,40 @@
       <section class="content-header" style="text-align: center">
       <h1> Perfil del Usuario </h1>
       </section>
-      {#{{dump(dataDocente)}}#}
+      
       <div class="col-md-3"></div>
       <div class="col-md-6">
          <div class="row">
             <!-- Profile Image -->
             <div class="box box-primary">
                <div class="box-body box-profile">
+                  {% if dataForm_error == 'true' %}
+                  <div class="col-md-12">
+                     Se presentaron problemas para cargar la información de su perfil.
+                  </div>
+                  {% else %}
                   <img class="profile-user-img img-responsive img-circle" src="{{ asset('images/avatar/user.png')}}" alt="User profile picture">
-                  <h3 class="profile-username text-center">{{dataUsuario.primer_nombre}} {{dataUsuario.segundo_nombre}}<br/>{{dataUsuario.primer_apellido}} {{dataUsuario.segundo_apellido}}</h3>
-                  <p class="text-muted text-center" style="display: none;">Titulo</p>
+                  <h3 class="profile-username text-center">{{dataUsuario.nombres}}<br/>{{dataUsuario.apellidos}}</h3>
+                  <p class="text-muted text-center">C.I.: {{dataUsuario.usuario}}</p>
 
                   <ul id="infoBasicaPerfil" class="list-group list-group-unbordered">
                      <li class="list-group-item">
                         <b><i class="fa fa-birthday-cake margin-r-5"></i> Fecha de Nacimiento</b> <a class="pull-right">{{dataUsuario.fecha_nacimiento}}</a>
                      </li>
                      <li class="list-group-item">
-                        <b><i class="fa fa-heart margin-r-5"></i> Tipo de Sangre</b> <a class="pull-right">{{dataUsuario.tipo_sangre}}</a>
+                        <b><i class="fa fa-heart margin-r-5"></i> Tipo de Sangre</b> <a class="pull-right">{{dataUsuario.desctiposangre}}</a>
                      </li>
                      <li class="list-group-item">
-                        <b><i class="fa fa-male margin-r-5"></i> Sexo</b> <a class="pull-right">{{dataUsuario.sexo|capitalize}}</a>
+                        <b><i class="fa fa-male margin-r-5"></i> Sexo</b> <a class="pull-right">{{dataUsuario.descsexo|capitalize}}</a>
                      </li>
                      <li class="list-group-item">
-                        <b><i class="fa fa-diamond margin-r-5"></i> Estado Civil</b> <a class="pull-right">{{dataUsuario.estado_civil|capitalize}}</a>
+                        <b><i class="fa fa-diamond margin-r-5"></i> Estado Civil</b> <a class="pull-right">{{dataUsuario.descestadocivil|capitalize}}</a>
                      </li>
                      <li class="list-group-item">
-                        <b><i class="fa fa-map-marker margin-r-5"></i> Nacionalidad</b> <a class="pull-right">{{dataUsuario.nacionalidad|capitalize}}</a>
+                        <b><i class="fa fa-map-marker margin-r-5"></i> Nacionalidad</b> <a class="pull-right">{{dataUsuario.descnacionalidad|capitalize}}</a>
                      </li>
                      <li class="list-group-item">
-                        <b><i class="fa fa-map-marker margin-r-5"></i> Pais</b> <a class="pull-right">{{dataUsuario.pais|capitalize}}</a>
+                        <b><i class="fa fa-map-marker margin-r-5"></i> Pais</b> <a class="pull-right">{{dataUsuario.descpais|capitalize}}</a>
                      </li>
                   </ul>
                   <div class="box-header with-border">
@@ -76,6 +86,7 @@
                      </li>
                   </ul>
                   <a id="linkEditarPerfil" href="{{path('titulacion_usuario_editar_perfil_formActualiza')}}" class="btn btn-primary btn-block"><b>Editar información del perfil</b></a>
+                  {% endif %}
               </div><!-- /.box-body -->
             </div><!-- /.box -->
 

@@ -234,17 +234,90 @@
       {
          $idDocente  = $request->request->get('idDocente');
          $idMateria  = $request->request->get('idMateria');
+         $idCiclo    = $request->request->get('idCiclo');
+         $idCarrera  = $request->request->get('idCarrera');
+         $nombreMateriaTitulo  = $request->request->get('tituloPanelMateria');
 
          $datosDocente	= array( 'idDocente' => $idDocente );
-
-         $datosMateria	= array( 'idMateria' => $idMateria );
-
-       //listadoMaterias
-       return $this->render('TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria.html.twig',
-                         array(
-                               'dataDocente' => array('datosDocente' => $datosDocente ),
-                               'dataMateria' => array('datosMateria' => $datosMateria )
-                             )
+         $datosMateria	= array( 'idMateria' => $idMateria, 'nombreMateriaTitulo' => $nombreMateriaTitulo);
+         
+         $UgServices       = new UgServices;
+         
+         /*Consulta de la información de los parciales - INICIO*/
+         $datosConsultaParciales = array( 'idCarrera' => $idCarrera);
+         $datosParciales         = $UgServices->Docentes_getParcialesCarrera($datosConsultaParciales);
+         /*Consulta de la información de los parciales - INICIO*/
+         
+         //$datosAsistencias["ID PARCIAL / TODOS"]
+         
+         ////->Obtener los datos para la grafica de asistencias - INICIO
+         $datosAsistencias = array();
+         
+            //Todos los parciales
+         $datosConsulta	= array( 'idMateria' => $idMateria,
+                                 'idCiclo' => $idCiclo,
+                                 'idParcial' => 'todos');
+         $tempDataAsistencia        = $UgServices->Docentes_Graph_getAsistencias($datosConsulta);
+         if(isset($tempDataAsistencia["MateriaParalelo"])) {
+            $tempDataAsistencia  = $tempDataAsistencia["MateriaParalelo"];
+         }
+         $datosAsistencias["todos"] = $tempDataAsistencia;
+         
+            //Por parcial
+         foreach($datosParciales as $dataParcial){
+            $datosConsulta	= array( 'idMateria' => $idMateria,
+                                    'idCiclo' => $idCiclo,
+                                    'idParcial' => $dataParcial["numero_parcial"]);
+            $tempDataAsistencia        = $UgServices->Docentes_Graph_getAsistencias($datosConsulta);
+            if(isset($tempDataAsistencia["MateriaParalelo"])) {
+               $tempDataAsistencia  = $tempDataAsistencia["MateriaParalelo"];
+            }
+            $datosAsistencias[$dataParcial["nombre"]] = $tempDataAsistencia;
+         }
+         ////->Obtener los datos para la grafica de asistencias - FIN
+         
+         ////->Obtener los datos para la grafica detalle de aprobados - INICIO
+         $datosNotasDetalle = array();
+            //Todos los parciales
+         $datosConsulta	= array( 'idMateria' => $idMateria,
+                                 'idCiclo' => $idCiclo,
+                                 'idParcial' => 'todos');
+         $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosDetalle($datosConsulta);
+         
+         if(isset($tempDataNotasDetalle["MateriaParaleloCiclo"])) {
+            $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCiclo"];
+         }
+         $datosNotasDetalle["todos"] = $tempDataNotasDetalle;
+         
+            //Por parcial
+         foreach($datosParciales as $dataParcial){
+            $datosConsulta	= array( 'idMateria' => $idMateria,
+                                    'idCiclo' => $idCiclo,
+                                    'idParcial' => $dataParcial["numero_parcial"]);
+            $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosDetalle($datosConsulta);
+            
+            if(isset($tempDataNotasDetalle["MateriaParaleloCicloParcial"])) {
+               $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCicloParcial"];
+            }
+            $datosNotasDetalle[$dataParcial["nombre"]] = $tempDataNotasDetalle;
+            var_dump($datosNotasDetalle[$dataParcial["nombre"]]);
+         }
+         ////->Obtener los datos para la grafica detalle de aprobados - FIN
+         
+         ////->Obtener los datos para la grafica de resumen de aprobados - INICIO
+//         $datosNotasResumen = array();
+//         $datosConsulta	= array( 'idMateria' => $idMateria,
+//                                 'idCiclo' => $idCiclo,
+//                                 'idParcial' => 'todos');
+         ////->Obtener los datos para la grafica de resumen de aprobados - FIN
+         
+         return $this->render('TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria.html.twig',
+                           array(
+                              'datosDocente' => $datosDocente,
+                              'datosMateria' => $datosMateria,
+                              'datosParciales' => $datosParciales,
+                              'datosAsistencias' => $datosAsistencias
+                           )
                       );
       }
       

@@ -23,28 +23,28 @@ class UgServices
       $this->tipo       = "0";
       $this->source     = "";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
-//       $this->usuario         = "abc";
-//       $this->clave           = "123";
-//       $this->source          = "jdbc/procedimientosSaug";
-//       $this->sourceConsultas = "jdbc/consultasSaug";
-//       $this->url             = "http://192.168.100.11:8080/";
-//       $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
-//       $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
-//       $this->urlWS           = "";
-//       $this->host            = "192.168.100.11:8080";
+       $this->usuario         = "abc";
+       $this->clave           = "123";
+       $this->source          = "jdbc/procedimientosSaug";
+       $this->sourceConsultas = "jdbc/consultasSaug";
+       $this->url             = "http://192.168.100.11:8080/";
+       $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+       $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+       $this->urlWS           = "";
+       $this->host            = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "CapaVisualPhp";
-      $this->clave         = "12CvP2015";
+//      $this->usuario       = "CapaVisualPhp";
+//      $this->clave         = "12CvP2015";
       
-      $this->url           = "http://186.101.66.2:8080/";
+//      $this->url           = "http://186.101.66.2:8080/";
       
       /*Saug Temporal*/
-      $this->source        = "jdbc/saugProcTmp";
-      $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+//      $this->source        = "jdbc/saugProcTmp";
+//      $this->sourceConsultas  = "jdbc/saugConsTmp";
+//      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+//      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       
 //      /*Preproduccion*/
 //      $this->source        = "jdbc/procedimientosSaug";
@@ -170,98 +170,145 @@ class UgServices
    }#end function Docentes_getParcialesCarrera()
    
    public function Titulacion_getConsultaPerfilUsuario($datosConsulta){
-      $this->tipo    = "0000000";
-      //$this->urlWS   = $this->url.$this->urlConsulta;
-      $trama         = "<usuario>".$datosConsulta["idUsuario"]."</usuario>";
+      $this->tipo    = "32";
+      $this->urlWS   = $this->url.$this->urlConsulta;
+      
+      $trama         = "<id_sg_usuario>".$datosConsulta["idUsuario"]."</id_sg_usuario>";
       $XML           = NULL;
-      $XML        = <<<XML
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-         <return>
-            <codigoRespuesta>0</codigoRespuesta>
-            <estado>F</estado>
-            <idHistorico>1099</idHistorico>
-            <mensajeRespuesta>ok</mensajeRespuesta>
-            <respuestaConsulta>
-               <registros>
-                  <registro>
-                     <id_usuario>31</id_usuario>
-                     <img_usuario>/foto_usuario/usuario1.jpg</img_usuario>
-                     <primer_nombre>Nancy</primer_nombre>
-                     <segundo_nombre>Lenis</segundo_nombre>
-                     <primer_apellido>Acosta</primer_apellido>
-                     <segundo_apellido>Zambrano</segundo_apellido>
-                     <direccion>Urdesa Central</direccion>
-                     <telefono>0998825201</telefono>
-                     <correo_personal>nancy.personal@correo.com</correo_personal>
-                     <correo_institucional>nancy.instituc@correo.com</correo_institucional>
-                     <estado_civil>Casada</estado_civil>
-                     <sexo>femenino</sexo>
-                     <nacionalidad>ecuatoriana</nacionalidad>
-                     <pais>ecuador</pais>
-                     <fecha_nacimiento>08/05/1974</fecha_nacimiento>
-                     <tipo_sangre>O+</tipo_sangre>
-                  </registro>
-               </registros>
-            </respuestaConsulta>
-         </return>
-      </ns2:ejecucionConsultaResponse>
-   </soap:Body>
-</soap:Envelope>
-XML;
-
+      
       $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
 
       return $response;
    }#end function Docentes_getConsultaPerfilUsuario()
    
-   public function Titulacion_getConsultaPerfilUsuarioEditar($datosConsulta){
-      $this->tipo    = "0000000";
-      //$this->urlWS   = $this->url.$this->urlConsulta;
-      $trama         = "<usuario>".$datosConsulta["idUsuario"]."</usuario>";
+//   public function Titulacion_getConsultaPerfilUsuarioEditar($datosConsulta){
+//      $this->tipo    = "0000000";
+//      //$this->urlWS   = $this->url.$this->urlConsulta;
+//      $trama         = "<usuario>".$datosConsulta["idUsuario"]."</usuario>";
+//      $XML           = NULL;
+//      $XML        = <<<XML
+//<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//   <soap:Body>
+//      <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
+//         <return>
+//            <codigoRespuesta>0</codigoRespuesta>
+//            <estado>F</estado>
+//            <idHistorico>1099</idHistorico>
+//            <mensajeRespuesta>ok</mensajeRespuesta>
+//            <respuestaConsulta>
+//               <registros>
+//                  <registro>
+//                     <id_usuario>31</id_usuario>
+//                     <img_usuario>/foto_usuario/usuario1.jpg</img_usuario>
+//                     <primer_nombre>Nancy</primer_nombre>
+//                     <segundo_nombre>Lenis</segundo_nombre>
+//                     <primer_apellido>Acosta</primer_apellido>
+//                     <segundo_apellido>Zambrano</segundo_apellido>
+//                     <direccion>Urdesa Central</direccion>
+//                     <telefono>0998825201</telefono>
+//                     <correo_personal>nancy.personal@correo.com</correo_personal>
+//                     <correo_institucional>nancy.instituc@correo.com</correo_institucional>
+//                     <estado_civil>Casada</estado_civil>
+//                     <sexo>femenino</sexo>
+//                     <nacionalidad>ecuatoriana</nacionalidad>
+//                     <pais>ecuador</pais>
+//                     <fecha_nacimiento>08/05/1974</fecha_nacimiento>
+//                     <tipo_sangre>O+</tipo_sangre>
+//                  </registro>
+//               </registros>
+//            </respuestaConsulta>
+//         </return>
+//      </ns2:ejecucionConsultaResponse>
+//   </soap:Body>
+//</soap:Envelope>
+//XML;
+//
+//      $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
+//
+//      return $response;
+//   }#end function Docentes_getConsultaPerfilUsuarioEditar()
+
+   public function Titulacion_getParametroPerfilUsuario($datosConsulta){
+      $this->tipo    = "24";
+      $this->urlWS   = $this->url.$this->urlConsulta;
+      $trama         = "<parametro>".$datosConsulta["parametro"]."</parametro>";
       $XML           = NULL;
-      $XML        = <<<XML
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <ns2:ejecucionConsultaResponse xmlns:ns2="http://servicios.ug.edu.ec/">
-         <return>
-            <codigoRespuesta>0</codigoRespuesta>
-            <estado>F</estado>
-            <idHistorico>1099</idHistorico>
-            <mensajeRespuesta>ok</mensajeRespuesta>
-            <respuestaConsulta>
-               <registros>
-                  <registro>
-                     <id_usuario>31</id_usuario>
-                     <img_usuario>/foto_usuario/usuario1.jpg</img_usuario>
-                     <primer_nombre>Nancy</primer_nombre>
-                     <segundo_nombre>Lenis</segundo_nombre>
-                     <primer_apellido>Acosta</primer_apellido>
-                     <segundo_apellido>Zambrano</segundo_apellido>
-                     <direccion>Urdesa Central</direccion>
-                     <telefono>0998825201</telefono>
-                     <correo_personal>nancy.personal@correo.com</correo_personal>
-                     <correo_institucional>nancy.instituc@correo.com</correo_institucional>
-                     <estado_civil>Casada</estado_civil>
-                     <sexo>femenino</sexo>
-                     <nacionalidad>ecuatoriana</nacionalidad>
-                     <pais>ecuador</pais>
-                     <fecha_nacimiento>08/05/1974</fecha_nacimiento>
-                     <tipo_sangre>O+</tipo_sangre>
-                  </registro>
-               </registros>
-            </respuestaConsulta>
-         </return>
-      </ns2:ejecucionConsultaResponse>
-   </soap:Body>
-</soap:Envelope>
-XML;
-
       $response=$this->ws->doRequestSreReceptaTransacionConsultasdoc($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
-
+      
       return $response;
-   }#end function Docentes_getConsultaPerfilUsuarioEditar()
+   }#end function Docentes_getConsultaPerfilUsuario()
+
+   public function Docentes_Graph_getAsistencias($datosConsulta){
+      $this->tipo    = "39";
+      $this->urlWS   = $this->url.$this->urlProcedim;
+      
+      if($datosConsulta["idParcial"] == 'todos') {
+         $datosConsulta["idParcial"]   = 0;
+         $datosConsulta["pc_option"]   = "C";
+      }
+      else {
+         $datosConsulta["pc_option"]   = "CP";
+      }
+      $trama         =  "  <id_sa_materia_paralelo>".$datosConsulta["idMateria"]."</id_sa_materia_paralelo>
+                           <id_sa_ciclo_detalle>".$datosConsulta["idCiclo"]."</id_sa_ciclo_detalle>
+                           <parcial>".$datosConsulta["idParcial"]."</parcial>
+                           <PC_OPCION>".$datosConsulta["pc_option"]."</PC_OPCION>";
+      $XML           = NULL;
+      $xmlData["XML_test"]          = $XML;
+      $xmlData["bloqueRegistros"]   = 'registros';
+      $xmlData["bloqueSalida"]      = 'px_salida';
+
+      $response   =  $this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
+      return $response;
+   }#end function Docentes_Graph_getAsistencias
+   
+   public function Docentes_Graph_getAprobadosResumen($datosConsulta){
+      $this->tipo    = "49";
+      $this->urlWS   = $this->url.$this->urlProcedim;
+      
+      if($datosConsulta["idParcial"] == 'todos') {
+         $datosConsulta["idParcial"]   = 0;
+         $datosConsulta["pc_option"]   = "C";
+      }
+      else {
+         $datosConsulta["pc_option"]   = "CP";
+      }
+      $trama         =  "  <id_sa_materia_paralelo>".$datosConsulta["idMateria"]."</id_sa_materia_paralelo>
+                           <parcial>".$datosConsulta["idParcial"]."</parcial>
+                           <PV_OPCION>".$datosConsulta["pc_option"]."</PV_OPCION>";
+      $XML           = NULL;
+      $xmlData["XML_test"]          = $XML;
+      $xmlData["bloqueRegistros"]   = 'registros';
+      $xmlData["bloqueSalida"]      = 'px_salida';
+
+      $response   =  $this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
+      return $response;
+   }#end function Docentes_Graph_getAprobadosResumen()
+   
+   public function Docentes_Graph_getAprobadosDetalle($datosConsulta){
+      $this->tipo    = "44";
+      $this->urlWS   = $this->url.$this->urlProcedim;
+      
+      if($datosConsulta["idParcial"] == 'todos') {
+         $datosConsulta["idParcial"]   = 0;
+         $datosConsulta["pc_option"]   = "C";
+      }
+      else {
+         $datosConsulta["pc_option"]   = "CP";
+      }
+      $trama         =  "  <id_sa_materia_paralelo>".$datosConsulta["idMateria"]."</id_sa_materia_paralelo>
+                           <id_sa_ciclo_detalle>".$datosConsulta["idCiclo"]."</id_sa_ciclo_detalle>
+                           <parcial>".$datosConsulta["idParcial"]."</parcial>
+                           <PV_OPCION>".$datosConsulta["pc_option"]."</PV_OPCION>";
+
+      $XML           = NULL;
+      $xmlData["XML_test"]          = $XML;
+      $xmlData["bloqueRegistros"]   = 'PorcentajeNotas';
+      $xmlData["bloqueSalida"]      = 'px_salida';
+
+      $response   =  $this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
+      return $response;
+   }#end function Docentes_Graph_getAprobadosDetalle()
    
    public function Docentes_getAlumnos($idDocente, $idCarrera){
        $ws         = new AcademicoSoap();

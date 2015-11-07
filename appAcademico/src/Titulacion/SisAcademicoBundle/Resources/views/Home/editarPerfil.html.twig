@@ -1,5 +1,30 @@
 {% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
 {% block home %}
+   {% set dataForm_error   = 'false' %}
+   
+   {% if dataUsuario is not iterable %}
+      {% set dataForm_error   = 'true' %}
+   {% endif %}
+   
+   {% if datosTiposSangre is not iterable %}
+      {% set dataForm_error   = 'true' %}
+   {% endif %}
+   
+   {% if datosGeneros is not iterable %}
+      {% set dataForm_error   = 'true' %}
+   {% endif %}
+   
+   {% if datosEstadosCiviles is not iterable %}
+      {% set dataForm_error   = 'true' %}
+   {% endif %}
+   
+   {% if datosNacionalidades is not iterable %}
+      {% set dataForm_error   = 'true' %}
+   {% endif %}
+   
+   {% if datosPaises is not iterable %}
+      {% set dataForm_error   = 'true' %}
+   {% endif %}
    
    <style>
       #previewImg {
@@ -85,11 +110,18 @@
    
    <script type="text/javascript">
       $(document).ready(function(){
+         {% if dataForm_error == 'false' %}
          var imageLoader = document.getElementById('imagen_perfil');
          imageLoader.addEventListener('change', handleImage, false);
 
          var canvas = document.getElementById('imagen_perfil_prev');
          var ctx = canvas.getContext('2d');
+         {% endif %}
+         $("#tipo_sangre").val('{{dataUsuario.idtiposangre}}');
+         $("#sexo").val('{{dataUsuario.idsexo}}');
+         $("#estado_civil").val('{{dataUsuario.idestadocivil}}');
+         $("#nacionalidad").val('{{dataUsuario.idnacionalidad}}');
+         $("#pais").val('{{dataUsuario.idpais}}');
 
          modelessPerfilEditar.close();
 
@@ -122,19 +154,26 @@
    
    <div class="col-lg-12">
       <section class="content-header" style="text-align: center">
+      
       <h1> Perfil del Usuario </h1>
       </section>
-      {#{{dump(dataDocente)}}#}
+      
+      
       <div class="col-md-3"></div>
       <div class="col-md-6">
          <div class="row">
             <!-- Profile Image -->
             <div class="box box-primary">
                <div class="box-body box-profile">
+                  {% if dataForm_error == 'true' %}
+                  <div class="col-md-12">
+                     Se presentaron problemas para cargar la información de su perfil.
+                  </div>
+                  {% else %}
                   <form id="formEditarPerfil" name="formEditarPerfil">
                      <img class="profile-user-img img-responsive img-circle" src="{{ asset('images/avatar/user.png')}}" alt="User profile picture">
-                     <h3 class="profile-username text-center">{{dataUsuario.primer_nombre}} {{dataUsuario.segundo_nombre}}<br/>{{dataUsuario.primer_apellido}} {{dataUsuario.segundo_apellido}}</h3>
-                     <p class="text-muted text-center" style="display: none;">Titulo</p>
+                     <h3 class="profile-username text-center">{{dataUsuario.nombres}} <br/>{{dataUsuario.apellidos}}</h3>
+                     <p class="text-muted text-center">C.I.: {{dataUsuario.usuario}}</p>
                      <div class="box-header with-border">
                         <h3 class="box-title">Foto de Perfil</h3>
                      </div>
@@ -169,7 +208,11 @@
                            <b><i class="fa fa-heart margin-r-5"></i> Tipo de Sangre</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="tipo_sangre" name="tipo_sangre" class="pull-right form-control"><option value="25">{{dataUsuario.tipo_sangre}}</option></select>
+                           <select id="tipo_sangre" name="tipo_sangre" class="pull-right form-control">
+                              {% for dataSangre in datosTiposSangre %}
+                              <option value="{{dataSangre.codigo}}">{{dataSangre.nombre}}</option>
+                              {% endfor %}
+                           </select>
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -177,7 +220,11 @@
                            <b><i class="fa fa-male margin-r-5"></i> Sexo</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="sexo" name="sexo" class="pull-right form-control"><option value="28">{{dataUsuario.sexo|capitalize}}</option></select>
+                           <select id="sexo" name="sexo" class="pull-right form-control">
+                              {% for dataGenero in datosGeneros %}
+                              <option value="{{dataGenero.codigo}}">{{dataGenero.nombre|capitalize}}</option>
+                              {% endfor %}
+                           </select>
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -185,7 +232,11 @@
                            <b><i class="fa fa-diamond margin-r-5"></i> Estado Civil</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="estado_civil" name="estado_civil" class="pull-right form-control"><option value="16">{{dataUsuario.estado_civil|capitalize}}</option></select>
+                           <select id="estado_civil" name="estado_civil" class="pull-right form-control">
+                              {% for dataCivil in datosEstadosCiviles %}
+                              <option value="{{dataCivil.codigo}}">{{dataCivil.nombre|capitalize}}</option>
+                              {% endfor %}
+                           </select>
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -193,7 +244,11 @@
                            <b><i class="fa fa-map-marker margin-r-5"></i> Nacionalidad</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="nacionalidad" name="nacionalidad" class="pull-right form-control"><option value="25">{{dataUsuario.nacionalidad|capitalize}}</option></select>
+                           <select id="nacionalidad" name="nacionalidad" class="pull-right form-control">
+                              {% for dataNacionalidad in datosNacionalidades %}
+                              <option value="{{dataNacionalidad.codigo}}">{{dataNacionalidad.nombre|capitalize}}</option>
+                              {% endfor %}
+                           </select>
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -201,7 +256,11 @@
                            <b><i class="fa fa-map-marker margin-r-5"></i> Pais</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="pais" name="pais" class="pull-right form-control"><option value="25">{{dataUsuario.pais|capitalize}}</option></select>
+                           <select id="pais" name="pais" class="pull-right form-control">
+                              {% for dataPais in datosPaises %}
+                              <option value="{{dataPais.codigo}}">{{dataPais.nombre|capitalize}}</option>
+                              {% endfor %}
+                           </select>
                         </div>
                      </div>
 
@@ -243,6 +302,7 @@
                      </div>
                      <button id="grabarDataPerfil" name="grabarDataPerfil" class="btn btn-primary btn-block"><b>Actualizar la información del perfil</b></button>
                   </form>
+                  {% endif %}
               </div><!-- /.box-body -->
             </div><!-- /.box -->
 
@@ -271,7 +331,7 @@
             var obj_data            = {'dataPerfil':objectEditPerfil};
          }
          //console.log(obj_data);
-         var jumpOption          = '{{path('docentes_editar_perfil_grabarFormActualiza')}}';
+         var jumpOption          = '{{path('titulacion_usuario_editar_perfil_grabarFormActualiza')}}';
                
          $.ajax({
             url:  jumpOption,
@@ -292,8 +352,8 @@
                });
             },
             success:  function (dataResponse) {
-               {#console.log(dataResponse.idMensaje);
-               console.log(dataResponse.infoMensaje);#}
+               console.log(dataResponse.idMensaje);
+               console.log(dataResponse.infoMensaje);
                $("#grabarDataPerfil").html("<b>Actualizar la información del perfil</b>");
                modelessGrabarPerfil = new $.flavr({
                   modal   : true,
