@@ -3,16 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/HomeController.php</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/home.yml</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/AdminController.php</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/web/js/EnviarMensajes.js</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Notificaciones/index_notificaciones.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Home/login.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/routing.yml</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/app/config/parameters.yml</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/estudiantes.yml</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Home/menu_lateral.html.twig</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/NotificacionesController.php</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Helper/AcademicoSoap.php</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Helper/UgServices.php</file>
             <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/DocentesController.php</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/services.yml</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/admin.yml</file>
         </group>
     </open-files>
 </project-private>
