@@ -1,5 +1,5 @@
 <script src="{{ asset('js/sistemau.functions.js') }}"></script>
-<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>
+{#<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>#}
 <form id="form-ingresoAsis" name="form-ingresoAsis" method="post" action="{{ path('docentes_ingreso_asistencia') }}" onsubmit="return false;">     
 <div class="row" id="tabla1">
                 <div class="col-xs-12">
@@ -47,11 +47,11 @@
                                         <input type = "hidden" value = "nada" id = "hdservicio" name = "hdservicio" />
                                 {%for count ,alumnos in arr_datos %}
                                        <tr class="odd gradeX">
-                                           <td width = "5%" >{{ alumnos.id_sg_usuario }}</td>
-                                            <td width = "20%">{{ alumnos.nombres }} <input type = "hidden" value = "{{ alumnos.nombres }}" name = "{{ alumnos.id_sg_usuario }}" /></td>
+                                           <td width = "5%" style="text-align: center;">{{ alumnos.id_sg_usuario }}</td>
+                                            <td width = "20%" style="text-align: center;">{{ alumnos.nombres }} <input type = "hidden" value = "{{ alumnos.nombres }}" name = "{{ alumnos.id_sg_usuario }}" /></td>
                                             <td width = "20%"> <span class="button-checkbox">
                                                                     <button type="button" class="btn" data-color="primary">Asistio</button>
-                                                                    <input type="checkbox" class="hidden" value="{{ alumnos.id_sg_usuario }}" name="{{ alumnos.nombres }}" checked />
+                                                                    <input type="checkbox" class="hidden" value="{{ alumnos.id_sa_estudiante_carrera_materia }}" name="{{ alumnos.nombres }}" checked />
                                                                 </span></td>
                                        </tr>
                                 {% endfor %}

@@ -808,6 +808,7 @@
                          <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
                          <PARCIAL>1</PARCIAL>
                          <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
+            $id_Materia =$request->request->get('materia');
             
             
            $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
@@ -1109,7 +1110,8 @@
                // print_r($datosParciales->registro[0]->periodos[0]->periodo[0]->componentePeriodo->componente);
            // print_r($tareas);
                 $alumno =$request->request->get('alumno');
-                //echo $alumno."33";
+                $idalumno =$request->request->get('idalumno');
+                
                 $codigo =$request->request->get('codigo');
                 $parcial =$request->request->get('parcial');
                 $session=$request->getSession();
@@ -1126,6 +1128,7 @@
 						  array(
 							   'codigo'	=> $codigo,
                                                            'alumno'	=> $alumno,
+                                                           'idalumno'	=> $idalumno,
                                                            'arr_tareas'   => $tareas,
                                                            'parcial'   =>$parcial,
                                                            'msg'   	=> $this->v_msg
@@ -1220,7 +1223,7 @@
                          <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
                          <PARCIAL>1</PARCIAL>
                          <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
-       
+       $id_Materia =$request->request->get('materia');
            
            $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
            /*print_r($datosParciales);
@@ -1239,6 +1242,7 @@
                                                            'fecha'   => $muestrafecha ,
                                                            'profesor'   => $profesor,
                                                            'materia'    => $materia,
+                                                           'id_materia'    => $id_Materia,
                                                            'ciclo'    => $desc_ciclo,
                                                            'paralelo'   => $paralelo,
                                                            'cantidad'   => '',
@@ -1308,7 +1312,7 @@
        //Menu de Notas por Materia para Profesor
          $Parcial='1';
                
-               $trama = "<materia>2271</materia>";
+               $trama = "<materia>".$idMateria."</materia>";
                 
           $arr_fechas  = $UgServices->Docentes_getfechasparcial($trama);
 //          print_r($arr_fechas);
@@ -1382,7 +1386,7 @@
                          <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
                          <PARCIAL>1</PARCIAL>
                          <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
-       
+          $id_Materia =$request->request->get('materia');
            
            $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
            
@@ -1430,14 +1434,14 @@
             $session=$request->getSession();
            $idDocente     = $session->get('id_user');
            $id_materia  = $request->request->get('materia');
-           $id_materia  ='2271';
+           //$id_materia  ='2271';
             
            $arr_checked  = $request->request->get('arr_checked');
            $arr_unchecked  = $request->request->get('arr_unchecked');
            $alumnosa=json_decode($arr_checked);
            $alumnosi=json_decode($arr_unchecked);
            $UgServices    = new UgServices;
-           $idDocente='31';
+           //$idDocente='31';
            $estudiante='2';
            //$materia_paralelo='235';
            $fecha='01/06/2015';
@@ -1495,7 +1499,7 @@
                   $item = $items->appendChild($item);
                   $estado_asistencia = $doc->createElement('estado_asistencia');
                   $estado_asistencia = $item->appendChild($estado_asistencia);
-                  $text = $doc->createTextNode('1');
+                  $text = $doc->createTextNode('0');
                   $text = $estado_asistencia->appendChild($text);
                   $id_estudiante = $doc->createElement('id_estudiante');
                   $id_estudiante = $item->appendChild($id_estudiante);
@@ -1547,7 +1551,7 @@
            $idDocente     = $session->get('id_user');
            $id_materia  = $request->request->get('materia');
            $fecha=$session->get('combofecha');
-           $id_materia  ='235';
+           //$id_materia  ='235';
             
            $arr_checked  = $request->request->get('arr_checked');
            $arr_unchecked  = $request->request->get('arr_unchecked');
@@ -1613,7 +1617,7 @@
                   $item = $items->appendChild($item);
                   $estado_asistencia = $doc->createElement('estado_asistencia');
                   $estado_asistencia = $item->appendChild($estado_asistencia);
-                  $text = $doc->createTextNode('1');
+                  $text = $doc->createTextNode('0');
                   $text = $estado_asistencia->appendChild($text);
                   $id_estudiante = $doc->createElement('id_estudiante');
                   $id_estudiante = $item->appendChild($id_estudiante);
@@ -1949,208 +1953,29 @@
          return $dataReturn;
       }//function procesarListadoAsistenciasEstudiantes();
       
-     public function listaEstudiantesAction(Request $request)
-        { 
-           $notas='';
-            date_default_timezone_set('America/Buenos_Aires');
-         $withoutModal       = true;
-                     $profesor='Apolinario';
-            //$materia='Calculo';
-            $paralelo='S2A';
-          
-            $notas='';
-            $parcial =$request->request->get('parcial');
-            $session=$request->getSession();
-               $session->set("parcial",$parcial);
-            
-            
-            $response   		= new JsonResponse();
-            $withoutModal       = true;
-         
-            $idDocente     = 1;
-            $carrera  =1;
-            $UgServices    = new UgServices;
-            
-            ////////////////////////////////
-            
-            $idDocente  = $session->get('id_user');
-            //$idDocente  = $request->request->get('idDocente');
-            $idCarrera  = $request->request->get('carrera');
 
-            $datosMaterias	= array();
-            $datosDocentes	= array();
-            //$idDocente = "1";
-            //$idCarrera = "2";
-
-            $UgServices    = new UgServices;
-            
-            
-            $datosDocentes  = $UgServices->Docentes_getDocentes($idCarrera);
-           // print_r($datosDocentes);
-            
-            
-            $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
-            $muestraDocente="<option value=''>Seleccione Docente</option>";
-            $muestraMateria="<option value=''>Seleccione Materia</option>";
-           /*print_r($datosMaterias);
-           exit();*/
-             foreach($datosMaterias as $materia) {
-              ##echo $materia['materia'];
-                  $muestraMateria .= '<option value="'.$materia['id_sa_materia_paralelo'].'">'.$materia['materia']."--".$materia['paralelo'].'</option>';
-               
-            }
-           
-             foreach($datosDocentes as $docente) {
-              
-                  $muestraDocente .= '<option value="'.$docente['id_sg_usuario'].'">'.$docente['profesor'].'</option>';
-               
-            }
-            
-            
-            
-            ///////////////////////////////////////
-            //$idDocente="";
-               //$idCarrera="";
-            // $materia="2269";
-       //Menu de Notas por Materia para Profesor
-         $Parcial='1';
-               
-                    $trama = "<materia>2271</materia>";
-                
-          
-          /* $fecha_act=date('Y-m-d');
-           
-               $Parcial='1';
-               
-               	$trama = "<materiaparalelo>".$materia."</materiaparalelo>";
-                
-            $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
-       
-           */
         
-                 $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:listaEstudiantes.html.twig',
-						  array(
-							 //  'arr_datos'	=> $arr_datos,
-                                                           'docente'   => $muestraDocente ,
-                                                           'materia'   => $muestraMateria,
-                                                           'idCarrera'   => $idCarrera,
-                                                           'cantidad'   => '',
-                                                           'msg'   	=> $this->v_msg
-						  ));
-                        
-                        $response->setData(
-                                array(
-					'error' 		=> $this->v_error,
-					'msg'			=> $this->v_msg,
-                                        'html' 			=> $this->v_html,
-                                        'withoutModal' 	=> $withoutModal,
-                                        'recargar'      => '0'
-                                     )
-                              );
-                        return $response;
-        }
-        
-        public function cmbMateriasAction(Request $request)
-        { 
-             $response   		= new JsonResponse();
-            $idCarrera =$request->request->get('carrera');
-            
-            $idDocente =$request->request->get('docente');
-             $UgServices    = new UgServices;
-            $response   		= new JsonResponse();
-            
-            $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
-            $muestraMateria="<option value=''>Seleccione Materia</option>";
-           /*print_r($datosMaterias);
-           exit();*/
-             foreach($datosMaterias as $materia) {
-              ##echo $materia['materia'];
-                  $muestraMateria .= '<option value="'.$materia['id_sa_materia_paralelo'].'">'.$materia['materia']."--".$materia['paralelo'].'</option>';
-               
-            }
-           
-            
-        
-			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:cmbMaterias.html.twig',
-						  array(
-                                                           'materia'   => $muestraMateria
-                                                           
-						  ));
-                        
-                        $response->setData(
-                                array(
-                                        'html' 			=> $this->v_html
-                                     )
-                              );
-                        return $response;
-        }
-        
-       public function muestraEstudiantesAction(Request $request)
-        { 
-             $response   		= new JsonResponse();
-            
-            
-            $idDocente =$request->request->get('docente');
-            
-            $idMateria =$request->request->get('materia');
-            
-            //echo $idDocente."--".$idMateria."--";
-            
-            
-            $response   		= new JsonResponse();
-            if ($idDocente==="")
-            {
-                    $this->v_error	= true; 
-                    $this->v_msg ='Debe seleccionar un Docente';
-                 }else {   
-                    
-                    if($idMateria==="")
-                   { 
-                        $this->v_error	= true; 
-                          $this->v_msg ='Debe seleccionar una Materia'; 
-                        }else { 
-                           // $idMateria="235";
-                   $trama = "<materiaparalelo>".$idMateria."</materiaparalelo>";
-                   $UgServices    = new UgServices; 
-                    $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
-                   $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:tablaEstudiantes.html.twig',
-						  array(
-                                                           'arr_datos'   => $arr_datos
-                                                           
-						  ));
-                     }
-                     
-             
-                 }
-                       
-                        
-                        $response->setData(
-                                array(
-                                        'msg'                => $this->v_msg,
-                                        'error'              => $this->v_error,
-                                        'html' 		     => $this->v_html
-                                     )
-                              );
-                        return $response;
-        }
-        
-     public function ExportarPDFEstudiantesAction(Request $request,$docente,$materia)
+     public function ExportarPDFEstudiantesAction(Request $request,$docente,$materia,$docente_text,$materia_text,$paralelo)
         { 
              $response   		= new JsonResponse();
           //  echo "ttttttttttttttttttt";
             
-            
+            $Fecha=date('d/m/Y');
             //echo $idDocente."--".$idMateria."--";
             
             
             $response   		= new JsonResponse();
            
-                            $idMateria="2269";
-                   $trama = "<materiaparalelo>".$idMateria."</materiaparalelo>";
+                           // $idMateria="2269";
+                   $trama = "<materiaparalelo>".$materia."</materiaparalelo>";
                    $UgServices    = new UgServices; 
                     $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
                    $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:tablaEstudiantes.html.twig',
 						  array(
+                                                           'docente_text'   => $docente_text,
+                                                           'materia_text'   => $materia_text,
+                                                           'paralelo'   => $paralelo,
+                                                           'fecha'   => $Fecha,
                                                            'arr_datos'   => $arr_datos
                                                            
 						  ));
@@ -2185,8 +2010,14 @@
              $idDocente =$request->request->get('docente');
             
             $idMateria =$request->request->get('materia');
+            $Docente =$request->request->get('docente_text');
             
-            $section ='http://localhost/desarrollo/appAcademico/web/docentes/PDF/estudiantes/'.$idDocente.'/'.$idMateria;
+            $Materia =$request->request->get('materia_text');
+           list($Materia,$paralelo) = split('[-]', $Materia);
+            
+           $Docente= trim($Docente);
+            
+            $section ='http://localhost/desarrollo/appAcademico/web/docentes/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
             $response->setData(
                                 array(
                                         'redirect' => true,
@@ -2461,7 +2292,7 @@
                                                         {
                                                           $presenta.="<tr>";
                                                         }
-                                                        $presenta.="<td style='font-size:10px;'> ".$value['Materia']." - ".$value['Profesor']."</td>";
+                                                        $presenta.="<td style='font-size:10px;'> <b>".$value['Materia']." :</b> ".$value['Profesor']."</td>";
                                                         if ($i%2==0)
                                                         {
                                                           $presenta.="<tr>";
@@ -2486,7 +2317,7 @@
                   //$mPDF->Output();
                   if ($lnhasta<=0)
                   {
-                    $mPDF->WriteHTML("No existen Datos para Generar22");
+                    $mPDF->WriteHTML("No existen Datos para Generar");
                   }
                   return new response($mPDF->Output());
  

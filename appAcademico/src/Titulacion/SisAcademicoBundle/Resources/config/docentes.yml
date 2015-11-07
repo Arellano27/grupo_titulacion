@@ -85,6 +85,7 @@ docentes_actualiza_asistencia:
     pattern:  /actualizar/asistencias
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizarAsistencia}
     
+
 admin_lista_estudiantes:
     pattern:  /listar/estudiantes
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listaEstudiantes}

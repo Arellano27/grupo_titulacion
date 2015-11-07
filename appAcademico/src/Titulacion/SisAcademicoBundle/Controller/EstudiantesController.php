@@ -714,6 +714,7 @@
                       $CicloMatricula="";
                       $anio="";
                       $xml2 = $UgServices->getConsultaDatos_Turno($idEstudiante,$idCarrera);
+                     
 
                       $ciclo="";
                       $parveces='2';
@@ -1011,7 +1012,7 @@
                       $Idciclo="";
 
                       //$idEstudiante=12;
-                      // var_dump($idEstudiante);
+                       
                       
 
                        if ( is_object($xml2))
@@ -1042,7 +1043,7 @@
                          $UgServices = new UgServices;
 
                           $xml1 = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idCarrera,$Idciclo);
-                          
+                          //var_dump($xml1);
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
