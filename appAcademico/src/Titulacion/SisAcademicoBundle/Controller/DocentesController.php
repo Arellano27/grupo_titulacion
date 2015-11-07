@@ -300,15 +300,36 @@
                $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCicloParcial"];
             }
             $datosNotasDetalle[$dataParcial["nombre"]] = $tempDataNotasDetalle;
-            var_dump($datosNotasDetalle[$dataParcial["nombre"]]);
+            //var_dump($datosNotasDetalle[$dataParcial["nombre"]]);
          }
          ////->Obtener los datos para la grafica detalle de aprobados - FIN
          
          ////->Obtener los datos para la grafica de resumen de aprobados - INICIO
-//         $datosNotasResumen = array();
-//         $datosConsulta	= array( 'idMateria' => $idMateria,
-//                                 'idCiclo' => $idCiclo,
-//                                 'idParcial' => 'todos');
+         $datosNotasResumen = array();
+            //Todos los parciales
+         $datosConsulta	= array( 'idMateria' => $idMateria,
+                                 'idCiclo' => $idCiclo,
+                                 'idParcial' => 'todos');
+         $tempDataNotasResumen        = $UgServices->Docentes_Graph_getAprobadosResumen($datosConsulta);
+         var_dump('hola', $tempDataNotasResumen);
+         if(isset($tempDataNotasDetalle["MateriaParaleloCiclo"])) {
+            $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCiclo"];
+         }
+         $datosNotasDetalle["todos"] = $tempDataNotasDetalle;
+         
+            //Por parcial
+         foreach($datosParciales as $dataParcial){
+            $datosConsulta	= array( 'idMateria' => $idMateria,
+                                    'idCiclo' => $idCiclo,
+                                    'idParcial' => $dataParcial["numero_parcial"]);
+            $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosResumen($datosConsulta);
+            
+            if(isset($tempDataNotasDetalle["MateriaParaleloCicloParcial"])) {
+               $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCicloParcial"];
+            }
+            $datosNotasDetalle[$dataParcial["nombre"]] = $tempDataNotasDetalle;
+            //var_dump($datosNotasDetalle[$dataParcial["nombre"]]);
+         }
          ////->Obtener los datos para la grafica de resumen de aprobados - FIN
          
          return $this->render('TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria.html.twig',
@@ -316,7 +337,10 @@
                               'datosDocente' => $datosDocente,
                               'datosMateria' => $datosMateria,
                               'datosParciales' => $datosParciales,
-                              'datosAsistencias' => $datosAsistencias
+                              'datosAsistencias' => $datosAsistencias,
+                              'datosNotasDetalle' => $datosNotasDetalle,
+                              'datosNotasResumen' => $datosNotasResumen
+                               
                            )
                       );
       }
