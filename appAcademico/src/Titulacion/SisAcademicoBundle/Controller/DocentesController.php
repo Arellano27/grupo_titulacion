@@ -2251,8 +2251,8 @@
 
 
                 $UgServices = new UgServices;
-                $idDocente='10';
-                $trama='<PV_Opcion>A</PV_Opcion>
+               // $idDocente='10';
+                $trama='<PV_Opcion>P</PV_Opcion>
                     <PI_Usuario>'.$idDocente.'</PI_Usuario>
                     <PI_Carrera>'.$idCarrera.'</PI_Carrera>';
                 $xml1 = $UgServices->getConsultaHorario_examendoc($trama);
@@ -2282,7 +2282,7 @@
                                     $arrHoras=array();
                                     $arrMaterias=array();
                                     $arrPresentar=array();
-                                    $arrProfesores=array();
+//                                    $arrProfesores=array();
 
                                         $lnhasta=count ($lscabHorarios);
                                         foreach($lscabHorarios->dias->dia as $Horarios) 
@@ -2318,15 +2318,15 @@
                                                           'idDia'=> (string)$Horariosm->id_dia);
                                                 array_push($arrMaterias, $arrDatos);
                                             } 
-                                            foreach($lscabHorarios->profesores->profesor as $Horariosp) 
-                                            {
-                                              $arrDatos=array('Materia'=>(string) $Horariosp->nombre_materia,
-                                                          'Profesor'=> (string)$Horariosp->nombre);
-                                                array_push($arrProfesores, $arrDatos);
-                                            } 
+//                                            foreach($lscabHorarios->profesores->profesor as $Horariosp) 
+//                                            {
+//                                              $arrDatos=array('Materia'=>(string) $Horariosp->nombre_materia,
+//                                                          'Profesor'=> (string)$Horariosp->nombre);
+//                                                array_push($arrProfesores, $arrDatos);
+//                                            } 
                                             
-                                            $lncuantosp=count($arrProfesores);
-                                            $lncuantosp=ceil($lncuantosp/2);
+//                                            $lncuantosp=count($arrProfesores);
+//                                            $lncuantosp=ceil($lncuantosp/2);
                                              foreach ($arrMaterias as $key => $Detalle) 
                                              {
                                                   $idDia=$Detalle['idDia'];
@@ -2362,6 +2362,11 @@
                                             <table align='center'>
                                             <tr>
                                               <td align='center'>
+                                            <b>$estudiante </b>
+                                                 </td>
+                                            <tr>
+                                            <tr>
+                                              <td align='center'>
                                                 <b> Horario de Examen Curso : $nombreCurso </b>
                                               </td>
                                             <tr>
@@ -2372,10 +2377,10 @@
                                             </tr>
                                             </table><table class='table table-striped table-bordered' border='1' width='100%'>";
                                                 $presenta.="<thead><tr>";
-                                                $presenta.="<th>Horario</th>";
+                                                $presenta.="<th style='background-color: #337AB7;'>Horario</th>";
                                                 //var_dump($arrCol);
                                                   foreach ($arrDias as $key => $value) {
-                                                    $presenta.="<th>".$value['Dia']."</th>";
+                                                    $presenta.="<th  style='background-color: #337AB7;'>".$value['Dia']."</th>";
                                                   }
                                                 $presenta.="</tr></thead>";
                                                 
@@ -2392,25 +2397,25 @@
                                                   //var_dump($value);
                                                 }
                                                 $presenta.="</table>";
-                                                $presenta.="<table class='table table-striped table-bordered' border='0' width='100%'>";
-                                                $i=1;
-                                                 $presenta.="<thead>"; 
-                                                 $presenta.="<tr><th colspan=1>Detalle de Profesores por Materia</th></tr>";
-                                                 $presenta.="</thead>";
-                                                foreach ($arrProfesores as $key => $value) {
-                                                        if ($i%2!=0)
-                                                        {
-                                                          $presenta.="<tr>";
-                                                        }
-                                                        $presenta.="<td style='font-size:10px;'> <b>".$value['Materia']." :</b> ".$value['Profesor']."</td>";
-                                                        if ($i%2==0)
-                                                        {
-                                                          $presenta.="<tr>";
-                                                        }
-                                                        $i=$i+1;
-                                                      }
+//                                                $presenta.="<table class='table table-striped table-bordered' border='0' width='100%'>";
+//                                                $i=1;
+//                                                 $presenta.="<thead>"; 
+//                                                 $presenta.="<tr><th colspan=1>Detalle de Profesores por Materia</th></tr>";
+//                                                 $presenta.="</thead>";
+//                                                foreach ($arrProfesores as $key => $value) {
+//                                                        if ($i%2!=0)
+//                                                        {
+//                                                          $presenta.="<tr>";
+//                                                        }
+//                                                        $presenta.="<td style='font-size:10px;'> <b>".$value['Materia']." :</b> ".$value['Profesor']."</td>";
+//                                                        if ($i%2==0)
+//                                                        {
+//                                                          $presenta.="<tr>";
+//                                                        }
+//                                                        $i=$i+1;
+//                                                      }
 
-                                                  $presenta.="</table>";
+//                                                  $presenta.="</table>";
 
                                                 $presenta.="</body></html>";
                                                 $mPDF->WriteHTML($presenta);
