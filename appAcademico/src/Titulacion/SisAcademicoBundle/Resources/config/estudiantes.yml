@@ -68,6 +68,9 @@ estudiantes_horarios:
 estudiantes_pdf_horariogeneral:
     pattern:  /pdfHorarioGeneral/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfHorarioGeneral}
+estudiantes_pdf_datosgenerales:
+    pattern:  /pdfdatosgenerales/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfDatosGenerales}
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes
