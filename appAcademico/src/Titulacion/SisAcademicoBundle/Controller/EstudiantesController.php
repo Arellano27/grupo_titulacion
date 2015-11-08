@@ -2716,7 +2716,7 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
                                             <table align='center'>
                                             <tr>
                                               <td align='center'>
-                                                <b> Horario de clases</b>
+                                                <b> Solicitud </b>
                                               </td>
                                             <tr>
                                             <tr>

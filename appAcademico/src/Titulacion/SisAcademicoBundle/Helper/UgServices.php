@@ -1413,7 +1413,6 @@ public function getConsultaDatos_Generales($idEstudiante){
       }
 
 }#end class
-=======
-#end class
+
 
 
