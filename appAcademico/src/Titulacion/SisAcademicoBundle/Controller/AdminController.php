@@ -279,6 +279,7 @@ class AdminController extends Controller
                                                     $lcNombre=$xml->dato->Estudiante->nombres;
                                                     $lcCedula=$xml->dato->Estudiante->usuario;
                                                     $idUsuarioEst=$xml->dato->Estudiante->id_sg_usuario;
+                                                    $idEstudiante=$idUsuarioEst;
                                                     
                                                       foreach($xml->dato->OrdenPagos as $lsciclo) 
                                                         {
