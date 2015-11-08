@@ -1,0 +1,224 @@
+ 
+<div class="col-lg-12 divordentemp">
+    <h4 class="StepTitle" align="center" >Listado de Órdenes</h4>
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                    <table  align='center' border='1' id="table-listarpago">
+                        <thead>
+                            <tr>
+                                <td colspan='5'><input   class="form-control" id="disabledInput" type="text" placeholder="Estudiante : {{ estudiante }} Identificacion : {{ identificacion }}" disabled STYLE="color: #FFFFFF; font-family: Verdana; font-weight: bold; font-size: 15px; background-color: #0B2161;" > </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center" >Ciclo</th>
+                                <th style="text-align:center" >N° de Orden</th>
+                                <th style="text-align:center">Fecha Maxima de Pago</th>
+                                <th style="text-align:center">Valor</th>
+                                <th style="text-align:center">Sel.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set cuenta=0 %}
+
+                                {% for listado in pendientes %}   
+                                    {% set cuenta=1 %}
+                                 <tr class="odd gradeX">
+                                    <td   align="center"   width='5%' id="ciclo_{{ listado.ciclo }}">{{ listado.nomciclo }}</td>
+                                    <td   align="center"   width='5%' id="orden_{{ listado.Orden }}">{{ listado.Orden }}</td>
+                                    <td align="center" width='5%' id="fecha_{{ listado.Orden }}">{{ listado.Fecha_pago }}</td>
+                                    <td align="center" width='5%' id="valor_{{ listado.Orden }}">{{ listado.Valor }}</td>
+                                    <td align="center" width='5%' id="sel_{{ listado.Orden }}"> 
+                                            {% if banderalegalizar==1 %}
+                                                <input type="checkbox" name="ord_orden_select" id="ord_orden_select" value="">
+                                            {% endif %}
+                                    </td>
+                                </tr>
+
+                            {% endfor %}  
+                            {% if cuenta==0 %}
+                                <tr>
+                                    <td width='5%' colspan='5' align="center"> No esxisten Registro para el citerio Seleccionado</td>
+                                </tr>
+                            {% endif %}
+                           
+                        </tbody>
+                        <tfoot>
+                            {% if cuenta==1 %}
+                                {% if banderalegalizar==1 %}
+                            
+                                    <tr>
+                                            <td width='5%' colspan='5' align="right">
+                                              <!--   <input type="submit" name="legalizaorden" id="btnlegalorden" value="Legalizar"></td> -->
+                                              <a class="btn btn-success " id='btnlegalorden'>Legalizar</a>
+                                            </td>
+                                    </tr>
+                                {% endif %}        
+                            {% endif %}
+                        </tfoot>
+                    
+                    </table>
+                </div>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+
+    </div>
+
+       
+</div>
+
+<script>
+        $("#btnlegalorden").on("click",function(event){
+                $("#btnlegalorden").attr("disabled", true);
+                        var elementochk = document.getElementsByName("ord_orden_select"); 
+                        var Orden, idEstudiante, Ciclo;
+                        idEstudiante='{{idEstudiante}}'
+                        var myArray = {};
+                        var indicasel=0;
+                        var idCarrera='{{idCarrera}}'
+                            $("#table-listarpago tbody tr").each(function (index) 
+                            {
+                                //console.log(elecmentocombo[index].options[elecmentocombo[index].selectedIndex].text);
+
+                                //console.log(elecmentocombo[index].options.selectedIndex);
+                                 // if (elementochk[index].checked)
+                                 // {
+                                 //        indicasel=indicasel+0;// si en algun momento se necesita realizar validacion
+                                 // }
+                                 // else
+                                 // {
+                                 //     indicasel=indicasel+1;
+                                 // }
+
+                                if (elementochk[index].checked )
+                                {
+                                    valida=0;
+
+                                    $(this).children("td").each(function (index2) 
+                                    {
+                                        Celda=$(this).attr("id");
+                                        Celda=Celda.split('_');
+                                        Celda2=Celda[1];
+                                        Celda=Celda[0];
+                                        //alert(Elemento);
+                                        switch (Celda) 
+                                        {
+                                            case "orden": Orden = $(this).text()
+                                                    //alert(idMateria);
+                                                    break;
+                                            case "ciclo": Ciclo = Celda2;
+                                                    //alert(Materia);
+                                                    break;
+                                        }
+                                         
+                                    })
+                                    var arrValores = {};
+                                     arrValores["idEstudiante"]=idEstudiante;
+                                     arrValores["Orden"]=Orden;
+                                     arrValores["Ciclo"]=Ciclo;
+                                     myArray[index]=arrValores;
+                                }
+                               
+                            })
+
+
+                            var estado;
+                            estado=0;
+                            if(Object.keys(myArray).length==0 || indicasel>0 )
+                            {
+                                //alert("Debe Seleccionar las Materias a Inscribir");
+                                modelessActualizadOrden= new $.flavr({
+                                                   modal   : true,
+                                                   content : 'Por favor, debe realizar la selccion de Ordenes  pagos pa continuar con el proceso',
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', style: 'primary' }
+                                                   }
+                                                });
+
+                               $("#btnlegalorden").attr("disabled", false);
+                            }
+
+                            else
+                            {
+                                
+                                 var obj_data = {'arrDetalle': myArray};
+                                
+                                 var jumpAction = '{{path('admin_actualiza_ordenpago')}}';
+                                 var modelessSetOrdenPago;
+                                  $.ajax({
+                                     url:   jumpAction,
+                                     data: obj_data,
+                                     type:  'post',
+                                     async: true,
+                                     beforeSend: function () {
+                                        modelessSetOrdenPago = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             buttons     : {}
+                                                          });
+                                       // alert("dentro");
+                                       //tablaNotasa.html("Cargando, espere por favor...");
+                                     //notificacionIndex = cargandoSitio(null, null, null);
+                              
+                                     },
+                                     success:  function (dataResponse) {
+
+                                        modelessSetOrdenPago.close();
+                                       var respuesta=jQuery.parseJSON(dataResponse);
+                                       
+                                       if (respuesta.codigo_error!=1)
+                                       {
+                                            modelessActualizadOrden2= new $.flavr({
+                                                   modal   : true,
+                                                   content : respuesta.mensaje,
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', 
+                                                      style: 'primary' }
+                                                   }
+                                                });
+                                            
+                                            $("#btnlegalorden").attr("disabled", false);
+                                            
+                                       }
+                                       else
+                                       {
+                                        modelessActualizadOrden2= new $.flavr({
+                                                   modal   : true,
+                                                   content : 'Proceso Exitoso',
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', 
+                                                      style: 'primary' }
+                                                   }
+                                                });
+                                                    //$("#busquedaest").val("");
+                                                    //$("#btnlegalorden").remove();
+                                                     $(".divordentemp").remove();
+
+                                       }
+                                        
+                                           
+                                     },
+                                      error: function(dataResponse)
+                                      {
+                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                          modelessSetOrdenPago.close();
+                                        form="accordion";
+                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                        $( '#'+form ).append( msg_alert );
+                                                        $('#modal-'+form).modal('show');
+                                      },
+                             //         timeout: 50000
+
+                                 dataType:'text'
+                              });
+                                //alert(estado);
+                            }
+            });
+</script>

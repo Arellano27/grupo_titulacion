@@ -43,6 +43,24 @@ twig:
         perfilEstDoc: %perfilEstDoc%
         perfilEstAdm: %perfilEstAdm%
         perfilDocAdm: %perfilDocAdm%
+        perfilCordi: %perfilCordi%
+        perfilEstCordi: %perfilEstCordi%
+        perfilDocCordi: %perfilDocCordi%
+        ReporteEstudiantePorCarrera: %ReporteEstudiantePorCarrera%
+        ReporteInscritosMatriculados: %ReporteInscritosMatriculados%
+        ReporteMateriasAprobada: %ReporteMateriasAprobada%
+        ConsultaEstudiantesMateriaParalelo: %ConsultaEstudiantesMateriaParalelo%
+        AprobacionInscripcion: %AprobacionInscripcion%
+        LegalizacionOrdenPago: %LegalizacionOrdenPago%
+        AnulacionMateria: %AnulacionMateria%
+        GeneracionCalendarioAcademico: %GeneracionCalendarioAcademico%
+        GeneracionHorariosClases: %GeneracionHorariosClases%
+        GeneracionHorariosExamen: %GeneracionHorariosExamen%
+        SubirSolicitudes: %SubirSolicitudes%
+        ConsultaHorariosClases: %ConsultaHorariosClases%
+        ConsultaHorariosExamen: %ConsultaHorariosExamen%
+        ConsultaHorariosClasesPersonalizados: %ConsultaHorariosClasesPersonalizados%
+        ConsultaHorariosExamenPersonalizados: %ConsultaHorariosExamenPersonalizados%
 
 # Assetic Configuration
 assetic:
@@ -80,9 +98,16 @@ doctrine:
         auto_mapping: true
 
 # Swiftmailer Configuration
+#swiftmailer:
+#    transport:  gmail
+#    encryption: ssl
+#    host:       smtp.gmail.com
+#    username:   titulacion.php@gmail.com
+#    password:   sc123456
 swiftmailer:
-    transport:  gmail
+    transport:  "%mailer_transport%"
     encryption: ssl
-    host:       smtp.gmail.com
-    username:   titulacion.php@gmail.com
-    password:   sc123456
+    auth_mode:  login
+    host:       "%mailer_host%"
+    username:   "%mailer_user%"
+    password:   "%mailer_password%"

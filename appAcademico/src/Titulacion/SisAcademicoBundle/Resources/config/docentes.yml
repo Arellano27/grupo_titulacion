@@ -9,14 +9,6 @@ docentes_listado_materias:
 docentes_listado_alumnos_materia:
     pattern:  /materias/alumnos/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria}
-
-docentes_notas_alumnos_materia:
-    pattern:  /materias/notas/
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria }
-
-docentes_consulta_notas:
-    pattern:  /materias/notas/
-    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:consultaNotas }
     
 docentes_consulta_notas_materia:
     pattern:  /materias/notas/listado
@@ -33,6 +25,10 @@ docentes_asistencias_crear_xls:
 docentes_vision_materia:
     pattern:  /materias/visionGeneral/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria }
+  
+docentes_notas_alumnos_materia:
+    pattern:  /materias/notas/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria }
     
 docentes_mostrar_alumnos:
     pattern:  /alumnos/
@@ -53,3 +49,68 @@ docentes_ingreso_notas:
 docentes_ingreso_notas2:
     pattern:  /notas2/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresonotas2 }
+    
+
+docentes_consulta_horarios:
+    pattern:  /consultahorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:consultahorarios }
+    
+docentes_pdfhorarios:
+    pattern:  /PdfHorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:pdfhorarios }
+    
+    
+
+docentes_alumnos_asistencias:
+    pattern:  /materias/asistencias/
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:tabDocAsistencias }
+    
+docentes_ingreso_asistencia:
+    pattern:  /ingreso/asistencia
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresarAsistencia }
+    
+docentes_asistencia_alumnos:
+    pattern:  /asistencia/alumnos
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:IngresoAsistencia }
+    
+docentes_ingresar_nota:
+    pattern:  /ingresar/nota
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresarNota }
+    
+docentes_actualiza_asis:
+    pattern:  /actualiza/asis
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizaAsis }
+    
+docentes_actualiza_asistencia:
+    pattern:  /actualizar/asistencias
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:actualizarAsistencia}
+    
+
+admin_lista_estudiantes:
+    pattern:  /listar/estudiantes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:listaEstudiantes}
+    
+admin_cmb_materias:
+    pattern:  /combo/materias
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:cmbMaterias}
+
+    
+admin_muestra_estudiantes:
+    pattern:  /muestra/estudiantes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:muestraEstudiantes}
+    
+admin_exportaPDF_estudiantes:
+    pattern:  /PDF/estudiantes/{docente}/{materia}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ExportarPDFEstudiantes}
+    
+admin_cargar_pagina:
+    pattern:  /carga/pagina
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:cargaPagina}
+    
+docentes_horarios:
+    pattern:  /carrerasHorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:carrerasHorarios}
+    
+docentes_pdf_horarioexamen:
+    pattern:  /pdfHorarioExamen/{idDocente}/{idCarrera}/{ciclo}/{carrera}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:pdfHorarioExamen}

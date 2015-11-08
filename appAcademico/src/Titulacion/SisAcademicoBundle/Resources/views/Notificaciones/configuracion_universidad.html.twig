@@ -1,0 +1,160 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig' %}
+
+{% block contenido %}
+   <script src="{{ asset('js/EnviarMensajes.js') }}"></script>
+<script src="{{ asset('js/script/jquery-1.10.2.min.js') }}"></script>
+    
+        <div >       
+        <section >
+
+            <form id="Form1" runat="server">  
+              <div class="main">
+                 
+<!-- -->
+
+        <div class="contentedit2">
+
+        <section class="content">
+          <div class="row">
+             
+            
+           
+            <div class="col-md-12">
+           
+                                    
+                                       
+                  <div class="contentedit2">
+
+    
+
+        <section class="content-header">
+          <h1>
+            Configuración General  
+         
+          </h1>
+         
+        </section>
+
+          <form id="form-enviar" method="post" action="{{ path('dayscript_configuracion') }}" runat="server"> 
+             
+        <section class="content">
+          <div class="row">
+            <div class="col-md-3">
+               <div class="box box-solid">
+                <div class="box-body no-padding">
+                  <ul class="nav nav-pills nav-stacked">
+                      <li class="active"><a href="Configuracion.php"><i class="fa fa-user-plus"></i> Perfil <span class="label label-primary pull-right"></span></a></li>
+                      <li ><a href="Cambio_Contraseña.php"><i class="fa fa-key"></i> Cambio de Contraseña</a></li>
+                      <li><a href="Sugerencia.php"><i class="fa fa-envelope-o"></i> Sugerencia</a></li>
+                  
+                  </ul>
+                </div><!-- /.box-body -->
+              </div><!-- /. box -->
+            
+            </div><!-- /.col -->
+            <div class="col-md-5">
+           
+                                    
+                                       
+                                
+				                      <div class="box-header with-border">
+                                      <h3 class="box-title">Perfil Usuario</h3>
+                  
+                                 </div><!-- /.box-header -->
+			                         
+                    
+                        <label for="inputName" class="col-sm-2 control-label">Nombres</label>  
+                         <input type="text" value="{{app.session.get('nom_usuario')}}" class="form-control" id="Nombre" placeholder="Nombre">
+                      
+                          
+                      
+                     <br />
+                    
+                        <label for="inputEmail" class="col-sm-2 control-label">Apellidos</label>                       
+                          <input type="email" class="form-control" id="inputEmail" placeholder="Apellidos">                       
+                      <br />
+                    
+                        <label for="inputName" class="col-sm-2 control-label">Edad</label>                       
+                          <input type="text" class="form-control" id="inputName" placeholder="Edad">
+                        
+                      <br />
+                    
+                        <label for="inputExperience" class="col-sm-2 control-label">Habilidades</label>                       
+                          <textarea class="form-control" id="inputExperience" placeholder="Habilidades"></textarea>
+                       
+                     <br />
+                    
+                        <label for="inputSkills" class="col-sm-2 control-label">Experiencia</label>                      
+                          <input type="text" class="form-control" id="inputSkills" placeholder="Experiencia">
+                       
+                           <br />            
+                    
+                        
+                          <button type="submit" onclick="send_form ('enviar')" class="btn btn-danger">Guardar</button>
+                       
+                     
+                    
+                
+                                   
+            </div>
+
+            <div class="col-md-4">
+           
+                                    
+                                       
+                               
+				                      <div class="box-header with-border">
+                                      <h3 class="box-title">Redes</h3>
+                  
+                                 </div><!-- /.box-header -->
+			                         
+                  
+                       
+                        <label for="inputName" class="col-sm-2 control-label">Twitter</label>  
+                         <input type="text" class="form-control" id="Text1" placeholder="Twitter">
+                      
+                          
+                      
+                     <br />
+                    
+                        <label for="inputEmail" class="col-sm-2 control-label">Facebook</label>                       
+                          <input type="email" class="form-control" id="Email1" placeholder="Facebook">                       
+                      <br />
+                    
+                        <label for="inputName" class="col-sm-2 control-label">Telefono</label>                       
+                          <input type="text" class="form-control" id="Text2" placeholder="Telefono">
+                        
+                      <br />
+                    
+                        <label for="inputExperience" class="col-sm-2 control-label">Correo</label>                       
+                          <textarea class="form-control" id="Textarea1" placeholder="Correo"></textarea>
+                       
+                     <br />
+                    
+                      
+                                      
+                                   
+            </div>
+            </div>
+        </section>
+        
+          </form>
+      </div>              
+                                      
+                                   
+            </div>
+        
+          </div>
+        </section><!-- /.content -->
+
+      </div>
+                   </div>
+            </form>
+
+        </section><!-- /.content -->
+      </div>
+        
+     
+{% endblock %}
+
+

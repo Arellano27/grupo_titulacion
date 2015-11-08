@@ -33,6 +33,12 @@
 .panel-green {border-color: #5cb85c;}
 .panel-yellow>.panel-heading {color: #fff;background-color: #f0ad4e;border-color: #f0ad4e;}
 .panel-yellow {border-color: #f0ad4e;}
+.panel-blue>.panel-heading {color: #fff;background-color: #337ab7;border-color: #337ab7;}
+.panel-blue {border-color: #337ab7;}
+.panel-red>.panel-heading {color: #fff;background-color: #d9534f;border-color: #d9534f;}
+.panel-red {border-color: #d9534f;}
+.panel-cian>.panel-heading {color: #fff;background-color: #00C0EF;border-color: #00C0EF;}
+.panel-cian {border-color: #00C0EF;}
 .fa-5x {font-size: 3em !important;}
 .h3, h3 {font-size: 130%;margin-top: 10px;margin-bottom: 10px;}
 
@@ -50,4 +56,9 @@ a.tip:hover span {
     position: absolute;
     top: 20px;
     text-decoration: none
+}
+
+.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > span:not(.pull-right),
+.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > .treeview-menu{
+  width:260px;
 }

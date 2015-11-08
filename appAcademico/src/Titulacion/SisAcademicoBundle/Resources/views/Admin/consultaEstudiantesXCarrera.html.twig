@@ -1,0 +1,263 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig' %}
+{% block home %}
+
+  <style type="text/css">
+  .col-sm-5{margin: 0px 1px 0px 20px;padding: 0;}
+  .col-sm-7{margin: 0px 1px 0px 20px;padding: 0;}
+  .table{margin-left: 7px;} 
+  </style>
+
+{% if(estudianteCarrera.mostrar=="SI") %}
+<div class="col-lg-12">
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      <h2 align="center"><b>REPORTE DE ESTUDIANTE POR CARRERA</b></h2>
+      <div class="panel-group" id="accordion">
+      {% for  carrera in estudianteCarrera.carreras%} 
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion"  href="#{{ carrera.idCarrera }}_{{ carrera.idCiclo }}" class='tabscarrera' id="na_{{ carrera.idCarrera }}_{{ carrera.idCiclo }}" >{{ carrera.nombre }}</a>
+            </h4>
+          </div>
+          <div  id="{{ carrera.idCarrera }}_{{ carrera.idCiclo }}" class="panel-collapse collapse" style="margin-top: 20px;">
+          <input id="valida_{{ carrera.idCarrera }}" type="hidden" value="0">
+            <div id="parametrosBusqueda_{{ carrera.idCarrera }}" class="col-lg-12">
+              <div class="col-lg-6" style="margin-bottom: 20px;">
+                <div class="col-lg-5" style="padding-top: 6px; font-weight: bold;">Identificación Estudiante:</div>
+                <div class="col-lg-4" style="padding-top: 3px;"><input type="text" id="ident_{{ carrera.idCarrera }}"maxlength="10"></div>
+                <div class="col-lg-2"> <a id="buscarEstudiante_{{ carrera.idCarrera }}" class="btn btn-primary">BUSCAR</a></div>
+
+              </div>
+              <div class="col-lg-6" style="margin-bottom: 20px;">
+
+                <div class="col-lg-4" style="padding-top: 6px; font-weight: bold;">Estado Matricula:</div>
+                <div class="col-lg-4" style="padding-top: 3px;"><select id="periodosSelectAsistencia_{{ carrera.idCarrera }}">
+                          <option value="0">TODOS</option>
+                          {% for parametro in estudianteCarrera.parametroCombos %}
+                          <option value="{{parametro.codigo}}">{{parametro.nombre}}</option>
+                          {% endfor %}  
+                </select></div>
+                <div class="col-lg-2"> <a class="btn btn-success" href="{{path('admin_academico_estudiante_carrera_pdf', {'idCarrera':carrera.idCarrera,'ciclo':carrera.idCiclo,'carrera':carrera.nombre})}}" target="_blank">PDF</a></div>
+                    
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <div id="tabla_{{ carrera.idCarrera }}"></div>
+                <table id="tblEstudiantes_{{ carrera.idCarrera }}" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>Identificacion</th>
+                      <th>Nombre Estudiante</th>
+                      <th>Estado Matricula</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            
+              <div class="col-md-4">
+                <div class="box box-danger" style="border-top: 1px solid #f4f4f4; margin-left: -7px;">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Estadisticas</h3>
+                  </div>
+                  <div class="box-body">
+                    <div class="row">
+                      <div class="col-md-8">
+                        <canvas id="pieChart_{{ carrera.idCarrera }}" width="350" style="width: 350px;"></canvas>
+                      </div>
+                      <div class="col-md-4">
+                      <ul class="chart-legend clearfix">
+                        <li><i class="fa fa-circle-o text-red"></i> Registrado</li>
+                        <li><i class="fa fa-circle-o text-green"></i> Inscrito</li>
+                        <li><i class="fa fa-circle-o text-yellow"></i> Matriculado</li>
+                      </ul>
+                    </div>
+                  </div><!-- /.box-body -->
+                </div><!-- /.box --> 
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %} 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function() { 
+    $('.tabscarrera').click(function() {
+      var splitCarrera =$(this).attr('id').split('_');
+      var carrera  = splitCarrera[1];
+      var ciclo  = splitCarrera[2];
+      var consultaEstudiantesCarrera;
+
+      if($('#valida_'+carrera).val() == "0"){
+        $('#valida_'+carrera).val("1");
+        $('#tblEstudiantes_'+carrera).DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+          "autoWidth": false,
+          "language": {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar _MENU_ registros",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", 
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+              "sFirst":    "Primero",
+              "sLast":     "Último",
+              "sNext":     "Siguiente",
+              "sPrevious": "Anterior"
+            }
+          }
+        });
+
+        $.ajax({
+        url:   '{{path('admin_academico_estudiante_carrera_selected')}}',
+        data: {ciclo: ciclo,carrera: carrera,estadoMatricula:"0",opcion:"1",identificacion:""},
+        dataType: 'json',
+        type:  'post',
+        beforeSend: function () {
+          
+          consultaEstudiantesCarrera = new $.flavr({
+                                modal   : true,
+                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                buttons     : {}
+                                });
+        },
+        error:function(){
+          consultaEstudiantesCarrera.close();
+          $('#tabla_'+carrera).html("No fue posible conectar con el Servidor");
+          alert("ERROR");
+        },
+        success:  function (dataResponse) {
+          consultaEstudiantesCarrera.close();
+          //    var jsdata = JSON.parse(dataResponse);
+          //alert(jsdata);
+          $('#tabla_'+carrera).html("");
+          var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+          oTable.fnClearTable();
+          $(dataResponse.listadoEstudiante).each(function(index){
+            var addData = [];
+            addData.push($(this).attr('cedulaestudiante'));
+            addData.push($(this).attr('nombre'));
+            addData.push($(this).attr('estadoMateria'));
+            // addData.push($(this).attr('cedulaEstudiante'));
+            oTable.fnAddData(addData);
+          });
+          var pieChartCanvas = $("#pieChart_"+carrera).get(0).getContext("2d");
+          var pieChart = new Chart(pieChartCanvas);
+          //alert(dataResponse.listadoPorcentaje);
+          pieChart.Doughnut(dataResponse.listadoPorcentaje);
+        }
+      });
+      
+
+      }
+      
+      
+
+      $('#periodosSelectAsistencia_'+carrera).change(function() {
+        var estadoMatricula =  $('#periodosSelectAsistencia_'+carrera).val();
+        var identificacion = $('#ident_'+carrera).val();
+        var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+        $.ajax({
+          url:   '{{path('admin_academico_estudiante_carrera_selected')}}',
+          data: {ciclo: ciclo,carrera: carrera,estadoMatricula:estadoMatricula,opcion:"2",identificacion:identificacion},
+          dataType: 'json',
+          type:  'post',
+          beforeSend: function () {
+            consultaEstudiantesCarrera = new $.flavr({
+                                modal   : true,
+                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                buttons     : {}
+                                });
+          },
+          error:function(){
+            consultaEstudiantesCarrera.close();
+            $('#tabla_'+carrera).html("No fue posible conectar con el Servidor");
+            alert("ERROR");
+          },
+          success:  function (dataResponse) {
+            consultaEstudiantesCarrera.close();
+            //    var jsdata = JSON.parse(dataResponse);
+            //alert(jsdata);
+            $('#tabla_'+carrera).html("");
+            oTable.fnClearTable();
+            $(dataResponse.listadoEstudiante).each(function(index){
+              var addData = [];
+              addData.push($(this).attr('cedulaestudiante'));
+              addData.push($(this).attr('nombre'));
+              addData.push($(this).attr('estadoMateria'));
+              oTable.fnAddData(addData);
+            });
+          }
+        });
+      });
+
+      $('#buscarEstudiante_'+carrera).click(function() {
+        var identificacion = $('#ident_'+carrera).val();
+        var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+        var estadoMatricula =  $('#periodosSelectAsistencia_'+carrera).val();
+        //alert(identificacion);
+        $.ajax({
+          url:   '{{path('admin_academico_estudiante_carrera_selected')}}',
+          data: {ciclo: ciclo,carrera: carrera,estadoMatricula:estadoMatricula,opcion:"2",identificacion:identificacion},
+          dataType: 'json',
+          type:  'post',
+          beforeSend: function () {
+            //$('#tabla_'+carrera).html("Cargando, espere por favor...");
+            consultaEstudiantesCarrera = new $.flavr({
+                                modal   : true,
+                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                buttons     : {}
+                                });
+          },
+          error:function(){
+            consultaEstudiantesCarrera.close();
+            $('#tabla_'+carrera).html("No fue posible conectar con el Servidor");
+            alert("ERROR");
+          },
+          success:  function (dataResponse) {
+            consultaEstudiantesCarrera.close();
+            $('#ident_'+carrera).val("");
+            //    var jsdata = JSON.parse(dataResponse);
+            //alert(jsdata);
+            $('#tabla_'+carrera).html("");
+
+            oTable.fnClearTable();
+            $(dataResponse.listadoEstudiante).each(function(index){
+              var addData = [];
+              addData.push($(this).attr('cedulaestudiante'));
+              addData.push($(this).attr('nombre'));
+              addData.push($(this).attr('estadoMateria'));
+              oTable.fnAddData(addData);
+            });
+          }
+        });
+      });
+    });
+  });
+</script>
+
+{% endif %}
+
+{% if(estudianteCarrera.mostrar!="SI") %}
+<div class="panel panel-primary"> No se encontraron estudiantes en este ciclo.</div>
+{% endif %}
+
+{% endblock %}

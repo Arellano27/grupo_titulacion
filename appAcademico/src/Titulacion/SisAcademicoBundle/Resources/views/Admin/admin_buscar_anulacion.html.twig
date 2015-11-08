@@ -1,0 +1,148 @@
+<div class="col-lg-12">
+<div class="table-responsive">
+
+    <table align='center'>
+            <thead>
+                <tr>
+                    <th align='center' colspan='4'>
+                          <h4 align="center"><b>Registro de Anulacion</b></h4>  
+                    </th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">
+                         Desde
+                    </th>
+                  
+                    <th style="text-align:center">
+                        Hasta
+                    </th>
+                </tr>
+            </thead>
+            <tr>
+                    
+                    <td align='left' valign='center'>Mes
+                        
+                        <select  name='selconsulta_mes'>
+                          <option value="01" >Enero </option>
+                          <option value="02" >Febrero </option>
+                          <option value="03" >Marzo </option>
+                          <option value="04" >Abril </option>
+                          <option value="05" >Mayo </option>
+                          <option value="06" >Junio </option>
+                          <option value="07" >Julio </option>
+                          <option value="08" >Agosto </option>
+                          <option value="09" >Septiembre </option>
+                          <option value="10" >Octubre </option>
+                          <option value="11" >Noviembre </option>
+                          <option value="12" >Diciembre </option>
+                        </select >
+                        Año
+                         <select  name='selconsulta_anio'>
+                          <option value="2015" >2015 </option>
+                          <option value="2016" >2016 </option>
+                          <option value="2017" >2017 </option>
+                          <option value="2018" >2018 </option>
+                          <option value="2019" >2019 </option>
+                          <option value="2020" >2020 </option>
+                          <option value="2021" >2021 </option>
+                        </select >
+                    </td>
+               
+                    <td align='left'>Mes
+                        
+                        <select  name='selconsulta_mes_h'>
+                          <option value="01" >Enero </option>
+                          <option value="02" >Febrero </option>
+                          <option value="03" >Marzo </option>
+                          <option value="04" >Abril </option>
+                          <option value="05" >Mayo </option>
+                          <option value="06" >Junio </option>
+                          <option value="07" >Julio </option>
+                          <option value="08" >Agosto </option>
+                          <option value="09" >Septiembre </option>
+                          <option value="10" >Octubre </option>
+                          <option value="11" >Noviembre </option>
+                          <option value="12" >Diciembre </option>
+                        </select >
+                        Año
+                         <select  name='selconsulta_anio_h'>
+                          <option value="2015" >2015 </option>
+                          <option value="2016" >2016 </option>
+                          <option value="2017" >2017 </option>
+                          <option value="2018" >2018 </option>
+                          <option value="2019" >2019 </option>
+                          <option value="2020" >2020 </option>
+                          <option value="2021" >2021 </option>
+                        </select ></td>
+                    
+            </tr>
+            <tr>
+                    
+                    
+            </tr>
+            <tr>
+                    <td align='center' colspan='3'>
+                             <br/>
+                            <a class="btn btn-success " id='btnconsultarest'>Consultar</a>
+                              <!-- <input type="submit" name="btnconsultarest" id="btnconsultarest" value="Inscribir"> -->
+
+                    </td>
+            </tr>
+    </table>
+</div>
+</div>
+<div id='divodenespagos'>
+
+</div>
+
+<script language="javascript">
+        $(document).ready(function() {
+            $('#btnconsultarest').on("click",function(event){
+                onkeydato();
+            });
+        })
+    
+    function onkeydato() 
+    {
+                var elecmentocombo = document.getElementsByName("selconsulta_mes"); 
+                var elecmentocombo_2 = document.getElementsByName("selconsulta_anio"); 
+                var elecmentocombo_3 = document.getElementsByName("selconsulta_mes_h"); 
+                var elecmentocombo_4 = document.getElementsByName("selconsulta_anio_h"); 
+                var indice=elecmentocombo[0].options.selectedIndex;
+                var indice_2=elecmentocombo_2[0].options.selectedIndex;
+                var indice_3=elecmentocombo_3[0].options.selectedIndex;
+                var indice_4=elecmentocombo_4[0].options.selectedIndex;
+                var criterio =elecmentocombo[0].options[indice].value;
+                var criterio_2 =elecmentocombo_2[0].options[indice_2].value;
+                var criterio_3 =elecmentocombo_3[0].options[indice_3].value;
+                var criterio_4 =elecmentocombo_4[0].options[indice_4].value;
+                var idCarrera='{{idCarrera}}';
+                var idCiclo='{{idCiclo}}';
+                var obj_data = {'idCarrera':idCarrera,'idCiclo':idCiclo,'criterio_mes':criterio,'criterio_anio':criterio_2,'criterio_mes_h':criterio_3,'criterio_anio_h':criterio_4};
+                var resultado = $('#divodenespagos');
+                var jumpAction = '{{path('admin_anulacion_listar')}}';
+          // Enviamos el formulario usando AJAX
+                     $.ajax({
+                           url:   jumpAction,
+                           data: obj_data,
+                           type:  'post',
+                           async: true,
+                           beforeSend: function () 
+                           {
+                             resultado.html("Cargando, espere por favor...");
+                           },
+                           success:  function (dataResponse) 
+                           {
+                             resultado.html(dataResponse);
+                           },
+                           error: function(dataResponse)
+                           {
+                              form="accordion";
+                              msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                      $( '#'+form ).append( msg_alert );
+                                      $('#modal-'+form).modal('show');
+                           },
+                           dataType:'html'
+                        });
+            }            
+</script>

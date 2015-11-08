@@ -33,3 +33,21 @@ twig:
         perfilEstDoc: %perfilEstDoc%
         perfilEstAdm: %perfilEstAdm%
         perfilDocAdm: %perfilDocAdm%
+        perfilCordi: %perfilCordi%
+        perfilEstCordi: %perfilEstCordi%
+        perfilDocCordi: %perfilDocCordi%
+        ReporteEstudiantePorCarrera: %ReporteEstudiantePorCarrera%
+        ReporteInscritosMatriculados: %ReporteInscritosMatriculados%
+        ReporteMateriasAprobada: %ReporteMateriasAprobada%
+        ConsultaEstudiantesMateriaParalelo: %ConsultaEstudiantesMateriaParalelo%
+        AprobacionInscripcion: %AprobacionInscripcion%
+        LegalizacionOrdenPago: %LegalizacionOrdenPago%
+        AnulacionMateria: %AnulacionMateria%
+        GeneracionCalendarioAcademico: %GeneracionCalendarioAcademico%
+        GeneracionHorariosClases: %GeneracionHorariosClases%
+        GeneracionHorariosExamen: %GeneracionHorariosExamen%
+        SubirSolicitudes: %SubirSolicitudes%
+        ConsultaHorariosClases: %ConsultaHorariosClases%
+        ConsultaHorariosExamen: %ConsultaHorariosExamen%
+        ConsultaHorariosClasesPersonalizados: %ConsultaHorariosClasesPersonalizados%
+        ConsultaHorariosExamenPersonalizados: %ConsultaHorariosExamenPersonalizados%

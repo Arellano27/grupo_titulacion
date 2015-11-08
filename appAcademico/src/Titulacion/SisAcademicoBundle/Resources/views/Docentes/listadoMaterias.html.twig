@@ -23,6 +23,8 @@
             <a id="materiaAsistencias-{{ materias.id_sa_materia_paralelo }}" href="" class="tip asistenciaAlumnos btn btn-primary btn-circle"><span>Histórico de Asistencia de Alumnos</span><i class="fa fa-list"> </i></a>
             <a id="materiasNotas-{{ materias.id_sa_materia_paralelo  }}" href="" class="tip notasAlumnos btn btn-primary btn-circle"><span>Consultas de Notas de los Alumnos</span><i class="fa fa-mortar-board"> </i></a>
             <a id="materiasVision-{{ materias.id_sa_materia_paralelo  }}" href="" class="tip materiasVision btn btn-primary btn-circle"><span>Vista General de la Asignatura</span><i class="fa fa-bar-chart-o"> </i></a></td>
+         <input id="Nombre-Materia_{{materias.id_sa_materia_paralelo}}" value="{{ materias.materia|upper }}" type="hidden" >
+         <input id="Nombre-Paralelo_{{materias.id_sa_materia_paralelo}}" value="{{ materias.paralelo|upper }}" type="hidden" >
         </tr>
       {% endfor %}
       </tbody>
@@ -50,8 +52,10 @@
          var obj_data      = {'idMateria':idMateria,'idCarrera':idCarrera, 'inicioCiclo':inicioCiclo, 'finCiclo':finCiclo};
 
          var optionSelect        = $(this);
-         var jumpOption          = '{{path('docentes_listado_alumnos_materia')}}';
-         var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";
+
+         var jumpOption          = '{{path('docentes_alumnos_asistencias')}}';
+         var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";;
+
          
          $.ajax({
             url:  jumpOption,
@@ -96,9 +100,9 @@
          
          var optionSelect = $(this);
          var jumpOption = '{{path('docentes_notas_alumnos_materia')}}';
-         
+          
          //var obj_data = {'idDocente': idDocente,'idMateria':idMateria};
-         var obj_data = {'idMateria':idMateria, 'idCarrera':idCarrera};
+         var obj_data = {'idMateria':idMateria, 'idCarrera':idCarrera,"ciclo":$("#Ciclo-Detalle_"+idCarrera).val(),"nom_materia":$("#Nombre-Materia_"+idMateria).val(),"paralelo":$("#Nombre-Paralelo_"+idMateria).val()};
 
          $.ajax({
             url:   jumpOption,
