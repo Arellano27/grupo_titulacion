@@ -528,7 +528,7 @@ class AdminController extends Controller
 
     if ($session->has("perfil")) {
 
-      if ($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstAdm || $session->get('perfil') == $perfilDocAdm){
+      if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstAdm || $session->get('perfil') == $perfilDocAdm){
         try{        
           $lcCarrera="";
           $idAdministrador=$session->get("id_user");
@@ -542,6 +542,7 @@ class AdminController extends Controller
           $Carreras = array();
           $UgServices = new UgServices;
           $xml = $UgServices->getConsultaCarreras($idAdministrador,$idRol);
+
           
           if ( is_object($xml)){
 
