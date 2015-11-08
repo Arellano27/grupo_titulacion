@@ -121,7 +121,7 @@
                                 {
                                         modelessMateriasInscribir= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Sr. Estudiante, el maximo de materias para inscribir es de: '+maxmaterias+'.<br/> Por favor revise la seleccion de Materias',
+                                                           content : 'Sr. Estudiante, el maximo de materias para registrarse es de: '+maxmaterias+'.<br/> Por favor revise la seleccion de Materias',
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -164,7 +164,7 @@
                                      beforeSend: function () {
                                         modelessSetMatricula = new $.flavr({
                                                              modal   : true,
-                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando Registro...</b>',
                                                              buttons     : {}
                                                           });
                                        // alert("dentro");
@@ -194,7 +194,7 @@
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Sr. Estudiante, El proceso de matriculacion fue exitoso',
+                                                           content : 'Sr. Estudiante, su  registro fue procesado correctamente',
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -343,7 +343,7 @@
             <div class="table-responsive">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_title">
-                    <h2>Proceso de Matriculacion:     <small> {{ estudiante }}</small></h2>
+                    <h2>Proceso de Registro:     <small> {{ estudiante }}</small></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="panel panel-default">
@@ -355,7 +355,7 @@
                                     <span class="step_no">1</span>
                                     <span class="step_descr">
                             Paso 1<br />
-                            <small>Condiciones de Matriculacion</small>
+                            <small>Condiciones de Registro</small>
                         </span>
                                 </a>
                             </li>
@@ -373,7 +373,7 @@
                                     <span class="step_no">3</span>
                                     <span class="step_descr">
                             Paso 3<br />
-                            <small>Finalizar el proceso de Matriculacion</small>
+                            <small>Finalizar el proceso de Registro</small>
                         </span>
                                 </a>
                             </li>
@@ -423,8 +423,8 @@
                                                 </form>
                                         </div>   -->
                                 {% endif %}    
-                            <h4 align="center" >Condiciones de Matriculacion </h4>
-                              <p>Sr. Estudiante una vez  matriculado no es posible reversar el proceso. Presiones siguiente para iniciar el proceso de Matriculacion </p>  
+                            <h4 align="center" >Condiciones de Registro </h4>
+                              <p>Sr. Estudiante una vez  registrado no es posible reversar el proceso. Presiones siguiente para iniciar el proceso </p>  
 
                         </div>
                         <div id="step-2" class="tab2">
@@ -566,7 +566,7 @@
 {% if (banderaMatricula==4 )%}
 
             <div class="col-lg-12">
-                    <b>{{ estudiante }}</b> Usted se encuentra matriculado en las siguientes materias:
+                    <b>{{ estudiante }}</b> Usted se encuentra registrado en las siguientes materias:
                     <table class="table table-striped table-bordered" id ="">
                              <thead>
                                 <tr>
@@ -592,7 +592,8 @@
                         <tfoot>
                             <tr>
                                 <td colspan=5 align="right">
-                                     <a class="btn btn-success tip btn btn-success btn-circle btn-xl" href="{{ path('estudiantes_pdf_matricula',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank"> <span>Imprimir Documento de Inscripcion</span>PDF</a>
+                                    <a class="btn btn-success tip btn btn-success btn-circle btn-xl" href="{{ path('estudiantes_pdf_datosgenerales',{'carrera':carrera }) }}" target="_blank"> <span>Imprimir Documento de Datos Generales</span>Datos Generales</a>
+                                     <a class="btn btn-success tip btn btn-success btn-circle btn-xl" href="{{ path('estudiantes_pdf_matricula',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank"> <span>Imprimir Documento de Registro</span>Hoa de Registro</a>
                                      <!-- <a class="btn btn-success" href="{{ path('estudiantes_pdf_ordenpago',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera}) }}" target="_blank">Imprimir Orden de Pago</a> -->
                                 </td>
                                
