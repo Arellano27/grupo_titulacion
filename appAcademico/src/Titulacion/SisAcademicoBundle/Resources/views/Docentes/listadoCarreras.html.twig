@@ -23,17 +23,18 @@
 			<!-- .panel-heading -->
 			<div class="panel-body">
 				<div class="panel-group" id="accordionCarreras">
+                                   
                {% if data.datosCarreras=='error'%} Se presentó un problema para presentar las carreras. Por favor contacte e soporte técnico. {% endif %}
                {% for countCarreras, datosCarrera in data.datosCarreras %}
                   <input id="materiaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >
                   <input id="nombreMateriaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >
                   <input id="inicioCiclo-Carrera_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.fecha_inicio}}" type="hidden" >
                   <input id="finCiclo-Carrera_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.fecha_fin}}" type="hidden" >
-                  <input id="Ciclo-Detalle_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.id_sa_ciclo_detalle}}" type="hidden" >
                   <input id="Ciclo-Descripcion_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.ciclo_descripcion}}" type="hidden" >
                   <input id="nombre-Carrera_{{datosCarrera.id_sa_carrera}}" value="{{datosCarrera.nombre}}" type="hidden" >
                   <div id="panelCentralCarrera-{{datosCarrera.id_sa_carrera}}" class="panel panel-default">
-                     <div class="panel-heading">
+
+                    <div class="panel-heading">
                         <h4 class="panel-title">
                            <a id="idCarrera-{{datosCarrera.id_sa_carrera}}" class="linkCarreras" data-toggle="collapse" data-parent="#accordionCarreras" href="#collapse{{countCarreras+1}}">{{datosCarrera.nombre}}</a>
                            <div style="float:right; margin-top: -7px;">
@@ -201,13 +202,16 @@
     <!-- /.col-lg-4 -->
 	<script type="text/javascript">
       $(document).ready(function(){
+         
+         $("#perfilActualUsuario").html("<b>Docente<b>");
+         $("#editarPerfil").show();
          $(".listaAsistenciasMateria").on('click', function(event){
             event.preventDefault();
             
             var idCarrera  = $("#idCarreradeMateriaSelected").val();
             var idMateria  = $("#idMateriaSelected").val();
             var obj_data = {'idMateria':idMateria,'idCarrera':idCarrera};
-	    var optionSelect = $("#panelCarrera-"+idCarrera);
+            var optionSelect = $("#panelCarrera-"+idCarrera);
 	    
             var jumpOption = '{{path('docentes_listado_alumnos_materia')}}';
 

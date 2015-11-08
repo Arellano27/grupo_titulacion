@@ -49,6 +49,12 @@ estudiantes_pdf_ordenpago:
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:pdfordenpago}
 estudiantes_subir_archivos:
     pattern:  /subirarchivos/{idEstudiante}
+
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:subirarchivos} 
+estudiantes_listar_solicitudes:
+    pattern:  /listarsolicitudes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes} 
+
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:subirarchivos}  
 estudiantes_pdf_anulamateria:
     pattern:  /pdfAnulacionMaterias/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}
@@ -68,3 +74,6 @@ estudiantes_pdf_datosgenerales:
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes
+estudiantes_pdf_solicitudes:
+    pattern:  /PdfSolicitudes
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:PdfSolicitudes }

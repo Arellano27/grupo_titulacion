@@ -1,6 +1,6 @@
 <script src="{{ asset('js/sistemau.functions.js') }}"></script>
-<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>
-<form id="form-actualizaAsis" name="form-actualizaAsis" method="post" action="{{ path('docentes_actualiza_asistencia') }}" onsubmit="return false;">     
+{#<link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.css')}}" type="text/css" rel="stylesheet"/>
+#}<form id="form-actualizaAsis" name="form-actualizaAsis" method="post" action="{{ path('docentes_actualiza_asistencia') }}" onsubmit="return false;">     
 <div class="row" id="tabla1">
                 <div class="col-xs-12">
                   <div ng-controller="AppCtrl">
@@ -57,15 +57,16 @@
                                         <input type = "hidden" value = "nada" id = "hdservicio" name = "hdservicio" />
                                 {%for count ,alumnos in arr_datos %}
                                        <tr class="odd gradeX">
-                                           <td width = "5%" >{{ alumnos.id_sg_usuario }}</td>
-                                            <td width = "20%">{{ alumnos.nombres }} <input type = "hidden" value = "{{ alumnos.nombres }}" name = "{{ alumnos.id_sg_usuario }}" /></td>
+                                           <td width = "5%" style="text-align: center;">{{ alumnos.id_sg_usuario }}</td>
+                                            <td width = "20%" style="text-align: center;">{{ alumnos.nombres }} <input type = "hidden" value = "{{ alumnos.nombres }}" name = "{{ alumnos.id_sg_usuario }}" /></td>
                                             <td width = "20%"> <span class="button-checkbox">
                                                                     <button type="button" class="btn" data-color="primary">Asistio</button>
-                                                                    <input type="checkbox" class="hidden" value="{{ alumnos.id_sg_usuario }}" name="{{ alumnos.nombres }}" checked />
+                                                                    <input type="checkbox" class="hidden" value="{{ alumnos.id_sa_estudiante_carrera_materia }}" name="{{ alumnos.nombres }}" checked />
                                                                 </span></td>
                                        </tr>
                                 {% endfor %}
                                 <input type = "hidden" value = "{{arr_datos|length}}" name = "hdcountalm" />
+                                <input type = "hidden" value = "{{id_materia}}" name = "hdmateria" id="hdmateria" />
                                    </tbody>
                                 </table>
                             </div>

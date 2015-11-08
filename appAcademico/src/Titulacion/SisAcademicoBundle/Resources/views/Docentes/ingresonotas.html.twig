@@ -14,15 +14,15 @@ $("#formulario").submit();
 		$("#form-ingresonotas").validate({
                     
 			rules: {
-                                academicos_1: { required: true, number: true,max: 10 },
-				academicos_2: { required: true, number: true,max: 10 },
-                                academicos_3: { required: true, number: true,max: 10 },
+                                academicos_1: { required: true, number: true,max: 3 },
+				academicos_2: { required: true, number: true,max: 3 },
+                                academicos_3: { required: true, number: true,max: 4 },
 				agree: "required"
 			},
 			messages: {
-				academicos_1: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
-				academicos_2: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
-                                academicos_3: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
+				academicos_1: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor o igual a 3'},
+				academicos_2: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor o igual a 3'},
+                                academicos_3: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor o igual a 4'},
 				email: "Please enter a valid email address",
 				agree: "Please accept our policy",
 				topic: "Please select at least 2 topics"
@@ -113,9 +113,9 @@ $("#formulario").submit();
                                            <td width = "5%" >{{ codigo }}</td>
                                            
                                             <td width = 
-                                                "20%">{{ alumno }} <input type = "hidden" value = "{{ codigo }}" name = "hdalumno" /></td>
+                                                "20%">{{ alumno }} <input type = "hidden" value = "{{ idalumno }}" name = "hdalumno" /></td>
                                             {%for count ,tareas in arr_tareas %}
-                                            <td><input class="form-control inputNota" name="academicos_{{count+1}}" id="academicos_{{count+1}}" type="text"  value=""/></td>
+                                            <td><input class="form-control inputNota" maxlength="4" name="academicos_{{count+1}}" id="academicos_{{count+1}}" type="text"  value=""/></td>
                                             {% endfor %}
                                             
                                             {#<td><input class="form-control" name="examen" type="text"  value=""/></td>#}
@@ -156,15 +156,15 @@ $("#formulario").submit();
     		var validator =$("#form-ingresonotas").validate({
                     
 			rules: {
-                                academicos_1: { required: true, number: true,max: 10 },
-				academicos_2: { required: true, number: true,max: 10 },
-                                academicos_3: { required: true, number: true,max: 10 },
+                                academicos_1: { required: true, number: true,max: 3 },
+				academicos_2: { required: true, number: true,max: 3 },
+                                academicos_3: { required: true, number: true,max: 4 },
 				agree: "required"
 			},
 			messages: {
-				academicos_1: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
-				academicos_2: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
-                                academicos_3: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor a 10'},
+				academicos_1: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor o igual a 3'},
+				academicos_2: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor o igual a 3'},
+            academicos_3: {required:"Ingrese la nota", number: 'Debe ingresar un número',max: 'el numero ingresado debe ser menor o igual a 4'},
 				email: "Please enter a valid email address",
 				agree: "Please accept our policy",
 				topic: "Please select at least 2 topics"

@@ -63,17 +63,20 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
   myModal.modal('show');
 }
 
-    function mostrarAlumnos(id,section,codigo,alumno){
+    function mostrarAlumnos(id,section,codigo,alumno,idalumno){
        
-      //alert(id);
+      
       var CargandoDocentes;
       //$("#hdciclo").val()
-      //$("#hdciclo_des").val()
        if (id === 'listaEstudiantes'){
-           var obj_data = {"docente" : $("#idDocente").val(),"materia":$("#idMateria").val()};
+           var materia=$("#idMateria option:selected").html();
+            var arr_materia = materia.split("-");
+            materia = arr_materia[0];
+            var paralelo = arr_materia[1];
+           var obj_data = {"docente" : $("#idDocente").val(),"materia":$("#idMateria").val(),"materia_text":materia,"docente_text":$("#idDocente option:selected").html(),"paralelo":paralelo};
        }
        else {
-        var obj_data = {"codigo" : codigo,"alumno" : alumno,"parcial":$("#hdparcial").val(),"ciclo":$("#hdciclo").val(),"materia":$("#hdmateria").val()};
+        var obj_data = {"codigo" : codigo,"alumno" : alumno,"parcial":$("#hdparcial").val(),"ciclo":$("#hdciclo").val(),"materia":$("#hdmateria").val(),"idalumno":idalumno};
              }
         $.ajax
         ({
@@ -131,7 +134,6 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
 	
     function tabdocentes(id,section,materia,carrera){
         var CargandoDocentes;
-        
         var obj_data = {"materia" : materia,"carrera" : carrera,"parcial":$("#hdparcial").val(),"ciclo":$("#Ciclo-Detalle_"+carrera).val(),"desc-ciclo":$("#Ciclo-Descripcion_"+carrera).val()};
         $.ajax
         ({
@@ -459,6 +461,7 @@ function confirm(form, item)
                            i++;   }); 
                     i=0;
                 $("input:checkbox:not(:checked)").each(function(){
+                   
 	                 arr_unchecked[i]=$(this).val();
                            i++;   });
                        
@@ -673,7 +676,10 @@ function confirm(form, item)
   function hrefdocentes(path){
       var CargandoDocentes;
      //  alert($("#idMateria").val());
-     var datos = {'docente':$("#idDocente").val(),'materia':$("#idMateria").val()};
+     
+     var datos = {'docente':$("#idDocente").val(),'materia':$("#idMateria").val(),
+                  "materia_text":$("#idMateria option:selected").html(),
+                  "docente_text":$("#idDocente option:selected").html()};
         $.ajax
         ({
             type: 'post',

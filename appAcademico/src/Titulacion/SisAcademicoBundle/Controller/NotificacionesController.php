@@ -17,9 +17,12 @@ class NotificacionesController extends Controller
       var $Curso="";
       var $Asunto="";
       var $mensaje="";
+      var $Correo_enivar = "";
         public function index_notificacionesAction(Request $request)
-        {   $idEstudiante  =2;
-         $session=$request->getSession();
+        {   
+            $session=$request->getSession();
+            $idUsuario  = $session->get('id_user');
+           $idUsuario = Rtrim($idUsuario); 
             $Emisor   = $request->request->get('Emisor');
             $Universidad   = $request->request->get('Universidad');
             $Estudiantes = $request->request->get('Estudiantes'); 
@@ -29,99 +32,105 @@ class NotificacionesController extends Controller
             $mensaje = $request->request->get('mensaje');
          if($session->has("perfil")) {
             if($mensaje == null){
-            try
-                { $lcFacultad="";
+           $lcFacultad="";
                      $lcCarrera="";
                        $Carreras = array();
                         $UgServices = new UgServices;
-                        $xml = $UgServices->Mensajes_Enviados($idEstudiante);
+                        $facultades = $UgServices->Mensajes_Enviados($idUsuario);
                         
-                        if ( is_object($xml))
-                        {
-                                $cont = 0;
-                                while($cont <= 5){
-                                $materiaObject = array( 'Tipo' => 'Mensaje',
-                                                             'Asunto'=>'Inicio Clases',
-                                                             'Detalle'=>'Ciclo 1 2016',
-                                                                'Fecha'=>'22/09/2015',
-                                                            );                                
-                                    array_push($Carreras, $materiaObject); 
-                                  $cont = $cont +1;
-                                 }
-                                      
-                                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',array(
-                                                  'facultades' =>  $Carreras,
-                                                  'idEstudiante'=>1,
-                                                  'cuantos'=>4
-                        )); 
-                          }
-                           else
-                            {
-                              throw new \Exception('Un error');
-                            }
-                        
-                  }catch (\Exception $e)
-                      {                       
-                    return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig');
-                      }
+                             return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',
+    									array(
+    											'data' => array('facultades' => $facultades)
+    										 )
+                              );
+               
             }else{
-                for($i=0;$i<10;$i++){
-                   // if($i==0){
-                    $mailer    = $this->container->get('mailer');
-                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-                                ->setUsername('titulacion.php@gmail.com')
-                                ->setPassword('sc123456');
-                   //$mailer  = \Swift_Mailer($transport);
-                    $message = \Swift_Message::newInstance('test')
-                                ->setSubject($Asunto)
-                                ->setFrom('titulacion.php@gmail.com',$Emisor)
-                                ->setTo('gabrielhuayamabe@hotmail.com')
-                                ->setBody($mensaje);
-                    $this->get('mailer')->send($message);
-//                    }else{
-//                         $mailer    = $this->container->get('mailer');
-//                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-//                                ->setUsername('ugacademico@gmail.com')
-//                                ->setPassword('SisAcademico');
-//                   //$mailer  = \Swift_Mailer($transport);
-//                    $message = \Swift_Message::newInstance('test')
-//                                ->setSubject($Asunto)
-//                                ->setFrom('ugacademico@gmail.com')
-//                                ->setTo('gabrielhuayamabe@hotmail.com')
-//                                ->setBody($mensaje);
-//                    $this->get('mailer')->send($message);
-//                    }
-                }
+                
+                 $xmlFinal="
+                      <Notificaciones>
+                        <Notificaciones>
+                            <Tipo_mensaje>$TipoMensaje</Tipo_mensaje>
+                            <Emisor>$idUsuario</Emisor>
+                            <Estado>1</Estado>
+                             <Asunto>$Asunto</Asunto>
+                            <Mensaje>$mensaje</Mensaje>	
+                            <Opciones>'A,P,U'</Opciones> 
+                        </Notificaciones>	
+                    </Notificaciones>";
+                  
+                     $UgServices = new UgServices;
+                    $xml = $UgServices->Guarda_Mensajes($xmlFinal);
+                       
+                    $Correos_Numeros = $UgServices->Datos($idUsuario);
+                    //echo var_dump($Correos_Numeros); exit();
+                  
+                   $i=0;
+                   
+                   foreach($Correos_Numeros as $Correos_Numeros_) {
+                              
+                       if($Correos_Numeros_['correo_institucional']!=""){
+                           $Correo_enivar = $Correos_Numeros_['correo_institucional'];                          
+                       }else{
+                           $Correo_enivar = $Correos_Numeros_['correoestudiante'];
+                       }
+                       
+                       if($Correo_enivar!=""){
+                         if($i < 10){  
+                             
+                              $mailer    = $this->container->get('mailer');
+                            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                    ->setUsername('titulacion.php@gmail.com')
+                                    ->setPassword('sc123456');
+    //                   //$mailer  = \Swift_Mailer($transport);
+                        $message = \Swift_Message::newInstance('test')
+                                    ->setSubject($Asunto)
+                                    ->setFrom('titulacion.php@gmail.com',$Emisor)
+                                    ->setTo($Correo_enivar)
+                                   ->setBody($mensaje);
+                        $this->get('mailer')->send($message);
+                        
+                           //sms mensajes sms 
+                        
+                           $receptor =$Correos_Numeros_['celular'];
+//                           
+                            $objGsmOut = new \COM ('ActiveXperts.GsmOut');
+
+                              $archivo = 'C:\log.txt';
+                              $dispositivo =  'SAMSUNG Mobile USB Modem';
+
+                             $velocidad = 0;
+
+                              $objGsmOut->LogFile          = $archivo; 
+                              $objGsmOut->Device           = $dispositivo;
+                              $objGsmOut->DeviceSpeed      = $velocidad; 
+
+                              $objGsmOut->MessageRecipient = $receptor;
+                             $objGsmOut->MessageData      = $mensaje;
+
+                              if($objGsmOut->LastError == 0){
+                                $objGsmOut->Send;
+                               
+                               
+                             }
+                        
+                        
+                         }
+                    $i = $i+1;
+                       }
+                    }
+          
                      try
                 { $lcFacultad="";
                       $lcCarrera="";
                        $Carreras = array();
                         $UgServices = new UgServices;
-                        $xml = $UgServices->Mensajes_Enviados($idEstudiante);
+                        $facultades = $UgServices->Mensajes_Enviados($idUsuario);
                         
-                        if ( is_object($xml))
-                        {
-                                $cont = 0;
-                                while($cont <= 5){
-                                $materiaObject = array( 'Tipo' => 'Mensaje',
-                                                             'Asunto'=>'Inicio Clases',
-                                                             'Detalle'=>'Ciclo 1 2016',
-                                                                'Fecha'=>'22/09/2015',
-                                                            );                                
-                                    array_push($Carreras, $materiaObject); 
-                                  $cont = $cont +1;
-                                 }
-                                      
-                                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',array(
-                                                  'facultades' =>  $Carreras,
-                                                  'idEstudiante'=>1,
-                                                  'cuantos'=>4
-                                          )); 
-                                      }
-                           else
-                            {
-                              throw new \Exception('Un error');
-                            }
+                             return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',
+    									array(
+    											'data' => array('facultades' => $facultades)
+    										 )
+                              );
                         
                   }catch (\Exception $e)
                       {                       
@@ -139,8 +148,16 @@ class NotificacionesController extends Controller
             
         public function mensajes_universidadAction(Request $request)
             {    $session=$request->getSession();   
+            $idUsuario  = $session->get('id_user');
                 if($session->has("perfil")) {
-                    return $this->render('TitulacionSisAcademicoBundle:Notificaciones:mensajes_universidad.html.twig');
+                    $UgServices = new UgServices;
+                    $Mensajes_Recividos = $UgServices->Mensajes_No_Leidos($idUsuario);
+                
+                    return $this->render('TitulacionSisAcademicoBundle:Notificaciones:mensajes_universidad.html.twig',
+    									array(
+    											'data' => array('Mensajes' => $Mensajes_Recividos)
+    										 )
+                              );
                 }else{
                     return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
                 }
@@ -148,9 +165,17 @@ class NotificacionesController extends Controller
             }
         
          public function eventos_universidadAction(Request $request)
-            {         $session=$request->getSession();   
+            {  $session=$request->getSession();   
+             $idUsuario  = $session->get('id_user');
                 if($session->has("perfil")) {
-                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:eventos_universidad.html.twig');
+                     $UgServices = new UgServices;
+                     $Eventos_Recividos = $UgServices->Eventos_Recibidos($idUsuario);
+                    
+                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:eventos_universidad.html.twig',
+    									array(
+    											'data' => array('Mensajes' => $Eventos_Recividos)
+    										 )
+                              );
                 }else{
                     return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
                 }
@@ -158,9 +183,17 @@ class NotificacionesController extends Controller
         
          public function notificaciones_universidadAction(Request $request)
             {    
+             
                 $session=$request->getSession();   
+                 $idUsuario  = $session->get('id_user');
                 if($session->has("perfil")) {
-                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:notificaciones_universidad.html.twig');
+                     $UgServices = new UgServices;
+                     $Notificaciones_Recividos = $UgServices->Notificaciones_Recibidas($idUsuario);
+                     
+                return $this->render('TitulacionSisAcademicoBundle:Notificaciones:notificaciones_universidad.html.twig',	array(
+    											'data' => array('Mensajes' => $Notificaciones_Recividos)
+    										 )
+                              );
                 }else{
                     return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
                 }
@@ -170,6 +203,7 @@ class NotificacionesController extends Controller
             {        
                 $Nombres =$request->request->get('Nombres');
                 $session=$request->getSession();   
+                 $idUsuario  = $session->get('id_user');
                 if($session->has("perfil")) {
                 if($Nombres == null){
                 return $this->render('TitulacionSisAcademicoBundle:Notificaciones:perfil.html.twig', array('name' => $Nombres));
@@ -182,7 +216,8 @@ class NotificacionesController extends Controller
             }
         
          public function passwordAction(Request $request)
-            {         $session=$request->getSession();   
+            {         $session=$request->getSession(); 
+             $idUsuario  = $session->get('id_user');
                 if($session->has("perfil")) {
                 return $this->render('TitulacionSisAcademicoBundle:Notificaciones:password.html.twig');
                 }else{
@@ -218,7 +253,9 @@ class NotificacionesController extends Controller
          }
         
         public function LecturaAction(Request $request)
-            {      $session=$request->getSession();   
+            {      
+            
+            $session=$request->getSession();   
                 if($session->has("perfil")) {   
                 return $this->render('TitulacionSisAcademicoBundle:Notificaciones:Lectura.html.twig');
                 }else{

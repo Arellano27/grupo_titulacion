@@ -11,8 +11,9 @@
     });  
 </script>
    
-<div class="content"> 
+<section class="content">
 
+      <div class="page-content" style="height: 600px;">
    <div  class="col-xs-14">
      
        <form id="form-enviar" method="post" action="{{ path('dayscript_index') }}">  
@@ -56,12 +57,12 @@
                                <option value="2">Notificacion</option>
                                <option value="3">Evento</option>
                            </select>                        
-                           <select id="Curso" name="Curso">
+                           {#<select id="Curso" name="Curso">
                                <option value="0">-</option>
                                <option value="1">S3K</option>
                                <option value="2">S5K</option>
                                <option value="3">S5J</option>
-                           </select>
+                           </select>#}
                         {%endif%}
                         {% if app.session.get('descRol') == "UNIVERSIDAD" %}
                             <select id="TipoMensaje" name="TipoMensaje">
@@ -122,19 +123,19 @@
 					        <th style="text-align: center"> Asunto   </th>
 					        <th style="text-align: center"> Detalle </th>
 					        <th style="text-align: center">Fecha </th>
-                                                <th style="text-align: center">Ver</th>
+                                               {# <th style="text-align: center">Ver</th>#}
 				        </tr>
 				        </thead>
 				        <tbody>
-                    {% for facultad in facultades %} 
+                    {% for facultad in data.facultades %} 
                             <tr>
-                                <td style="text-align: center">{{ facultad.Tipo }}</td>                               
-                                <td style="text-align: center">{{ facultad.Asunto }}</td>
-                                <td style="text-align: center">{{ facultad.Detalle }}</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="{{ path('dayscript_Lectura') }}"id="Mensaje_1" name="Mensaje_1"><i class="fa fa-envelope-o"></i></a></td>
+                                <td style="text-align: center">{{ facultad.tipo_notificaciones }}</td>                               
+                                <td style="text-align: center">{{ facultad.asunto }}</td>
+                                <td style="text-align: center">{{ facultad.mensaje }}</td>
+                                <td style="text-align: center">{{ facultad.fecha_registro }}</td>
+                                 {#<td style="text-align: center">  <a href="{{ path('dayscript_Lectura') }}"id="Mensaje_1" name="Mensaje_1"><i class="fa fa-envelope-o"></i></a></td>#}
                             </tr>
-                          {%endfor%}                              
+                     {%endfor%}                              
                                                               
                     </tbody>
                                         </table>
@@ -153,6 +154,8 @@
     
                </div>
    </div>
+                     
+  </div>
 {% endblock %}
 
 

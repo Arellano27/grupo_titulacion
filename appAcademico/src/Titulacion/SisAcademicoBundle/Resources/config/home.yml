@@ -9,3 +9,15 @@ titulacion_sis_academico_logout:
 titulacion_sis_academico_mail:
     path:     /sendmail
     defaults: { _controller: TitulacionSisAcademicoBundle:Home:enviarmail }
+    
+titulacion_usuario_editar_perfil:
+    pattern:  /perfil/editar
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:editarPerfil }
+
+titulacion_usuario_editar_perfil_formActualiza:
+    pattern:  /perfil/editar/form
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:editarPerfilActualizar }
+    
+titulacion_usuario_editar_perfil_grabarFormActualiza:
+    pattern:  /perfil/editar/form/grabar
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:grabarEditarPerfilActualizar }

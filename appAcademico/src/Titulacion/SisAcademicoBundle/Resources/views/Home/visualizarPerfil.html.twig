@@ -1,0 +1,106 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+   {% set dataForm_error   = 'false' %}
+   
+   {% if dataUsuario is not iterable %}
+      {% set dataForm_error   = 'true' %}
+   {% endif %}
+   
+   <style>
+      .col-lg-3 {
+         display: none !important;
+     }
+
+     .col-lg-9 {
+         width: 100% !important;
+     }
+
+      .content-header {
+         padding: 15px 0 15px 0;
+         position: relative;
+      }
+   </style>
+   <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/datatables/dataTables.bootstrap.css') }}">
+   <script type="text/javascript">
+      var modelessPerfil = new $.flavr({
+                                       modal   : true,
+                                       content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                       buttons     : {}
+                                    });
+   </script>      
+   <div class="col-lg-12">
+      <section class="content-header" style="text-align: center">
+      <h1> Perfil del Usuario </h1>
+      </section>
+      
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+         <div class="row">
+            <!-- Profile Image -->
+            <div class="box box-primary">
+               <div class="box-body box-profile">
+                  {% if dataForm_error == 'true' %}
+                  <div class="col-md-12">
+                     Se presentaron problemas para cargar la información de su perfil.
+                  </div>
+                  {% else %}
+                  <img class="profile-user-img img-responsive img-circle" src="{{ asset('images/avatar/user.png')}}" alt="User profile picture">
+                  <h3 class="profile-username text-center">{{dataUsuario.nombres}}<br/>{{dataUsuario.apellidos}}</h3>
+                  <p class="text-muted text-center">C.I.: {{dataUsuario.usuario}}</p>
+
+                  <ul id="infoBasicaPerfil" class="list-group list-group-unbordered">
+                     <li class="list-group-item">
+                        <b><i class="fa fa-birthday-cake margin-r-5"></i> Fecha de Nacimiento</b> <a class="pull-right">{{dataUsuario.fecha_nacimiento}}</a>
+                     </li>
+                     <li class="list-group-item">
+                        <b><i class="fa fa-heart margin-r-5"></i> Tipo de Sangre</b> <a class="pull-right">{{dataUsuario.desctiposangre}}</a>
+                     </li>
+                     <li class="list-group-item">
+                        <b><i class="fa fa-male margin-r-5"></i> Sexo</b> <a class="pull-right">{{dataUsuario.descsexo|capitalize}}</a>
+                     </li>
+                     <li class="list-group-item">
+                        <b><i class="fa fa-diamond margin-r-5"></i> Estado Civil</b> <a class="pull-right">{{dataUsuario.descestadocivil|capitalize}}</a>
+                     </li>
+                     <li class="list-group-item">
+                        <b><i class="fa fa-map-marker margin-r-5"></i> Nacionalidad</b> <a class="pull-right">{{dataUsuario.descnacionalidad|capitalize}}</a>
+                     </li>
+                     <li class="list-group-item">
+                        <b><i class="fa fa-map-marker margin-r-5"></i> Pais</b> <a class="pull-right">{{dataUsuario.descpais|capitalize}}</a>
+                     </li>
+                  </ul>
+                  <div class="box-header with-border">
+                     <h3 class="box-title">Información de los Medios de Contacto</h3>
+                  </div>
+                  <ul id="infoContactoPerfil" class="list-group list-group-unbordered">
+                     <li class="list-group-item">
+                        <b><i class="fa fa-map margin-r-5"></i> Dirección</b> <a class="pull-right">{{dataUsuario.direccion|capitalize}}</a>
+                     </li>
+                     <li class="list-group-item">
+                        <b><i class="fa fa-phone margin-r-5"></i> Teléfono</b> <a class="pull-right">{{dataUsuario.telefono}}</a>
+                     </li>
+                     <li class="list-group-item">
+                        <b><i class="fa fa-envelope margin-r-5"></i> Correo Personal</b> <a class="pull-right">{{dataUsuario.correo_personal}}</a>
+                     </li>
+                     <li class="list-group-item">
+                        <b><i class="fa fa-envelope margin-r-5"></i> Correo Institucional</b> <a class="pull-right">{{dataUsuario.correo_institucional}}</a>
+                     </li>
+                  </ul>
+                  <a id="linkEditarPerfil" href="{{path('titulacion_usuario_editar_perfil_formActualiza')}}" class="btn btn-primary btn-block"><b>Editar información del perfil</b></a>
+                  {% endif %}
+              </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+         </div><!-- /.col -->
+      </div>
+	</div>
+	<!-- /.col-lg-9 -->
+	<script type="text/javascript">
+      $(document).ready(function(){
+         modelessPerfil.close();
+      });
+      
+      $("#linkEditarPerfil").on('click', function(){
+         $(this).html("<b><i class=\"fa fa-refresh fa-spin\"></i> Editar información del perfil</b>");
+      });
+   </script>
+{% endblock %}

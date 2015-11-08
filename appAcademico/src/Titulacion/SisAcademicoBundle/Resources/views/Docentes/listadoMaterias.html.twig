@@ -146,16 +146,18 @@
       
       $(".materiasVision").on('click', function(event){
          event.preventDefault();
-         var idSplit          = $(this).attr('id').split('-');
-         var nombreElemento   = idSplit[0]; 
-         var idMateria        = idSplit[1]; 
-         var idDocente        = 1;
-         var idCarrera        = $("#carreraSeleccionada").val();
+         var idSplit             = $(this).attr('id').split('-');
+         var nombreElemento      = idSplit[0]; 
+         var idMateria           = idSplit[1]; 
+         var idDocente           = 1;
+         var idCarrera           = $("#carreraSeleccionada").val();
+         var idCiclo             = $("#idCiclo-Carrera_"+idCarrera).val();
+         var tituloPanelMateria  = $("#nombreMateria_"+idMateria).html() + " ["+ $("#paraleloMateria_"+idMateria).html() +"]";
          
          var optionSelect = $(this);
          var jumpOption = '{{path('docentes_vision_materia')}}';
          
-         var obj_data = {'idDocente': idDocente,'idMateria':idMateria};
+         var obj_data = {'idDocente':idDocente,'idMateria':idMateria, 'idCiclo':idCiclo, 'idCarrera':idCarrera, 'tituloPanelMateria':tituloPanelMateria};
 
          $.ajax({
             url:   jumpOption,
@@ -171,8 +173,9 @@
                lanzarModal('Vista General de la Materia',mensajeErrorNotas,'Aceptar');
             },
             success:  function (dataResponse) {
-              //console.log(optionSelect.closest(".panel-body"));
-              optionSelect.closest(".panel-body").html(dataResponse);
+               $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(tituloPanelMateria);
+               $("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
+               optionSelect.closest(".panel-body").html(dataResponse);
             },
             dataType:'html'
          });

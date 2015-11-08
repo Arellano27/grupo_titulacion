@@ -13,6 +13,9 @@ parameters:
     perfilEst: 1
     perfilDoc: 2
     perfilAdmin: 3
+    perfilEstDoc: 4
+    perfilEstAdm: 5
+    perfilDocAdm: 6
     perfilCordi: 4
     perfilEstDoc: 12
     perfilEstAdm: 13
@@ -20,6 +23,8 @@ parameters:
     perfilEstCordi: 14
     perfilDocCordi: 24
     perfilAdminCordi: 34
+    # rol_secretario: 0
+    # rol_coordinador: 0
     ReporteEstudiantePorCarrera: 1
     ReporteInscritosMatriculados: 2
     ReporteMateriasAprobada: 3
@@ -35,3 +40,4 @@ parameters:
     ConsultaHorariosExamen: 13
     ConsultaHorariosClasesPersonalizados: 14
     ConsultaHorariosExamenPersonalizados: 15
+

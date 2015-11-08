@@ -24,22 +24,7 @@ class DefaultController extends Controller
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm'); 
             if ($session->has("perfil")) {
                 if($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilDocAdm){#docente
-                     $idDocente     = 1;
-                     $datosCarreras =  array(
-                                          array( 'idCarrera' => '135', 'nombreCarrera'=>'Ingeniería en Sistemas Computaciones', 'order'=>'One' ),
-                                          array( 'idCarrera' => '246', 'nombreCarrera'=>'Ingeniería Química', 'order'=>'Two' ),
-                                          array( 'idCarrera' => '789', 'nombreCarrera'=>'Ingeniería Civil', 'order'=>'Three' )
-                                       );         
-                     $datosDocente  = array( 'idDocente' => $idDocente );
-                     
-                     
-
-
-                     return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoCarreras.html.twig',
-                                                array(
-                                                        'data' => array('datosDocente' => $datosDocente,  'datosCarreras' => $datosCarreras)
-                                                     )
-                                            );
+                     return $this->redirect($this->generateUrl('SisAcademico_Docentes_home'));
                   }elseif ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) {
                       return $this->redirect($this->generateUrl('estudiantes_notas_actuales'));
                   }

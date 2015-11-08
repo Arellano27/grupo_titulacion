@@ -20,11 +20,15 @@
       <ul class="nav navbar-nav">
         <!-- Messages: style can be found in dropdown.less-->
         <li class="dropdown messages-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+         {# <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-envelope-o"></i>
-            <span class="label label-success">4</span>
+          {#  <span class="label label-success">4</span>}
+          </a>#}
+          <a href="{{ path('dayscript_mensajes') }}" >
+            <i class="fa fa-envelope-o"></i>
+           {# <span class="label label-warning">10</span>#}
           </a>
-          <ul class="dropdown-menu">
+         {# <ul class="dropdown-menu">
             <li class="header">Tiene 4 Mensajes Nuevos</li>
             <li>
               <!-- inner menu: contains the actual data -->
@@ -41,18 +45,19 @@
                     <p>No habra clases porque vamos a beeber</p>
                   </a>
                 </li><!-- end message -->
-              </ul>
-            </li>
+              </ul>#}
+         {#   </li>
             <li class="footer"><a href="{{ path('dayscript_mensajes') }}">Ver Todos Los Mensajes</a></li>
-          </ul>
+          </ul>#}
         </li>
         <!-- Notifications: style can be found in dropdown.less -->
         <li class="dropdown notifications-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          {#<a href="{{ path('dayscript_notificaciones') }}" class="dropdown-toggle" data-toggle="dropdown">#}
+            <a href="{{ path('dayscript_notificaciones') }}" >
             <i class="fa fa-bell-o"></i>
-            <span class="label label-warning">10</span>
+           {# <span class="label label-warning">10</span>#}
           </a>
-          <ul class="dropdown-menu">
+          {#<ul class="dropdown-menu">
             <li class="header">Tienes 10 Notificaciones</li>
             <li>
               <!-- inner menu: contains the actual data -->
@@ -65,15 +70,19 @@
               </ul>
             </li>
             <li class="footer"><a href="{{ path('dayscript_notificaciones') }}">Ver Todas las Notificaciones</a></li>
-          </ul>
+          </ul>#}
         </li>
         <!-- Tasks: style can be found in dropdown.less -->
         <li class="dropdown tasks-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+         {# <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-flag-o"></i>
-            <span class="label label-danger">9</span>
+         {#   <span class="label label-danger">9</span>}
+          </a>#}
+          <a href="{{ path('dayscript_eventos') }}" >
+            <i class="fa fa-flag-o"></i>
+           {# <span class="label label-warning">10</span>#}
           </a>
-          <ul class="dropdown-menu">
+          {#<ul class="dropdown-menu">
            <li class="header">Tienes 10 Eventos</li>
             <li>
               <!-- inner menu: contains the actual data -->
@@ -85,8 +94,8 @@
                 </li>
               </ul>
             </li>
-            <li class="footer"><a href="{{ path('dayscript_notificaciones') }}">Ver Todos los eventos</a></li>
-          </ul>
+            <li class="footer"><a href="{{ path('dayscript_eventos') }}">Ver Todos los eventos</a></li>
+          </ul>#}
         </li>
           <!-- Tasks: style can be found in dropdown.less -->
         <li class="dropdown tasks-menu">
@@ -121,12 +130,13 @@
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
-              <div class="pull-left">
-                {# <a href="{{path('admin_academico_cambio_pass')}}" class="btn btn-default btn-flat">Cambio Contraseña</a> #}
-              </div>
-              <div class="pull-right">
-                <a href="{{path('titulacion_sis_academico_logout')}}" class="btn btn-default btn-flat">Salir</a>
-              </div>
+               <div  id="editarPerfil" id="editarPerfil" class="pull-left" style="display: none;">
+                <a href="{{path('titulacion_usuario_editar_perfil')}}" class="btn btn-default btn-flat">Editar Perfil</a>
+		{# <a href="{{path('admin_academico_cambio_pass')}}" class="btn btn-default btn-flat">Cambio Contraseña</a> #}
+               </div>
+               <div class="pull-right">
+                  <a href="{{path('titulacion_sis_academico_logout')}}" class="btn btn-default btn-flat">Salir</a>
+               </div>
             </li>
           </ul>
         </li>
