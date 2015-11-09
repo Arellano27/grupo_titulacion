@@ -4,7 +4,7 @@
 
 <header class="main-header">
   <!-- Logo -->
-  <a href="#" class="logo">
+  <a href="{{path('admin_academico_home')}}" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini"><b>ARES</b></span>
     <!-- logo for regular state and mobile devices -->
@@ -133,9 +133,8 @@
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
-               <div  id="editarPerfil" id="editarPerfil" class="pull-left" style="display: none;">
+               <div  id="editarPerfil" id="editarPerfil" class="pull-left" >
                 <a href="{{path('titulacion_usuario_editar_perfil')}}" class="btn btn-default btn-flat">Editar Perfil</a>
-		{# <a href="{{path('admin_academico_cambio_pass')}}" class="btn btn-default btn-flat">Cambio Contraseña</a> #}
                </div>
                <div class="pull-right">
                   <a href="{{path('titulacion_sis_academico_logout')}}" class="btn btn-default btn-flat">Salir</a>
@@ -154,6 +153,9 @@
           <a href="{{path('SisAcademico_Docentes_home')}}"><i class="fa fa-user-plus"></i></a>
         </li>
         {% endif %}
+        <li>
+          <a href="{{path('admin_academico_cambio_pass_int')}}"><i class="fa fa-cog"></i></a>
+        </li>
       </ul>
     </div>
   </nav>

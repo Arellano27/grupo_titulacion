@@ -12,6 +12,66 @@
 */
 class HomeController extends Controller
 {
+
+  public function get_captchaAction(Request $request){
+
+    $string = '';
+
+    for ($i = 0; $i < 5; $i++) {
+       $numC = rand(1,3);
+
+       switch ($numC) {
+        case '1':
+             $string .= chr(rand(97, 122));
+           break;
+        case '2':
+              $string .= chr(rand(48, 57));
+           break;
+        case '3':
+              $string .= chr(rand(65, 90));
+           break;
+         default:
+           $string .= chr(rand(97, 122));
+           break;
+       }
+    }
+
+    $session=$request->getSession();
+    $session->set("random_number",$string);
+    $dir = 'fonts/';
+    $image = imagecreatetruecolor(165, 50);
+    // random number 1 or 2
+    $num = rand(1,2);
+
+    if($num==1)
+    {
+      $font = "HandVetica.ttf"; // font style
+    }
+    else
+    {
+      $font = "Sketch_Block.ttf";// font style
+    }
+ 
+    // random number 1 or 2
+    $num2 = rand(1,2);
+    if($num2==1){
+      $color = imagecolorallocate($image, 113, 193, 217);// color
+    }
+    else{
+      $color = imagecolorallocate($image, 163, 197, 82);// color
+    }
+
+    $white = imagecolorallocate($image, 255, 255, 255); // background color white
+    imagefilledrectangle($image,0,0,399,99,$white);
+    imagettftext ($image, 25, 0, 10, 40, $color, $dir.$font, $string);
+    header("Content-type: image/png");
+    imagepng($image);
+
+    // return base64_encode($image);
+
+  }
+
+
     public function enviarmailAction(Request $request){
         $user = $request->request->get('user');
         #recepto desde la base el correo
@@ -29,10 +89,6 @@ class HomeController extends Controller
               }
          }
 
-
-
-
-       // $email = "arellano.torres27gmail.com"; #quemado por el momento
 
           if($email != '')
           {
@@ -88,13 +144,6 @@ class HomeController extends Controller
             }
 
 
-          // $respuesta = array(
-          //      "Codigo" => $estado ,
-          //      "Mensaje" => $message,
-          //   );
-
-          // return new Response(json_encode($respuesta));
-
     }
 
 
@@ -105,6 +154,19 @@ class HomeController extends Controller
 
         if($request->getMethod()=="POST")
         {
+
+          $session=$request->getSession();
+          $captchaEnv=$request->request->get('code');
+          $captchaGene= $session->get('random_number') ;
+
+          if( $captchaEnv != $captchaGene)
+          {
+            $respuesta = array(
+                "valerror" => "1"
+            );
+            return new Response(json_encode($respuesta));
+          }
+
             #obtenemos los datos guardados en la variable global
             $perfilEst   = $this->container->getParameter("perfilEst");
             $perfilDoc   = $this->container->getParameter("perfilDoc");
