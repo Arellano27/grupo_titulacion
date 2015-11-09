@@ -37,6 +37,9 @@
 .flavr-container .flavr-fixer .flavr-outer .flavr-toolbar .flavr-button.danger { background-color: #F44A56; }
 .growl.growl-default { background: #2ECC71 !important; }
 
+img#captcha{margin: -14px 0 3px 0;}
+img#refresh{float:right;margin: 0px 7px 0px 49px;cursor:pointer;}
+
 </style>
 <script type="text/javascript">
 
@@ -95,6 +98,9 @@ modelessEnvioCorreo.close();
   }
 
 }
+  function cargarCaptcha(){
+    $('#captcha').attr("src",'{{path('titulacion_sis_academico_get_captcha')}}?rnd=' + Math.random());
+  }
 
 function enterB(event){var x =event.keyCode;if(x == 13)$('#btn_iniciar').click();}
 function enterT(event){var x =event.keyCode;if(x == 13)$('#password').focus();}
@@ -119,6 +125,16 @@ function login(){
         '   <div class="form-row">' +
         '   </div>';
 
+    var captcha3 =
+        '<div id="wrap" align="center">' +
+        '<img src="{{path('titulacion_sis_academico_get_captcha')}}" alt="" id="captcha" />' +
+        '<img src="{{ asset('images/')}}refresh.jpg" width="25" alt="" id="refresh" onclick="cargarCaptcha();" />'+
+        '<br clear="all" />' +
+        '<input name="code" type="text" id="code" placeholder="Digite el Codigo">' +
+        '</div>';
+
+    html = html + captcha3;
+
     new $.flavr({
         title       : 'Ingresar',
         iconPath    : '{{ asset('images/menu/')}}',
@@ -129,15 +145,15 @@ function login(){
         buttons : {
         submit  : { text: 'Iniciar', style: 'primary', addClass: 'submit-btn', id: 'btn_iniciar',
                     action: function( $container, $second, $third ){
-                      if ($("#username").val() == '' || $("#password").val() == '') {
-                          mensaje_cisc( "error", "Ingrese el usuario y el password.");
+                      if ($("#username").val() == '' || $("#password").val() == '' || $("#code").val() == '') {
+                          mensaje_cisc( "error", "Llene todos los campos.");
                           this.wobble();
                       }else{
 
                         var modelessLogin;
                         $.ajax({
                             url:   '{{path('titulacion_sis_academico_ingresar')}}',
-                            data: {'user': $("#username").val(),'pass':$("#password").val()},
+                            data: {'user': $("#username").val(),'pass':$("#password").val(),'code':$("#code").val()},
 
                             type:  'post',
                             beforeSend: function () {
@@ -157,6 +173,11 @@ function login(){
                               var perfil = JSON.parse(dataResponse).Perfil;
                               var nombreUsuario = JSON.parse(dataResponse).NombreUsuario;
                               //alert('{{perfilEstDoc}}');
+                              if(JSON.parse(dataResponse).valerror =="1" )
+                                {  
+                                  mensaje_cisc( "error", "Ingrese el captcha correcto");
+                                }
+                                 else{
                                   switch (perfil.toString()) {
 
                                         case '{{perfilEst}}':
@@ -203,7 +224,7 @@ function login(){
                                             mensaje_cisc( "error", "Usuario o constraseña incorrecto/a.");
                                             break;
                                     }//end switch
-
+                                }
                              },
                              dataType:'html'
                           });
