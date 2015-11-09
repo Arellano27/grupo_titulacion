@@ -276,15 +276,17 @@ class UgServices {
       else {
          $datosConsulta["pc_option"]   = "CP";
       }
-      $trama         =  "  <id_sa_materia_paralelo>".$datosConsulta["idMateria"]."</id_sa_materia_paralelo>
-                           <parcial>".$datosConsulta["idParcial"]."</parcial>
-                           <PV_OPCION>".$datosConsulta["pc_option"]."</PV_OPCION>";
+      $trama         =  "  <pv_opcion>".$datosConsulta["pc_option"]."</pv_opcion>
+                           <pi_materia_paralelo>".$datosConsulta["idMateria"]."</pi_materia_paralelo>
+                           <pi_parcial>".$datosConsulta["idParcial"]."</pi_parcial>";
+
       $XML           = NULL;
       $xmlData["XML_test"]          = $XML;
       $xmlData["bloqueRegistros"]   = 'registros';
       $xmlData["bloqueSalida"]      = 'px_salida';
 
       $response   =  $this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
+      
       return $response;
    }#end function Docentes_Graph_getAprobadosResumen()
    
@@ -313,6 +315,22 @@ class UgServices {
       return $response;
    }#end function Docentes_Graph_getAprobadosDetalle()
    
+   public function Docentes_setDataPerfilUsuarioEditar($datosGrabar) {
+      $this->tipo    = "46";
+      $this->urlWS   = $this->url . $this->urlProcedim;
+      
+      $response = $this->ws->doSetParametrosRegistrosPerfil($datosGrabar["DatosPerfil"], "items", 'A', $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+      return $response;
+   }#end function Docentes_setDataPerfilUsuarioEditar()
+   
+   public function Docentes_setDataPerfilUsuarioImgPerfilEditar($datosGrabar) {
+      $this->tipo    = "50";
+      $this->urlWS   = $this->url . $this->urlProcedim;
+      
+      $response = $this->ws->doSetParametrosRegistrosPerfil($datosGrabar["DatosImgPerfil"], "items", 'A', $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+      return $response;
+   }#end function Docentes_setDataPerfilUsuarioImgPerfilEditar()
+    
     public function getConsultaCarreras($idEstudiante, $idRol) {
         // echo '<pre>'; var_dump($idEstudiante,$idRol); exit();
         $this->tipo = "3";

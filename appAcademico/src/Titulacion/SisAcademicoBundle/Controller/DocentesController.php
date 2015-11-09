@@ -329,99 +329,157 @@
          $datosNotasDetalle   = array();
          $datosNotasResumen   = array();
          
-//         ////->Obtener los datos para la grafica de asistencias - INICIO
-//         $datosAsistencias = array();
-//         
-//            //Todos los parciales
-//         $datosConsulta	= array( 'idMateria' => $idMateria,
-//                                 'idCiclo' => $idCiclo,
-//                                 'idParcial' => 'todos');
-//         $tempDataAsistencia        = $UgServices->Docentes_Graph_getAsistencias($datosConsulta);
-//         if(isset($tempDataAsistencia["MateriaParalelo"])) {
-//            $tempDataAsistencia  = $tempDataAsistencia["MateriaParalelo"];
-//         }
-//         $datosAsistencias["todos"] = $tempDataAsistencia;
-//         
-//            //Por parcial
-//         foreach($datosParciales as $dataParcial){
-//            $datosConsulta	= array( 'idMateria' => $idMateria,
-//                                    'idCiclo' => $idCiclo,
-//                                    'idParcial' => $dataParcial["numero_parcial"]);
-//            $tempDataAsistencia        = $UgServices->Docentes_Graph_getAsistencias($datosConsulta);
-//            if(isset($tempDataAsistencia["MateriaParalelo"])) {
-//               $tempDataAsistencia  = $tempDataAsistencia["MateriaParalelo"];
-//            }
-//            $datosAsistencias[$dataParcial["nombre"]] = $tempDataAsistencia;
-//         }
-//         ////->Obtener los datos para la grafica de asistencias - FIN
-//         
-//         ////->Obtener los datos para la grafica detalle de aprobados - INICIO
-//         $datosNotasDetalle = array();
-//            //Todos los parciales
-//         $datosConsulta	= array( 'idMateria' => $idMateria,
-//                                 'idCiclo' => $idCiclo,
-//                                 'idParcial' => 'todos');
-//         $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosDetalle($datosConsulta);
-//         
-//         if(isset($tempDataNotasDetalle["MateriaParaleloCiclo"])) {
-//            $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCiclo"];
-//         }
-//         $datosNotasDetalle["todos"] = $tempDataNotasDetalle;
-//         
-//            //Por parcial
-//         foreach($datosParciales as $dataParcial){
-//            $datosConsulta	= array( 'idMateria' => $idMateria,
-//                                    'idCiclo' => $idCiclo,
-//                                    'idParcial' => $dataParcial["numero_parcial"]);
-//            $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosDetalle($datosConsulta);
-//            
-//            if(isset($tempDataNotasDetalle["MateriaParaleloCicloParcial"])) {
-//               $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCicloParcial"];
-//            }
-//            $datosNotasDetalle[$dataParcial["nombre"]] = $tempDataNotasDetalle;
-//            //var_dump($datosNotasDetalle[$dataParcial["nombre"]]);
-//         }
-//         ////->Obtener los datos para la grafica detalle de aprobados - FIN
-//         
-//         ////->Obtener los datos para la grafica de resumen de aprobados - INICIO
-//         $datosNotasResumen = array();
-//            //Todos los parciales
-//         $datosConsulta	= array( 'idMateria' => $idMateria,
-//                                 'idCiclo' => $idCiclo,
-//                                 'idParcial' => 'todos');
-//         $tempDataNotasResumen        = $UgServices->Docentes_Graph_getAprobadosResumen($datosConsulta);
-//         
-//         if(isset($tempDataNotasDetalle["MateriaParaleloCiclo"])) {
-//            $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCiclo"];
-//         }
-//         $datosNotasDetalle["todos"] = $tempDataNotasDetalle;
-//         
-//            //Por parcial
-//         foreach($datosParciales as $dataParcial){
-//            $datosConsulta	= array( 'idMateria' => $idMateria,
-//                                    'idCiclo' => $idCiclo,
-//                                    'idParcial' => $dataParcial["numero_parcial"]);
-//            $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosResumen($datosConsulta);
-//            
-//            if(isset($tempDataNotasDetalle["MateriaParaleloCicloParcial"])) {
-//               $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCicloParcial"];
-//            }
-//            $datosNotasDetalle[$dataParcial["nombre"]] = $tempDataNotasDetalle;
-//            //var_dump($datosNotasDetalle[$dataParcial["nombre"]]);
-//         }
-//         ////->Obtener los datos para la grafica de resumen de aprobados - FIN
+         ////->Obtener los datos para la grafica de asistencias - INICIO
+         $datosAsistencias = array();
+         
+            //Todos los parciales
+         $datosConsulta	= array( 'idMateria' => $idMateria,
+                                 'idCiclo' => $idCiclo,
+                                 'idParcial' => 'todos');
+         $tempDataAsistencia        = $UgServices->Docentes_Graph_getAsistencias($datosConsulta);
+         if(isset($tempDataAsistencia["MateriaParalelo"])) {
+            $tempDataAsistencia  = $tempDataAsistencia["MateriaParalelo"];
+         }
+         $datosAsistencias["todos"] = $tempDataAsistencia;
+            //Por parcial
+         foreach($datosParciales as $dataParcial){
+            $datosConsulta	= array( 'idMateria' => $idMateria,
+                                    'idCiclo' => $idCiclo,
+                                    'idParcial' => $dataParcial["numero_parcial"]);
+            $tempDataAsistencia        = $UgServices->Docentes_Graph_getAsistencias($datosConsulta);
+            if(isset($tempDataAsistencia["MateriaParalelo"])) {
+               $tempDataAsistencia  = $tempDataAsistencia["MateriaParalelo"];
+            }
+            $datosAsistencias[$dataParcial["nombre"]] = $tempDataAsistencia;
+         }
+         
+         $datosAsistenciasGraph = array();
+         foreach($datosAsistencias as $key => $dataAsist) {
+            $datosAsistenciasGraph[str_replace(" ","_",$key)] = array();
+            $tempSerie  = NULL;
+            if(is_array($dataAsist["Porcentajes"])) {
+               foreach($dataAsist["Porcentajes"] as $keyRangos => $dataRangos) {
+                  $tempRango  = str_replace("-", "% - ", $dataRangos['rango'])."%";
+                  $tempEst    = $dataRangos['cantidadUsuario'];
+                  if($tempEst==NULL) {
+                     $tempEst = 0;
+                  }
+
+                  $tempSerie  .= "{   name: '". $tempRango ."',   y: ". $tempEst ."  },";
+               }
+               $datosAsistenciasGraph[str_replace(" ","_",$key)] = substr($tempSerie, 0, -1);
+            }
+         }     
+         ////->Obtener los datos para la grafica de asistencias - FIN
+         
+         
+         
+         ////->Obtener los datos para la grafica detalle de aprobados - INICIO
+         $datosNotasDetalle = array();
+            //Todos los parciales
+         $datosConsulta	= array( 'idMateria' => $idMateria,
+                                 'idCiclo' => $idCiclo,
+                                 'idParcial' => 'todos');
+         $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosDetalle($datosConsulta);
+         
+         if(isset($tempDataNotasDetalle["MateriaParaleloCiclo"])) {
+            $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCiclo"];
+         }
+         $datosNotasDetalle["todos"] = $tempDataNotasDetalle;
+         
+            //Por parcial
+         foreach($datosParciales as $dataParcial){
+            $datosConsulta	= array( 'idMateria' => $idMateria,
+                                    'idCiclo' => $idCiclo,
+                                    'idParcial' => $dataParcial["numero_parcial"]);
+            $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosDetalle($datosConsulta);
+            
+            if(isset($tempDataNotasDetalle["MateriaParaleloCicloParcial"])) {
+               $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCicloParcial"];
+            }
+            $datosNotasDetalle[$dataParcial["nombre"]] = $tempDataNotasDetalle;
+         }
+         
+         $datosNotasDetalleGraph = array();
+         foreach($datosNotasDetalle as $key => $dataNotas) {
+            $datosNotasDetalleGraph[str_replace(" ","_",$key)] = "";
+            $tempSerie  = NULL;
+            if(is_array($dataNotas["Porcentajes"])) {
+               foreach($dataNotas["Porcentajes"] as $dataNota) {
+                  $tempLabel  = $dataNota["notas"];
+                  $tempEst    = $dataNota["porcentaje"];
+                  if($tempEst==NULL) {
+                     $tempEst = 0;
+                  }
+
+                  $tempSerie  .= "{   name: '". str_replace("-", " - ", $tempLabel) ."',   y: ". $tempEst ."  },";
+               }
+               $datosNotasDetalleGraph[str_replace(" ","_",$key)] = substr($tempSerie, 0, -1);
+            }
+         }
+         ////->Obtener los datos para la grafica detalle de aprobados - FIN
+        
+         
+         
+         ////->Obtener los datos para la grafica de resumen de aprobados - INICIO
+         $datosNotasResumen = array();
+            //Todos los parciales
+         $datosConsulta	= array( 'idMateria' => $idMateria,
+                                 'idCiclo' => $idCiclo,
+                                 'idParcial' => 'todos');
+         $tempDataNotasResumen        = $UgServices->Docentes_Graph_getAprobadosResumen($datosConsulta);
+         
+         if(isset($tempDataNotasResumen["registro"])) {
+            $tempDataNotasResumen  = $tempDataNotasResumen["registro"];
+         }
+         $datosNotasResumen["todos"] = $tempDataNotasResumen;
+         
+            //Por parcial
+         foreach($datosParciales as $dataParcial){
+            $datosConsulta	= array( 'idMateria' => $idMateria,
+                                    'idCiclo' => $idCiclo,
+                                    'idParcial' => $dataParcial["numero_parcial"]);
+            $tempDataNotasResumen        = $UgServices->Docentes_Graph_getAprobadosResumen($datosConsulta);
+            
+            if(isset($tempDataNotasResumen["registro"])) {
+               $tempDataNotasResumen  = $tempDataNotasResumen["registro"];
+            }
+            $datosNotasResumen[$dataParcial["nombre"]] = $tempDataNotasResumen;
+            
+         }
+         
+         $datosNotasResumenGraph = array();
+         foreach($datosNotasResumen as $key => $dataNotas) {
+            $datosNotasResumenGraph[str_replace(" ","_",$key)] = "";
+            $tempSerie  = NULL;
+            if(is_array($dataNotas)) {
+               foreach($dataNotas as $dataNota) {
+                  $tempLabel  = $dataNota["estado"];
+                  $tempEst    = $dataNota["cantidad"];
+                  if($tempEst==NULL) {
+                     $tempEst = 0;
+                  }
+
+                  $tempSerie  .= "{   name: '". $tempLabel ."',   y: ". $tempEst ."  },";
+               }
+               $datosNotasResumenGraph[str_replace(" ","_",$key)] = substr($tempSerie, 0, -1);
+            }
+         }
+         ////->Obtener los datos para la grafica de resumen de aprobados - FIN
          
          return $this->render('TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria.html.twig',
-                           array(
-                              'datosDocente' => $datosDocente,
-                              'datosMateria' => $datosMateria,
-                              'datosParciales' => $datosParciales,
-                              'datosAsistencias' => $datosAsistencias,
-                              'datosNotasDetalle' => $datosNotasDetalle,
-                              'datosNotasResumen' => $datosNotasResumen
-                               
-                           )
-                      );
+                                 array(
+                                    'datosDocente' => $datosDocente,
+                                    'datosMateria' => $datosMateria,
+                                    'datosParciales' => $datosParciales,
+                                    'datosAsistencias' => $datosAsistencias,
+                                    'datosAsistenciasGraph' => $datosAsistenciasGraph,
+                                    'datosNotasDetalle' => $datosNotasDetalle,
+                                    'datosNotasDetalleGraph' => $datosNotasDetalleGraph,
+                                    'datosNotasResumen' => $datosNotasResumen,
+                                    'datosNotasResumenGraph' => $datosNotasResumenGraph
+                                 )
+                            );
       }
       
       public function exportarListadoNotasAlumnosMateriaAction(Request $request, $idMateria, $idParcial)
@@ -654,19 +712,9 @@
       {
          $session=$request->getSession();
          $idDocente  = $session->get('id_user');
-
-         
-//         $idDocente     = '31';
-//         $idMateria     = '2271';
-//         $idParalelo    = '0';
-//         $idCarrera     = '4';
-//         $fechaInicio   = '12/10/2015';
-//         $fechaFin      = '18/10/2015';
          
          $anioConsulta  = date('o');
          
-         
-
          try {
             $datosConsulta	= array( 
                                     'fechaInicio' => $fechaInicio,
