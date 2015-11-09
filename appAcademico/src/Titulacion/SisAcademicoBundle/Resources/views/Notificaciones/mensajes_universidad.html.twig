@@ -2,140 +2,57 @@
 
 
 {% block contenido %}
-  
+  <script src="{{ asset('js/EnviarMensajes.js') }}"></script>
+    <script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>
+<script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    <script type="text/javascript">
+  $(function () {
+           TableAdvanced.init();
+    });  
+</script>
 
+       <section class="content">
+
+      <div class="page-content" style="height: 600px;">
         
-        <section class="">
           <div class="">
              
             
             <div class="col-md-12">
               <div class="box-header with-border">
-                <h3 class="box-title">Mensajes (Tienes # mensajes nuevos)</h3>
+             {#   <h3 class="box-title">Mensajes (Tienes # mensajes nuevos)</h3>#}
                
             </div><!-- /.box-header -->
+             <div class="box box-solid">
+                            <div class="panel-heading">    
            <div class="box box-solid">
 			       
 				        <table class="table table-striped table-bordered table-hover" id="sample_1">
 				        <thead>
 				        <tr>
-					        <th> Tipo </th>					       
+					        <th> Tipo </th>	
+                                                <th> Emisor </th>	
 					        <th> Asunto   </th>
 					        <th> Detalle </th>
                                                 <th style="text-align: center">Fecha de Envio</th>
-                                                <th style="text-align: center">Ver Mensajes</th>
+                                               {# <th style="text-align: center">Ver Mensajes</th>#}
 				        </tr>
 				        </thead>
 				        <tbody>
                    
-                            <tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#" id="Mensaje_1" name="Mensaje_1">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr>
-                             <tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                               <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                               <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                               <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                                <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr><tr>
-                                <td>Notifiación</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                               <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr>
-                            <tr>
-                                <td>Mensaje</td>                               
-                                <td>No hay Clases</td>
-                                <td>El Sabado 7 de agosto no hay clases ...</td>
-                              <td style="text-align: center">13/09/2015</td>
-                                 <td style="text-align: center">  <a href="#">
-                                         <i class="fa fa-envelope-o"></i>                                                           
-                                                        </a></td>
-                            </tr>                            
-                            
+                            {% for Mensajes in data.Mensajes %} 
+                                <tr>
+                                    <td>{{ Mensajes.tipo_mensaje }}</td>   
+                                     <td>{{ Mensajes.nombres }}</td> 
+                                    <td>{{ Mensajes.asunto }}</td>
+                                    <td>{{ Mensajes.mensaje }}</td>
+                                    <td style="text-align: center">{{ Mensajes.fecha_registro }}</td>
+                                    {#<td style="text-align: center">  <a href="#" id="Mensaje_1" name="Mensaje_1">
+                                    <i class="fa fa-envelope-o"></i>                                                           
+                                    </a></td>#}
+                                </tr>
+                            {%endfor%}
+                             
                             
                                                               
                     </tbody>
@@ -143,11 +60,16 @@
 			        
 		      
             </div>                 
-                                   
+            </div>
+          </div>
             </div>
         
           </div>
+                            
+                            </div>
         </section>
+                            
+        
 
    
                 

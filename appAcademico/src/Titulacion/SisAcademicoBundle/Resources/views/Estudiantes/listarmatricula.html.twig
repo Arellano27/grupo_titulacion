@@ -26,7 +26,8 @@
                 <tfoot>
                     <tr>
                         <td colspan=5 align="right">
-                             <a class="btn btn-success" href="{{ path('estudiantes_pdf_matricula',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank">Imprimir Documento</a>
+                             <a class="btn btn-success tip btn btn-success btn-circle btn-xl" href="{{ path('estudiantes_pdf_datosgenerales',{'carrera':carrera }) }}" target="_blank"> <span>Imprimir Documento de Datos Generales</span>Datos Generales</a>
+                             <a class="btn btn-success" href="{{ path('estudiantes_pdf_matricula',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank">Hoja de Registro</a>
                         </td>
                     </tr>
                 </tfoot>

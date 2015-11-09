@@ -42,7 +42,7 @@
                }
 
                $datosDocente	= array( 'idDocente' => $idDocente );
-
+           
                return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoCarreras.html.twig',
     									array(
     											'data' => array('datosDocente' => $datosDocente,  'datosCarreras' => $datosCarreras)

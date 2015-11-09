@@ -6,6 +6,7 @@
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\JsonResponse;
     use Titulacion\SisAcademicoBundle\Helper\UgServices;
+    use Titulacion\SisAcademicoBundle\fpdf\fpdf;
     use Symfony\Component\HttpFoundation\ResponseHeaderBag;
     use \PHPExcel_Style_Alignment;
     use \PHPExcel_Style_Border;
@@ -15,13 +16,17 @@
       var $v_error =false;
       var $v_html ="";
       var $v_msg  ="";
+
+       var $pdf="";
+
       var $v_message="";
       var $idCarrera="";
+
 
       public function indexAction(Request $request) //(Request $request)
       {
          $session=$request->getSession();
-
+         
          $perfilEst   = $this->container->getParameter('perfilEst');
          $perfilDoc   = $this->container->getParameter('perfilDoc');
          $perfilAdmin = $this->container->getParameter('perfilAdmin');
@@ -305,17 +310,117 @@
       {
          $idDocente  = $request->request->get('idDocente');
          $idMateria  = $request->request->get('idMateria');
+         $idCiclo    = $request->request->get('idCiclo');
+         $idCarrera  = $request->request->get('idCarrera');
+         $nombreMateriaTitulo  = $request->request->get('tituloPanelMateria');
 
          $datosDocente	= array( 'idDocente' => $idDocente );
-
-         $datosMateria	= array( 'idMateria' => $idMateria );
-
-       //listadoMaterias
-       return $this->render('TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria.html.twig',
-                         array(
-                               'dataDocente' => array('datosDocente' => $datosDocente ),
-                               'dataMateria' => array('datosMateria' => $datosMateria )
-                             )
+         $datosMateria	= array( 'idMateria' => $idMateria, 'nombreMateriaTitulo' => $nombreMateriaTitulo);
+         
+         $UgServices       = new UgServices;
+         
+         /*Consulta de la información de los parciales - INICIO*/
+         $datosConsultaParciales = array( 'idCarrera' => $idCarrera);
+         $datosParciales         = $UgServices->Docentes_getParcialesCarrera($datosConsultaParciales);
+         /*Consulta de la información de los parciales - INICIO*/
+         
+         //$datosAsistencias["ID PARCIAL / TODOS"]
+         $datosAsistencias    = array();
+         $datosNotasDetalle   = array();
+         $datosNotasResumen   = array();
+         
+//         ////->Obtener los datos para la grafica de asistencias - INICIO
+//         $datosAsistencias = array();
+//         
+//            //Todos los parciales
+//         $datosConsulta	= array( 'idMateria' => $idMateria,
+//                                 'idCiclo' => $idCiclo,
+//                                 'idParcial' => 'todos');
+//         $tempDataAsistencia        = $UgServices->Docentes_Graph_getAsistencias($datosConsulta);
+//         if(isset($tempDataAsistencia["MateriaParalelo"])) {
+//            $tempDataAsistencia  = $tempDataAsistencia["MateriaParalelo"];
+//         }
+//         $datosAsistencias["todos"] = $tempDataAsistencia;
+//         
+//            //Por parcial
+//         foreach($datosParciales as $dataParcial){
+//            $datosConsulta	= array( 'idMateria' => $idMateria,
+//                                    'idCiclo' => $idCiclo,
+//                                    'idParcial' => $dataParcial["numero_parcial"]);
+//            $tempDataAsistencia        = $UgServices->Docentes_Graph_getAsistencias($datosConsulta);
+//            if(isset($tempDataAsistencia["MateriaParalelo"])) {
+//               $tempDataAsistencia  = $tempDataAsistencia["MateriaParalelo"];
+//            }
+//            $datosAsistencias[$dataParcial["nombre"]] = $tempDataAsistencia;
+//         }
+//         ////->Obtener los datos para la grafica de asistencias - FIN
+//         
+//         ////->Obtener los datos para la grafica detalle de aprobados - INICIO
+//         $datosNotasDetalle = array();
+//            //Todos los parciales
+//         $datosConsulta	= array( 'idMateria' => $idMateria,
+//                                 'idCiclo' => $idCiclo,
+//                                 'idParcial' => 'todos');
+//         $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosDetalle($datosConsulta);
+//         
+//         if(isset($tempDataNotasDetalle["MateriaParaleloCiclo"])) {
+//            $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCiclo"];
+//         }
+//         $datosNotasDetalle["todos"] = $tempDataNotasDetalle;
+//         
+//            //Por parcial
+//         foreach($datosParciales as $dataParcial){
+//            $datosConsulta	= array( 'idMateria' => $idMateria,
+//                                    'idCiclo' => $idCiclo,
+//                                    'idParcial' => $dataParcial["numero_parcial"]);
+//            $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosDetalle($datosConsulta);
+//            
+//            if(isset($tempDataNotasDetalle["MateriaParaleloCicloParcial"])) {
+//               $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCicloParcial"];
+//            }
+//            $datosNotasDetalle[$dataParcial["nombre"]] = $tempDataNotasDetalle;
+//            //var_dump($datosNotasDetalle[$dataParcial["nombre"]]);
+//         }
+//         ////->Obtener los datos para la grafica detalle de aprobados - FIN
+//         
+//         ////->Obtener los datos para la grafica de resumen de aprobados - INICIO
+//         $datosNotasResumen = array();
+//            //Todos los parciales
+//         $datosConsulta	= array( 'idMateria' => $idMateria,
+//                                 'idCiclo' => $idCiclo,
+//                                 'idParcial' => 'todos');
+//         $tempDataNotasResumen        = $UgServices->Docentes_Graph_getAprobadosResumen($datosConsulta);
+//         
+//         if(isset($tempDataNotasDetalle["MateriaParaleloCiclo"])) {
+//            $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCiclo"];
+//         }
+//         $datosNotasDetalle["todos"] = $tempDataNotasDetalle;
+//         
+//            //Por parcial
+//         foreach($datosParciales as $dataParcial){
+//            $datosConsulta	= array( 'idMateria' => $idMateria,
+//                                    'idCiclo' => $idCiclo,
+//                                    'idParcial' => $dataParcial["numero_parcial"]);
+//            $tempDataNotasDetalle        = $UgServices->Docentes_Graph_getAprobadosResumen($datosConsulta);
+//            
+//            if(isset($tempDataNotasDetalle["MateriaParaleloCicloParcial"])) {
+//               $tempDataNotasDetalle  = $tempDataNotasDetalle["MateriaParaleloCicloParcial"];
+//            }
+//            $datosNotasDetalle[$dataParcial["nombre"]] = $tempDataNotasDetalle;
+//            //var_dump($datosNotasDetalle[$dataParcial["nombre"]]);
+//         }
+//         ////->Obtener los datos para la grafica de resumen de aprobados - FIN
+         
+         return $this->render('TitulacionSisAcademicoBundle:Docentes:visionGeneralMateria.html.twig',
+                           array(
+                              'datosDocente' => $datosDocente,
+                              'datosMateria' => $datosMateria,
+                              'datosParciales' => $datosParciales,
+                              'datosAsistencias' => $datosAsistencias,
+                              'datosNotasDetalle' => $datosNotasDetalle,
+                              'datosNotasResumen' => $datosNotasResumen
+                               
+                           )
                       );
       }
       
@@ -630,6 +735,14 @@
             //UN ARRAY PARA HACER UNA RELACION DIRECTA ENTRE LAS LETRAS
             //DE LAS COLUMNAS DE EXCEL Y EL ARREGLO DE DATOS QUE VOY A MANDAR
             $columnasExcel       = array('','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+            $columnasExcelExt1   = array('AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
+            $columnasExcelExt2   = array('BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ');
+            $columnasExcelExt3   = array('CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ');
+            $columnasExcelExt4   = array('CA','CB','CC','CD','CE','CF','CG','CH','CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ');
+            $columnasExcelExt5   = array('DA','DB','DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL','DM','DN','DO','DP','DQ','DR','DS','DT','DU','DV','DW','DX','DY','DZ');
+            $columnasExcelExt6   = array('EA','EB','EC','ED','EE','EF','EG','EH','EI','EJ','EK','EL','EM','EN','EO','EP','EQ','ER','ES','ET','EU','EV','EW','EX','EY','EZ');
+            $columnasExcel = array_merge($columnasExcel, $columnasExcelExt1, $columnasExcelExt2, $columnasExcelExt3, $columnasExcelExt4, $columnasExcelExt5, $columnasExcelExt6); 
+            
             $primeraFilaDatos    = 2;
             $primeraColumnaDatos = 2;  //La letra 'B'
             
@@ -753,7 +866,9 @@
          catch(Exception $e) {
             echo 'Excepción capturada: ',  $e->getMessage(), "\n";
          }
-      }      // getMateriasListado()
+      }      // exportarListadoAsistenciasAlumnosMateriaAction()
+
+      
 
 
         public function mostraralumnosAction(Request $request)
@@ -1948,201 +2063,7 @@
          return $dataReturn;
       }//function procesarListadoAsistenciasEstudiantes();
       
-     public function listaEstudiantesAction(Request $request)
-        { 
-           $notas='';
-            date_default_timezone_set('America/Buenos_Aires');
-         $withoutModal       = true;
-                     $profesor='Apolinario';
-            //$materia='Calculo';
-            $paralelo='S2A';
-          
-            $notas='';
-            $parcial =$request->request->get('parcial');
-            $session=$request->getSession();
-               $session->set("parcial",$parcial);
-            
-            
-            $response   		= new JsonResponse();
-            $withoutModal       = true;
-         
-            $idDocente     = 1;
-            $carrera  =1;
-            $UgServices    = new UgServices;
-            
-            ////////////////////////////////
-            
-            $idDocente  = $session->get('id_user');
-            //$idDocente  = $request->request->get('idDocente');
-            $idCarrera  = $request->request->get('carrera');
 
-            $datosMaterias	= array();
-            $datosDocentes	= array();
-            //$idDocente = "1";
-            //$idCarrera = "2";
-
-            $UgServices    = new UgServices;
-            
-            
-            $datosDocentes  = $UgServices->Docentes_getDocentes($idCarrera);
-           // print_r($datosDocentes);
-            
-            
-            $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
-            $muestraDocente="<option value=''>Seleccione Docente</option>";
-            $muestraMateria="<option value=''>Seleccione Materia</option>";
-           /*print_r($datosMaterias);
-           exit();*/
-             foreach($datosMaterias as $materia) {
-              ##echo $materia['materia'];
-                  $muestraMateria .= '<option value="'.$materia['id_sa_materia_paralelo'].'">'.$materia['materia']."--".$materia['paralelo'].'</option>';
-               
-            }
-           
-             foreach($datosDocentes as $docente) {
-              
-                  $muestraDocente .= '<option value="'.$docente['id_sg_usuario'].'">'.$docente['profesor'].'</option>';
-               
-            }
-            
-            
-            
-            ///////////////////////////////////////
-            //$idDocente="";
-               //$idCarrera="";
-            // $materia="2269";
-       //Menu de Notas por Materia para Profesor
-         $Parcial='1';
-               
-                    $trama = "<materia>2271</materia>";
-                
-          
-          /* $fecha_act=date('Y-m-d');
-           
-               $Parcial='1';
-               
-               	$trama = "<materiaparalelo>".$materia."</materiaparalelo>";
-                
-            $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
-       
-           */
-        
-                 $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:listaEstudiantes.html.twig',
-						  array(
-							 //  'arr_datos'	=> $arr_datos,
-                                                           'docente'   => $muestraDocente ,
-                                                           'materia'   => $muestraMateria,
-                                                           'idCarrera'   => $idCarrera,
-                                                           'cantidad'   => '',
-                                                           'msg'   	=> $this->v_msg
-						  ));
-                        
-                        $response->setData(
-                                array(
-					'error' 		=> $this->v_error,
-					'msg'			=> $this->v_msg,
-                                        'html' 			=> $this->v_html,
-                                        'withoutModal' 	=> $withoutModal,
-                                        'recargar'      => '0'
-                                     )
-                              );
-                        return $response;
-        }
-        
-        public function cmbMateriasAction(Request $request)
-        { 
-             $response   		= new JsonResponse();
-            $idCarrera =$request->request->get('carrera');
-            
-            $idDocente =$request->request->get('docente');
-             $UgServices    = new UgServices;
-            $response   		= new JsonResponse();
-            
-            $datosMaterias  = $UgServices->Docentes_getMaterias($idDocente, $idCarrera);
-            $muestraMateria="<option value=''>Seleccione Materia</option>";
-           /*print_r($datosMaterias);
-           exit();*/
-             foreach($datosMaterias as $materia) {
-              ##echo $materia['materia'];
-                  $muestraMateria .= '<option value="'.$materia['id_sa_materia_paralelo'].'">'.$materia['materia']."-".$materia['paralelo'].'</option>';
-               
-            }
-           
-            
-        
-			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:cmbMaterias.html.twig',
-						  array(
-                                                           'materia'   => $muestraMateria
-                                                           
-						  ));
-                        
-                        $response->setData(
-                                array(
-                                        'html' 			=> $this->v_html
-                                     )
-                              );
-                        return $response;
-        }
-        
-       public function muestraEstudiantesAction(Request $request)
-        { 
-             $response   		= new JsonResponse();
-            
-            
-            $idDocente =$request->request->get('docente');
-            
-            $idMateria =$request->request->get('materia');
-            
-            $Docente =$request->request->get('docente_text');
-            
-            $Materia =$request->request->get('materia_text');
-            $paralelo =$request->request->get('paralelo');
-            
-            $Fecha=date('d/m/Y');
-            
-            //echo $idDocente."--".$idMateria."--";
-            
-            
-            $response   		= new JsonResponse();
-            if ($idDocente==="")
-            {
-                    $this->v_error	= true; 
-                    $this->v_msg ='Debe seleccionar un Docente';
-                 }else {   
-                    
-                    if($idMateria==="")
-                   { 
-                        $this->v_error	= true; 
-                          $this->v_msg ='Debe seleccionar una Materia'; 
-                        }else { 
-                           // $idMateria="235";
-                   $trama = "<materiaparalelo>".$idMateria."</materiaparalelo>";
-                   $UgServices    = new UgServices; 
-                    $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
-                   $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:tablaEstudiantes.html.twig',
-						  array(
-                                                           'docente_text'   => $Docente,
-                                                           'materia_text'   => $Materia,
-                                                           'paralelo'   => $paralelo,
-                                                           'fecha'   => $Fecha,
-                                                           'arr_datos'   => $arr_datos
-                                                           
-						  ));
-                     }
-                     
-             
-                 }
-                       
-                        
-                        $response->setData(
-                                array(
-                                        'msg'                => $this->v_msg,
-                                        'error'              => $this->v_error,
-                                        'html' 		     => $this->v_html
-                                     )
-                              );
-                        return $response;
-        }
         
      public function ExportarPDFEstudiantesAction(Request $request,$docente,$materia,$docente_text,$materia_text,$paralelo)
         { 
@@ -2204,7 +2125,7 @@
             $Materia =$request->request->get('materia_text');
            list($Materia,$paralelo) = split('[-]', $Materia);
             
-           $Docente= str_replace ( 'CRUZ BONITO STEVEN ANDRES ' , 'CRUZ BONITO STEVEN ANDRES' , $Docente);
+           $Docente= trim($Docente);
             
             $section ='http://localhost/desarrollo/appAcademico/web/docentes/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
             $response->setData(
@@ -2330,8 +2251,8 @@
 
 
                 $UgServices = new UgServices;
-                $idDocente='10';
-                $trama='<PV_Opcion>A</PV_Opcion>
+               // $idDocente='10';
+                $trama='<PV_Opcion>P</PV_Opcion>
                     <PI_Usuario>'.$idDocente.'</PI_Usuario>
                     <PI_Carrera>'.$idCarrera.'</PI_Carrera>';
                 $xml1 = $UgServices->getConsultaHorario_examendoc($trama);
@@ -2361,7 +2282,7 @@
                                     $arrHoras=array();
                                     $arrMaterias=array();
                                     $arrPresentar=array();
-                                    $arrProfesores=array();
+//                                    $arrProfesores=array();
 
                                         $lnhasta=count ($lscabHorarios);
                                         foreach($lscabHorarios->dias->dia as $Horarios) 
@@ -2397,15 +2318,15 @@
                                                           'idDia'=> (string)$Horariosm->id_dia);
                                                 array_push($arrMaterias, $arrDatos);
                                             } 
-                                            foreach($lscabHorarios->profesores->profesor as $Horariosp) 
-                                            {
-                                              $arrDatos=array('Materia'=>(string) $Horariosp->nombre_materia,
-                                                          'Profesor'=> (string)$Horariosp->nombre);
-                                                array_push($arrProfesores, $arrDatos);
-                                            } 
+//                                            foreach($lscabHorarios->profesores->profesor as $Horariosp) 
+//                                            {
+//                                              $arrDatos=array('Materia'=>(string) $Horariosp->nombre_materia,
+//                                                          'Profesor'=> (string)$Horariosp->nombre);
+//                                                array_push($arrProfesores, $arrDatos);
+//                                            } 
                                             
-                                            $lncuantosp=count($arrProfesores);
-                                            $lncuantosp=ceil($lncuantosp/2);
+//                                            $lncuantosp=count($arrProfesores);
+//                                            $lncuantosp=ceil($lncuantosp/2);
                                              foreach ($arrMaterias as $key => $Detalle) 
                                              {
                                                   $idDia=$Detalle['idDia'];
@@ -2441,6 +2362,11 @@
                                             <table align='center'>
                                             <tr>
                                               <td align='center'>
+                                            <b>$estudiante </b>
+                                                 </td>
+                                            <tr>
+                                            <tr>
+                                              <td align='center'>
                                                 <b> Horario de Examen Curso : $nombreCurso </b>
                                               </td>
                                             <tr>
@@ -2451,10 +2377,10 @@
                                             </tr>
                                             </table><table class='table table-striped table-bordered' border='1' width='100%'>";
                                                 $presenta.="<thead><tr>";
-                                                $presenta.="<th>Horario</th>";
+                                                $presenta.="<th style='background-color: #337AB7;'>Horario</th>";
                                                 //var_dump($arrCol);
                                                   foreach ($arrDias as $key => $value) {
-                                                    $presenta.="<th>".$value['Dia']."</th>";
+                                                    $presenta.="<th  style='background-color: #337AB7;'>".$value['Dia']."</th>";
                                                   }
                                                 $presenta.="</tr></thead>";
                                                 
@@ -2471,25 +2397,25 @@
                                                   //var_dump($value);
                                                 }
                                                 $presenta.="</table>";
-                                                $presenta.="<table class='table table-striped table-bordered' border='0' width='100%'>";
-                                                $i=1;
-                                                 $presenta.="<thead>"; 
-                                                 $presenta.="<tr><th colspan=1>Detalle de Profesores por Materia</th></tr>";
-                                                 $presenta.="</thead>";
-                                                foreach ($arrProfesores as $key => $value) {
-                                                        if ($i%2!=0)
-                                                        {
-                                                          $presenta.="<tr>";
-                                                        }
-                                                        $presenta.="<td style='font-size:10px;'> <b>".$value['Materia']." :</b> ".$value['Profesor']."</td>";
-                                                        if ($i%2==0)
-                                                        {
-                                                          $presenta.="<tr>";
-                                                        }
-                                                        $i=$i+1;
-                                                      }
+//                                                $presenta.="<table class='table table-striped table-bordered' border='0' width='100%'>";
+//                                                $i=1;
+//                                                 $presenta.="<thead>"; 
+//                                                 $presenta.="<tr><th colspan=1>Detalle de Profesores por Materia</th></tr>";
+//                                                 $presenta.="</thead>";
+//                                                foreach ($arrProfesores as $key => $value) {
+//                                                        if ($i%2!=0)
+//                                                        {
+//                                                          $presenta.="<tr>";
+//                                                        }
+//                                                        $presenta.="<td style='font-size:10px;'> <b>".$value['Materia']." :</b> ".$value['Profesor']."</td>";
+//                                                        if ($i%2==0)
+//                                                        {
+//                                                          $presenta.="<tr>";
+//                                                        }
+//                                                        $i=$i+1;
+//                                                      }
 
-                                                  $presenta.="</table>";
+//                                                  $presenta.="</table>";
 
                                                 $presenta.="</body></html>";
                                                 $mPDF->WriteHTML($presenta);
@@ -2527,4 +2453,100 @@
      }  
     }#end function
 
+      public function consultahorariosAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           
+          return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig');
+           
+    }#end function
+    
+      public function pdfhorariosAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+            $idUsuario  = $session->get('id_user');
+            $UgServices    = new UgServices;
+            $datosHorarios  = $UgServices->Docentes_Horarios($idUsuario);
+          
+                 $pdf= " <html> 
+                                            <body>
+                                            <img width='5%' src='images/menu/ug_logo.png'/>
+                                            <table align='center'>
+                                            <tr>
+                                              <td align='center'>
+                                                <b> Horario de clases</b>
+                                              </td>
+                                            <tr>
+                                            <tr>
+                                            <td>
+                                              <b> $estudiante </b>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            <div class='col-lg-12'>
+                                            <br><br><br><br>
+                                            <table class='table table-striped table-bordered' border='1' width='100%' >
+                                                     <thead>
+                                                        <tr>
+                                                                <th colspan='5'   style='text-align: center !important;background-color: #337AB7 !important;color: white!important;'>Periodo  </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style='text-align: center !important;'>Dia</th>
+                                                            <th style='text-align: center !important;'>Materia</th>
+                                                            <th style='text-align: center !important;'>Desde</th>
+                                                            <th style='text-align: center !important;'>Hasta</th>
+                                                            <th style='text-align: center !important;'>Curso</th> 
+                                                        </tr>";
+
+                                                   foreach($datosHorarios as $Horario) {
+                                                 $pdf.="<tr>
+                                                            <td align='center'>".$Horario['dia']."</td>
+                                                            <td align='center'>".$Horario['materia']."</td>
+                                                            <td align='center'>".$Horario['curso']."</td>
+                                                            <td align='center'>".$Horario['hora_desde']."</td>
+                                                            <td align='center'>".$Horario['hora_hasta']."</td>
+                                                        </tr>";
+                                                   }
+                                            
+
+                                            $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
+
+                                                    <tr><td width='40%'><img width='80%' src='images/menu/firma.png'/></td> 
+                                                      <td width='20%'>&nbsp;</td>
+                                                      <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
+                                                    </tr>
+
+                                                    <tr><td align='center' ><b>$estudiante</b></td>
+                                                    <td >&nbsp;</td>
+                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                    </table>";
+
+                                             $pdf.="</div></body></html>";
+ 
+                                            
+                            
+                  $mpdfService = $this->get('TFox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();               
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  return new response($mPDF->Output());
+                 
+    }#end function
+    
+      
    }

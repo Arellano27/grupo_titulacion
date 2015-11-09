@@ -3,17 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/AlumnosActualizaAsistencia.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/web/css/main.css</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Home/visualizarPerfil.html.twig</file>
             <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/DocentesController.php</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Helper/UgServices.php</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/AlumnosIngresoAsistencia.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Helper/AcademicoSoap.php</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/notasAlumnosMateria.html.twig</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Home/menu_principal.html.twig</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Home/base.html.twig</file>
             <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/docentes.yml</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/web/js/sistemau.functions.js</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/listadoMaterias.html.twig</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/ingresonotas.html.twig</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/docentes_carrerashorarios.html.twig</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Helper/UgServices.php</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/config/home.yml</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Helper/AcademicoSoap.php</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Home/editarPerfil.html.twig</file>
             <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/listadoAlumnosMateria.html.twig</file>
-            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/listaEstudiantes.html.twig</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Resources/views/Docentes/listadoCarreras.html.twig</file>
+            <file>file:/C:/xampp/htdocs/desarrollo/appAcademico/src/Titulacion/SisAcademicoBundle/Controller/HomeController.php</file>
         </group>
     </open-files>
 </project-private>

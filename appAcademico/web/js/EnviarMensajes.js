@@ -3,7 +3,7 @@
     /**************************************************************************/
   
                function send_form(form, removeModalBody)
-                { alert("HOLA");
+                { 
                     formSubmitted = form;
                    
 		            var modal_size = '';

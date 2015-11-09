@@ -61,6 +61,10 @@
                               {
                                 $bolCorrecto=0;
                               }
+                               
+                //                $NotifiNol = $UgServices->Notificaciones_No_leidos($idEstudiante);
+                //                $MensajesNoL = $UgServices->Eventos_No_Leidos($idEstudiante);
+                                
                               return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_home.html.twig',array(
                                                       'facultades' =>  $Carreras,
                                                       'idEstudiante'=>$idEstudiante,
@@ -699,29 +703,26 @@
            if ($session->has("perfil")) {
                if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
                      $matricula_dis=array();
-                                                               
+
+                  $estudiante  = $session->get('nom_usuario');
+                   $banderaMatricula=0;
+                    $UgServices = new UgServices;
+                    $Mensaje="";
+                    $Idciclo="";
+                    $CicloMatricula="";
+                    $anio="";  
+                    $ciclo="";
+                    $parveces='2';
+                    $Materias_inscribir = array();                                           
                  try
                 {
-                     $estudiante  = $session->get('nom_usuario');
-                     $banderaMatricula=0;
-                      $UgServices = new UgServices;
-                      $Mensaje="";
-                      $Idciclo="";
-                      $CicloMatricula="";
-                      $anio="";
                       $xml2 = $UgServices->getConsultaDatos_Turno($idEstudiante,$idCarrera);
 
-                      $ciclo="";
-                      $parveces='2';
-                    
-                      $Materias_inscribir = array();
-
-                       
                        if ( is_object($xml2))
                           {
                               foreach($xml2->registros->registro as $datos)
                                {  
-                                  $banderaMatricula=(int) $datos->valor;
+                                  //$banderaMatricula=(int) $datos->valor;
                                   //$banderaMatricula=5;
                                   $Mensaje=(string) $datos->mensaje;
                                   $Idciclo=(string) $datos->id_ciclo;
@@ -740,15 +741,34 @@
 
                       $CicloMatricula=$anio." - Ciclo ".$ciclo; 
 
+                      $xml3 = $UgServices->getConsultaRequisitos_Anula($idEstudiante,$idCarrera,$Idciclo);
+                      
+                      if ( is_object($xml3))
+                          {
+                              foreach($xml3->parametrosSalida as $datosValida)
+                               {  
+                                  $banderaMatricula=(int) $datosValida->PI_ESTADO;
+                                  if ($banderaMatricula==1)
+                                  {
+                                    $banderaMatricula=4;
+                                  }
+                                  else
+                                  {
+                                    $banderaMatricula=0;
+                                  }
+                               }
+                              
+                          }
+
 
                         if ($banderaMatricula==4)
                         {
 
-                            $UgServices = new UgServices;
+                            
 
                              $xml1 = $UgServices->getConsultaRegistro_Matricula($idEstudiante,$idCarrera,$Idciclo);
                              
-                            
+
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
@@ -830,7 +850,25 @@
          public function anulacion_materias_3Action(Request $request)
         {
              
-            $session=$request->getSession();
+                    $session=$request->getSession();
+                   //  //Comentar cuando funcione lo de anulacion y cambiar el mail quemado por email variable
+                    $Email= $session->get('mail');
+                    $Nombre = $session->get('nom_usuario');
+                               $mailer    = $this->container->get('mailer');
+                    $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                ->setUsername('titulacion.php@gmail.com')
+                                ->setPassword('sc123456');
+                   //$mailer  = \Swift_Mailer($transport);
+                    $message = \Swift_Message::newInstance('test')
+                                ->setSubject("Anulación de Materia Exitosa")
+                                ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                ->setTo("ghuayamabe89@gmail.com")
+                                ->setBody("$Nombre usted ha anulado con exito sus Materias");
+                    // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
+                    $this->get('mailer')->send($message);  
+                    //Comentar cuando funcione lo de anulacion
+                    
+                    
             $perfilEst   = $this->container->getParameter('perfilEst');
             $perfilDoc   = $this->container->getParameter('perfilDoc');
             $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
@@ -891,6 +929,22 @@
                                   $Mensaje=(string) $datos->PV_MENSAJE;
                                   $Estado=(int) $datos->PI_ESTADO;
                                }
+                                $session=$request->getSession();
+                              $Email= $session->get('mail');
+                              $Nombre = $session->get('nom_usuario');
+                                                 $mailer    = $this->container->get('mailer');
+                                      $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                                  ->setUsername('titulacion.php@gmail.com')
+                                                  ->setPassword('sc123456');
+                                     //$mailer  = \Swift_Mailer($transport);
+                                      $message = \Swift_Message::newInstance('test')
+                                                  ->setSubject("Anulación de Materia Exitosa")
+                                                  ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                                  ->setTo($Email)
+                                                  ->setBody("$Nombre usted ha anulado con exito la Materia");
+                                      // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
+                                      $this->get('mailer')->send($message);   
+                               
                               
                           }
 
@@ -973,7 +1027,7 @@
                       $Idciclo="";
 
                       //$idEstudiante=12;
-                      // var_dump($idEstudiante);
+                       
                       
 
                        if ( is_object($xml2))
@@ -1004,7 +1058,7 @@
                          $UgServices = new UgServices;
 
                           $xml1 = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idCarrera,$Idciclo);
-                          
+                          //var_dump($xml1);
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
@@ -1398,7 +1452,7 @@
                                             <table align='center'>
                                             <tr>
                                               <td align='center'>
-                                                <b> Registro de Matricula</b>
+                                                <b> Hoja de Registro</b>
                                               </td>
                                             <tr>
                                             <tr>
@@ -1923,9 +1977,18 @@
     }#end function
 
 
+    
+    
+      public function listarsolicitudesAction(Request $request)
+    {
+       
+          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes.html.twig');
+           
+    }#end function
+    
 
-
-    public function pdfHorarioExamenAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera)
+          
+ public function pdfHorarioExamenAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera)
     {     
             $session=$request->getSession();
             $perfilEst   = $this->container->getParameter('perfilEst');
@@ -1935,8 +1998,7 @@
             $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
             $estudiante  = $session->get('nom_usuario'); 
-          
-
+        
            if ($session->has("perfil")) {
                if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
 
@@ -2093,7 +2155,7 @@
                                                                   {
                                                                     $presenta.="<tr>";
                                                                   }
-                                                                  $presenta.="<td style='font-size:10px; line-height:1;'> ".$value['Materia']." - ".$value['Profesor']."</td>";
+                                                                  $presenta.="<td style='font-size:10px; line-height:1;'> <b>".$value['Materia']."</b> - ".$value['Profesor']."</td>";
                                                                   if ($i%2==0)
                                                                   {
                                                                     $presenta.="<tr>";
@@ -2168,6 +2230,7 @@
                           $Carreras = array();
                           $UgServices = new UgServices;
                           $xml = $UgServices->getConsultaCarreras($idEstudiante,$idRol);
+
                              
                             if ( is_object($xml))
                             {
@@ -2183,20 +2246,21 @@
                                       array_push($Carreras, $materiaObject); 
                               } 
 
+
                               $bolCorrecto=1;
                               $cuantos=count($Carreras);
+
                               if ($cuantos==0)
                               {
                                 $bolCorrecto=0;
                               }
+                              
                               return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_carrerashorarios.html.twig',array(
                                                       'facultades' =>  $Carreras,
                                                       'idEstudiante'=>$idEstudiante,
-                                                      'idFacultad'=>$lcFacultad,
-                                                      'idCarrera'=>$lcCarrera,
-                                                      'cuantos'=>$cuantos,
                                                       'bolcorrecto'=>$bolCorrecto
                                                    ));
+                              var_dump(".....".$cuantos);
                             }
                             else
                             {
@@ -2210,9 +2274,6 @@
                             return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_carrerashorarios.html.twig',array(
                                                       'facultades' =>  $Carreras,
                                                       'idEstudiante'=>$idEstudiante,
-                                                      'idFacultad'=>$lcFacultad,
-                                                      'idCarrera'=>$lcCarrera,
-                                                      'cuantos'=>$cuantos,
                                                       'bolcorrecto'=>$bolCorrecto
                                                    ));
 
@@ -2269,6 +2330,7 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
                 $arrHoras=array();
                 $arrMaterias=array();
                 $arrPresentar=array();
+
                 
                //var_dump($xml1);
                if ( is_object($xml1))
@@ -2279,7 +2341,18 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
                               foreach($xml->cursos as $xmlCursos)
                                     { 
 
-                                  
+                                        $presenta="<html> 
+                                                  <body>
+                                                  <br/>
+                                                  <img width='5%' src='images/menu/ug_logo.png'/>
+                                                  <table align='center'>
+                                                      <tr>
+                                                        <td>
+                                                          <b> $carrera </b>
+                                                        </td>
+                                                        </tr>
+                                                    </table>
+                                                  ";
                                                 foreach($xmlCursos->curso as $lscabHorarios)
                                                 {
 
@@ -2360,23 +2433,21 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
                                                                 
                                                                 $arrPresentar[$posFil][$posCol]=$Materia;
                                                               }
-
-                                                              $presenta="<html> 
-                                                          <body>
-                                                          <br/>
-                                                          <img width='5%' src='images/menu/ug_logo.png'/>
-                                                          <table align='center'>
-                                                          <tr>
-                                                            <td align='center'>
-                                                              <b> Horario de Clases Curso : $nombreCurso </b>
-                                                            </td>
-                                                          <tr>
-                                                          <tr>
-                                                          <td>
-                                                            <b> $carrera </b>
-                                                          </td>
-                                                          </tr>
-                                                          </table><table class='table table-striped table-bordered' border='1' width='100%'>";
+                                                              if (trim($presenta)=="")
+                                                                {
+                                                                   $presenta="<html> 
+                                                                        <body>
+                                                                        <br/>";
+                                                                } 
+                                                              
+                                                              $presenta.="<table align='center'>
+                                                                          <tr>
+                                                                            <td align='center'>
+                                                                              <b> Horario de Clases Curso : $nombreCurso </b>
+                                                                            </td>
+                                                                          </tr>
+                                                                          </table>
+                                                                        <table class='table table-striped table-bordered' border='1' width='100%'>";
                                                               $presenta.="<thead><tr>";
                                                               $presenta.="<th>Horario</th>";
                                                               //var_dump($arrCol);
@@ -2408,7 +2479,7 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
                                                                       {
                                                                         $presenta.="<tr>";
                                                                       }
-                                                                      $presenta.="<td style='font-size:10px; line-height:1;'> ".$value['Materia']." - ".$value['Profesor']."</td>";
+                                                                      $presenta.="<td style='font-size:10px; line-height:1;'> <b>".$value['Materia']."</b> - ".$value['Profesor']."</td>";
                                                                       if ($i%2==0)
                                                                       {
                                                                         $presenta.="<tr>";
@@ -2420,6 +2491,7 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
 
                                                               $presenta.="</body></html>";
                                                               $mPDF->WriteHTML($presenta);
+                                                              $presenta="";
                                                               //echo $presenta;
                                                           //var_dump($arrPresentar);
                                                           //exit();
@@ -2455,6 +2527,291 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
               return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
      }  
     }#end function        
+     public function pdfDatosGeneralesAction(Request $request,$carrera)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+            $idEstudiante=$session->get("id_user");
+             //$idEstudiante=32;
 
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm){
+
+
+                  $UgServices = new UgServices;
+                $xml1 = $UgServices->getConsultaDatos_Generales($idEstudiante);
+                // var_dump($xml1);
+                // exit();
+              //obtenet el ciclo de matriculacion del XML
+               if ( is_object($xml1))
+                  {
+                            foreach($xml1->registros as $xml)
+                             {  
+
+                                  foreach($xml->registro as $Datos) 
+                                    {
+
+                                       $rutaFoto=(string) $Datos->DirectorioFoto;
+                                       if (trim($rutaFoto)=="")
+                                       {
+                                            $rutaFoto="images/menu/ug_logo.png";
+                                       }
+                                       
+                                      $pdf= " <html> 
+                                            <body>
+                                            <img width='5%' src='images/menu/ug_logo.png'/>
+                                            
+                                            <table align='right'>
+                                            <tr>
+                                              <td align='center'>
+                                                <b> Ficha de Datos</b>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                            <td>
+                                                <b> $carrera </b>
+                                            </td>
+                                            <td >&nbsp;&nbsp;</td>
+                                            <td>
+                                                <table align='right' border=1  >
+                                                <tr>
+                                                    <td>
+                                                        <img  width='15%' src='$rutaFoto'/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                              </td>
+                                            </tr>
+                                            </table>
+
+                                            <div class='col-lg-12'>
+                                            <br><br><br><br>
+                                            <table class='table table-striped table-bordered'  width='100%' >
+                                            ";
+                                            $nombres=$Datos->nombres;
+                                            $apellidos=$Datos->apellidos;
+                                            $identificacion=$Datos->usuario;
+                                            $direccion=$Datos->direccion;
+                                            $telefono=$Datos->telefono;
+                                            $correoinst=$Datos->correo_institucional;
+                                            $correoper=$Datos->correo_personal;
+                                            $estadoCivil=$Datos->descEstadoCivil;
+                                            $nombrePadre=$Datos->nombre_padre;
+                                            $nombreMadre=$Datos->nombre_madre;
+                                            $sexo=$Datos->descSexo;
+                                            $tipoSangre=$Datos->descTipoSangre;
+                                            $fechaNac=$Datos->fecha_nacimiento;
+
+
+                                             $pdf.="<tr>
+                                                                  <td align='left' ><b>Nombres :</b> $nombres</td>
+                                                                  <td align='left' ><b>Apellidos :</b> $apellidos</td>
+                                                      </tr><tr>
+                                                                  <td align='left' ><b>Numero de Identificacion :</b> $identificacion</td>
+                                                                  <td align='left' ><b>Fecha de Nacimiento :</b> $fechaNac</td>
+                                                      </tr>
+                                                      <tr rowspan=2>
+                                                              <td align='left' colspan=2 ><b>Direccion :</b> $direccion</td>
+                                                      </tr>
+                                                      <tr>
+                                                                  <td align='left' ><b>Telefono :</b> $telefono</td>
+                                                                  <td align='left' ><b>Correo Institucional :</b> $correoinst</td>
+                                                      </tr>
+                                                      <tr>
+                                                                  <td align='left' ><b>Correo Personal :</b> $correoper</td>
+                                                                  <td align='left' ><b>Estado Civil :</b> $estadoCivil</td>
+                                                      </tr>
+                                                      <tr>
+                                                                  <td align='left' ><b>Nombre del Padre:</b> $nombrePadre</td>
+                                                                  <td align='left' ><b>Nombre de la Madre :</b> $nombreMadre</td>
+                                                      </tr>
+                                                      <tr>
+                                                                  <td align='left' ><b>Sexo:</b> $sexo</td>
+                                                                  <td align='left' ><b>Tipo de Sangre :</b> $tipoSangre</td>
+                                                      </tr>
+
+                                                      ";
+                                          
+
+                                            $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
+
+                                                    <tr><td width='40%'><img width='80%' src='images/menu/firma.png'/></td> 
+                                                      <td width='20%'>&nbsp;</td>
+                                                      <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
+                                                    </tr>
+
+                                                    <tr><td align='center' ><b>$estudiante</b></td>
+                                                    <td >&nbsp;</td>
+                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                    </table>";
+
+                                             $pdf.="</div></body></html>";
+ 
+                                            
+                                    }
+                              }
+                  }
+                  $mpdfService = $this->get('tfox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();
+                 // $mPDF = $mpdfService->add();
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  
+                  //$mPDF->AddPage('','','1','i','on');
+                  //$mPDF->WriteHTML($pdf);
+                  //$mPDF->Output();
+                  return new response($mPDF->Output());
+                   // $html =  $pdf;
+
+                    //$mpdfService->SetTitle("Acme Trading Co. - Invoice");
+                    //$mpdfService->Output("Pruebas.pdf")
+
+
+                    //$response = $mpdfService->generatePdfResponse($html);
+                    //return $response;
+
+
+
+        } else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }  
+    }#end function
+
+          public function PdfSolicitudesAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+            $idUsuario  = $session->get('id_user');
+            $cedula  = $session->get('cedula');            
+            $UgServices    = new UgServices;
+            $datosHorarios  = $UgServices->Docentes_Horarios($idUsuario);
+          
+                 $pdf= " <html> 
+                                            <body>
+                                            <img width='5%' src='images/menu/ug_logo.png'/>
+                                            <br/><br/><br/><br/>
+                                            <table align='center'>
+                                            <tr>
+                                              <td align='center'>
+                                                <b> Solicitud </b>
+                                              </td>
+                                            <tr>
+                                            <tr>
+                                            <td>
+                                              <b> $estudiante </b>
+                                            </td>
+                                            </tr>                                           
+                                            </table>
+                                            
+                                            <br/><br/><br/><br/>
+                                             <div class='col-lg-4'>
+                                              <table align='left'>
+                                            <tr>
+                                              <td>
+                                                <b>Director Harry Luna</b>
+                                              </td>
+                                            <tr>
+                                            <tr>
+                                            <td>
+                                              <b>En su Despacho</b>
+                                            </td>
+                                            </tr>                                           
+                                            </table>
+                                             </div>
+                                            <div class='col-lg-12'>
+                                            <br><br><br><br>
+                                            <table class='table table-striped table-bordered' border='0' width='100%' >
+                                                                                           ";
+
+                                                 
+                                                 $pdf.="<tr>
+                                                            <td align='left'>
+                                                            Yo $estudiante con C.I $cedula pido se me conceda la matricula en las sigueintes materias, ya que no 
+                                                            alcanze cupo.
+                                                            </td>                                                           
+                                                        </tr>";
+                                                   
+                                                    $pdf.="<br/><br/><br/><br/> <table align='center' border='1'>
+                                            <tr>
+                                              <td>
+                                                <b>Nombre Materia</b>
+                                              </td>
+                                              <td>
+                                                <b>Curso</b>
+                                              </td>
+                                            <tr>
+                                            <tr>
+                                            <td>
+                                              Base de datos
+                                            </td>
+                                             <td>
+                                              S5K
+                                            </td>                                                                                     
+                                            </tr> 
+                                            <tr>
+                                            <td>
+                                              Programacion 3
+                                            </td>     
+                                            <td>
+                                              S3K
+                                            </td>                                                                                    
+                                            </tr>
+                                            <tr>
+                                             <td>
+                                              Circuitos
+                                            </td>
+                                             <td>
+                                              S4L
+                                            </td>    
+                                            </tr>
+                                            </table>"
+                                                            ;
+
+                                            $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
+
+                                                    <tr><td width='40%'><img width='80%' src='images/menu/firma.png'/></td> 
+                                                      <td width='20%'>&nbsp;</td>
+                                                      <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
+                                                    </tr>
+
+                                                    <tr><td align='center' ><b>$estudiante</b></td>
+                                                    <td >&nbsp;</td>
+                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                    </table>";
+
+                                             $pdf.="</div></body></html>";
+ 
+                                            
+                            
+                  $mpdfService = $this->get('TFox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();               
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  return new response($mPDF->Output());
+                 
+    }#end function
 
     }

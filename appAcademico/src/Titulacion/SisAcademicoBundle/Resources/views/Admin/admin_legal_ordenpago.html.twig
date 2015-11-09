@@ -171,8 +171,17 @@
 
                                         modelessSetOrdenPago.close();
                                        var respuesta=jQuery.parseJSON(dataResponse);
+                                       
                                        if (respuesta.codigo_error!=1)
                                        {
+                                            modelessActualizadOrden2= new $.flavr({
+                                                   modal   : true,
+                                                   content : respuesta.mensaje,
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', 
+                                                      style: 'primary' }
+                                                   }
+                                                });
                                             
                                             $("#btnlegalorden").attr("disabled", false);
                                        }

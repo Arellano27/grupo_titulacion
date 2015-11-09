@@ -13,3 +13,16 @@ titulacion_sis_academico_mail:
 titulacion_sis_academico_get_captcha:
     path:     /captcha
     defaults: { _controller: TitulacionSisAcademicoBundle:Home:get_captcha }
+    
+titulacion_usuario_editar_perfil:
+    pattern:  /perfil/editar
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:editarPerfil }
+
+titulacion_usuario_editar_perfil_formActualiza:
+    pattern:  /perfil/editar/form
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:editarPerfilActualizar }
+    
+titulacion_usuario_editar_perfil_grabarFormActualiza:
+    pattern:  /perfil/editar/form/grabar
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:grabarEditarPerfilActualizar }
+

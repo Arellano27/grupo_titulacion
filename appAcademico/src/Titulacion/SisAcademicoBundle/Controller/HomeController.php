@@ -326,9 +326,6 @@ class HomeController extends Controller
                                        );
                      $datosDocente  = array( 'idDocente' => $idDocente );
 
-
-
-
                      return $this->render('SisAcademicoBundle:Docentes:listadoCarreras.html.twig',
                                                 array(
                                                         'data' => array('datosDocente' => $datosDocente,  'datosCarreras' => $datosCarreras)
@@ -346,12 +343,12 @@ class HomeController extends Controller
                 $datos_menu_izquierda = array();
                 $datos_menu_izquierda = array( 'error' => $error,
                         'services' => $services );
-
+               
+                
                 return $this->render('TitulacionSisAcademicoBundle:Home:index.html.twig',
                                         array(
                                                 'data' => array('service_selected' => 'DatosMenu',
                                                         'services_menu_izq' => $datos_menu_izquierda
-
                                                                )
                                              )
                 );
@@ -389,5 +386,147 @@ class HomeController extends Controller
                                              )
                 );
     }
+   
+    public function editarPerfilAction(Request $request) {
+         $session    =$request->getSession();
+         $idUsuario  = $session->get('id_user');
+         
+         $UgServices          = new UgServices;
+         $datosConsulta       = array( 'idUsuario' => $idUsuario);
+         $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
 
+         $datosUsuario        = $datosUsuarioArray[0];
+         return $this->render('TitulacionSisAcademicoBundle:Home:visualizarPerfil.html.twig',
+                           array(
+                              'dataUsuario' => $datosUsuario
+                           )
+                        );
+      } // editarPerfilAction()
+      
+      public function editarPerfilActualizarAction(Request $request)
+      {
+         $session=$request->getSession();
+         $idUsuario  = $session->get('id_user');
+         
+         $UgServices          = new UgServices;
+         //Consulta los datos del usuario
+         $datosConsulta       = array( 'idUsuario' => $idUsuario);
+         $datosUsuario        = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
+         
+         //Consulta de parametro - Tipo de sangre
+         $datosConsulta       = array( 'parametro' => 6);
+         $datosTiposSangre    = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+         //Consulta de parametro - sexo
+         $datosConsulta       = array( 'parametro' => 7);
+         $datosGeneros        = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+         //Consulta de parametro - estado civil
+         $datosConsulta       = array( 'parametro' => 5);
+         $datosEstadosCiviles = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+         //Consulta de parametro - nacionalidad
+         $datosConsulta       = array( 'parametro' => 23);
+         $datosNacionalidades = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+         //Consulta de parametro - pais
+         $datosConsulta       = array( 'parametro' => 4);
+         $datosPaises         = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+//         
+//         $UgServices          = new UgServices;
+//         $datosConsulta       = array( 'idUsuario' => $idUsuario);
+//         $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuarioEditar($datosConsulta);
+
+//         $datosUsuario        = $datosUsuarioArray[0];
+         if(!isset($datosUsuario['nombres'])){
+            if(isset($datosUsuario[0])) {
+               $tempDataUsuario  = $datosUsuario[0];
+               $datosUsuario     = NULL;
+               $datosUsuario     = $tempDataUsuario;
+               unset($tempDataUsuario);
+            }
+            else {
+               $datosUsuario = NULL;
+            }
+         }
+         
+         return $this->render('TitulacionSisAcademicoBundle:Home:editarPerfil.html.twig',
+                           array(
+                              'dataUsuario' => $datosUsuario,
+                              'datosTiposSangre' => $datosTiposSangre,
+                              'datosGeneros' => $datosGeneros,
+                              'datosEstadosCiviles' => $datosEstadosCiviles,
+                              'datosNacionalidades' => $datosNacionalidades,
+                              'datosPaises' => $datosPaises,
+                           )
+                        );
+      } // editarPerfilAction()
+      
+      public function grabarEditarPerfilActualizarAction(Request $request)
+      {
+         $respuesta  = new Response("",200);
+         $session    = $request->getSession();
+         $idUsuario  = $session->get('id_user');
+         $dataPerfil = $request->request->get('dataPerfil');
+         $imagenPerfil = $request->request->get('imagenPerfil');
+         $datosPerfilGrabar   = array();
+         $datosPerfilXML   = ""; 
+         
+         foreach($dataPerfil as $registroPerfil) {
+            $datosPerfilGrabar[$registroPerfil['name']] = $registroPerfil['value'];
+         }
+         
+         $datosPerfilGrabar["imagenPerfil"] = $imagenPerfil;
+         
+         $rutaImagenPerfil = NULL;
+         if($datosPerfilGrabar["imagenPerfil"]!=NULL) {
+            $dataImgTemp         = substr($datosPerfilGrabar["imagenPerfil"], strpos($datosPerfilGrabar["imagenPerfil"], ",") + 1); //Quitar la cabecera
+            $decodedDataImgTemp  = base64_decode($dataImgTemp);
+
+            $rutaTempImagenPerfil   = "images/img_perfil_temp/";
+            $nombreTempImagen       = "imgPerfil_".$idUsuario.".png";
+
+            $fp = fopen($rutaTempImagenPerfil.$nombreTempImagen, 'wb');
+            fwrite($fp, $decodedDataImgTemp);
+            fclose($fp);
+            //echo getcwd();
+            //echo '<img src="'.getcwd().'\images\img_perfil_temp\\'.$nombreTempImagen.'" >';
+            //echo '<img src="'.$rutaTempImagenPerfil.$nombreTempImagen.'" >';
+            $rutaImagenPerfil = $rutaTempImagenPerfil.$nombreTempImagen;
+         }
+         //var_dump($datosPerfilGrabar);
+         
+         
+         $datosPerfilXML   .= "<id_usuario>".$idUsuario."</id_usuario>";
+         //$datosPerfilXML   .= "<img_usuario>".$datosPerfilGrabar[""]."</img_usuario>";
+         $datosPerfilXML   .= "<fecha_nacimiento>".$datosPerfilGrabar["fecha_nacimiento"]."</fecha_nacimiento>";
+         $datosPerfilXML   .= "<tipo_sangre>".$datosPerfilGrabar["tipo_sangre"]."</tipo_sangre>";
+         $datosPerfilXML   .= "<sexo>".$datosPerfilGrabar["sexo"]."</sexo>";
+         $datosPerfilXML   .= "<estado_civil>".$datosPerfilGrabar["estado_civil"]."</estado_civil>";
+         $datosPerfilXML   .= "<nacionalidad>".$datosPerfilGrabar["nacionalidad"]."</nacionalidad>";
+         $datosPerfilXML   .= "<pais>".$datosPerfilGrabar["nacionalidad"]."</pais>";
+         $datosPerfilXML   .= "<direccion>".$datosPerfilGrabar["direccion"]."</direccion>";
+         $datosPerfilXML   .= "<telefono>".$datosPerfilGrabar["telefono"]."</telefono>";
+         $datosPerfilXML   .= "<correo_personal>".$datosPerfilGrabar["correo_personal"]."</correo_personal>";
+         $datosPerfilXML   .= "<correo_institucional>".$datosPerfilGrabar["correo_institucional"]."</correo_institucional>";
+         
+         $UgServices          = new UgServices;
+         $datosConsulta       = array( 'idUsuario' => $idUsuario,
+                                       'DatosPerfil' => $datosPerfilXML,
+                                       'rutaImgPerfil' => $rutaImagenPerfil);
+         //$datosUsuarioArray   = $UgServices->Docentes_getConsultaPerfilUsuarioEditar($datosConsulta);
+         
+         $datosUsuarioArray["idMensaje"]   = 0;
+         $datosUsuarioArray["infoMensaje"] = "Error al subir la imagen";
+         
+         $jsonResponse  = json_encode($datosUsuarioArray);
+         
+         $response = new Response($jsonResponse);
+         $response->headers->set('Content-Type', 'application/json');
+         
+         return $response;
+//
+//         $datosUsuario        = $datosUsuarioArray[0];
+//         return $this->render('TitulacionSisAcademicoBundle:Docentes:editarPerfil.html.twig',
+//                           array(
+//                              'dataDocente' => $datosUsuario
+//                           )
+//                        );
+      } // grabarEditarPerfilActualizarAction()
 }
