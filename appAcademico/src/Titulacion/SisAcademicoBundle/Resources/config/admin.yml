@@ -7,6 +7,9 @@ admin_academico_cambio_pass:
 admin_academico_ingreso_nuevo_pass:
     path:     /nuevo_pass
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:ingreso_nuevo_pass }
+admin_academico_ingreso_nuevo_int_pass:
+    path:     /nuevo_pass_int
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:ingreso_nuevo_int_pass }
 admin_academico_cargar_eventos:
     path:     /cargar_eventos
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargar_eventos }
@@ -92,3 +95,9 @@ admin_academico_estudiante_materias_filtro:
 admin_academico_estudiante_materias_pdf:
     path:     /pdfMaterias/{idCarrera}/{ciclo}/{carrera}
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consulta_materias_aprobadas_estudiante_pdf }
+admin_academico_cambio_pass_int:
+    path:     /restablecer_pass_int
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cambio_password_int }
+admin_academico_get_captcha:
+    path:     /captchaAdmin
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:get_captcha_cambio }

@@ -26,29 +26,29 @@ class UgServices
 
 
      
-      $this->usuario         = "CapaVisualPhp";
-      $this->clave           = "T3pZx1520pHp";
-      $this->source          = "jdbc/procedimientosSaug";
-      $this->sourceConsultas = "jdbc/consultasSaug";
-      $this->url             = "http://192.168.100.11:8080/";
-      $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      $this->urlWS           = "";
-      $this->host            = "192.168.100.11:8080";
+      // $this->usuario         = "CapaVisualPhp";
+      // $this->clave           = "T3pZx1520pHp";
+      // $this->source          = "jdbc/procedimientosSaug";
+      // $this->sourceConsultas = "jdbc/consultasSaug";
+      // $this->url             = "http://192.168.100.11:8080/";
+      // $this->urlConsulta     = "consultas/ServicioWebConsultas?wsdl";
+      // $this->urlProcedim     = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      // $this->urlWS           = "";
+      // $this->host            = "192.168.100.11:8080";
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      // $this->usuario       = "usr_tesis";
-      // $this->clave         = "Tesis2015";
-      // $this->url           = "http://186.101.66.2:8080/";
+      $this->usuario       = "usr_tesis";
+      $this->clave         = "Tesis2015";
+      $this->url           = "http://186.101.66.2:8080/";
 
-      // /*Saug Temporal*/
-      // $this->source        = "jdbc/saugProcTmp";
-      // $this->sourceConsultas  = "jdbc/saugConsTmp";
-      // $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      // $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
-      // $this->urlWS         = "";
-      // $this->host          = "186.101.66.2:8080";
+      /*Saug Temporal*/
+      $this->source        = "jdbc/saugProcTmp";
+      $this->sourceConsultas  = "jdbc/saugConsTmp";
+      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlWS         = "";
+      $this->host          = "186.101.66.2:8080";
 
 // //      /*Preproduccion*/
      // $this->source        = "jdbc/procedimientosSaug";
@@ -819,39 +819,27 @@ public function insertarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_h
 
 
 //-----------------------------------------------------------------------------------------------------------------------------//
-/*INICIO - ARELLANO SPRINT 4*/
-public function getConsultaEstudiantes_InscritosMatriculados($idCiclo, $idCarrera,$idEstadoMatricula,$identificacion){
-        $ws=new AcademicoSoap();
-        $tipo       = "23";
-        $usuario    = "CapaVisualPhp";
-        $clave      = "12CvP2015";
-        $source     = "jdbc/saugConsTmp";
-        $url        = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
-        $host       = "186.101.66.2:8080";
-        $trama      = "<estadoMatricula>".$idEstadoMatricula."</estadoMatricula><identificacion>".$identificacion."</identificacion><idCiclo>".$idCiclo."</idCiclo><carrera>".$idCarrera."</carrera>";
-        $this->urlWS   = $this->url.$this->urlConsulta;
-        $XML        = NULL;
-        $response=$this->ws->doRequestSreReceptaEstudiantes_InscritosMatriculados($trama,$this->sourceConsultas,$tipo,$this->usuario,$this->clave,$this->urlWS,$this->host,$XML);
-        return $response;
         
-}#end function
-
-public function getEstadosMatricula(){
-        $ws=new AcademicoSoap();
-        $tipo       = "24";
-        $usuario    = "CapaVisualPhp";
-        $clave      = "12CvP2015";
-        $source     = "jdbc/saugConsTmp";
-        $url        = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
-        $host       = "186.101.66.2:8080";
-        $trama      = "<parametro>16</parametro>";
-        $XML        = NULL;
-        $this->urlWS   = $this->url.$this->urlConsulta;
-        $response=$this->ws->doRequestEstadosMatricula($trama,$this->sourceConsultas,$tipo,$this->usuario,$this->clave,$this->urlWS,$this->host ,$XML);
+    /* INICIO - ARELLANO SPRINT 4 */
+    public function getConsultaEstudiantes_InscritosMatriculados($idCiclo, $idCarrera, $idEstadoMatricula, $identificacion) {
+        $this->tipo = "23";
+        $this->urlWS = $this->url . $this->urlConsulta;
+        $trama = "<estadoMatricula>" . $idEstadoMatricula . "</estadoMatricula><identificacion>" . $identificacion . "</identificacion><idCiclo>" . $idCiclo . "</idCiclo><carrera>" . $idCarrera . "</carrera>";
+        $XML = NULL;
+        $response = $this->ws->doRequestSreReceptaEstudiantes_InscritosMatriculados($trama, $this->sourceConsultas, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);        
         return $response;
+    }#end function
 
-}#end function
-/*FIN - ARELLANO SPRINT 4*/
+    public function getEstadosMatricula() {
+        $this->tipo = "24";
+        $this->urlWS = $this->url . $this->urlConsulta;
+        $trama = "<parametro>16</parametro>";
+        $XML = NULL;
+        $response = $this->ws->doRequestEstadosMatricula($trama, $this->sourceConsultas, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+        return $response;
+    }#end function
+    
+    /* FIN - ARELLANO SPRINT 4 */
 //-----------------------------------------------------------------------------------------------------------------------------//
 
 public function modificarEventos($evento,$idparametro,$estado){
@@ -1054,14 +1042,18 @@ public function getConsultaHorario_examen($idEstudiante,$idCarrera,$idCiclo){
 
   }#end function
 
-/*INICIO - ARELLANO SPRINT 4.1*/
-public function getConsultaMateriasAprobadasEstudianteAdmin($opcion,$identificacion, $idCarrera, $idCiclo, $nivel){
-        $this->tipo       = "30";
-        $this->urlWS   = $this->url.$this->urlProcedim;
-        $trama      = "<PV_Opcion>".$opcion."</PV_Opcion><PV_Identificacion>".$identificacion."</PV_Identificacion><PI_ID_Ciclo>".$idCiclo."</PI_ID_Ciclo><PI_ID_Nivel>".$nivel."</PI_ID_Nivel><PI_Carrera>".$idCarrera."</PI_Carrera>";
-        $response=$this->ws->doRequestConsultaMateriasAprobadasEstudianteAdmin($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
-        return $response; 
-}#end function
+//-----------------------------------------------------------------------------------------------------------------------------//
+  /* INICIO - ARELLANO SPRINT 4.1 */
+  public function getConsultaMateriasAprobadasEstudianteAdmin($opcion, $identificacion, $idCarrera, $idCiclo, $nivel) {
+      $this->tipo = "30";
+      $this->urlWS = $this->url . $this->urlProcedim;
+      $trama = "<PV_Opcion>" . $opcion . "</PV_Opcion><PV_Identificacion>" . $identificacion . "</PV_Identificacion><PI_ID_Ciclo>" . $idCiclo . "</PI_ID_Ciclo><PI_ID_Nivel>" . $nivel . "</PI_ID_Nivel><PI_Carrera>" . $idCarrera . "</PI_Carrera>";
+      $response = $this->ws->doRequestConsultaMateriasAprobadasEstudianteAdmin($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+      return $response;
+  }#end function
+    /* FIN - ARELLANO SPRINT 4.1 */
+//-----------------------------------------------------------------------------------------------------------------------------//
+
 public function getConsultaCarrerasHorarios($idEstudiante,$idRol){
   // echo '<pre>'; var_dump($idEstudiante,$idRol); exit();
         $this->tipo    = "3";
