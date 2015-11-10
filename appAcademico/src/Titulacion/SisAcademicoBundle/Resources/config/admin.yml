@@ -113,6 +113,10 @@ admin_cmb_materias:
     pattern:  /combo/materias
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cmbMaterias}
     
+admin_generacion_horario_docente:
+   path:     /generacion_horarios
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios }
+    
 admin_muestra_estudiantes:
     pattern:  /muestra/estudiantes
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:muestraEstudiantes}

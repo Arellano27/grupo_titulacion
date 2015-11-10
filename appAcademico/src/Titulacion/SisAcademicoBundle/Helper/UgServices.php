@@ -1408,6 +1408,31 @@ public function getConsultaDatos_Generales($idEstudiante){
         return $response;
       }#end function
 
+      
+        public function Paralelos($idUsuario) {
+        $this->tipo = "35";
+        $this->source = $this->sourceConsultas;
+        $this->urlWS = $this->url . $this->urlConsulta;
+        $trama = "<carrera>" . $idUsuario . "</carrera>";       
+        $XML = NULL;
+        //echo '<pre>'; var_dump($idCarrera); exit();
+        $response = $this->ws->doRequestParalelos($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+
+        return $response;
+    }
+    
+     public function Materia($IdCarrera,$IdParalelo) {
+        $this->tipo = "36";
+        $this->source = $this->sourceConsultas;
+        $this->urlWS = $this->url . $this->urlConsulta;
+        $trama = "<carrera>" . $IdCarrera . "</carrera>"
+                . "<id_paralelo>" . $IdParalelo . "</id_paralelo>";       
+        $XML = NULL;
+        //echo '<pre>'; var_dump($idCarrera); exit();
+        $response = $this->ws->doRequestMaterias($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+
+        return $response;
+    }
 }#end class
 
 

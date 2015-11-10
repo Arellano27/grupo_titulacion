@@ -2414,4 +2414,20 @@ class AdminController extends Controller
 
             return $response;
         }
+        
+public function generacion_horariosAction(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $UgServices = new UgServices;
+    $Paralelos = $UgServices->Paralelos(4);
+    $Materia = $UgServices->Materia(4,44);
+        //echo var_dump($Materia); exit();
+    return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_admin.html.twig',
+    									array(
+    				'data' => array('Paralelo' => $Paralelos,
+                                                'Materia'   => $Materia)
+    										 )
+                              );
+   }
 }

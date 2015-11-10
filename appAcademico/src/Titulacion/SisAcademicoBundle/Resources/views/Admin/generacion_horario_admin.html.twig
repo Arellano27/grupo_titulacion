@@ -1,0 +1,171 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+
+
+
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
+
+<section class="content">
+          <div class="row">
+              <form id="form-enviar" method="post">
+            <div class="col-md-5">
+             
+              <div class="box box-solid">
+                <div class="box-header with-border">
+                  <h4 class="box-title">Generacion de Horarios a Profesores</h4>
+                </div>
+                <div class="box-body">
+                  <div id="external-events">
+                    <div class="form-group">
+                      <label>Seleccione Paralelo:</label>
+                      <select class="form-control">
+                           {% for Paralelo in data.Paralelo %} 
+                        <option value="{{ Paralelo.id_paralelo }}">{{ Paralelo.nombre_paralelo }}</option>                        
+                           {%endfor%}  
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Seleccione dìa:</label>
+                      <select class="form-control">
+                            <option value="1">Lunes</option>
+                            <option value="2">Martes</option>
+                            <option value="3">Miercoles</option>
+                            <option value="4">Jueves</option>
+                            <option value="5">Viernes</option>
+                            <option value="6">Sabado</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Seleccione Hora:</label>
+                      <select class="form-control">
+                            <option value="1">17:00 - 18:00</option>
+                            <option value="2">18:00 - 19:00</option>
+                            <option value="3">19:00 - 20:00</option>
+                            <option value="4">20:00 - 21:00</option>
+                            <option value="5">21:00 - 22:00</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Seleccione Docente:</label>
+                        <select class="form-control">
+                            <option value="saab"> RENATO RESABALA</option>
+                            <option value="opel"> ERCICKA FLORES</option>
+                            <option value="audi">GABRIEL HUAYAMABE</option>
+                            <option value="volvo">DIANDRA BRIONES</option>
+                            <option value="volvo">ADRIANA MORALES</option>
+                        </select>
+                    </div>
+                                        <div class="form-group">
+                      <label>Seleccione Materia:</label>
+                        <select class="form-control">
+                             {% for Materia in data.Materia %} 
+                        <option value="{{ Materia.idmateria }}">{{ Materia.materia}}</option>                        
+                           {%endfor%}  
+                        </select>
+                    </div>
+            
+                    
+                    <div class="modal-footer col-md-12">
+                    {#<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>#}
+                    {#<input type="submit" class="fa fa-save  btn btn-primary btn-sm"><a href=""> </a></button>#}
+                    <a href="{{('admin_generacion_horario_docente')}}" class="fa fa-save btn btn-info" role="button"> GUARDAR</a>
+                    <button type="submit" class="fa fa-pencil-square-o btn btn-warning btn-sm"> MODIFICAR</button>
+                    <button type="submit" class="fa fa-ban  btn btn-danger btn-sm"> CANCELAR</button>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            <div class="col-md-7">
+                <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Responsive Hover Table</h3>
+                  <div class="box-tools">
+                    <div class="input-group" style="width: 150px;">
+                      <input type="text" name="table_search" class="form-control input-sm pull-right" placeholder="Search">
+                      <div class="input-group-btn">
+                        <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                  <table class="table table-hover">
+                    <tbody><tr>
+                      <th>Horas</th>
+                      <th>Lunes</th>
+                      <th>Martes</th>
+                      <th>Miercoles</th>
+                      <th>Jueves</th>
+                      <th>Viernes</th>
+                      <th>Sabado</th>
+                      <th>Horas</th>
+                    </tr>
+                    
+                    <tr>
+                      <td>17:00 - 18:00</td>
+                      <td><input type="checkbox" id="" value=""> Alexander Pierce</td>
+                      <td><input type="checkbox"> Alexander Pierce</td>
+                      <td><input type="checkbox"> Alexander Pierce</td>
+                      <td><input type="checkbox"> Alexander Pierce</td>
+                      <td><input type="checkbox"> Alexander Pierce</td>
+                      <td><input type="checkbox"> Alexander Pierce</td>
+                      <td>13:00 - 14:00</td>
+                    </tr>
+                    <tr>
+                      <td>18:00 - 19:00</td>
+                      <td>Bob Doe</td>
+                      <td>Bob Doe</td>
+                      <td>Bob Doe</td>
+                      <td>Bob Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>13:00 - 14:00</td>
+                    </tr>
+                    <tr>
+                      <td>19:00 - 20:00</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>13:00 - 14:00</td>
+                    </tr>
+                    <tr>
+                      <td>20:00 - 21:00</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>13:00 - 14:00</td>
+                    </tr>
+                    <tr>
+                      <td>21:00 - 22:00</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>Mike Doe</td>
+                      <td>13:00 - 14:00</td>
+                    </tr>
+                  </tbody></table>
+                </div>
+              </div>
+                        
+            </div>
+        </form>
+    </div>
+
+        </section>
+
+    
+{% endblock %}
