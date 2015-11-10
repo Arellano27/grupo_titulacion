@@ -113,7 +113,7 @@ $("#formulario").submit();
                                            <td width = "5%" >{{ codigo }}</td>
                                            
                                             <td width = 
-                                                "20%">{{ alumno }} <input type = "hidden" value = "{{ idalumno }}" name = "hdalumno" /></td>
+                                                "20%">{{ alumno }}<input type = "hidden" value = "{{ idalumno }}" name = "hdalumno" /></td>
                                             {%for count ,tareas in arr_tareas %}
                                             <td><input class="form-control inputNota" maxlength="4" name="academicos_{{count+1}}" id="academicos_{{count+1}}" type="text"  value=""/></td>
                                             {% endfor %}

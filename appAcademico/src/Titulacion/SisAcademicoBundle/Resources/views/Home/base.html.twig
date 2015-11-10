@@ -113,11 +113,7 @@
   <script src="{{ asset('theme/plugins/flot/jquery.flot.categories.min.js') }}"></script>
 
 
-<script type="text/javascript">
-{#   $(function () {
-            TableAdvanced.init();          
-     });#}  
-</script>
+
 
   {#  notificaciones   #}
   <script type="text/javascript" src="{{ asset('js_notificaciones/datatables/media/js/jquery.dataTables.min.js') }}"></script>
@@ -129,7 +125,7 @@
   <script src="{{ asset('Scripts_notificaciones/layout.js') }}" type="text/javascript"></script>
   <script src="{{ asset('Scripts_notificaciones/quick-sidebar.js') }}" type="text/javascript"></script>
   <script src="{{ asset('Scripts_notificaciones/demo.js') }}" type="text/javascript"></script>
-  {#<script src="{{ asset('Scripts_notificaciones/table-advanced.js') }}"></script>#}
+  <script src="{{ asset('Scripts_notificaciones/table-advanced.js') }}"></script>
   <script src="{{ asset('Scripts_notificaciones/form-wizard.js') }}"></script>
   <script src="{{ asset('js_notificaciones/components-pickers.js') }}"></script>
   {#  notificaciones   #}
@@ -143,6 +139,12 @@
      
     });  
 </script>
+
+{#<script type="text/javascript">
+   $(function () {
+          TableAdvanced.init();          
+     });  
+</script>#}
     {% endblock %}
   </body>
 </html>
