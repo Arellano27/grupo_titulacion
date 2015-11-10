@@ -369,7 +369,7 @@
                }
                $datosAsistenciasGraph[str_replace(" ","_",$key)] = substr($tempSerie, 0, -1);
             }
-         }     
+         }
          ////->Obtener los datos para la grafica de asistencias - FIN
          
          
