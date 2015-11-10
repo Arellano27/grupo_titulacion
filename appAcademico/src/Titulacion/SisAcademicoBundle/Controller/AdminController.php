@@ -2246,12 +2246,17 @@ class AdminController extends Controller
            list($Materia,$paralelo) = split('[-]', $Materia);
             
            $Docente= trim($Docente);
-            
-            $section ='http://localhost/desarrollo/appAcademico/web/admin/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
+            // $prueba2=$_SERVER['HTTP_HOST'];
+             //$prueba=app.request.getSchemeAndHttpHost();
+//             $servidor=$_SERVER['HTTP_HOST'];
+//             $section ='http://'.$servidor.'/desarrollo/appAcademico/web/admin/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
+             $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+
+           $section =$baseurl.'/admin/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
             $response->setData(
                                 array(
                                         'redirect' => true,
-                                        'section' => $section
+                                        'section' => $section,
                                      )
                               );
 

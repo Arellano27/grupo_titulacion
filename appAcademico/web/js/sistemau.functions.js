@@ -698,6 +698,7 @@ function confirm(form, item)
             success: function(data) 
             {   CargandoDocentes.close();	
 		//window.location.href = data.section;
+                //alert(data.prueba);
                 window.open(data.section,'_blank');
                 // window.open(data.section,'_blank');
                 //window.open(data.section);

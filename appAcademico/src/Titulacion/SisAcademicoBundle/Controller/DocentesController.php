@@ -189,27 +189,28 @@
                $session->set("nom_materia",$nom_materia);
                $session->set("paralelo",$paralelo);
                
-                $ciclo='18';
+               /* $ciclo='18';
                 $docente='5';
-                $idMateria='251';
-            
+                $idMateria='251';*/
             $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                          <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
                          <PI_ID_MATERIA>".$idMateria."</PI_ID_MATERIA>
-                         <PARCIAL>1</PARCIAL>
-                         <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
+                         <PARCIAL>0</PARCIAL>
+                         <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
             $idMateria  = $request->request->get('idMateria');
             
                $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
                
-              /* print_r($datosParciales);
-               exit();*/
+//               print_r($datosParciales);
+//               exit();
                
-               for ($i=1; $i<=$datosParciales->registro[0]->cantParciales; $i++)
-            {
-                     $arr_parcial[$i]['parcial']='parcial #'.$i;
-                          
-            }
+//               for ($i=1; $i<=$datosParciales->registro[0]->cantParciales; $i++)
+//            {
+//                     $arr_parcial[$i]['parcial']='parcial #'.$i;
+//                          
+//            }
+            $arr_parcial[1]['parcial']=$datosParciales->registro[0]->periodos->periodo[0]->parcial;
+            
                $tareas= $datosParciales->registro[0]->periodos->periodo[0]->componentePeriodo;
                $i=0;
                foreach ($tareas->idNota as $idnota) {
@@ -231,12 +232,7 @@
                //echo $datosParciales[0]['cantparciales'];
                $session=$request->getSession();
                $session->set("idMateria",$idMateria);
-               
-               for ($i=1; $i<=$datosParciales->registro[0]->cantParciales; $i++)
-            {
-                     $arr_parcial[$i]['parcial']='parcial #'.$i;
-                          
-            }
+       
        //Menu de Notas por Materia para Profesor
        return $this->render('TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria.html.twig',
                          array(
@@ -909,9 +905,6 @@
            // exit();
           // echo $arr_datos->estado;
            $docente= $session->get('id_user');
-            $ciclo='18';
-            $docente='5';
-            $id_Materia='251';
             
             $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                          <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
@@ -929,9 +922,9 @@
             $materia=$datosParciales->registro[0]->materia;
             $paralelo=$datosParciales->registro[0]->paralelo;
             $parcial=$datosParciales->registro[0]->periodos->periodo[0]->parcial;
-            $profesor = $session->get('nom_usuario'); 
-            $materia= $session->get('nom_materia');
-            $paralelo= $session->get('paralelo');
+//            $profesor = $session->get('nom_usuario'); 
+//            $materia= $session->get('nom_materia');
+//            $paralelo= $session->get('paralelo');
             $parcial=str_replace('PARCIAL1','1',$parcial);
         
 			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:AlumnosIngresoNota.html.twig',
@@ -1055,9 +1048,9 @@
             $profesor=$datosParciales->registro[0]->profesor;
             $materia=$datosParciales->registro[0]->materia;
             $paralelo=$datosParciales->registro[0]->paralelo;
-            $profesor = $session->get('nom_usuario'); 
-            $materia= $session->get('nom_materia');
-            $paralelo= $session->get('paralelo');
+//            $profesor = $session->get('nom_usuario'); 
+//            $materia= $session->get('nom_materia');
+//            $paralelo= $session->get('paralelo');
 
         
 			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:AlumnosIngresoNota.html.twig',
@@ -1089,15 +1082,14 @@
         { 
              $response   		= new JsonResponse();
               $session=$request->getSession();
-               $idCarrera=$session->get('idCarrera');
               // $idDocente=$session->get('idDocente')
-               $parcial=$session->get('hdparcial');
+               $parcial=$request->request->get('hdparcial');
               // $alumno=$session->get('codalumno');
-               
+               $parcial=substr($parcial,8,1);
+
                $idDocente     = $session->get('id_user');
           
                 $alumno =$request->request->get('hdalumno');
-                $parcial =$request->request->get('hdparcial');
             //echo $parcial."ppt";
             //exit();
                     
@@ -1189,13 +1181,10 @@
                $session=$request->getSession();
                
               $id_Materia =$request->request->get('materia');
-              $parcial =$request->request->get('ciclo');
+              $ciclo =$request->request->get('ciclo');
                //print_r($datosParciales);
                $docente= $session->get('id_user');
-                $ciclo='18';
-                $docente='5';
-                $id_Materia='251';
-
+              
                 $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                              <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
                              <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
@@ -1302,7 +1291,6 @@
             $ciclo = $request->request->get('ciclo');
             // $materia="2269";
        //Menu de Notas por Materia para Profesor
-         $Parcial='1';
                
                     $trama = "<materia>".$id_Materia."</materia>";
                 
@@ -1318,15 +1306,11 @@
                
             }
            
-               $Parcial='1';
-               
                	$trama = "<materiaparalelo>".$id_Materia."</materiaparalelo>";
                 
             $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
             $docente= $session->get('id_user');
-            $ciclo='18';
-            $docente='5';
-            $id_Materia='251';
+           
             
             $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                          <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
@@ -1341,9 +1325,9 @@
             $profesor=$datosParciales->registro[0]->profesor;
             $materia=$datosParciales->registro[0]->materia;
             $paralelo=$datosParciales->registro[0]->paralelo;
-            $profesor = $session->get('nom_usuario'); 
-            $materia= $session->get('nom_materia');
-            $paralelo= $session->get('paralelo');
+//            $profesor = $session->get('nom_usuario'); 
+//            $materia= $session->get('nom_materia');
+//            $paralelo= $session->get('paralelo');
 
         
 			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:AlumnosActualizaAsistencia.html.twig',
@@ -1420,7 +1404,6 @@
          
          $UgServices    = new UgServices;
        //Menu de Notas por Materia para Profesor
-         $Parcial='1';
                
                $trama = "<materia>".$idMateria."</materia>";
                 
@@ -1487,9 +1470,7 @@
                 
             $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
             $docente= $session->get('id_user');
-            $ciclo='18';
-            $docente='5';
-            $id_Materia='251';
+         
             
             $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                          <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
@@ -1506,9 +1487,9 @@
             $profesor=$datosParciales->registro[0]->profesor;
             $materia=$datosParciales->registro[0]->materia;
             $paralelo=$datosParciales->registro[0]->paralelo;
-            $profesor = $session->get('nom_usuario'); 
-            $materia= $session->get('nom_materia');
-            $paralelo= $session->get('paralelo');
+//            $profesor = $session->get('nom_usuario'); 
+//            $materia= $session->get('nom_materia');
+//            $paralelo= $session->get('paralelo');
 
         
 			$this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:AlumnosIngresoAsistencia.html.twig',
@@ -2063,80 +2044,6 @@
          return $dataReturn;
       }//function procesarListadoAsistenciasEstudiantes();
       
-
-        
-     public function ExportarPDFEstudiantesAction(Request $request,$docente,$materia,$docente_text,$materia_text,$paralelo)
-        { 
-             $response   		= new JsonResponse();
-          //  echo "ttttttttttttttttttt";
-            
-            $Fecha=date('d/m/Y');
-            //echo $idDocente."--".$idMateria."--";
-            
-            
-            $response   		= new JsonResponse();
-           
-                           // $idMateria="2269";
-                   $trama = "<materiaparalelo>".$materia."</materiaparalelo>";
-                   $UgServices    = new UgServices; 
-                    $arr_datos  = $UgServices->Docentes_getAlumnos($trama);
-                   $this->v_html = $this->renderView('TitulacionSisAcademicoBundle:Docentes:tablaEstudiantes.html.twig',
-						  array(
-                                                           'docente_text'   => $docente_text,
-                                                           'materia_text'   => $materia_text,
-                                                           'paralelo'   => $paralelo,
-                                                           'fecha'   => $Fecha,
-                                                           'arr_datos'   => $arr_datos
-                                                           
-						  ));
-                   
-                       
-                        
-                       /* $response->setData(
-                                array(
-                                        'msg'                => $this->v_msg,
-                                        'error'              => $this->v_error,
-                                        'html' 		     => $this->v_html
-                                     )
-                              );
-                        return $response;*/
-                  $mpdfService = $this->get('tfox.mpdfport');
-                  $mPDF = $mpdfService->getMpdf();
-                 // $mPDF = $mpdfService->add();
-                  $mPDF->AddPage('','','1','i','on');
-                  $mPDF->WriteHTML($this->v_html);
-                  
-                  //$mPDF->AddPage('','','1','i','on');
-                  //$mPDF->WriteHTML($pdf);
-                  //$mPDF->Output();
-                  return new response($mPDF->Output());
-        }
-        
-      public function cargaPaginaAction(Request $request)
-        {
-			//print_r($_SESSION);
-            $response = new JsonResponse();
-            
-             $idDocente =$request->request->get('docente');
-            
-            $idMateria =$request->request->get('materia');
-            $Docente =$request->request->get('docente_text');
-            
-            $Materia =$request->request->get('materia_text');
-           list($Materia,$paralelo) = split('[-]', $Materia);
-            
-           $Docente= trim($Docente);
-            
-            $section ='http://localhost/desarrollo/appAcademico/web/docentes/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
-            $response->setData(
-                                array(
-                                        'redirect' => true,
-                                        'section' => $section
-                                     )
-                              );
-
-            return $response;
-        }
         
       public function carrerasHorariosAction(Request $request)
     {

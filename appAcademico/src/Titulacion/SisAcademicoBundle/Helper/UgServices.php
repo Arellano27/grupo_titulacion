@@ -968,7 +968,7 @@ XML;
             <respuestaConsulta>
                <registros>
                   <registro>
-                     <fecha>2015-11-07</fecha>
+                     <fecha>2015-11-09</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                   <registro>
@@ -983,7 +983,7 @@ XML;
 </soap:Envelope>
 XML;
 
-        //$XML =null;
+       $XML =null;
 
         $response = $ws->doRequestConsultaFechas($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML);
 
