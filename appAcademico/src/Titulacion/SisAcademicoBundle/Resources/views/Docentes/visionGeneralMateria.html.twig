@@ -23,7 +23,7 @@
 		</div>
 		<!-- /.panel -->
 	</div>
-   
+  
    <script>
       $(function () {     
          //Chart de Asistencias - Ciclo completo - INICIO
@@ -35,7 +35,7 @@
                  text: 'Porcentaje de asistencias - Ciclo Completo'
              },
              subtitle: {
-                 text: ''
+                 text: '{% if datosAsistenciasGraph.todos is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
              },
              xAxis: {
                  type: 'category'
@@ -66,7 +66,7 @@
              series: [{
                name: 'Estudiantes',
                colorByPoint: true,
-               data: [{{datosAsistenciasGraph.todos|raw}}]
+               data: [{% if datosAsistenciasGraph.todos is not empty %} {{datosAsistenciasGraph.todos|raw}} {%endif%}]
              }]
          });
          //Chart de Asistencias - Ciclo completo - FIN
@@ -81,7 +81,7 @@
                  text: 'Porcentaje de asistencias - Parcial 1'
              },
              subtitle: {
-                 text: ''
+                 text: '{% if datosAsistenciasGraph.PARCIAL_1 is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
              },
              xAxis: {
                  type: 'category'
@@ -112,7 +112,7 @@
              series: [{
                name: 'Estudiantes',
                colorByPoint: true,
-               data: [{{datosAsistenciasGraph.PARCIAL_1|raw}}]
+               data: [{% if datosAsistenciasGraph.PARCIAL_1 is not empty %} {{datosAsistenciasGraph.PARCIAL_1|raw}} {%endif%}]
              }]
          });
          //Chart de Asistencias - Ciclo completo - FIN
@@ -129,6 +129,9 @@
                 },
                 title: {
                     text: 'Estudiantes Aprobados - Ciclo Actual'
+                },
+                subtitle: {
+                  text: '{% if datosNotasResumenGraph.todos is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{series.y}%</b>'
@@ -149,7 +152,7 @@
                 series: [{
                     name: 'Estudiantes',
                     colorByPoint: true,
-                    data: [{{datosNotasResumenGraph.todos|raw}}]
+                    data: [{% if datosNotasResumenGraph.todos is not empty %} {{datosNotasResumenGraph.todos|raw}} {%endif%}]
                 }]
             });
         });
@@ -167,6 +170,9 @@
                 },
                 title: {
                     text: 'Notas de Estudiantes (%)  - Ciclo Actual'
+                },
+                subtitle: {
+                  text: '{% if datosNotasDetalleGraph.todos is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -187,57 +193,12 @@
                 series: [{
                     name: 'Porcentaje',
                     colorByPoint: true,
-                    data: [{{datosNotasDetalleGraph.todos|raw}}]
+                    data: [{% if datosNotasDetalleGraph.todos is not empty %} {{datosNotasDetalleGraph.todos|raw}} {%endif%}]
                 }]
             });
         });
         //Chart de Aprobados - Ciclo completo - FIN
         
-        {#
-        //Chart de Asistencias - Ciclo completo - INICIO
-         $('#hc-bar-aprobadosDetalle').highcharts({
-             chart: {
-                 type: 'column'
-             },
-             title: {
-                 text: 'Notas de los Estudiantes - Ciclo Completo'
-             },
-             subtitle: {
-                 text: ''
-             },
-             xAxis: {
-                 type: 'category'
-             },
-             yAxis: {
-                 title: {
-                     text: 'Notas de Estudiantes'
-                 }
-
-             },
-             legend: {
-                 enabled: false
-             },
-             plotOptions: {
-                 series: {
-                     borderWidth: 0,
-                     dataLabels: {
-                         enabled: true,
-                         format: '{point.y:.0f}'
-                     }
-                 }
-             },
-             tooltip: {
-                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                 pointFormat: '<br><span style="color:{point.color}">Rango de {point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-             },
-
-             series: [{
-               name: 'Estudiantes',
-               colorByPoint: true,
-               data: [{{datosNotasDetalleGraph.todos|raw}}]
-             }]
-         });#}
-         //Chart de Asistencias - Ciclo completo - FIN
          
 
      });

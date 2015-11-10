@@ -1491,7 +1491,7 @@ class AdminController extends Controller
                       $Mensaje="";
                       $Estado=0;
                       $UgServices = new UgServices;
-                      $xml2 = $UgServices->setSolicitudAnula($xmlFinal);
+                      $xml2 = $UgServices->setSolicitudAnula_Detalle($xmlFinal);
 
                        
                        if ( is_object($xml2))
