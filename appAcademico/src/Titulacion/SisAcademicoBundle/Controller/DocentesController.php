@@ -957,8 +957,8 @@
             $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                          <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
                          <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
-                         <PARCIAL>1</PARCIAL>
-                         <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
+                         <PARCIAL>0</PARCIAL>
+                         <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
             $id_Materia =$request->request->get('materia');
             
             
@@ -1086,8 +1086,8 @@
             $trama ="<PI_ID_CICLO_DETALLE>18</PI_ID_CICLO_DETALLE>
                          <PI_ID_USUARIO_PROFESOR>5</PI_ID_USUARIO_PROFESOR>
                          <PI_ID_MATERIA>251</PI_ID_MATERIA>
-                         <PARCIAL>1</PARCIAL>
-                         <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
+                         <PARCIAL>0</PARCIAL>
+                         <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
             
            $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
             
@@ -1236,8 +1236,8 @@
                 $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                              <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
                              <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
-                             <PARCIAL>1</PARCIAL>
-                             <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
+                             <PARCIAL>0</PARCIAL>
+                             <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
                $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
             
                $tareas1= $datosParciales->registro[0]->periodos->periodo[0]->componentePeriodo;
@@ -1363,8 +1363,8 @@
             $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                          <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
                          <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
-                         <PARCIAL>1</PARCIAL>
-                         <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
+                         <PARCIAL>0</PARCIAL>
+                         <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
        $id_Materia =$request->request->get('materia');
            
            $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
@@ -1523,8 +1523,8 @@
             $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
                          <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
                          <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
-                         <PARCIAL>1</PARCIAL>
-                         <PI_ESTUDIANTE>16</PI_ESTUDIANTE>";
+                         <PARCIAL>0</PARCIAL>
+                         <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
           $id_Materia =$request->request->get('materia');
            
            $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
