@@ -2961,6 +2961,56 @@ function doRequestSreReceptaTransacionConsultasMensajesNoLeidos($datosCuenta,$so
 
 }#end function   
 
+function doRequestSreReceptaEstudiantes_InscritosMatriculados($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL)
+{  
+
+    $post_string="
+        <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\"> 
+        <soapenv:Header/>
+        <soapenv:Body>
+            <ser:ejecucionConsulta>
+                <dataSource>".$source."</dataSource>
+                <idServicio>".$tipo."</idServicio>
+                <usuario>".$usuario."</usuario>
+                <clave>".$clave."</clave>
+                <parametrosConsulta>
+                    <parametros>
+                        ".$datosCuenta."
+                    </parametros>
+                </parametrosConsulta>
+            </ser:ejecucionConsulta>
+        </soapenv:Body>
+        </soapenv:Envelope>";
+
+    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+    $soap_do = curl_init(); 
+    curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+    curl_setopt($soap_do, CURLOPT_URL,            $url );   
+    curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10); 
+    curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60); 
+    curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+    curl_setopt($soap_do, CURLOPT_PORT,8080);
+    curl_setopt($soap_do, CURLOPT_POST, true);
+    curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
+    curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+     $result = curl_exec($soap_do);
+     // echo "<pre>";
+     //    var_dump($result);
+     //    echo "</pre>";
+     //    exit();
+    if(!$result){
+        return "error";
+    }else{
+       
+        $response  = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+        $respuesta  = $this->eliminaCabecerasAcademicoConsultas($response);
+        $respuesta  = $this->Response("<registros>".$respuesta."</registros>");
+                
+        return $respuesta;        
+    }
+
+}#end function 
+
 function doRequestEstadosMatricula($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){  
     $post_string="
         <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\"> 
@@ -4261,6 +4311,64 @@ $post_string=" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/
         $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
         return $respuestaConsulta;
     }
+}#end function
+
+function doSetParametrosRegistrosPerfil($datosRegistros, $bloqueRegistros, $pc_opcion, $source, $tipo, $usuario, $clave, $url, $host){
+   $post_string="
+            <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
+               <soapenv:Header/>
+               <soapenv:Body>
+                  <ser:ejecucionObjeto>
+                      <dataSource>".$source."</dataSource>
+                     <idServicio>".$tipo."</idServicio>
+                     <usuario>".$usuario."</usuario>
+                     <clave>".$clave."</clave>
+                     <parametrosObjeto>
+                        <parametros>
+                            <px_xml>
+                                <".$bloqueRegistros.">
+                                    ".$datosRegistros."
+                                </".$bloqueRegistros.">
+                            </px_xml>
+                            <pc_opcion>".$pc_opcion."</pc_opcion>
+                      </parametros>
+                     </parametrosObjeto>
+                  </ser:ejecucionObjeto>
+               </soapenv:Body>
+            </soapenv:Envelope>";
+   
+   $headers =array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
+   $soap_do = curl_init();
+   
+   curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
+   curl_setopt($soap_do, CURLOPT_URL,            $url );
+   curl_setopt($soap_do, CURLOPT_CONNECTTIMEOUT, 10);
+   curl_setopt($soap_do, CURLOPT_TIMEOUT,        5*60);
+   curl_setopt($soap_do, CURLOPT_RETURNTRANSFER, true );
+   curl_setopt($soap_do, CURLOPT_PORT,8080);
+   curl_setopt($soap_do, CURLOPT_POST, true);
+   curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string);
+   curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
+
+   $result = curl_exec($soap_do);
+   if(!$result) {
+      return "error";
+   }
+   else {
+      $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+      $respuesta  = $this->eliminaCabecerasAcademico($response);
+      $respuesta  = $this->Response("<resultadoObjeto>".$respuesta."</resultadoObjeto>");
+      $json             = json_encode($respuesta);
+      $arrayRespuesta   = json_decode($json,TRUE);
+      $dataRespuesta    = array();
+      
+      foreach($arrayRespuesta as $key => $respuesta) {
+         $dataRespuesta = array_merge($dataRespuesta, $respuesta);
+      }
+      
+      return $dataRespuesta;
+   }
+
 }#end function
 
 }#end Clase

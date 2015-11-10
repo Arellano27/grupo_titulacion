@@ -41,6 +41,8 @@
 </div>
 <!-- /.table-responsive -->
 <script type="text/javascript">
+   var modelessDocentesListadoMaterias;
+   
    $(document).ready(function(){
       $(".asistenciaAlumnos").on('click', function(event){
          event.preventDefault();
@@ -63,15 +65,24 @@
             data: obj_data,
             async: false,
             beforeSend: function () {
-              //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+               modelessDocentesListadoMaterias = new $.flavr({
+                                                               modal   : true,
+                                                               content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                               buttons     : {}
+                                                            });
             },
             error: function(){
-               //console.log("hay un error");
-               var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar el listado de asistencias."
-               lanzarModal('Listado de asistencias',mensajeErrorNotas,'Aceptar');//alert(mensajeErrorNotas);
+               modelessDocentesListadoMaterias.close();
+               modelessDocentesListadoMaterias = new $.flavr({
+                                                               modal   : true,
+                                                               content : 'Lo sentimos. Se  presentó un problema para cargar el listado de asistencias.',
+                                                               buttons     : {
+                                                                  primary : { text: 'Aceptar', style: 'primary' }
+                                                               }
+                                                            });
             },
             success:  function (dataResponse) {
-              //console.log(optionSelect.closest(".panel-body"));
+              modelessDocentesListadoMaterias.close();
               $("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
               $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(tituloPanelMateria);
               optionSelect.closest(".panel-body").html(dataResponse);
@@ -110,25 +121,25 @@
             data: obj_data,
             async: false,
             beforeSend: function () {
-               modelessMaterias = new $.flavr({
+               modelessDocentesListadoMaterias = new $.flavr({
                                                 modal   : true,
                                                 content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
                                                 buttons     : {}
                                              });
             },
             error: function(){
-               modelessMaterias.close();
+               modelessDocentesListadoMaterias.close();
                var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la consulta de notas.";
-               modelessMaterias = new $.flavr({
-                                                modal   : true,
-                                                content : mensajeErrorNotas,
-                                                buttons     : {
-                                                   primary : { text: 'Aceptar', style: 'primary' }
-                                                }
-                                             });
+               modelessDocentesListadoMaterias = new $.flavr({
+                                                               modal   : true,
+                                                               content : mensajeErrorNotas,
+                                                               buttons     : {
+                                                                  primary : { text: 'Aceptar', style: 'primary' }
+                                                               }
+                                                            });
             },
             success:  function (dataResponse) {
-              modelessMaterias.close();
+              modelessDocentesListadoMaterias.close();
               $("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
               optionSelect.closest(".panel-body").html(dataResponse);
             },
@@ -165,14 +176,25 @@
             data: obj_data,
             async: false,
             beforeSend: function () {
-              //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
+               modelessDocentesListadoMaterias = new $.flavr({
+                                                               modal   : true,
+                                                               content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                               buttons     : {}
+                                                            });
             },
             error: function(){
-               //console.log("hay un error");
+               modelessDocentesListadoMaterias.close();
                var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar la vista general de la materia."
-               lanzarModal('Vista General de la Materia',mensajeErrorNotas,'Aceptar');
+               modelessDocentesListadoMaterias = new $.flavr({
+                                                               modal   : true,
+                                                               content : mensajeErrorNotas,
+                                                               buttons     : {
+                                                                  primary : { text: 'Aceptar', style: 'primary' }
+                                                               }
+                                                            });
             },
             success:  function (dataResponse) {
+               modelessDocentesListadoMaterias.close();
                $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(tituloPanelMateria);
                $("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
                optionSelect.closest(".panel-body").html(dataResponse);

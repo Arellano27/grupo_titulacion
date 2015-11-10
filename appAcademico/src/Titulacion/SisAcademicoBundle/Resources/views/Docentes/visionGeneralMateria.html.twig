@@ -1,4 +1,6 @@
 {% block home %}
+   <script src="{{ asset('js/hichart/highcharts.js') }}"></script>
+   <script src="{{ asset('js/hichart/modules/exporting.js') }}"></script>
    <style type="text/css">
       .headerGraf {
          text-align: center;
@@ -11,250 +13,195 @@
 		</div>
 		<!-- /.panel-heading -->
 		<div class="panel-body">
-         <div class="col-lg-6" style="height: 440px;"><div id="headerAsistencia" class="headerGraf">Porcentajes de Asistencia</div><div id="morris-bar-asistencia"></div></div>
-         <div class="col-lg-6" style="height: 440px;"><div id="headerAprobados" class="headerGraf">Estudiantes aprobados (%)</div><div id="morris-donut-aprobados"></div></div>
-         {#<div class="col-lg-6" style="height: 440px;"><div id="morris-bar-chart"></div></div>
-         <div class="col-lg-6" style="height: 440px;"><div id="morris-area2-chart"></div></div>#}
+         <div class="col-lg-6" style="height: 440px;"><div id="headerAsistenciaCiclo" class="headerGraf">{#Porcentajes de Asistencia#}</div><div id="hc-bar-asistenciaCiclo"></div></div>
+         <div class="col-lg-6" style="height: 440px;"><div id="headerAprobadosCiclo" class="headerGraf">{#Estudiantes aprobados (%)#}</div><div id="hc-donut-aprobadosResumen"></div></div>
+         <div class="col-lg-6" style="height: 440px;"><div id="headerAsistenciaParcial1" class="headerGraf">{#Porcentajes de Asistencia#}</div><div id="hc-bar-asistenciaParcial1"></div></div>
+         <div class="col-lg-6" style="height: 440px;"><div id="headerAsistenciaParcial" class="headerGraf"></div><div id="hc-donut-aprobadosDetalle"></div></div>
+         
       </div>
 		<!-- /.panel-body -->
 		</div>
 		<!-- /.panel -->
 	</div>
-   
-   <script src="{{ asset('bower_components/raphael/raphael-min.js') }}"></script>
-   <script src="{{ asset('bower_components/morrisjs/morris.min.js') }}"></script>
-   <script type="text/javascript">
-      $(function() {
-         Morris.Bar({
-             element: 'morris-bar-asistencia',
-             data: [{
-                 y: '0% - 10%',
-                 a: 2
-             }, {
-                 y: '11% - 20%%',
-                 a: 5
-             }, {
-                 y: '21% - 30%',
-                 a: 2
-             }, {
-                 y: '31% - 40%',
-                 a: 1
-             }, {
-                 y: '41% - 50%',
-                 a: 2
-             }, {
-                 y: '51% - 60%',
-                 a: 6
-             }, {
-                 y: '61% - 70%',
-                 a: 4
-             }, {
-                 y: '71% - 80%',
-                 a: 5
-             }, {
-                 y: '81% - 90%',
-                 a: 8
-             }, {
-                 y: '91% - 100%',
-                 a: 10
-             }],
-             xkey: 'y',
-             ykeys: ['a'],
-             labels: ['Cant. Estudiantes'],
-             hideHover: 'auto',
-             resize: true
-         });
-         
-         Morris.Donut({
-             element: 'morris-donut-aprobados',
-             data: [{
-                 label: "Aprobados",
-                 value: 60
-             }, {
-                 label: "Reprobados",
-                 value: 10
-             }, {
-                 label: "Suspenso",
-                 value: 30
-             }],
-             resize: true
-         });
-         
-         {#
-         Morris.Area({
-             element: 'morris-area-eee',
-             data: [{
-                 period: '2010 Q1',
-                 iphone: 2666,
-                 ipad: null,
-                 itouch: 2647
-             }, {
-                 period: '2010 Q2',
-                 iphone: 2778,
-                 ipad: 2294,
-                 itouch: 2441
-             }, {
-                 period: '2010 Q3',
-                 iphone: 4912,
-                 ipad: 1969,
-                 itouch: 2501
-             }, {
-                 period: '2010 Q4',
-                 iphone: 3767,
-                 ipad: 3597,
-                 itouch: 5689
-             }, {
-                 period: '2011 Q1',
-                 iphone: 6810,
-                 ipad: 1914,
-                 itouch: 2293
-             }, {
-                 period: '2011 Q2',
-                 iphone: 5670,
-                 ipad: 4293,
-                 itouch: 1881
-             }, {
-                 period: '2011 Q3',
-                 iphone: 4820,
-                 ipad: 3795,
-                 itouch: 1588
-             }, {
-                 period: '2011 Q4',
-                 iphone: 15073,
-                 ipad: 5967,
-                 itouch: 5175
-             }, {
-                 period: '2012 Q1',
-                 iphone: 10687,
-                 ipad: 4460,
-                 itouch: 2028
-             }, {
-                 period: '2012 Q2',
-                 iphone: 8432,
-                 ipad: 5713,
-                 itouch: 1791
-             }],
-             xkey: 'period',
-             ykeys: ['iphone', 'ipad', 'itouch'],
-             labels: ['iPhone', 'iPad', 'iPod Touch'],
-             pointSize: 2,
-             hideHover: 'auto',
-             resize: true
-         });
-         
-         Morris.Area({
-             element: 'morris-area2-chart',
-             data: [{
-                 period: '2010 Q1',
-                 iphone: 2666,
-                 ipad: null,
-                 itouch: 2647
-             }, {
-                 period: '2010 Q2',
-                 iphone: 2778,
-                 ipad: 2294,
-                 itouch: 2441
-             }, {
-                 period: '2010 Q3',
-                 iphone: 4912,
-                 ipad: 1969,
-                 itouch: 2501
-             }, {
-                 period: '2010 Q4',
-                 iphone: 3767,
-                 ipad: 3597,
-                 itouch: 5689
-             }, {
-                 period: '2011 Q1',
-                 iphone: 6810,
-                 ipad: 1914,
-                 itouch: 2293
-             }, {
-                 period: '2011 Q2',
-                 iphone: 5670,
-                 ipad: 4293,
-                 itouch: 1881
-             }, {
-                 period: '2011 Q3',
-                 iphone: 4820,
-                 ipad: 3795,
-                 itouch: 1588
-             }, {
-                 period: '2011 Q4',
-                 iphone: 15073,
-                 ipad: 5967,
-                 itouch: 5175
-             }, {
-                 period: '2012 Q1',
-                 iphone: 10687,
-                 ipad: 4460,
-                 itouch: 2028
-             }, {
-                 period: '2012 Q2',
-                 iphone: 8432,
-                 ipad: 5713,
-                 itouch: 1791
-             }],
-             xkey: 'period',
-             ykeys: ['iphone', 'ipad', 'itouch'],
-             labels: ['iPhone', 'iPad', 'iPod Touch'],
-             pointSize: 2,
-             hideHover: 'auto',
-             resize: true
-         });
+  
+   <script>
+      $(function () {     
+         //Chart de Asistencias - Ciclo completo - INICIO
+         $('#hc-bar-asistenciaCiclo').highcharts({
+             chart: {
+                 type: 'column'
+             },
+             title: {
+                 text: 'Porcentaje de asistencias - Ciclo Completo'
+             },
+             subtitle: {
+                 text: '{% if datosAsistenciasGraph.todos is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
+             },
+             xAxis: {
+                 type: 'category'
+             },
+             yAxis: {
+                 title: {
+                     text: 'Cantidad de Estudiantes - Asistencias'
+                 }
 
-         Morris.Donut({
-             element: 'morris-donut-chart',
-             data: [{
-                 label: "Download Sales",
-                 value: 12
-             }, {
-                 label: "In-Store Sales",
-                 value: 30
-             }, {
-                 label: "Mail-Order Sales",
-                 value: 20
-             }],
-             resize: true
-         });
+             },
+             legend: {
+                 enabled: false
+             },
+             plotOptions: {
+                 series: {
+                     borderWidth: 0,
+                     dataLabels: {
+                         enabled: true,
+                         format: '{point.y:.0f}'
+                     }
+                 }
+             },
+             tooltip: {
+                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                 pointFormat: '<br><span style="color:{point.color}">Rango de {point.name}</span>: <b>{point.y:.0f}</b><br/>'
+             },
 
-         Morris.Bar({
-             element: 'morris-bar-chart',
-             data: [{
-                 y: '2006',
-                 a: 100,
-                 b: 90
-             }, {
-                 y: '2007',
-                 a: 75,
-                 b: 65
-             }, {
-                 y: '2008',
-                 a: 50,
-                 b: 40
-             }, {
-                 y: '2009',
-                 a: 75,
-                 b: 65
-             }, {
-                 y: '2010',
-                 a: 50,
-                 b: 40
-             }, {
-                 y: '2011',
-                 a: 75,
-                 b: 65
-             }, {
-                 y: '2012',
-                 a: 100,
-                 b: 90
-             }],
-             xkey: 'y',
-             ykeys: ['a', 'b'],
-             labels: ['Series A', 'Series B'],
-             hideHover: 'auto',
-             resize: true
-         });#}
-      });
+             series: [{
+               name: 'Estudiantes',
+               colorByPoint: true,
+               data: [{% if datosAsistenciasGraph.todos is not empty %} {{datosAsistenciasGraph.todos|raw}} {%endif%}]
+             }]
+         });
+         //Chart de Asistencias - Ciclo completo - FIN
+         
+         
+         //Chart de Asistencias - Parcial 1 - INICIO
+         $('#hc-bar-asistenciaParcial1').highcharts({
+             chart: {
+                 type: 'column'
+             },
+             title: {
+                 text: 'Porcentaje de asistencias - Parcial 1'
+             },
+             subtitle: {
+                 text: '{% if datosAsistenciasGraph.PARCIAL_1 is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
+             },
+             xAxis: {
+                 type: 'category'
+             },
+             yAxis: {
+                 title: {
+                     text: 'Cantidad de Estudiantes - Asistencias'
+                 }
+
+             },
+             legend: {
+                 enabled: false
+             },
+             plotOptions: {
+                 series: {
+                     borderWidth: 0,
+                     dataLabels: {
+                         enabled: true,
+                         format: '{point.y:.0f}'
+                     }
+                 }
+             },
+             tooltip: {
+                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                 pointFormat: '<br><span style="color:{point.color}">Rango de {point.name}</span>: <b>{point.y:.0f}%</b><br/>'
+             },
+
+             series: [{
+               name: 'Estudiantes',
+               colorByPoint: true,
+               data: [{% if datosAsistenciasGraph.PARCIAL_1 is not empty %} {{datosAsistenciasGraph.PARCIAL_1|raw}} {%endif%}]
+             }]
+         });
+         //Chart de Asistencias - Ciclo completo - FIN
+         
+         
+         //Chart de Aprobados - Ciclo completo - INICIO
+         $(function () {
+            $('#hc-donut-aprobadosResumen').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Estudiantes Aprobados - Ciclo Actual'
+                },
+                subtitle: {
+                  text: '{% if datosNotasResumenGraph.todos is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{series.y}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Estudiantes',
+                    colorByPoint: true,
+                    data: [{% if datosNotasResumenGraph.todos is not empty %} {{datosNotasResumenGraph.todos|raw}} {%endif%}]
+                }]
+            });
+        });
+        //Chart de Aprobados - Ciclo completo - FIN
+        
+        
+        //Chart de Notas - Ciclo completo - INICIO
+         $(function () {
+            $('#hc-donut-aprobadosDetalle').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Notas de Estudiantes (%)  - Ciclo Actual'
+                },
+                subtitle: {
+                  text: '{% if datosNotasDetalleGraph.todos is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>Notas entre {point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Porcentaje',
+                    colorByPoint: true,
+                    data: [{% if datosNotasDetalleGraph.todos is not empty %} {{datosNotasDetalleGraph.todos|raw}} {%endif%}]
+                }]
+            });
+        });
+        //Chart de Aprobados - Ciclo completo - FIN
+        
+         
+
+     });
    </script>
+   
 {% endblock %}

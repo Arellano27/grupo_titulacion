@@ -171,19 +171,25 @@
                                  var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo};
 
                                  var jumpAction = '{{path('estudiantes_anulacion_materias_2')}}';
+                                 var modelessSetSolicitud;
                                   $.ajax({
                                      url:   jumpAction,
                                      data: obj_data,
                                      type:  'post',
-                                     async: true,
+                                     async: false,
                                      beforeSend: function () {
+                                      modelessSetSolicitud = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             buttons     : {}
+                                                          });
                                        // alert("dentro");
                                        //tablaNotasa.html("Cargando, espere por favor...");
                                      //notificacionIndex = cargandoSitio(null, null, null);
                               
                                      },
                                      success:  function (dataResponse) {
-                                        
+                                        modelessSetSolicitud.close();
                                        var respuesta=jQuery.parseJSON(dataResponse);
                                        if (respuesta.codigo_error!=1)
                                        {
@@ -215,6 +221,7 @@
                                      },
                                       error: function(dataResponse)
                                       {
+                                        modelessSetSolicitud.close();
                                           //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
                                           //tablaNotasa.html("No fue posible conectar con el Servidor");
                                         form="accordion";

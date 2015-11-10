@@ -12,6 +12,66 @@
 */
 class HomeController extends Controller
 {
+
+  public function get_captchaAction(Request $request){
+
+    $string = '';
+
+    for ($i = 0; $i < 5; $i++) {
+       $numC = rand(1,3);
+
+       switch ($numC) {
+        case '1':
+             $string .= chr(rand(97, 122));
+           break;
+        case '2':
+              $string .= chr(rand(48, 57));
+           break;
+        case '3':
+              $string .= chr(rand(65, 90));
+           break;
+         default:
+           $string .= chr(rand(97, 122));
+           break;
+       }
+    }
+
+    $session=$request->getSession();
+    $session->set("random_number",$string);
+    $dir = 'fonts/';
+    $image = imagecreatetruecolor(165, 50);
+    // random number 1 or 2
+    $num = rand(1,2);
+
+    if($num==1)
+    {
+      $font = "HandVetica.ttf"; // font style
+    }
+    else
+    {
+      $font = "Sketch_Block.ttf";// font style
+    }
+ 
+    // random number 1 or 2
+    $num2 = rand(1,2);
+    if($num2==1){
+      $color = imagecolorallocate($image, 113, 193, 217);// color
+    }
+    else{
+      $color = imagecolorallocate($image, 163, 197, 82);// color
+    }
+
+    $white = imagecolorallocate($image, 255, 255, 255); // background color white
+    imagefilledrectangle($image,0,0,399,99,$white);
+    imagettftext ($image, 25, 0, 10, 40, $color, $dir.$font, $string);
+    header("Content-type: image/png");
+    imagepng($image);
+
+    // return base64_encode($image);
+
+  }
+
+
     public function enviarmailAction(Request $request){
         $user = $request->request->get('user');
         #recepto desde la base el correo
@@ -29,10 +89,6 @@ class HomeController extends Controller
               }
          }
 
-
-
-
-       // $email = "arellano.torres27gmail.com"; #quemado por el momento
 
           if($email != '')
           {
@@ -88,13 +144,6 @@ class HomeController extends Controller
             }
 
 
-          // $respuesta = array(
-          //      "Codigo" => $estado ,
-          //      "Mensaje" => $message,
-          //   );
-
-          // return new Response(json_encode($respuesta));
-
     }
 
 
@@ -105,6 +154,19 @@ class HomeController extends Controller
 
         if($request->getMethod()=="POST")
         {
+
+          $session=$request->getSession();
+          $captchaEnv=$request->request->get('code');
+          $captchaGene= $session->get('random_number') ;
+
+          if( $captchaEnv != $captchaGene)
+          {
+            $respuesta = array(
+                "valerror" => "1"
+            );
+            return new Response(json_encode($respuesta));
+          }
+
             #obtenemos los datos guardados en la variable global
             $perfilEst   = $this->container->getParameter("perfilEst");
             $perfilDoc   = $this->container->getParameter("perfilDoc");
@@ -130,7 +192,7 @@ class HomeController extends Controller
             #llamamos a la consulta del webservice
             $UgServices = new UgServices;
             $data = $UgServices->getLogin($username,$password);
-//echo '<pre>'; var_dump($data); exit();
+
             if ($data) {
                 $login_act     =array();
                 $perfilUsuario = null;
@@ -173,11 +235,16 @@ class HomeController extends Controller
                     }#end foreach
                 }
 
+               $datosConsulta       = array( 'idUsuario' => $idUsuario);
+               $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
+               $datosUsuario        = $datosUsuarioArray[0];
+               
 
                 $id_rol = $perfil;
                 $session=$request->getSession();
                 $session->set("id_user",$idUsuario);
                 $session->set("perfil",$perfil); //idrol
+                $session->set("img_perfil",$datosUsuario["directoriofoto"]);
                 $session->set("nom_usuario",$nombreUsuario);
                 $session->set("cedula",$cedula);
                 $session->set("mail",$mail);
@@ -334,6 +401,12 @@ class HomeController extends Controller
          $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
 
          $datosUsuario        = $datosUsuarioArray[0];
+         if($datosUsuario['directoriofoto']!=NULL) {
+            $datosUsuario['existefotoperfil'] = 1;
+         }
+         else {
+            $datosUsuario['existefotoperfil'] = 0;
+         }
          return $this->render('TitulacionSisAcademicoBundle:Home:visualizarPerfil.html.twig',
                            array(
                               'dataUsuario' => $datosUsuario
@@ -378,6 +451,13 @@ class HomeController extends Controller
                $datosUsuario     = NULL;
                $datosUsuario     = $tempDataUsuario;
                unset($tempDataUsuario);
+               
+               if($datosUsuario['directoriofoto']!=NULL) {
+                  $datosUsuario['existefotoperfil'] = 1;
+               }
+               else {
+                  $datosUsuario['existefotoperfil'] = 0;
+               }
             }
             else {
                $datosUsuario = NULL;
@@ -412,59 +492,91 @@ class HomeController extends Controller
          
          $datosPerfilGrabar["imagenPerfil"] = $imagenPerfil;
          
-         $rutaImagenPerfil = NULL;
+         $rutaImagenPerfil    = NULL;
+         $datosPerfilXML_img  = NULL;
+         $imagenGrabada       = NULL;
+         
+         $UgServices          = new UgServices;
+         
+         //Actualizacion de la foto del perfil - INICIO
          if($datosPerfilGrabar["imagenPerfil"]!=NULL) {
             $dataImgTemp         = substr($datosPerfilGrabar["imagenPerfil"], strpos($datosPerfilGrabar["imagenPerfil"], ",") + 1); //Quitar la cabecera
             $decodedDataImgTemp  = base64_decode($dataImgTemp);
 
-            $rutaTempImagenPerfil   = "images/img_perfil_temp/";
+            $rutaTempImagenPerfil   = "images/img_perfil/";
             $nombreTempImagen       = "imgPerfil_".$idUsuario.".png";
+            
+            if (file_exists($rutaTempImagenPerfil)) { //Compruebo que la ruta para subidas existe
+               $fp = fopen($rutaTempImagenPerfil.$nombreTempImagen, 'wb');
+               fwrite($fp, $decodedDataImgTemp);
+               fclose($fp);
+               
+               $rutaImagenPerfil = $rutaTempImagenPerfil.$nombreTempImagen;
+               $session->set("img_perfil",$rutaImagenPerfil);
+               if (file_exists($rutaImagenPerfil)) {
+                  $imagenGrabada = 1;
+               } else {
+                  $imagenGrabada = 0;
+               }
+               
+               //$datosPerfilXML_img  = "<directorio_foto>".$rutaImagenPerfil."</directorio_foto>";
+               if($imagenGrabada==1) {
+                  //Proceso para grabar la foto del perfil
+                  $datosPerfilXML_img  = "<item>";
+                  $datosPerfilXML_img .= "<id_sg_usuario>".$idUsuario."</id_sg_usuario>";
+                  $datosPerfilXML_img .= "<directorio_foto>".$rutaImagenPerfil."</directorio_foto>";
+                  $datosPerfilXML_img .= "<id_sg_usuario_registro>".$idUsuario."</id_sg_usuario_registro>";
+                  $datosPerfilXML_img .= "</item>";
 
-            $fp = fopen($rutaTempImagenPerfil.$nombreTempImagen, 'wb');
-            fwrite($fp, $decodedDataImgTemp);
-            fclose($fp);
-            //echo getcwd();
-            //echo '<img src="'.getcwd().'\images\img_perfil_temp\\'.$nombreTempImagen.'" >';
-            //echo '<img src="'.$rutaTempImagenPerfil.$nombreTempImagen.'" >';
-            $rutaImagenPerfil = $rutaTempImagenPerfil.$nombreTempImagen;
+                  $datosConsultaImg       = array('DatosImgPerfil' => $datosPerfilXML_img);
+                  $datosImgArray   = $UgServices->Docentes_setDataPerfilUsuarioImgPerfilEditar($datosConsultaImg);
+                  
+                  $datosUsuarioRespuesta["imagenGrabada"]  = $datosImgArray["pi_estado"];
+                  $datosUsuarioRespuesta["imagenRuta"]     = $rutaImagenPerfil;
+               }
+            }
+            else {
+               $imagenGrabada = -1;
+            }
          }
-         //var_dump($datosPerfilGrabar);
+         //Actualizacion de la foto del perfil - FIN 
          
+         //Actualizacion de los datos del perfil - INICIO
+         if($datosPerfilGrabar["fecha_nacimiento"]!=NULL) {
+            $datosPerfilGrabar["fecha_nacimiento"] = date('Y-m-d', strtotime(str_replace('/', '-', $datosPerfilGrabar["fecha_nacimiento"])));
+         }
          
-         $datosPerfilXML   .= "<id_usuario>".$idUsuario."</id_usuario>";
-         //$datosPerfilXML   .= "<img_usuario>".$datosPerfilGrabar[""]."</img_usuario>";
+         $datosPerfilXML   .= "<item>";
+         $datosPerfilXML   .= "<id_sg_usuario>".$idUsuario."</id_sg_usuario>";
          $datosPerfilXML   .= "<fecha_nacimiento>".$datosPerfilGrabar["fecha_nacimiento"]."</fecha_nacimiento>";
-         $datosPerfilXML   .= "<tipo_sangre>".$datosPerfilGrabar["tipo_sangre"]."</tipo_sangre>";
-         $datosPerfilXML   .= "<sexo>".$datosPerfilGrabar["sexo"]."</sexo>";
-         $datosPerfilXML   .= "<estado_civil>".$datosPerfilGrabar["estado_civil"]."</estado_civil>";
-         $datosPerfilXML   .= "<nacionalidad>".$datosPerfilGrabar["nacionalidad"]."</nacionalidad>";
-         $datosPerfilXML   .= "<pais>".$datosPerfilGrabar["nacionalidad"]."</pais>";
+         $datosPerfilXML   .= "<id_sa_parametro_tipo_sangre>".$datosPerfilGrabar["tipo_sangre"]."</id_sa_parametro_tipo_sangre>";
+         $datosPerfilXML   .= "<id_sa_parametro_sexo>".$datosPerfilGrabar["sexo"]."</id_sa_parametro_sexo>";
+         $datosPerfilXML   .= "<id_sa_parametro_estado_civil>".$datosPerfilGrabar["estado_civil"]."</id_sa_parametro_estado_civil>";
+         $datosPerfilXML   .= "<id_sa_parametro_nacionalidad>".$datosPerfilGrabar["nacionalidad"]."</id_sa_parametro_nacionalidad>";
+         $datosPerfilXML   .= "<id_sa_parametro_pais>".$datosPerfilGrabar["pais"]."</id_sa_parametro_pais>";
          $datosPerfilXML   .= "<direccion>".$datosPerfilGrabar["direccion"]."</direccion>";
          $datosPerfilXML   .= "<telefono>".$datosPerfilGrabar["telefono"]."</telefono>";
          $datosPerfilXML   .= "<correo_personal>".$datosPerfilGrabar["correo_personal"]."</correo_personal>";
          $datosPerfilXML   .= "<correo_institucional>".$datosPerfilGrabar["correo_institucional"]."</correo_institucional>";
+         $datosPerfilXML   .= "<estado>A</estado>";
+         $datosPerfilXML   .= "<id_sg_usuario_registro>".$idUsuario."</id_sg_usuario_registro>";
+         $datosPerfilXML   .= "</item>";
          
-         $UgServices          = new UgServices;
+         
          $datosConsulta       = array( 'idUsuario' => $idUsuario,
                                        'DatosPerfil' => $datosPerfilXML,
                                        'rutaImgPerfil' => $rutaImagenPerfil);
-         //$datosUsuarioArray   = $UgServices->Docentes_getConsultaPerfilUsuarioEditar($datosConsulta);
+         $datosUsuarioArray   = $UgServices->Docentes_setDataPerfilUsuarioEditar($datosConsulta);
          
-         $datosUsuarioArray["idMensaje"]   = 0;
-         $datosUsuarioArray["infoMensaje"] = "Error al subir la imagen";
+         $datosUsuarioRespuesta["idMensaje"]      = $datosUsuarioArray["pi_estado"];
+         $datosUsuarioRespuesta["infoMensaje"]    = $datosUsuarioArray["pv_mensaje"];
+         //Actualizacion de los datos del perfil - FIN
          
-         $jsonResponse  = json_encode($datosUsuarioArray);
+         $jsonResponse  = json_encode($datosUsuarioRespuesta);
          
          $response = new Response($jsonResponse);
          $response->headers->set('Content-Type', 'application/json');
          
          return $response;
-//
-//         $datosUsuario        = $datosUsuarioArray[0];
-//         return $this->render('TitulacionSisAcademicoBundle:Docentes:editarPerfil.html.twig',
-//                           array(
-//                              'dataDocente' => $datosUsuario
-//                           )
-//                        );
       } // grabarEditarPerfilActualizarAction()
 }

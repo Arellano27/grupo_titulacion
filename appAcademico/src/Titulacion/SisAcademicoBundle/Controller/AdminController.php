@@ -35,15 +35,87 @@ class AdminController extends Controller
         return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
     }
 
-    public function ingreso_nuevo_passAction(Request $request){
+     public function cambio_password_intAction(Request $request){
+      $session=$request->getSession();
+       if ($session->has("id_user")) 
+           {
+        return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password_interno.html.twig', array());
+                }else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+    }
+
+    public function get_captcha_cambioAction(Request $request){
+
+        $string = '';
+
+        for ($i = 0; $i < 5; $i++) {
+           $numC = rand(1,3);
+
+           switch ($numC) {
+            case '1':
+                 $string .= chr(rand(97, 122));
+               break;
+            case '2':
+                  $string .= chr(rand(48, 57));
+               break;
+            case '3':
+                  $string .= chr(rand(65, 90));
+               break;
+             default:
+               $string .= chr(rand(97, 122));
+               break;
+           }
+        }
+
+        $session=$request->getSession();
+        $session->set("random_number_cambio",$string);
+
+        $dir = 'fonts/';
+        $image = imagecreatetruecolor(165, 50);
+        // random number 1 or 2
+        $num = rand(1,2);
+
+        if($num==1)
+        {
+          $font = "HandVetica.ttf"; // font style
+        }
+        else
+        {
+          $font = "Sketch_Block.ttf";// font style
+        }
+     
+        // random number 1 or 2
+        $num2 = rand(1,2);
+        if($num2==1){
+          $color = imagecolorallocate($image, 113, 193, 217);// color
+        }
+        else{
+          $color = imagecolorallocate($image, 163, 197, 82);// color
+        }
+
+        $white = imagecolorallocate($image, 255, 255, 255); // background color white
+        imagefilledrectangle($image,0,0,399,99,$white);
+        imagettftext ($image, 25, 0, 10, 40, $color, $dir.$font, $string);
+        header("Content-type: image/png");
+        imagepng($image);
+
+      }
+
+
+    public function ingreso_nuevo_int_passAction(Request $request){
         #obtenemos los datos enviados por get
 
             $session=$request->getSession();
+              if ($session->has("id_user")) 
+           {
             $Email= $session->get('mail');
             $Nombre = $session->get('nom_usuario');
-            $username    = $request->request->get('user');
-            $username    = $request->request->get('pass1');
-            $password    = $request->request->get('pass2');
 
 
 
@@ -51,27 +123,26 @@ class AdminController extends Controller
         $UgServices = new UgServices;
 
 
-            $username     = $request->request->get('user');
             $password     = $request->request->get('pass');
             $password1    = $request->request->get('pass1');
+            $username       = $session->get('id_user');
 
             $UgServices   = new UgServices;
             $salt         = "µ≈α|⊥ε¢ʟ@δσ";
             $passwordEncr = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
             $passwordNuevoEncr = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
 
-            $dataMant = $UgServices->mantenimientoUsuario($username,$passwordEncr,'','',$passwordNuevoEncr,'A');
+            $dataMant = $UgServices->mantenimientoUsuario($username,$passwordEncr,'','',$passwordNuevoEncr,'B');
 
                 if ( is_object($dataMant)) {
                     $estado = $dataMant ->PI_ESTADO;
                      $message = $dataMant ->PV_MENSAJE;
                 }
 
-                    //echo "<pre>";
-                    //var_dump($estado.'-----'.$message);
-                    //echo "</pre>";
-                    //exit();
                 if ($estado == "1") {
+
+
+
                   $mailer    = $this->container->get('mailer');
                     $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
                                 ->setUsername('titulacion.php@gmail.com')
@@ -86,9 +157,89 @@ class AdminController extends Controller
                     $this->get('mailer')->send($message);
                 }
 
+            
+
             $respuesta = array(
                "Codigo" => $estado ,
                "Mensaje" => $message,
+              
+            );
+
+          return new Response(json_encode($respuesta));
+        }else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+
+    }
+
+
+    public function ingreso_nuevo_passAction(Request $request){
+        #obtenemos los datos enviados por get
+
+            $session=$request->getSession();
+            $Email= $session->get('mail');
+            $Nombre = $session->get('nom_usuario');
+             $captchaEnv=$request->request->get('code');
+            $captchaGene= $session->get('random_number_cambio') ;
+
+            //var_dump($captchaGene, $captchaEnv);
+
+            if( $captchaEnv != $captchaGene)
+            {
+
+               $respuesta = array(
+                    "valError" => "1" 
+                );
+
+              return new Response(json_encode($respuesta));
+            }
+
+
+          #llamamos a la consulta del webservice
+          $UgServices = new UgServices;
+
+
+              $username     = $request->request->get('user');
+              $password     = $request->request->get('pass');
+              $password1    = $request->request->get('pass1');
+
+              $UgServices   = new UgServices;
+              $salt         = "µ≈α|⊥ε¢ʟ@δσ";
+              $passwordEncr = password_hash($password, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+              $passwordNuevoEncr = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 14, "salt" => $salt));
+
+              $dataMant = $UgServices->mantenimientoUsuario($username,$passwordEncr,'','',$passwordNuevoEncr,'A');
+
+                  if ( is_object($dataMant)) {
+                      $estado = $dataMant ->PI_ESTADO;
+                       $message = $dataMant ->PV_MENSAJE;
+                  }
+
+                                    if ($estado == "1") {
+                    $mailer    = $this->container->get('mailer');
+                      $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                  ->setUsername('titulacion.php@gmail.com')
+                                  ->setPassword('sc123456');
+                     //$mailer  = \Swift_Mailer($transport);
+                      $message = \Swift_Message::newInstance('test')
+                                  ->setSubject("Contraseña Cambiada Correctamente")
+                                  ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                  ->setTo($Email)
+                                  ->setBody("$Nombre usted ha Cambiado la Contraseña Exitosamente, Su nueva contraseña es $password1");
+                      // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
+                      $this->get('mailer')->send($message);
+                  }
+            
+
+            $respuesta = array(
+               "Codigo" => $estado ,
+               "Mensaje" => $message,
+               "valError" => "0" 
             );
 
           return new Response(json_encode($respuesta));
@@ -279,6 +430,7 @@ class AdminController extends Controller
                                                     $lcNombre=$xml->dato->Estudiante->nombres;
                                                     $lcCedula=$xml->dato->Estudiante->usuario;
                                                     $idUsuarioEst=$xml->dato->Estudiante->id_sg_usuario;
+                                                    $idEstudiante=$idUsuarioEst;
                                                     
                                                       foreach($xml->dato->OrdenPagos as $lsciclo) 
                                                         {
@@ -1339,7 +1491,7 @@ class AdminController extends Controller
                       $Mensaje="";
                       $Estado=0;
                       $UgServices = new UgServices;
-                      $xml2 = $UgServices->setSolicitudAnula($xmlFinal);
+                      $xml2 = $UgServices->setSolicitudAnula_Detalle($xmlFinal);
 
                        
                        if ( is_object($xml2))
