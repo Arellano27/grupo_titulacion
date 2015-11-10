@@ -25,8 +25,29 @@
    {% if datosPaises is not iterable %}
       {% set dataForm_error   = 'true' %}
    {% endif %}
-   
    <style>
+      #commentForm {
+         width: 500px;
+      }
+      #commentForm label {
+         width: 250px;
+      }
+      #commentForm label.error, #commentForm input.submit {
+         margin-left: 253px;
+      }
+      #signupForm {
+         width: 670px;
+      }
+      #signupForm label.error {
+         margin-left: 10px;
+         width: auto;
+         display: inline;
+      }
+      #newsletter_topics label.error {
+         display: none;
+         margin-left: 103px;
+      }
+      
       #previewImg {
          display: none;
          float: left;
@@ -102,6 +123,12 @@
       a#explicacionFoto {
          color: #003366;
       }
+      
+      .errorSelect {
+         color: red;
+         font-style: italic;
+         display: none;
+      }
    </style>
    <script type="text/javascript">
       var modelessPerfilEditar = new $.flavr({
@@ -110,6 +137,7 @@
                                        buttons     : {}
                                     });
    </script>
+   <link rel="stylesheet" href="{{ asset('js/jqueryValidate/demo/css/screen.css') }}">
    <script src="{{ asset('js/jqueryValidate/dist/jquery.validate.min.js') }}"></script>
    <script src="{{ asset('js/jqueryValidate/dist/additional-methods.js') }}"></script>
    <script>
@@ -120,24 +148,30 @@
          },
          "Por favor ingrese una fecha en el formato dd/mm/yyyy."
       );
-      
-      $("#formEditarPerfil").validate({
-                    
-			rules: {
-            fecha_nacimiento: { required: true, EcuadorDate : true },
-				direccion: "required",
-            telefono: { required: true, number: true,max: 10 },
-            correo_personal: { required: true, email: true },
-            correo_institucional: { required: true, email: true },
-				agree: "required"
-			},
-			messages: {
-				direccion: {required:"Por favor ingrese una direción."},
-				telefono: {required:"Ingrese un numero de telefono válido", number: 'Debe ingresar un número',max: 'el numero ingresado es máximo 10 dígitos.'},
-				email: "Por favor ingrese una dirección de correo valida.",
-				agree: "Please accept our policy"
-			}
-		});
+      $(document).ready(function(){
+         jQuery.extend(jQuery.validator.messages, {
+            email: "Por favor ingrese una dirección de correo válida.",
+
+         });
+        
+         $("#formEditarPerfil").validate({
+            rules: {
+               fecha_nacimiento: { required: true, EcuadorDate : true },
+               direccion: "required",
+               telefono: { required: true, number: true },
+               correo_personal: { required: true, email: true },
+               correo_institucional: { required: true, email: true }
+            },
+            messages: {
+               fecha_nacimiento: { required:"Por favor ingrese una fecha de nacimiento" },
+               direccion: {required:"Por favor ingrese una direción."},
+               telefono: {required:"Ingrese un numero de telefono válido", number: 'Debe ingresar un número'},
+               correo_personal: { required: "Por favor ingrese una dirección de correo valida." },
+               correo_institucional: { required: "Por favor ingrese una dirección de correo valida." },
+               email: "Por favor ingrese una dirección de correo valida."
+            }
+         });
+      });
    </script>                                          
    
    <link type="text/css" rel="stylesheet" href="{{ asset('theme/plugins/datatables/dataTables.bootstrap.css') }}">
@@ -156,7 +190,14 @@
          $("#estado_civil").val('{{dataUsuario.idestadocivil}}');
          $("#nacionalidad").val('{{dataUsuario.idnacionalidad}}');
          $("#pais").val('{{dataUsuario.idpais}}');
-
+         
+         $("select.selectPerfil").on('change', function(){
+           if($(this).val()!=null) {
+             var idSelectSinError= $(this).attr("id");
+             $("#"+idSelectSinError+"-errorSel").hide();
+           }
+         });
+         
          modelessPerfilEditar.close();
 
          function handleImage(e){
@@ -247,11 +288,11 @@
                            <b><i class="fa fa-heart margin-r-5"></i> Tipo de Sangre</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="tipo_sangre" name="tipo_sangre" class="pull-right form-control">
+                           <select id="tipo_sangre" name="tipo_sangre" class="pull-right form-control selectPerfil">
                               {% for dataSangre in datosTiposSangre %}
                               <option value="{{dataSangre.codigo}}">{{dataSangre.nombre}}</option>
                               {% endfor %}
-                           </select>
+                           </select><label id="tipo_sangre-errorSel" class="errorSelect" for="tipo_sangre">Por favor seleccione una opción.</label>
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -259,11 +300,11 @@
                            <b><i class="fa fa-male margin-r-5"></i> Sexo</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="sexo" name="sexo" class="pull-right form-control">
+                           <select id="sexo" name="sexo" class="pull-right form-control selectPerfil">
                               {% for dataGenero in datosGeneros %}
                               <option value="{{dataGenero.codigo}}">{{dataGenero.nombre|capitalize}}</option>
                               {% endfor %}
-                           </select>
+                           </select><label id="sexo-errorSel" class="errorSelect" for="sexo">Por favor seleccione una opción.</label>
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -271,11 +312,11 @@
                            <b><i class="fa fa-diamond margin-r-5"></i> Estado Civil</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="estado_civil" name="estado_civil" class="pull-right form-control">
+                           <select id="estado_civil" name="estado_civil" class="pull-right form-control selectPerfil">
                               {% for dataCivil in datosEstadosCiviles %}
                               <option value="{{dataCivil.codigo}}">{{dataCivil.nombre|capitalize}}</option>
                               {% endfor %}
-                           </select>
+                           </select><label id="estado_civil-errorSel" class="error errorSelect" for="estado_civil">Por favor seleccione una opción.</label>
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -283,11 +324,11 @@
                            <b><i class="fa fa-map-marker margin-r-5"></i> Nacionalidad</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="nacionalidad" name="nacionalidad" class="pull-right form-control">
+                           <select id="nacionalidad" name="nacionalidad" class="pull-right form-control selectPerfil">
                               {% for dataNacionalidad in datosNacionalidades %}
                               <option value="{{dataNacionalidad.codigo}}">{{dataNacionalidad.nombre|capitalize}}</option>
                               {% endfor %}
-                           </select>
+                           </select><label id="nacionalidad-errorSel" class="errorSelect" for="nacionalidad">Por favor seleccione una opción.</label>
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -295,11 +336,11 @@
                            <b><i class="fa fa-map-marker margin-r-5"></i> Pais</b>
                         </div>
                         <div class="col-xs-3">
-                           <select id="pais" name="pais" class="pull-right form-control">
+                           <select id="pais" name="pais" class="pull-right form-control selectPerfil">
                               {% for dataPais in datosPaises %}
                               <option value="{{dataPais.codigo}}">{{dataPais.nombre|capitalize}}</option>
                               {% endfor %}
-                           </select>
+                           </select><label id="pais-errorSel" class="errorSelect" for="pais">Por favor seleccione una opción.</label>
                         </div>
                      </div>
 
@@ -320,7 +361,7 @@
                            <b><i class="fa fa-phone margin-r-5"></i> Teléfono</b>
                         </div>
                         <div class="col-xs-5">
-                           <input id="telefono" name="telefono" type="text" value="{{dataUsuario.telefono}}" class="pull-right form-control" />
+                           <input id="telefono" name="telefono" type="text" value="{{dataUsuario.telefono}}" class="pull-right form-control" maxlength="10" />
                         </div>
                      </div>
                      <div class="row item-edit-usuario data-edit">
@@ -362,64 +403,75 @@
 
       $("#grabarDataPerfil").on('click', function(event){
          event.preventDefault();
-         var objectEditPerfil = $("#formEditarPerfil").serializeArray();
-         var Pic;
-         if ($('#previewImg').css('display') != 'none') {
-            //var Pic = document.getElementById("imagen_perfil_prev").toDataURL("image/png");
-            var Pic = document.getElementById("imagen_perfil_prev").toDataURL();
-            //Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "");
-            var obj_data            = {'dataPerfil':objectEditPerfil, 'imagenPerfil':Pic};
+         var errorSelects = false;
+         var validForm  = $("#formEditarPerfil").valid();
+         $("select.selectPerfil").each(function(){
+            if( $(this).val()==null){
+               errorSelects = true;
+               var idSelectError= $(this).attr("id");
+               $("#"+idSelectError+"-errorSel").show();
+            }
+         });
+         if(validForm==true && errorSelects==false) {
+            var objectEditPerfil = $("#formEditarPerfil").serializeArray();
+            var Pic;
+            if ($('#previewImg').css('display') != 'none') {
+               //var Pic = document.getElementById("imagen_perfil_prev").toDataURL("image/png");
+               var Pic = document.getElementById("imagen_perfil_prev").toDataURL();
+               //Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "");
+               var obj_data            = {'dataPerfil':objectEditPerfil, 'imagenPerfil':Pic};
+            }
+            else {
+               var obj_data            = {'dataPerfil':objectEditPerfil};
+            }
+            //console.log(obj_data);
+            var jumpOption          = '{{path('titulacion_usuario_editar_perfil_grabarFormActualiza')}}';
+
+            $.ajax({
+               url:  jumpOption,
+               type: 'post',
+               data: obj_data,
+               async: false,
+               beforeSend: function () {
+                 $("#grabarDataPerfil").html("<i class=\"fa fa-refresh fa-spin\"></i> &nbsp;<b>Actualizando la información del perfil</b>");
+               },
+               error: function(){
+                  $("#grabarDataPerfil").html("<b>Actualizar la información del perfil</b>");
+                  modelessGrabarPerfil = new $.flavr({
+                     modal   : true,
+                     content : '<div class="mensajeError">Lo sentimos. Se  presentó un problema para grabar la información de su perfil.</div>',
+                     buttons : {
+                           primary : { text: 'Aceptar', style: 'primary' }
+                     }
+                  });
+               },
+               success:  function (dataResponse) {
+                  var mensajeResultado = '';
+                  if(dataResponse.idMensaje==='1') {
+                     mensajeResultado = 'Su información de actualizó correctamente.';
+                     if(dataResponse.imagenGrabada === 0 || dataResponse.imagenGrabada === -1) {
+                        mensajeResultado += "<br><br><b>Atención:<b> Se presentaron problemas para actualizar su foto de perfil.";
+                     }
+                  }
+                  else {
+                     mensajeResultado = 'Se presentaron problemas para actualizar su información';
+                  }
+                  $("#grabarDataPerfil").html("<b>Actualizar la información del perfil</b>");
+                  modelessGrabarPerfil = new $.flavr({
+                     modal   : true,
+                     content : '<div class="mensajeExito">'+mensajeResultado+'</div>',
+                     buttons : {
+                           primary : { text: 'Aceptar', style: 'primary' }
+                     }
+                  });
+
+                  if(dataResponse.imagenGrabada == 1) {
+                     location.reload();
+                  }
+               },
+               dataType:'json'
+            });
          }
-         else {
-            var obj_data            = {'dataPerfil':objectEditPerfil};
-         }
-         //console.log(obj_data);
-         var jumpOption          = '{{path('titulacion_usuario_editar_perfil_grabarFormActualiza')}}';
-               
-         $.ajax({
-            url:  jumpOption,
-            type: 'post',
-            data: obj_data,
-            async: false,
-            beforeSend: function () {
-              $("#grabarDataPerfil").html("<i class=\"fa fa-refresh fa-spin\"></i> &nbsp;<b>Actualizando la información del perfil</b>");
-            },
-            error: function(){
-               $("#grabarDataPerfil").html("<b>Actualizar la información del perfil</b>");
-               modelessGrabarPerfil = new $.flavr({
-                  modal   : true,
-                  content : '<div class="mensajeError">Lo sentimos. Se  presentó un problema para grabar la información de su perfil.</div>',
-                  buttons : {
-                        primary : { text: 'Aceptar', style: 'primary' }
-                  }
-               });
-            },
-            success:  function (dataResponse) {
-               var mensajeResultado = '';
-               if(dataResponse.idMensaje==='1') {
-                  mensajeResultado = 'Su información de actualizó correctamente.';
-                  if(dataResponse.imagenGrabada === 0 || dataResponse.imagenGrabada === -1) {
-                     mensajeResultado += "<br><br><b>Atención:<b> Se presentaron problemas para actualizar su foto de perfil.";
-                  }
-               }
-               else {
-                  mensajeResultado = 'Se presentaron problemas para actualizar su información';
-               }
-               $("#grabarDataPerfil").html("<b>Actualizar la información del perfil</b>");
-               modelessGrabarPerfil = new $.flavr({
-                  modal   : true,
-                  content : '<div class="mensajeExito">'+mensajeResultado+'</div>',
-                  buttons : {
-                        primary : { text: 'Aceptar', style: 'primary' }
-                  }
-               });
-               
-               if(dataResponse.imagenGrabada == 1) {
-                  location.reload();
-               }
-            },
-            dataType:'json'
-         });      
       });
    </script>
 {% endblock %}
