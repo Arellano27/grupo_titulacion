@@ -155,8 +155,8 @@ function lanzarModal(titulo, textoCuerpo, textoBoton) {
             { CargandoDocentes.close();
                
 		if(data.error === true){
-                    $( "#loading-bar-spinner-relative" ).remove();
-                    msg_alert = alert_bootstrap( id, 'Atenci&oacute;n', data.msg, 'sm', 'alert');
+                    
+                   var msg_alert = alert_bootstrap( id, 'Atenci&oacute;n', data.msg, 'sm', 'alert');
                     $( "#"+id ).append( msg_alert );
                     $('#modal-'+id).modal('show');
                 } else if(data.modalOverBody) //MODAL SOBRE EL CUERPO DE LA PAGINA

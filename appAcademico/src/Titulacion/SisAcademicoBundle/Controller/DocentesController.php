@@ -192,14 +192,17 @@
                /* $ciclo='18';
                 $docente='5';
                 $idMateria='251';*/
-            $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
-                         <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
-                         <PI_ID_MATERIA>".$idMateria."</PI_ID_MATERIA>
-                         <PARCIAL>0</PARCIAL>
-                         <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
-            $idMateria  = $request->request->get('idMateria');
+                $trama ="<PI_ID_CICLO_DETALLE>".$ciclo."</PI_ID_CICLO_DETALLE>
+                             <PI_ID_USUARIO_PROFESOR>".$docente."</PI_ID_USUARIO_PROFESOR>
+                             <PI_ID_MATERIA>".$idMateria."</PI_ID_MATERIA>
+                             <PARCIAL>0</PARCIAL>
+                             <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
+               $idMateria  = $request->request->get('idMateria');
             
-               $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
+               $id='1';
+               $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama,$id);
+//               $datosParciales2  = json_decode($datosParciales);
+//               $datosParciales=$datosParciales2->a;
                
 //               print_r($datosParciales);
 //               exit();
@@ -209,9 +212,9 @@
 //                     $arr_parcial[$i]['parcial']='parcial #'.$i;
 //                          
 //            }
-            $arr_parcial[1]['parcial']=$datosParciales->registro[0]->periodos->periodo[0]->parcial;
+               $parcial=$datosParciales->registro->periodos->periodo->parcial;
             
-               $tareas= $datosParciales->registro[0]->periodos->periodo[0]->componentePeriodo;
+               $tareas= $datosParciales->registro->periodos->periodo->componentePeriodo;
                $i=0;
                foreach ($tareas->idNota as $idnota) {
                $registros[$i]['idNota']= (string)$idnota;
@@ -237,9 +240,9 @@
        return $this->render('TitulacionSisAcademicoBundle:Docentes:notasAlumnosMateria.html.twig',
                          array(
                                'condition' => '',
-                               'arr_parcial' => $arr_parcial,
+                               'parcial' => $parcial,
                                'idMateria' => $idMateria,
-                             'idCarrera' => $idCarrera
+                               'idCarrera' => $idCarrera
                              )
                       );
       }
@@ -959,17 +962,21 @@
                          <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
                          <PARCIAL>0</PARCIAL>
                          <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
-            $id_Materia =$request->request->get('materia');
             
+           $id='1';
+           $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama,$id);
+           $id='2';
+           $ingreanota = $UgServices->Docentes_gettareaxparcial($trama,$id);
             
-           $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
+          
+          /* print_r($datosParciales);*/
+              // $ingreanota='0';
+               if($ingreanota=='1'){
+            $profesor=$datosParciales->registro->profesor;
+            $materia=$datosParciales->registro->materia;
+            $paralelo=$datosParciales->registro->paralelo;
+            $parcial=$datosParciales->registro->periodos->periodo->parcial;
             
-          /* print_r($datosParciales);
-           exit();*/
-            $profesor=$datosParciales->registro[0]->profesor;
-            $materia=$datosParciales->registro[0]->materia;
-            $paralelo=$datosParciales->registro[0]->paralelo;
-            $parcial=$datosParciales->registro[0]->periodos->periodo[0]->parcial;
 //            $profesor = $session->get('nom_usuario'); 
 //            $materia= $session->get('nom_materia');
 //            $paralelo= $session->get('paralelo');
@@ -989,6 +996,11 @@
                                                            'msg'   	=> $this->v_msg
 						  ));
                         $this->v_html=utf8_encode($this->v_html);
+               }
+               else{
+                   $this->v_error=true;
+                   $this->v_msg="No es tiempo para ingreso de notas aun";
+               }
                         
                         $response->setData(
                                 array(
@@ -1088,14 +1100,14 @@
                          <PI_ID_MATERIA>251</PI_ID_MATERIA>
                          <PARCIAL>0</PARCIAL>
                          <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
-            
-           $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
-            
+           $id='1';
+           $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama,$id);
+          
            /*print_r($datosParciales);
            exit();*/
-            $profesor=$datosParciales->registro[0]->profesor;
-            $materia=$datosParciales->registro[0]->materia;
-            $paralelo=$datosParciales->registro[0]->paralelo;
+            $profesor=$datosParciales->registro->profesor;
+            $materia=$datosParciales->registro->materia;
+            $paralelo=$datosParciales->registro->paralelo;
 //            $profesor = $session->get('nom_usuario'); 
 //            $materia= $session->get('nom_materia');
 //            $paralelo= $session->get('paralelo');
@@ -1133,7 +1145,7 @@
               // $idDocente=$session->get('idDocente')
                $parcial=$request->request->get('hdparcial');
               // $alumno=$session->get('codalumno');
-               $parcial=substr($parcial,8,1);
+               $parcial=substr($parcial,-1,1);
 
                $idDocente     = $session->get('id_user');
           
@@ -1191,8 +1203,8 @@
                   $xmlfinal= $doc->saveXML() . "\n";
                  
                  $xmlfinal= str_replace ( '<?xml version="1.0"?>' , '' , $xmlfinal);
-//                 print_r($xmlfinal);
-//                   exit();
+                 print_r($xmlfinal);
+                   exit();
                   $respuesta  = $UgServices->Docentes_ingresoNotas($xmlfinal);
                 //print ($notas);
                //   print_r($respuesta);
@@ -1238,9 +1250,12 @@
                              <PI_ID_MATERIA>".$id_Materia."</PI_ID_MATERIA>
                              <PARCIAL>0</PARCIAL>
                              <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
-               $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
+               $id='1';
+               $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama,$id);
+               
+              
             
-               $tareas1= $datosParciales->registro[0]->periodos->periodo[0]->componentePeriodo;
+               $tareas1= $datosParciales->registro->periodos->periodo->componentePeriodo;
                $i=0;
                foreach ($tareas1->idNota as $idnota) {
                $tareas[$i]['idNota']= (string)$idnota;
@@ -1367,12 +1382,15 @@
                          <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
        $id_Materia =$request->request->get('materia');
            
-           $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
+           $id='1';
+           $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama,$id);
+           
+          
            /*print_r($datosParciales);
            exit();*/
-            $profesor=$datosParciales->registro[0]->profesor;
-            $materia=$datosParciales->registro[0]->materia;
-            $paralelo=$datosParciales->registro[0]->paralelo;
+            $profesor=$datosParciales->registro->profesor;
+            $materia=$datosParciales->registro->materia;
+            $paralelo=$datosParciales->registro->paralelo;
 //            $profesor = $session->get('nom_usuario'); 
 //            $materia= $session->get('nom_materia');
 //            $paralelo= $session->get('paralelo');
@@ -1527,14 +1545,14 @@
                          <PI_ESTUDIANTE>0</PI_ESTUDIANTE>";
           $id_Materia =$request->request->get('materia');
            
-           $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama);
+           $id='1';
+           $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama,$id);
            
-            
            /*print_r($datosParciales);
            exit();*/
-            $profesor=$datosParciales->registro[0]->profesor;
-            $materia=$datosParciales->registro[0]->materia;
-            $paralelo=$datosParciales->registro[0]->paralelo;
+            $profesor=$datosParciales->registro->profesor;
+            $materia=$datosParciales->registro->materia;
+            $paralelo=$datosParciales->registro->paralelo;
 //            $profesor = $session->get('nom_usuario'); 
 //            $materia= $session->get('nom_materia');
 //            $paralelo= $session->get('paralelo');

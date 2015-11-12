@@ -2,7 +2,7 @@
 namespace Titulacion\SisAcademicoBundle\Helper;
 #purueba de git
 include ('XmlParsero.php');
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 class AcademicoSoap {
     private $host   =NULL;
     private $url    =NULL;
@@ -1287,8 +1287,8 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
    }#end function   
    
    
-  function doRequestSreReceptaTransacionConsultasdoc2($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){  
-
+  function doRequestSreReceptaTransacionConsultasdoc2($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL,$id){  
+ 
  $post_string="
             <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ser='http://servicios.ug.edu.ec/'>
                <soapenv:Header/>
@@ -1328,14 +1328,31 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
          $xmlData["bloqueRegistros"]   = 'registros';
          $xmlData["bloqueSalida"]      = 'px_salida';
         
-      $response	= preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-      
+         $response	= preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+      if ($id=='2'){
+          $acceso =new \SimpleXMLElement($response);
+          $puede=$acceso->soapBody->ns2ejecucionObjetoResponse->return->resultadoObjeto->parametrosSalida->PI_ESTADO;
+         $puede=(string)$puede;
+         return $puede;
+      }
+//         $session=$request->getSession();
+//               $session->set("ingresanota",$puede);
+//               $ingreanota  = $session->get('ingresanota');
+//               echo $puede;
+//         exit();
          $respuesta  = $this->eliminaCabecerasAcademico($response);
          
          $respuesta  = $this->Response("<".$xmlData["bloqueRegistros"].">".$respuesta."</".$xmlData["bloqueRegistros"].">");
 
          $respuesta  = $this->ReemplazaCaracteres($respuesta[0][$xmlData["bloqueSalida"]]);
          $respuesta =new \SimpleXMLElement($respuesta);
+         
+         
+         //$arr = array('a' =>$respuesta, 'b' => $puede);
+
+        //  $respuesta2=  json_encode($arr);
+//                              print_r($respuesta2);
+//                              exit();
      
          return $respuesta;
         
