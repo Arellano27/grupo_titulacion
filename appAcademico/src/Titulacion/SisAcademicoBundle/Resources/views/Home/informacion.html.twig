@@ -1,0 +1,217 @@
+
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link type="text/css" rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ asset('css/growl/jquery.growl.css') }}" >
+
+<link rel="stylesheet" href="{{ asset('js/lib/iOS-Overlay/css/iosOverlay.css') }}">
+<link rel="stylesheet" href="{{ asset('js/lib/iOS-Overlay/css/prettify.css') }}">
+<link rel="icon" type="image/x-icon" href="{{ asset('images/menu/ug_logo.png') }}" />
+<link type="text/css" rel="stylesheet" href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}">
+
+
+<script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+<script src="{{ asset('lib/bootstrap-strength.min.js') }}"></script> 
+<script src="{{ asset('js/flavr/flavr.js') }}"></script>
+<script src="{{ asset('js/flavr/flavr.min.js') }}"></script>
+<script src="{{ asset('js/growl/jquery.growl.js') }}"></script>
+<script src="{{ asset('js/mensajes.js') }}"></script>
+
+<script src="{{ asset('js/lib/iOS-Overlay/js/iosOverlay.js') }}"></script>
+<script src="{{ asset('js/lib/iOS-Overlay/js/modernizr-2.0.6.min.js') }}"></script>
+<script src="{{ asset('js/lib/jquery-spin/spin.min.js') }}"></script>
+<script src="{{ asset('js/sistemau.functions.js') }}"></script>
+
+
+<style type="text/css">
+
+.flavr-container .flavr-fixer .flavr-outer .flavr-content .flavr-message form input {
+  width: 100% !important;
+  float: right !important;
+  margin: -50px 1px !important;
+}
+.flavr-container .flavr-fixer .flavr-outer .flavr-content {font-size: 12px !important;}
+.flavr-container .flavr-fixer .flavr-outer {min-width: 500px !important;}
+.flavr-form{margin: 20px 0px;text-align: left;}
+.flavr-container .flavr-fixer .flavr-outer .flavr-content .flavr-message {line-height: 2.0; text-shadow: none;}
+.flavr-container .flavr-fixer .flavr-outer .flavr-content .flavr-icon,
+.flavr-container .flavr-fixer .flavr-outer .flavr-content .flavr-title {text-align: center;}
+.cambioContrasenia{line-height: 0.5;}
+.flavr-container .flavr-fixer {margin: 1% auto 0px !important;}
+.flavr-container .flavr-overlay {background: #d2d6de !important;}
+
+.flavr-container .flavr-fixer .flavr-outer .flavr-toolbar{background: #fff !important;}
+.flavr-container .flavr-fixer .flavr-outer .flavr-content {
+  border-top: 5px solid #005595 !important;
+  background: #fff !important;
+  color: #000 !important;
+}
+.flavr-container .flavr-fixer .flavr-outer .flavr-content .flavr-message form input { 
+  border: 1.5px solid #d2d6de !important; 
+  background: #FAFFBD !important;
+}
+.flavr-container .flavr-overlay {background: #d2d6de !important;}
+.flavr-container .flavr-fixer .flavr-outer .flavr-toolbar.inline .flavr-button { font-weight: bold; }
+.flavr-container .flavr-fixer .flavr-outer .flavr-toolbar .flavr-button.danger { background-color: #F44A56; }
+
+</style>
+
+<script type="text/javascript">
+
+  $(document).ready(function ($) {
+  //setTimeout('login();',1000);
+  login();
+});
+
+
+var btn_login = 0;
+
+function login(){
+   
+          var htmlCabecera = 
+          '<div class="form-row"></div>'
+          ;  
+          var presentacion =
+          '<div  class="flavr-message">' +
+          '<table width="100%" ><thead><tr><th style="font-size:10px; line-height:1;"><b>CAPA DE PRESENTACION</th>'+
+          '<th style="font-size:10px; line-height:1;"><b>CAPA DE NEGOCIO</th>'+
+          '<th style=font-size:10px; line-height:1;"><b>CAPA DE BASE DE DATOS</th>'+
+          '<tr><td>&nbsp;</td></tr>'+
+          '</tr></thead>'+
+                '<tr><td style=font-size:9px; line-height:1;">- Carlos Quiñonez Nuquez</td>'+
+                 '<td style=font-size:9px; line-height:1;">- Adolfo  Sotomayor Sanchez</td>'+ 
+                 '<td style=font-size:9px; line-height:1;">- Cinthya  Rivadeneira Rivadeneira</td>'+ 
+          '</tr>'+
+
+          '<tr><td style=font-size:9px; line-height:1;">-  Diego  Rodriguez Camacho</td>'+
+                '<td style=font-size:9px; line-height:1;">- Hector  Ortega Gonzalez</td>'+ 
+                '<td style=font-size:9px; line-height:1;">- Jonathan  Veloz Jordan</td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Gabriel  Huayamabe Rizo</td>'+
+                '<td style=font-size:9px; line-height:1;">- Jose  Sosa Barzola</td>'+ 
+                '<td style=font-size:9px; line-height:1;">- Mariana Silva Villamar</td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Jeferson Bohorquez Santana </td>'+
+                '<td style=font-size:9px; line-height:1;">- Ricardo  Coello Quezada</td>'+ 
+                '<td style=font-size:9px; line-height:1;">- Roberto  Lama Pacheco</td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Jose  Arellano Torres</td>'+
+                '<td style=font-size:9px; line-height:1;">- Xavier Mora</td>'+ 
+                '<td style=font-size:9px; line-height:1;">- Sebastian  Rosado Cedeño</td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Joseline  Suarez Hernandez</td>'+
+                  '<td></td>'+
+                '<td style=font-size:9px; line-height:1;">- William  Pozo Ramirez</td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Juan  Tamayo Delgado</td>'+
+                  '<td></td>'+
+                '<td style=font-size:9px; line-height:1;">- Wimper  Cifuentes Moreira</td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Renato  Resabala Vera</td>'+
+
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Stalin  Caiche Moran</td>'+
+
+          '</tr>'+
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;"></td>'+
+
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;"></td>'+
+
+          '</tr>'+
+          '<tr><td>&nbsp;</td></tr>'+
+           '<tr><td style=font-size:11px; line-height:1;"><b>INFRAESTRUCTURA</b></td>'+
+                '<td style=font-size:11px; line-height:1;"><b>APLICACION MOVIL</b></td>'+
+                '<td style=font-size:11px; line-height:1;"><b>WIKI</b></td>'+
+           '</tr>'+ 
+           '<tr><td>&nbsp;</td></tr>'+
+           '<tr><td style=font-size:9px; line-height:1;">-  Franklin  Mosquera Lopez</td>'+
+                '<td style=font-size:9px; line-height:1;">-  Ericka  Flores Santos</td>'+
+                '<td style=font-size:9px; line-height:1;">- Katiuska  Barreto Barreto</td>'+
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Jameson  Villanueva Rodriguez</td>'+
+                '<td style=font-size:9px; line-height:1;">-  Henry  Silva Olivo</td>'+
+                '<td style=font-size:9px; line-height:1;">- Wilson  Fernandez Palomino</td>'+
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Kevin  Lazo Rubio</td>'+
+                '<td style=font-size:9px; line-height:1;">-  Richard Asencio Vargas</td>'+ 
+                '<td style=font-size:9px; line-height:1;"></td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">-  Marcos  Lescano Delgado</td>'+
+                '<td style=font-size:9px; line-height:1;"></td>'+ 
+                '<td style=font-size:9px; line-height:1;"></td>'+ 
+          '</tr>'+
+          '<tr><td>&nbsp;</td></tr>'+
+          '<tr><td style=font-size:11px; line-height:1;"><b>PRODUCT OWNER</b></td>'+
+                '<td style=font-size:11px; line-height:1;"><b>VERSIONAMIENTO</b></td>'+
+                '<td style=font-size:11px; line-height:1;"><b>INGENIERIA DE PROCESOS </b></td>'+
+           '</tr>'+ 
+           '<tr><td>&nbsp;</td></tr>'+
+           '<tr><td style=font-size:9px; line-height:1;">- Briggitte  Olvera Tenesaca</td>'+
+                '<td style=font-size:9px; line-height:1;">- Steven  Cruz Bonito</td>'+
+                '<td style=font-size:9px; line-height:1;">- Leonardo  Salvatierra Alvarado</td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;">- Saul  Bohorquez Ulloa</td>'+ 
+                '<td style=font-size:9px; line-height:1;"></td>'+
+                '<td style=font-size:9px; line-height:1;"></td>'+  
+          '</tr>'+
+          '<tr><td>&nbsp;</td></tr>'+
+          '<tr><td style=font-size:11px; line-height:1;"><b>PMP</b></td>'+
+                '<td style=font-size:11px; line-height:1;"><b>ANALISIS DE MERCADO</b></td>'+
+                '<td style=font-size:11px; line-height:1;"><b>TESTER</b></td>'+
+           '</tr>'+ 
+           '<tr><td>&nbsp;</td></tr>'+
+           '<tr><td style=font-size:9px; line-height:1;">- Iliana  Vera Salazar</td>'+
+                '<td style=font-size:9px; line-height:1;">- Cinthia  Franco Salvatierra</td>'+ 
+                '<td style=font-size:9px; line-height:1;">- Maria  Tingo Beltran</td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;"></td>'+
+                '<td style=font-size:9px; line-height:1;"></td>'+ 
+          '</tr>'+
+          '<tr><td style=font-size:9px; line-height:1;"></td>'+
+                '<td style=font-size:9px; line-height:1;"></td>'+ 
+          '</tr>'+
+          '</table>' +
+
+          
+          '</div>' ;
+           var logica ='';
+
+          // var logica =
+          // '<div class="flavr-message">' +
+          // '<p><b>Lógica del Negocio </b><br /></p>' +
+          // '<p>&nbsp;&nbsp;-  Hector Ortega</p>'+
+          // '</div>';
+
+          // var base =
+          //  '<div class="flavr-message">' +
+          // '<p><b> Modelado de Datos </b><br /></p>' +
+          // '<p>&nbsp;&nbsp;-  Cinthia Rivadeneira</p>'+
+          // '</div>';
+           var base =
+           '';
+
+          html = htmlCabecera + presentacion + logica + base; 
+       
+
+    new $.flavr({
+        title       : '<b>Sitio Desarrollado Por:</b>',
+        iconPath    : '{{ asset('images/menu/')}}',
+        icon        : 'ug_logo.png',
+        dialog      : 'form',
+        form        : {  content: html, method: 'get'},
+        buttons : {
+             danger: { text: 'Salir',id:'salir', style: 'danger', action: function(){ this.animate('fadeOutDown'); location.href = 'javascript:history.back(1)'; return false }}
+         }
+    });
+ 
+
+
+}
+
+</script>
