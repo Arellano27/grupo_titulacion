@@ -73,9 +73,9 @@
               {% if event.id_sg_opcion == AnulacionMateria %}
                 <li><a href="{{path('admin_generacion_horario_docente')}}"><i class="fa fa-circle-o"></i> Generacion Horario Docente </a></li>
               {% endif %}
-              {% if event.id_sg_opcion == AnulacionMateria %}
+              {#{% if event.id_sg_opcion == AnulacionMateria %}
                 <li><a href="{{path('admin_generacion_horario_examen')}}"><i class="fa fa-circle-o"></i> Generacion Horario Examen </a></li>
-              {% endif %}
+              {% endif %}#}
           {% endfor %}
           <!-- <li><a href="{#{path('admin_academico_home')}#}"><i class="fa fa-circle-o"></i> Calendario Academico </a></li> -->
           <!-- <li><a href="{#{path('admin_carreras_ordenpago')}#}"><i class="fa fa-circle-o"></i> Orden de Pago </a></li> -->
@@ -85,6 +85,7 @@
           {# <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i>Materias Aprobadas por Estudiante</a></li> #}
         </ul>
       </li>
+     
       {% endif %}
 
       {% if app.session.get('perfil') == perfilCordi or app.session.get('perfil') == perfilEstCordi or  app.session.get('perfil') == perfilDocCordi %}
@@ -135,6 +136,11 @@
           <li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-circle-o"></i> Configuracion Mensajes</a></li>
           <!-- <li><a href="{#{ path('dayscript_configuracion') }#}"><i class="fa fa-circle-o"></i> Aprobar</a></li> -->
         </ul>
+      </li>
+        <li class="treeview">
+        <a href="{{path('admin_generacion_horario_examene2')}}">
+          <i class="fa fa-pencil-square-o"></i><span>Generación Horario Examen</span>          
+        </a>     
       </li>
      {# {% endif %}#}
     </ul>
