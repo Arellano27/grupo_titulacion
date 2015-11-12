@@ -116,7 +116,19 @@ admin_cmb_materias:
 admin_generacion_horario_docente:
    path:     /generacion_horarios
    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios }
-    
+
+admin_generacion_horario_docente_grabar:
+   path:     /generacion_horarios_grabar
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios_grabar }
+
+admin_generacion_horario_examen:
+   path:     /generacion_horario_examen
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios_examen }
+ 
+admin_generacion_horario_examene2:
+   path:     /generacion_horario_examene2
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horario_examene2 }
+   
 admin_muestra_estudiantes:
     pattern:  /muestra/estudiantes
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:muestraEstudiantes}

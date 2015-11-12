@@ -2430,4 +2430,118 @@ public function generacion_horariosAction(Request $request){
     										 )
                               );
    }
+   
+   public function generacion_horarios_examenAction(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $UgServices = new UgServices;
+    $Paralelos = $UgServices->Paralelos(4);
+    $Materia = $UgServices->Materia(4,44);
+        //echo var_dump($Materia); exit();
+    return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_examen.html.twig',
+    									array(
+    				'data' => array('Paralelo' => $Paralelos,
+                                                'Materia'   => $Materia)
+    										 )
+                              );
+   }
+   
+    public function generacion_horarios_grabarAction(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $materias  = $request->request->get('arrMaterias');
+    $contador  = $request->request->get('contador');
+             $UgServices = new UgServices;
+                 foreach ($materias as $key => $value) {
+                     $valore = explode(";",$value['Horario']);  
+                        for($i=0;$i<$contador;$i++){
+                            $datos = explode("_",$valore[$i]); 
+                            $hora_inicio = $datos[4].":00";
+                            $hora_fin = $datos[5].":00";
+                           $xmlfinal=" <pi_id_sg_usuario_profesor>$datos[2]</pi_id_sg_usuario_profesor>
+                        <pi_id_sa_materia>$datos[0]</pi_id_sa_materia>
+                        <pi_id_sa_paralelo>$datos[1]</pi_id_sa_paralelo>
+                        <pi_cupo_estudiantes>$datos[3]</pi_cupo_estudiantes>
+                        <pi_dia_semana>1</pi_dia_semana>
+                        <pt_hora_inicio>$hora_inicio</pt_hora_inicio>
+                        <pt_hora_fin>$hora_fin</pt_hora_fin>
+                        <pi_id_sg_usuario_registro>1</pi_id_sg_usuario_registro>
+                        <pc_opcion>A</pc_opcion>
+                        <pi_id_sa_materia_paralelo>2330</pi_id_sa_materia_paralelo>
+                        <pi_id_sa_horario>1091</pi_id_sa_horario>
+                        <pi_id_sa_profesor_materia_carrera>2115</pi_id_sa_profesor_materia_carrera>";
+                                                
+                         $xml = $UgServices->Guarda_Horarios_docente($xmlfinal);
+                        }                                         
+                }
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']=$Mensaje;
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
+   
+    public function generacion_horario_examene2Action(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $materias  = $request->request->get('arrMaterias');
+    $contador  = $request->request->get('contador');
+             $UgServices = new UgServices;
+                 foreach ($materias as $key => $value) {
+                     $valore = explode(";",$value['Horario']);  
+                        for($i=0;$i<$contador;$i++){
+                            $datos = explode("_",$valore[$i]); 
+                            $hora_inicio = $datos[4].":00";
+                            $hora_fin = $datos[5].":00";
+                           $xmlfinal=" <pi_id_sg_usuario_profesor>$datos[2]</pi_id_sg_usuario_profesor>
+                        <pi_id_sa_materia>$datos[0]</pi_id_sa_materia>
+                        <pi_id_sa_paralelo>$datos[1]</pi_id_sa_paralelo>
+                        <pi_cupo_estudiantes>$datos[3]</pi_cupo_estudiantes>
+                        <pi_dia_semana>1</pi_dia_semana>
+                        <pt_hora_inicio>$hora_inicio</pt_hora_inicio>
+                        <pt_hora_fin>$hora_fin</pt_hora_fin>
+                        <pi_id_sg_usuario_registro>1</pi_id_sg_usuario_registro>
+                        <pc_opcion>A</pc_opcion>
+                        <pi_id_sa_materia_paralelo>2330</pi_id_sa_materia_paralelo>
+                        <pi_id_sa_horario>1091</pi_id_sa_horario>
+                        <pi_id_sa_profesor_materia_carrera>2115</pi_id_sa_profesor_materia_carrera>";
+                                                
+                         $xml = $UgServices->Guarda_Horarios_examen($xmlfinal);
+                        }                                         
+                }
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']=$Mensaje;
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
 }

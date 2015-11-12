@@ -492,7 +492,7 @@
                     var obj_data = {'arrMaterias': myArray,'contador': cont};
                     //var obj_data = {};
                               console.log(obj_data);
-                    var jumpAction = '{{path('admin_generacion_horario_docente_grabar')}}';
+                    var jumpAction = '{{path('admin_generacion_horario_examene2')}}';
                                  var modelessSetMatricula;
                                   $.ajax({
                                      url:   jumpAction,
@@ -529,7 +529,7 @@
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Señor administrativo el horario fue creado exitosamente!',
+                                                           content : 'Señor administrativo el horario de examanes fue creado exitosamente!',
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
