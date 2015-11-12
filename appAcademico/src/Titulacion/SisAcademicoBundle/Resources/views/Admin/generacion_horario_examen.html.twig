@@ -491,7 +491,7 @@
                     
                     var obj_data = {'arrMaterias': myArray,'contador': cont};
                     //var obj_data = {};
-                              console.log(obj_data);
+                             // console.log(obj_data);
                     var jumpAction = '{{path('admin_generacion_horario_examene2')}}';
                                  var modelessSetMatricula;
                                   $.ajax({
@@ -557,7 +557,90 @@
                               });
                   
                 });
-        });
+                
+                
+                $("#docente").mouseover(function (){
+                                             
+                        var MateriaId = $("#Materia").val();                       
+                        var DiaId = $("#Dia").val();
+                        var ParaleloId = $("#Paralelo").val();  
+                        var HoraText = $("#Hora option:selected").text();
+                        var spli = HoraText.split("-");
+                        var Hora_Ini = spli[0];
+                        var Hora_Fin = spli[1];
+                       var obj_data = {'idMateria': MateriaId,'dia': DiaId ,'idParalelo': ParaleloId,'horaInicio': Hora_Ini,'horaFin': Hora_Fin};
+                       console.log(obj_data);
+                         var jumpAction = '{{path('admin_muestra_docente_horario')}}';
+                                 var modelessSetMatricula;
+                                  $.ajax({
+                                     url:   jumpAction,
+                                     data: obj_data,
+                                     type:  'post',
+                                     async: true,
+                                     beforeSend: function () {
+                                        modelessSetMatricula = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando Docente...</b>',
+                                                             buttons     : {}
+                                                          });                               
+                              
+                                     },
+                                     success:  function (dataResponse) {
+                                        modelessSetMatricula.close();
+                                       var respuesta=jQuery.parseJSON(dataResponse);
+                                       $("#div_respuesta").html(respuesta.mensaje);
+                                      
+                                       if (respuesta.codigo_error!=1)
+                                       {      
+                                             $('.botonMatriculaSig').addClass('buttonDisabled');
+                                            $('.botonMatriculaSig').addClass('buttonDisabled');
+                                            $('.botonAnterior').removeClass('buttonDisabled');
+                                            $("#btninscribe").attr("disabled", false);
+                                             modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : "en estos momentos tenemos inconvenientes, favor intentelo mas tarde",
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                           
+                                       }
+                                       else
+                                       {
+                                        modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Señor administrativo el horario de examanes fue creado exitosamente!',
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                        $('.botonAnterior').addClass('buttonDisabled');
+                                        $('.botonMatriculaSig').removeClass('buttonDisabled');
+                                        $("#btninscribe").remove();
+                                        $(".botonMatriculaSig").show();
+
+                                       }
+                                     },
+                                      error: function(dataResponse)
+                                      {
+                                        modelessSetMatricula.close();
+                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                        form="accordion";
+                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                        $( '#'+form ).append( msg_alert );
+                                                        $('#modal-'+form).modal('show');
+                                      },
+                             //         timeout: 50000
+
+                                 dataType:'text'
+                              });
+                  
+                });
+                });
+                
+             
+     
         
     </script>
 
@@ -621,7 +704,7 @@
                     </div>
                     <div class="form-group">
                       <label>Seleccione Docente:</label>
-                        <select class="form-control" Id="Docente">
+                      <select id="docente" class="form-control" Id="Docente">
                             <option value="1"> RENATO RESABALA</option>
                             <option value="2"> ERCICKA FLORES</option>
                             <option value="3">GABRIEL HUAYAMABE</option>

@@ -1454,6 +1454,18 @@ public function getConsultaDatos_Generales($idEstudiante){
         return $response;
     }
     
+    public function docente_horario_c($trama) {
+        $this->tipo = "50";
+
+        $this->source = $this->sourceConsultas;
+
+        $this->urlWS = $this->url . $this->urlConsulta;
+        
+        $response = $this->ws->doSelectHorariosDocente_generacion($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+
+        return $response;
+    }#end function
+    
     
 }#end class
 

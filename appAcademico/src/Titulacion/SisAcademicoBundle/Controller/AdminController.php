@@ -2544,4 +2544,49 @@ public function generacion_horariosAction(Request $request){
             return $respuesta;
 
    }
+   
+     public function docente_horarioAction(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $idMateria = $request->request->get('idMateria');
+    $dia = $request->request->get('dia');
+    $idParalelo = $request->request->get('idParalelo');
+    $horaInicio  = $request->request->get('horaInicio');
+    $horaFin  = $request->request->get('horaFin');
+           $horaInicio = $horaInicio.":00";
+                            $horaFin = $horaFin.":00";
+                            $horaFin = ltrim($horaFin);
+             $UgServices = new UgServices;
+                 
+                           $xmlfinal="		<horarios>
+                                    <idMateria>$idMateria</idMateria>
+                                    <dia>$dia</dia>
+                               <idParalelo>$idParalelo</idParalelo>
+                                <horaInicio>$horaInicio</horaInicio>
+                                <horaFin>$horaFin</horaFin>
+                                </horarios>";
+                                                
+                         $xml = $UgServices->docente_horario_c($xmlfinal);
+                        
+                  
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']="Gabriel Huayamabe";
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
 }
