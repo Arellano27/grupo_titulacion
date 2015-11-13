@@ -778,7 +778,7 @@ class UgServices {
 
 #end function
 
-    public function Docentes_gettareaxparcial($trama) {
+    public function Docentes_gettareaxparcial($trama,$id) {
         $ws = new AcademicoSoap();
         $tipo = "24";
         $usuario = $this->usuario;
@@ -845,7 +845,7 @@ XML;
 
         $XML = null;
 
-        $response = $ws->doRequestSreReceptaTransacionConsultasdoc2($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML);
+        $response = $ws->doRequestSreReceptaTransacionConsultasdoc2($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML,$id);
 
         return $response;
     }
@@ -1001,7 +1001,7 @@ XML;
 </soap:Envelope>
 XML;
 
-       $XML =null;
+      // $XML =null;
 
         $response = $ws->doRequestConsultaFechas($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML);
 

@@ -579,4 +579,23 @@ class HomeController extends Controller
          
          return $response;
       } // grabarEditarPerfilActualizarAction()
+
+      public function informacionAction(Request $request) {
+         // $session    =$request->getSession();
+         // $idUsuario  = $session->get('id_user');
+         
+         // $UgServices          = new UgServices;
+         // $datosConsulta       = array( 'idUsuario' => $idUsuario);
+         // $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
+
+         // $datosUsuario        = $datosUsuarioArray[0];
+         // if($datosUsuario['directoriofoto']!=NULL) {
+         //    $datosUsuario['existefotoperfil'] = 1;
+         // }
+         // else {
+         //    $datosUsuario['existefotoperfil'] = 0;
+         // }
+        $session=$request->getSession();
+         return $this->render('TitulacionSisAcademicoBundle:Home:informacion.html.twig');
+      } // editarPerfilAction()
 }

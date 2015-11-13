@@ -43,6 +43,26 @@ img#refresh{float:right;margin: 0px 7px 0px 49px;cursor:pointer;}
 </style>
 <script type="text/javascript">
 
+  function valideKey(evt)
+  {
+      var code = (evt.which) ? evt.which : evt.keyCode;
+      if(code==8)
+      {
+          //backspace
+          return true;
+      }
+      else if(code>=48 && code<=57)
+      {
+          //is a number
+          return true;
+      }
+      else
+      {
+          return false;
+      }
+  }
+
+
   $(document).ready(function(){
     setTimeout('login();',1000);
   });
@@ -114,7 +134,7 @@ function login(){
      $('.login-are').removeAttr('click');
     var html =
         '   <div class="form-row">' +
-        '       <input id="username" type="text" name="username" onkeydown="enterT(event)" maxlength="10"' +
+        '       <input id="username" type="text" name="username" onkeypress="return valideKey(event);" onkeydown="enterT(event)" maxlength="10"' +
         '       placeholder="Username"  required /> <p class="help-block"></p>' +
         '   </div>' +
         '   <div class="form-row">' +

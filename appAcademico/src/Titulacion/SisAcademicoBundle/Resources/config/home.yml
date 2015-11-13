@@ -25,4 +25,7 @@ titulacion_usuario_editar_perfil_formActualiza:
 titulacion_usuario_editar_perfil_grabarFormActualiza:
     pattern:  /perfil/editar/form/grabar
     defaults: { _controller: TitulacionSisAcademicoBundle:Home:grabarEditarPerfilActualizar }
+titulacion_informacion_portal:
+    pattern:  /informacion
+    defaults: { _controller: TitulacionSisAcademicoBundle:Home:informacion }
 
