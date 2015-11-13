@@ -129,6 +129,18 @@ admin_generacion_horario_examene2:
    path:     /generacion_horario_examene2
    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horario_examene2 }
    
+admin_generacion_horarios_examenes:
+   path:     /generacion_horarios_examenes
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios_examenes }
+   
+admin_elegir_solicitud:
+   path:     /carga_solicitud
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:carga_solicitud }
+   
+admin_subir_solicitud:
+   path:     /subir_solicitud
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:subir_solicitud }
+   
 admin_muestra_estudiantes:
     pattern:  /muestra/estudiantes
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:muestraEstudiantes}

@@ -1434,6 +1434,16 @@ public function getConsultaDatos_Generales($idEstudiante){
         return $response;
     }
     
+    public function subir_solicitud($trama) {
+
+        $this->tipo = "47";
+        $this->urlWS = $this->url . $this->urlProcedim;
+        //echo  var_dump($trama); exit();
+        //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
+        $response = $this->ws->dosubir_solicitud($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+        return $response;
+    }
+    
       public function Guarda_Horarios_docente($trama) {
 
         $this->tipo = "45";

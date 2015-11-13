@@ -2497,9 +2497,10 @@ public function generacion_horariosAction(Request $request){
    }
    
     public function generacion_horario_examene2Action(Request $request){
-    
+    $respuesta= new Response("",200);
     $session=$request->getSession();
     $idUsuario  = $session->get('id_user');
+    $cedula = $request->request->get('cedula');
 
              $UgServices = new UgServices;
 
@@ -2508,103 +2509,23 @@ public function generacion_horariosAction(Request $request){
 //                                                
                          $xml = $UgServices->Guarda_Horarios_examen($xmlfinal);
                          
-                          if ( is_object($xml))
-                            {
-                                    
-                            $this->get('session')->getFlashBag()->add(
-                                                            'mensaje',
-                                                            'Horario de examenes generados correctamente'
-                                                        );
-                            }
-            $perfilEst   = $this->container->getParameter('perfilEst');
-        $perfilDoc   = $this->container->getParameter('perfilDoc');
-        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
-        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
-        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
-        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
-
-         if ($session->has("perfil")) 
-         {
-                if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm) 
+                      $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
                 {
-                    try
-                    {
-                          $lcFacultad="";
-                          $lcCarrera="";
-                          $idUsuario="";
-                          $idRol="";
-                          $idUsuario=$session->get("id_user");
-                          $idRol=$session->get("perfil");
-                          if(strlen($idRol)>1)
-                          {
-                            $idRol = mb_substr($idRol,0,1);
-                          }
-                          else
-                          {
-                          $idRol = $idRol;
-                          }
-                          //$idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
-                          //$idRol=1; //ROL DE SESION ADMIN CAMBIAR
-                          
-                          $Carreras = array();
-                          $UgServices = new UgServices;
-                          $xml = $UgServices->getConsultaCarrerasAnulacion($idUsuario,$idRol);
-                            if ( is_object($xml))
-                            {
-                                  foreach($xml->registros->registro as $lcCarreras) 
-                                  {
-                                          $lcFacultad="";
-                                          $lcCarrera=$lcCarreras->id_sa_carrera;
-                                          $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
-                                                                     'Facultad'=>$lcCarreras->id_sa_facultad,
-                                                                     'Carrera'=>$lcCarreras->id_sa_carrera,
-                                                                     'Ciclo'=>$lcCarreras->id_sa_ciclo_detalle
-                                                                    );
-                                          array_push($Carreras, $materiaObject); 
-                                  } 
-    
-                                  $bolCorrecto=1;
-                                  $cuantos=count($Carreras);
-                                  if ($cuantos==0)
-                                  {
-                                        $bolCorrecto=0;
-                                  }    
-                            }
-                            else
-                            {
-    
-                              throw new \Exception('Un error');
-                            }    
-                 }
-                 catch (\Exception $e)
-                 {
-    
-                        $bolCorrecto=0;
-                        $cuantos=0;
-    
-                 }    
-                 return $this->render('TitulacionSisAcademicoBundle:Admin:carreras_anulacion.html.twig',array(
-                                                  'carreras' => $Carreras,
-                                                  'bolcorrecto'=>$bolCorrecto
-                                               ));
-            }
-            else
-            {
-                   $this->get('session')->getFlashBag()->add(
-                                 'mensaje',
-                                 'Los datos ingresados no son válidos'
-                             );
-                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-            }
-    }
-    else
-    {
-         $this->get('session')->getFlashBag()->add(
-                              'mensaje',
-                               'Los datos ingresados no son válidos'
-                           );
-             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
-     }
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']=$Mensaje;
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
            
    }
    
@@ -2651,5 +2572,72 @@ public function generacion_horariosAction(Request $request){
             $respuesta->setContent($jarray);
             return $respuesta;
 
+   }
+   
+     public function carga_solicitudAction(Request $request)
+            {    $session=$request->getSession();   
+            $idUsuario  = $session->get('id_user');
+                if($session->has("perfil")) {
+                   
+                    return $this->render('TitulacionSisAcademicoBundle:Admin:Subir_Solicitud.html.twig');
+                }else{
+                    return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+                }
+                   
+            }
+   
+    public function subir_solicitudAction(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $cedula = $request->request->get('cedula');
+    $Solicitud  = $request->request->get('Solicitud');
+    $fileSize  = $request->request->get('fileSize');
+             $UgServices = new UgServices;
+               
+                           $xmlfinal="<PX_XML>
+					<items>
+						<item>
+						    <id_sa_formato_solicitud></id_sa_formato_solicitud>
+						    <descripcion>$cedula</descripcion>
+							<ruta_archivo>$fileSize</ruta_archivo>
+							<id_usuario>$idUsuario</id_usuario>
+							<estado>A</estado>
+						</item>
+					</items>
+				</PX_XML>
+				<PC_OPCION>A</PC_OPCION>";
+                                            //echo  var_dump($xmlfinal); exit();     
+                        $xml = $UgServices->subir_solicitud($xmlfinal);
+                     
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']=$Mensaje;
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
+   
+    public function generacion_horarios_examenesAction(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+            if($session->has("perfil")) {
+              return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horarios_examen.html.twig');
+            }else{
+                    return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+                }
    }
 }
