@@ -1281,20 +1281,13 @@ XML;
     public function getConsultaPorcentajeEstudianteCarrera($idCiclo, $idCarrera) {
 
         $ws = new AcademicoSoap();
-        $tipo = "28";
-        $usuario = "CapaVisualPhp";
-        $clave = "12CvP2015";
-        $source = "jdbc/saugConsTmp";
-        $url = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
-        $host = "186.101.66.2:8080";
+        $this->tipo = "28";
         $trama = "<idCiclo>" . $idCiclo . "</idCiclo><carrera>" . $idCarrera . "</carrera>";
         $this->urlWS = $this->url . $this->urlConsulta;
-        $response = $this->ws->doRequestEstadosMatricula($trama, $this->sourceConsultas, $tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+        $response = $this->ws->doRequestEstadosMatricula($trama, $this->sourceConsultas, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
 
         return $response;
-    }
-
-#end function
+    }#end function
 
     public function getRolesAdmin($idUser, $idRol) {
 
