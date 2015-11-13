@@ -15,7 +15,7 @@
           <li><a id="menuizqDoc_listadonotas" href="#"><i class="fa fa-circle-o"></i> Listado de Notas</a></li>#}
           <li><a href="{{path('docentes_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Examen</a></li>
           {#<li><a id="menuizqDoc_vistageneral" href="#"><i class="fa fa-circle-o"></i> Vista por Asignatura</a></li>#}
-          <li><a id="menuizqDoc_vistageneral" href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Clases</a></li>
+          <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Clases</a></li>
         </ul>
       </li>
       {% endif %}
@@ -70,6 +70,12 @@
               {% if event.id_sg_opcion == AnulacionMateria %}
                 <li><a href="{{path('admin_anulacion')}}"><i class="fa fa-circle-o"></i> Anulacion Materia </a></li>
               {% endif %}
+              {% if event.id_sg_opcion == AnulacionMateria %}
+                <li><a href="{{path('admin_generacion_horario_docente')}}"><i class="fa fa-circle-o"></i> Generacion Horario Docente </a></li>
+              {% endif %}
+              {#{% if event.id_sg_opcion == AnulacionMateria %}
+                <li><a href="{{path('admin_generacion_horario_examen')}}"><i class="fa fa-circle-o"></i> Generacion Horario Examen </a></li>
+              {% endif %}#}
           {% endfor %}
           <!-- <li><a href="{#{path('admin_academico_home')}#}"><i class="fa fa-circle-o"></i> Calendario Academico </a></li> -->
           <!-- <li><a href="{#{path('admin_carreras_ordenpago')}#}"><i class="fa fa-circle-o"></i> Orden de Pago </a></li> -->
@@ -79,6 +85,7 @@
           {# <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i>Materias Aprobadas por Estudiante</a></li> #}
         </ul>
       </li>
+     
       {% endif %}
 
       {% if app.session.get('perfil') == perfilCordi or app.session.get('perfil') == perfilEstCordi or  app.session.get('perfil') == perfilDocCordi %}
@@ -106,7 +113,7 @@
                 <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Clases </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaHorariosExamen %}
-                <li><a href="#"><i class="fa fa-circle-o"></i> Consulta Horarios Examen </a></li>
+                <li><a href="{{path('admin_generacion_horario_examene2')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Examen </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaHorariosClasesPersonalizados %}
                 <li><a href="#"><i class="fa fa-circle-o"></i> ConsultaHorarios Clases Personalizados </a></li>
@@ -129,7 +136,7 @@
           <li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-circle-o"></i> Configuracion Mensajes</a></li>
           <!-- <li><a href="{#{ path('dayscript_configuracion') }#}"><i class="fa fa-circle-o"></i> Aprobar</a></li> -->
         </ul>
-      </li>
+      </li>  
           <li class="treeview">
         <a href="{{path('titulacion_informacion_portal')}}">
           <i class="fa fa-question"></i><span>Informacion del Sitio</span>

@@ -89,29 +89,26 @@ class NotificacionesController extends Controller
                                    ->setBody($mensaje);
                         $this->get('mailer')->send($message);
                         
-                           //sms mensajes sms 
-                        
-                           $receptor =$Correos_Numeros_['celular'];
-//                           
-                            $objGsmOut = new \COM ('ActiveXperts.GsmOut');
-
-                              $archivo = 'C:\log.txt';
-                              $dispositivo =  'SAMSUNG Mobile USB Modem';
-
-                             $velocidad = 0;
-
-                              $objGsmOut->LogFile          = $archivo; 
-                              $objGsmOut->Device           = $dispositivo;
-                              $objGsmOut->DeviceSpeed      = $velocidad; 
-
-                              $objGsmOut->MessageRecipient = $receptor;
-                             $objGsmOut->MessageData      = $mensaje;
-
-                              if($objGsmOut->LastError == 0){
-                                $objGsmOut->Send;
-                               
-                               
-                             }
+                           //sms mensajes sms  descomentar cuando se configure                        
+//                           $receptor =$Correos_Numeros_['celular'];
+////                           
+//                            $objGsmOut = new \COM ('ActiveXperts.GsmOut');
+//
+//                              $archivo = 'C:\log.txt';
+//                              $dispositivo =  'SAMSUNG Mobile USB Modem';
+//
+//                             $velocidad = 0;
+//
+//                              $objGsmOut->LogFile          = $archivo; 
+//                              $objGsmOut->Device           = $dispositivo;
+//                              $objGsmOut->DeviceSpeed      = $velocidad; 
+//
+//                              $objGsmOut->MessageRecipient = $receptor;
+//                             $objGsmOut->MessageData      = $mensaje;
+//
+//                              if($objGsmOut->LastError == 0){
+//                                $objGsmOut->Send;                                                           
+//                             }
                         
                         
                          }

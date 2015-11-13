@@ -2414,4 +2414,242 @@ class AdminController extends Controller
 
             return $response;
         }
+        
+public function generacion_horariosAction(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $UgServices = new UgServices;
+    $Paralelos = $UgServices->Paralelos(4);
+    $Materia = $UgServices->Materia(4,44);
+        //echo var_dump($Materia); exit();
+    return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_admin.html.twig',
+    									array(
+    				'data' => array('Paralelo' => $Paralelos,
+                                                'Materia'   => $Materia)
+    										 )
+                              );
+   }
+   
+   public function generacion_horarios_examenAction(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $UgServices = new UgServices;
+    $Paralelos = $UgServices->Paralelos(4);
+    $Materia = $UgServices->Materia(4,44);
+        //echo var_dump($Materia); exit();
+    return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_examen.html.twig',
+    									array(
+    				'data' => array('Paralelo' => $Paralelos,
+                                                'Materia'   => $Materia)
+    										 )
+                              );
+   }
+   
+    public function generacion_horarios_grabarAction(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $materias  = $request->request->get('arrMaterias');
+    $contador  = $request->request->get('contador');
+             $UgServices = new UgServices;
+                 foreach ($materias as $key => $value) {
+                     $valore = explode(";",$value['Horario']);  
+                        for($i=0;$i<$contador;$i++){
+                            $datos = explode("_",$valore[$i]); 
+                            $hora_inicio = $datos[4].":00";
+                            $hora_fin = $datos[5].":00";
+                           $xmlfinal=" <pi_id_sg_usuario_profesor>$datos[2]</pi_id_sg_usuario_profesor>
+                        <pi_id_sa_materia>$datos[0]</pi_id_sa_materia>
+                        <pi_id_sa_paralelo>$datos[1]</pi_id_sa_paralelo>
+                        <pi_cupo_estudiantes>$datos[3]</pi_cupo_estudiantes>
+                        <pi_dia_semana>1</pi_dia_semana>
+                        <pt_hora_inicio>$hora_inicio</pt_hora_inicio>
+                        <pt_hora_fin>$hora_fin</pt_hora_fin>
+                        <pi_id_sg_usuario_registro>1</pi_id_sg_usuario_registro>
+                        <pc_opcion>A</pc_opcion>
+                        <pi_id_sa_materia_paralelo>2330</pi_id_sa_materia_paralelo>
+                        <pi_id_sa_horario>1091</pi_id_sa_horario>
+                        <pi_id_sa_profesor_materia_carrera>2115</pi_id_sa_profesor_materia_carrera>";
+                                                
+                         $xml = $UgServices->Guarda_Horarios_docente($xmlfinal);
+                        }                                         
+                }
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']=$Mensaje;
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
+   
+    public function generacion_horario_examene2Action(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+
+             $UgServices = new UgServices;
+
+                           $xmlfinal=" <PI_ID_CICLO_DET>19</PI_ID_CICLO_DET>
+				<PI_ID_USUARIO_REG>$idUsuario</PI_ID_USUARIO_REG>";
+//                                                
+                         $xml = $UgServices->Guarda_Horarios_examen($xmlfinal);
+                         
+                          if ( is_object($xml))
+                            {
+                                    
+                            $this->get('session')->getFlashBag()->add(
+                                                            'mensaje',
+                                                            'Horario de examenes generados correctamente'
+                                                        );
+                            }
+            $perfilEst   = $this->container->getParameter('perfilEst');
+        $perfilDoc   = $this->container->getParameter('perfilDoc');
+        $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+        $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+        $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+        $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+
+         if ($session->has("perfil")) 
+         {
+                if ($session->get('perfil') == $perfilAdmin || $session->get('perfil') == $perfilDocAdm || $session->get('perfil') == $perfilEstAdm) 
+                {
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          $idUsuario="";
+                          $idRol="";
+                          $idUsuario=$session->get("id_user");
+                          $idRol=$session->get("perfil");
+                          if(strlen($idRol)>1)
+                          {
+                            $idRol = mb_substr($idRol,0,1);
+                          }
+                          else
+                          {
+                          $idRol = $idRol;
+                          }
+                          //$idUsuario=9; //USUARIO DE SESION ADMIN CAMBIAR
+                          //$idRol=1; //ROL DE SESION ADMIN CAMBIAR
+                          
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarrerasAnulacion($idUsuario,$idRol);
+                            if ( is_object($xml))
+                            {
+                                  foreach($xml->registros->registro as $lcCarreras) 
+                                  {
+                                          $lcFacultad="";
+                                          $lcCarrera=$lcCarreras->id_sa_carrera;
+                                          $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                     'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                     'Carrera'=>$lcCarreras->id_sa_carrera,
+                                                                     'Ciclo'=>$lcCarreras->id_sa_ciclo_detalle
+                                                                    );
+                                          array_push($Carreras, $materiaObject); 
+                                  } 
+    
+                                  $bolCorrecto=1;
+                                  $cuantos=count($Carreras);
+                                  if ($cuantos==0)
+                                  {
+                                        $bolCorrecto=0;
+                                  }    
+                            }
+                            else
+                            {
+    
+                              throw new \Exception('Un error');
+                            }    
+                 }
+                 catch (\Exception $e)
+                 {
+    
+                        $bolCorrecto=0;
+                        $cuantos=0;
+    
+                 }    
+                 return $this->render('TitulacionSisAcademicoBundle:Admin:carreras_anulacion.html.twig',array(
+                                                  'carreras' => $Carreras,
+                                                  'bolcorrecto'=>$bolCorrecto
+                                               ));
+            }
+            else
+            {
+                   $this->get('session')->getFlashBag()->add(
+                                 'mensaje',
+                                 'Los datos ingresados no son válidos'
+                             );
+                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+    }
+    else
+    {
+         $this->get('session')->getFlashBag()->add(
+                              'mensaje',
+                               'Los datos ingresados no son válidos'
+                           );
+             return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+     }
+           
+   }
+   
+     public function docente_horarioAction(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $idMateria = $request->request->get('idMateria');
+    $dia = $request->request->get('dia');
+    $idParalelo = $request->request->get('idParalelo');
+    $horaInicio  = $request->request->get('horaInicio');
+    $horaFin  = $request->request->get('horaFin');
+           $horaInicio = $horaInicio.":00";
+                            $horaFin = $horaFin.":00";
+                            $horaFin = ltrim($horaFin);
+             $UgServices = new UgServices;
+                 
+                           $xmlfinal="		<horarios>
+                                    <idMateria>$idMateria</idMateria>
+                                    <dia>$dia</dia>
+                               <idParalelo>$idParalelo</idParalelo>
+                                <horaInicio>$horaInicio</horaInicio>
+                                <horaFin>$horaFin</horaFin>
+                                </horarios>";
+                                                
+                         $xml = $UgServices->docente_horario_c($xmlfinal);
+                        
+                  
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']="Gabriel Huayamabe";
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
 }

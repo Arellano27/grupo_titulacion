@@ -1,0 +1,705 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig'%}
+{% block home %}
+
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
+    
+    <script type="text/javascript">
+        
+        $(document).ready(function () {
+         
+            $("#Asignar").click(function () {
+               var ParaleloText = $("#Paralelo option:selected").text();
+               var ParaleloId = $("#Paralelo").val();
+               var MateriaText = $("#Materia option:selected").text();
+               var MateriaId = $("#Materia").val();
+               var DiaText = $("#Dia option:selected").text();
+               var DiaId = $("#Dia").val();
+               var HoraText = $("#Hora option:selected").text();
+               var HoraloId = $("#Hora").val();
+               var DocenteText = $("#Docente option:selected").text();
+               var DocenteId = $("#Docente").val();
+             
+               var Tabla_Horarios = document.getElementById("Horario");           
+               var i = Tabla_Horarios.rows.length;
+               var fila = i
+               if(i==1){
+                fila = fila +1;
+                var tds = '<tr id="Horario_Fila_' + fila + '">';
+                if(DiaText != "Sabado"){
+                tds += '<td class="'+ HoraloId +'" id="Hora_' + fila +'">';
+                tds += HoraText ;
+                tds += '</td>';
+                }else{
+                tds += '<td id="Hora_' + fila + '">';
+                tds += "";
+                tds += '</td>';
+                }
+                if(DiaText == "Lunes"){
+                HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Lunes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Lunes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Martes"){
+                HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Martes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                tds += '<td id="Martes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Miercoles"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Miercoles_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Miercoles_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Jueves"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Jueves_' + fila + '">';
+                 tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Jueves_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Viernes"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Viernes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Viernes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Sabado"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Sabado_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                tds += '<td class="'+ HoraloId +'" id="Hora2_' + fila +'">';
+                tds += HoraText;
+                tds += '</td>';
+                }else{
+                     tds += '<td id="Sabado_' + fila + '">';
+                tds += "";
+                tds += '</td>';  
+                tds += '<td id="Hora2_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                tds += '</tr>';
+                $("#Horario").append(tds);
+               }
+               else{
+                   var Valor = "";
+                   var Clase = "";
+                   var Hora_2 = $("#Hora_" + fila).attr("class")                  
+                   if(Hora_2 > HoraloId){
+                        fila = fila +1;
+                var tds = '<tr id="Horario_Fila_' + fila + '">';
+                if(DiaText != "Sabado"){
+                tds += '<td class="'+ HoraloId +'" id="Hora_' + fila +'">';
+                tds += HoraText ;
+                tds += '</td>';
+                }else{
+                tds += '<td id="Hora_' + fila + '">';
+                tds += "";
+                tds += '</td>';
+                }
+                if(DiaText == "Lunes"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Lunes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Lunes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Martes"){
+               HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Martes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                tds += '<td id="Martes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Miercoles"){
+                HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Miercoles_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Miercoles_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Jueves"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Jueves_' + fila + '">';
+                 tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Jueves_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Viernes"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Viernes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Viernes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Sabado"){
+                  HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Sabado_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                tds += '<td class="'+ HoraloId +'" id="Hora2_' + fila +'">';
+                tds += HoraText;
+                tds += '</td>';
+                }else{
+                     tds += '<td id="Sabado_' + fila + '">';
+                tds += "";
+                tds += '</td>';  
+                tds += '<td id="Hora2_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                tds += '</tr>';
+                $("#Horario").prepend(tds);
+               }else{
+                 if(Hora_2 == HoraloId){
+                      
+                        if(DiaText == "Lunes"){
+                             HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                       Valor = MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                       Clase = MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText;
+                       $("#Lunes_" + fila).html(Valor);
+                       $("#Lunes_" + fila).attr("class",Clase);
+                   }
+                   if(DiaText == "Martes"){
+                        HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                      Valor = MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                       Clase = MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText;
+                       $("#Martes_" + fila).html(Valor);
+                       $("#Martes_" + fila).attr("class",Clase);
+                   }
+                   if(DiaText == "Miercoles"){
+                        HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                       Valor = MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                       Clase = MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText;
+                       $("#Miercoles_" + fila).html(Valor);
+                       $("#Miercoles_" + fila).attr("class",Clase);
+                   }
+                    if(DiaText == "Miercoles"){
+                         HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                       Valor = MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                       Clase = MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText;
+                       $("#Miercoles_" + fila).html(Valor);
+                       $("#Miercoles_" + fila).attr("class",Clase);
+                   }
+                    if(DiaText == "Jueves"){
+                         HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                      Valor = MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                       Clase = MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText;
+                       $("#Jueves_" + fila).html(Valor);
+                       $("#Jueves_" + fila).attr("class",Clase);
+                   }
+                    if(DiaText == "Viernes"){
+                         HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                       Valor = MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                       Clase = MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText;
+                       $("#Viernes_" + fila).html(Valor);
+                       $("#Viernes_" + fila).attr("class",Clase);
+                   }
+                   if(DiaText == "Sabado"){
+                        HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                      Valor = MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                       Clase = MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText;
+                       $("#Sabado_" + fila).html(Valor);
+                       $("#Sabado_" + fila).attr("class",Clase);
+                       
+                        Valor = HoraText;
+                       Clase = HoraloId + "_" + fila;
+                       $("#Hora2_" + fila).html(Valor);
+                       $("#Hora2_" + fila).attr("class",Clase);
+                   }else{
+                       $("#Hora_" + fila).html(HoraText);
+                   }
+                   
+                 }  else{
+                       fila = fila +1;
+                var tds = '<tr id="Horario_Fila_' + fila + '">';
+                if(DiaText != "Sabado"){
+                tds += '<td class="'+ HoraloId +'" id="Hora_' + fila +'">';
+                tds += HoraText ;
+                tds += '</td>';
+                }else{
+                tds += '<td id="Hora_' + fila + '">';
+                tds += "";
+                tds += '</td>';
+                }
+                if(DiaText == "Lunes"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Lunes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Lunes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Martes"){
+                HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Martes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                tds += '<td id="Martes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Miercoles"){
+                HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Miercoles_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Miercoles_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Jueves"){
+                HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Jueves_' + fila + '">';
+                 tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Jueves_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Viernes"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Viernes_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                }else{
+                  tds += '<td id="Viernes_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                if(DiaText == "Sabado"){
+                 HoraText = HoraText.replace("-","_");
+                HoraText = HoraText.replace(" ","");
+                HoraText = HoraText.replace(" ","");
+                tds += '<td class="'+ MateriaId + "_" + ParaleloId + "_" + DocenteId + "_" + DiaId + "_" + HoraText +'" id="Sabado_' + fila + '">';
+                tds += MateriaText +"("+ DocenteText +") "+" ("+ ParaleloText +")";
+                tds += '</td>';
+                tds += '<td class="'+ HoraloId +'" id="Hora2_' + fila +'">';
+                tds += HoraText;
+                tds += '</td>';
+                }else{
+                     tds += '<td id="Sabado_' + fila + '">';
+                tds += "";
+                tds += '</td>';  
+                tds += '<td id="Hora2_' + fila + '">';
+                tds += "";
+                tds += '</td>';   
+                }
+                tds += '</tr>';
+                $("#Horario").append(tds);
+                
+               }
+                 }                  
+               }
+                               
+            });
+            
+            $("#Guardar").click(function () {
+               
+                  var Tabla_Horarios = document.getElementById("Horario");
+                  
+                  var f = Tabla_Horarios.rows.length;
+                 
+                  var Hora = "";
+                  var Hora_Sabado = "";
+                  var Lunes = "";
+                  var Martes = "";
+                  var Miercoles = "";
+                  var Jueves = "";
+                  var Viernes = "";
+                  var Sabado = "";
+                  var resultado =""; 
+                  var myArray = {};
+                  var arrValores = {};
+                  var index = 0;
+                  var i = 0;
+                  var cont = 0;
+                  while(i <= f) { 
+                      if(i>=2){
+                        Lunes = $("#Lunes_" + i).attr("class");
+                        Martes = $("#Martes_" + i).attr("class");
+                        Miercoles = $("#Miercoles_" + i).attr("class");
+                        Jueves = $("#Jueves_" + i).attr("class");
+                        Viernes = $("#Viernes_" + i).attr("class");
+                        Sabado = $("#Sabado_" + i).attr("class");  
+                        
+                                      
+                         if(typeof(Lunes) !== "undefined"){                              
+                                //arrValores["Lunes"]=Lunes;                                     
+                              if(resultado==""){
+                                  resultado = Lunes;
+                              }else{
+                                  resultado = resultado +";"+ Lunes;
+                              }
+                              cont = cont + 1;
+                         }
+                         if(typeof(Martes) !== "undefined" ){                           
+                               //arrValores["Martes"]=Martes;
+                               if(resultado==""){
+                                  resultado = Martes;
+                              }else{
+                                  resultado = resultado +";"+ Martes;
+                              }
+                              cont = cont + 1;
+                         }
+                         if(typeof(Miercoles) !== "undefined" ){                               
+                              // arrValores["Miercoles"]=Miercoles;   
+                               if(resultado==""){
+                                  resultado = Miercoles;
+                              }else{
+                                  resultado = resultado +";"+ Miercoles;
+                              }
+                              cont = cont + 1;
+                               
+                         }
+                         if(typeof(Jueves) !== "undefined" ){                               
+                               //arrValores["Jueves"]=Jueves;   
+                               if(resultado==""){
+                                  resultado = Jueves;
+                              }else{
+                                  resultado = resultado +";"+ Jueves;
+                              }
+                              cont = cont + 1;  
+                              
+                         }
+                         if(typeof(Viernes) !== "undefined" ){                                
+                               //arrValores["Viernes"]=Viernes;  
+                               if(resultado==""){
+                                  resultado = Viernes;
+                              }else{
+                                  resultado = resultado +";"+ Viernes;
+                              }
+                              cont = cont + 1;
+                         }
+                         if(typeof(Sabado) !== "undefined" ){                               
+                              // arrValores["Sabado"]=Sabado; 
+                               if(resultado==""){
+                                  resultado = Sabado;
+                              }else{
+                                  resultado = resultado +";"+ Sabado;
+                              }
+                                                            
+                              cont = cont + 1;
+                         }
+                        
+                           
+                      }
+                       Lunes = "";
+                        Martes = "";
+                        Miercoles = "";
+                        Jueves = "";
+                        Viernes = "";
+                        Sabado = "";  
+                      i = i+1;
+                      
+                    }
+                     arrValores["Horario"]=resultado;
+                     myArray[index]=arrValores; 
+                   
+                    
+                    var obj_data = {'arrMaterias': myArray,'contador': cont};
+                    //var obj_data = {};
+                              console.log(obj_data);
+                    var jumpAction = '{{path('admin_generacion_horario_docente_grabar')}}';
+                                 var modelessSetMatricula;
+                                  $.ajax({
+                                     url:   jumpAction,
+                                     data: obj_data,
+                                     type:  'post',
+                                     async: true,
+                                     beforeSend: function () {
+                                        modelessSetMatricula = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando Registro...</b>',
+                                                             buttons     : {}
+                                                          });                               
+                              
+                                     },
+                                     success:  function (dataResponse) {
+                                        modelessSetMatricula.close();
+                                       var respuesta=jQuery.parseJSON(dataResponse);
+                                       $("#div_respuesta").html(respuesta.mensaje);
+                                       if (respuesta.codigo_error!=1)
+                                       {
+                                            $('.botonMatriculaSig').addClass('buttonDisabled');
+                                            $('.botonAnterior').removeClass('buttonDisabled');
+                                            $("#btninscribe").attr("disabled", false);
+                                             modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : "en estos momentos tenemos inconvenientes, favor intentelo mas tarde",
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                           
+                                       }
+                                       else
+                                       {
+                                        modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Señor administrativo el horario fue creado exitosamente!',
+                                                           buttons     : {
+                                                              primary : { text: 'Aceptar', style: 'primary' }
+                                                           }
+                                                        });
+                                        $('.botonAnterior').addClass('buttonDisabled');
+                                        $('.botonMatriculaSig').removeClass('buttonDisabled');
+                                        $("#btninscribe").remove();
+                                        $(".botonMatriculaSig").show();
+
+                                       }
+                                     },
+                                      error: function(dataResponse)
+                                      {
+                                        modelessSetMatricula.close();
+                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                        form="accordion";
+                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                        $( '#'+form ).append( msg_alert );
+                                                        $('#modal-'+form).modal('show');
+                                      },
+                             //         timeout: 50000
+
+                                 dataType:'text'
+                              });
+                  
+                });
+        });
+        
+    </script>
+
+<section class="content">
+          <div class="row">
+              <form id="form-enviar" method="post">
+            <div class="col-md-5">
+             
+              <div class="box box-solid">
+                <div class="box-header with-border">
+                  <h4 class="box-title">Generacion de Horarios a Profesores</h4>
+                </div>
+                <div class="box-body">
+                  <div id="external-events">
+                    <div class="form-group">
+                      <label>Seleccione Paralelo:</label>
+                      <select class="form-control" id="Paralelo">
+                           {% for Paralelo in data.Paralelo %} 
+                        <option value="{{ Paralelo.id_paralelo }}">{{ Paralelo.nombre_paralelo }}</option>                        
+                           {%endfor%}  
+                      </select>
+                    </div>
+                      <div class="form-group">
+                      <label>Seleccione Materia:</label>
+                        <select class="form-control" Id="Materia">
+                             {% for Materia in data.Materia %} 
+                        <option value="{{ Materia.idmateria }}">{{ Materia.materia}}</option>                        
+                           {%endfor%}  
+                        </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Seleccione dìa:</label>
+                      <select class="form-control" Id="Dia">
+                            <option value="1">Lunes</option>
+                            <option value="2">Martes</option>
+                            <option value="3">Miercoles</option>
+                            <option value="4">Jueves</option>
+                            <option value="5">Viernes</option>
+                            <option value="6">Sabado</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Seleccione Hora:</label>
+                      <select class="form-control" id="Hora">
+                           
+                            <option value="1">07:00 - 08:00</option>
+                            <option value="2">08:00 - 09:00</option>
+                            <option value="3">09:00 - 10:00</option>
+                            <option value="4">10:00 - 11:00</option>
+                            <option value="5">11:00 - 12:00</option>
+                            <option value="6">12:00 - 13:00</option>
+                            <option value="7">14:00 - 15:00</option>
+                            <option value="8">15:00 - 16:00</option>
+                            <option value="9">16:00 - 17:00</option>
+                            <option value="10">17:00 - 18:00</option>
+                            <option value="11">18:00 - 19:00</option>
+                            <option value="12">19:00 - 20:00</option>
+                            <option value="13">20:00 - 21:00</option>
+                            <option value="14">21:00 - 22:00</option>                            
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Seleccione Docente:</label>
+                        <select class="form-control" Id="Docente">
+                            <option value="1"> RENATO RESABALA</option>
+                            <option value="2"> ERCICKA FLORES</option>
+                            <option value="3">GABRIEL HUAYAMABE</option>
+                            <option value="4">DIANDRA BRIONES</option>
+                            <option value="5">ADRIANA MORALES</option>
+                        </select>
+                    </div>
+                                        
+            
+                    
+                    <div class="modal-footer col-md-12">
+                    {#<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>#}
+                    {#<input type="submit" class="fa fa-save  btn btn-primary btn-sm"><a href=""> </a></button>#}
+                    <a id="Asignar" class="fa fa-pencil-square-o btn btn-warning btn-sm" role="button"> Asignar</a>
+                   {# <a id="Asignar" class="fa fa-save btn btn-info" role="button"> Asignar</a>
+                    <button type="submit" class="fa fa-pencil-square-o btn btn-warning btn-sm"> MODIFICAR</button>
+                    <button type="submit" class="fa fa-ban  btn btn-danger btn-sm"> CANCELAR</button>#}
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            <div class="col-md-7">
+                          
+                                 <div class="box box-solid">
+                            <div class="panel-heading">    
+                                       
+                                
+				
+                <h5 class="box-title">Horario de Profesores</h5>
+               
+           
+             <br/>
+               
+                  <div class="portlet-body form">
+                      
+			         <div class="form-wizard">
+                                    <div class="form-body">
+				        <table id="Horario" class="table table-bordered">
+                 
+                    <thead>
+                        <tr>
+                      <th>Horas</th>
+                      <th>Lunes</th>
+                      <th>Martes</th>
+                      <th>Miercoles</th>
+                      <th>Jueves</th>
+                      <th>Viernes</th>
+                      <th>Sabado</th>
+                      <th>Horas</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                      
+                  </tbody>
+                  </table>
+                  
+                            </div>
+                           </div>
+                   
+                       
+                   </div>
+                    <div class="modal-footer col-md-12">
+             <a id="Guardar" class="fa fa-save btn btn-info" role="button"> Generar Horario Docente</a>  
+                                     </div>
+              </div>
+                                       
+              </div>
+            
+                
+            </div>
+        </form>
+    </div>
+
+        </section>
+
+    
+{% endblock %}
