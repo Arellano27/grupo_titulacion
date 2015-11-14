@@ -142,6 +142,7 @@
                <div class="col-lg-4 botonesExport"><a id="exportaAsistencias" class="btn btn-success" href="{{ path('docentes_asistencias_crear_xls',{ 'idCarrera':dataMateria.datosConsultaActual.idCarrera, 'idParalelo':dataMateria.datosConsultaActual.idParalelo, 'idMateria':dataMateria.datosConsultaActual.idMateria, 'idParalelo':'0','fechaInicio':dataMateria.datosConsultaActual.fechaInicio, 'fechaFin':dataMateria.datosConsultaActual.fechaFin}) }}" target="_blank"><i class="fa fa-fw fa-save"></i> Exportar Listado Actual</a></div>
             </div>
             {% if dataMateria.datosAsistencia is iterable %}
+               {% set hayAlumnos = 1%}
 				<table id="listadoAsistenciaMateria_{{dataMateria.idMateria}}" class="table table-striped table-bordered">
 					<thead>
 					  <tr>
@@ -171,6 +172,7 @@
 					</tbody>
 				  </table>
             {% else %}
+               {% set hayAlumnos = 0 %}
                <div class="col-lg-12">
                   Se presentaron problemas para mostrar el listado de alumnos.
                </div>
@@ -182,6 +184,7 @@
 		</div>
 		<!-- /.panel -->
       <script type="text/javascript">
+         var modelessListadoAlumnos;
  {#        $('#listadoAsistenciaMateria').DataTable({
             "bPaginate": false,
             columnDefs: [
@@ -230,6 +233,21 @@
          });
 
          $(document).ready(function(){
+            
+            {% if hayAlumnos == 0 %}
+               $('#exportaAsistencias').on('click', function(event){
+                  event.preventDefault();
+                  var mensajeErrorAsistencia = "No se puede realizar la exportación del listado de asistencias."
+                  modelessListadoAlumnos = new $.flavr({
+                                                modal   : true,
+                                                content : mensajeErrorAsistencia,
+                                                buttons     : {
+                                                   primary : { text: 'Aceptar', style: 'primary' }
+                                                }
+                                             });
+               });
+            {% endif %}      
+            
             var carreraSeleccionada = $("#carreraSeleccionada").val();
             var nombreCarreraSelecc = $("#nombreMateriaSeleccionada-Carrera_"+carreraSeleccionada).val();
             $("#nombreCarreraMostrar_{{dataMateria.idMateria}}").html(nombreCarreraSelecc);
@@ -252,9 +270,14 @@
                        //optionSelect.closest(".panel-body").html("Procesando, espere por favor...");
                      },
                      error: function(){
-                        //console.log("hay un error");
-                        var mensajeErrorNotas   = "Lo sentimos. Se  presentó un problema para cargar el listado de asistencias en el nuevo rango de fechas seleccionado."
-                        lanzarModal('Listado de asistencias',mensajeErrorNotas,'Aceptar');//alert(mensajeErrorNotas);
+                        var mensajeErrorAsistencia   = "Lo sentimos. Se  presentó un problema para cargar el listado de asistencias en el nuevo rango de fechas seleccionado."
+                        modelessListadoAlumnos = new $.flavr({
+                                                modal   : true,
+                                                content : mensajeErrorAsistencia,
+                                                buttons     : {
+                                                   primary : { text: 'Aceptar', style: 'primary' }
+                                                }
+                                             });
                      },
                      success:  function (dataResponse) {
                        //console.log(optionSelect.closest(".panel-body"));
@@ -268,7 +291,13 @@
                }
                else {
                   var mensajeAdvertenciaNotas   = "Para poder hacer una consulta de asistencias, seleccione una fecha inicial y final.";
-                  lanzarModal('Listado de asistencias',mensajeAdvertenciaNotas,'Aceptar');
+                  modelessListadoAlumnos = new $.flavr({
+                                                modal   : true,
+                                                content : mensajeAdvertenciaNotas,
+                                                buttons     : {
+                                                   primary : { text: 'Aceptar', style: 'primary' }
+                                                }
+                                             });
                }
             });
             
