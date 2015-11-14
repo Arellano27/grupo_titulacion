@@ -1341,7 +1341,7 @@ XML;
         $trama = "<id_sg_usuario>$idUser</id_sg_usuario><id_sa_ciclo_detalle>19</id_sa_ciclo_detalle>";
         $XML = NULL;
         $response = $this->ws->doSelectHorariosDocente($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
-
+  
         return $response;
     }#end function
 
@@ -1459,16 +1459,23 @@ public function getConsultaDatos_Generales($idEstudiante){
     
     public function docente_horario_c($trama) {
         $this->tipo = "50";
-
         $this->source = $this->sourceConsultas;
-
-        $this->urlWS = $this->url . $this->urlConsulta;
-        
+        $this->urlWS = $this->url . $this->urlConsulta;        
         $response = $this->ws->doSelectHorariosDocente_generacion($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
 
         return $response;
     }#end function
     
+     public function Docentes_Horarios_Examen($idUser) {
+        $this->tipo = "43";
+         $this->urlWS = $this->url . $this->urlProcedim;
+        $trama = "<PV_Opcion>P</PV_Opcion>
+				<PI_Usuario>$idUser</PI_Usuario>
+				<PI_Carrera>4</PI_Carrera>";
+        $XML = NULL;
+        $response = $this->ws->doSelectHorariosDocenteExamen($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+        return $response;
+    }#end function
     
 }#end class
 

@@ -1,0 +1,219 @@
+{% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig' %}
+
+
+{% block home %}
+  <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
+    
+    
+     <script type="text/javascript">
+  $(function () {
+           TableAdvanced.init();
+    });  
+   
+</script>
+
+          <script type="text/javascript">
+               {# function horario(id) {
+                    
+                 var obj_data = {'id': id};
+                    //var obj_data = {};
+                              //console.log(obj_data);
+                    var jumpAction = '{{path('admin_pdfhorarios')}}';
+                                 
+                                  $.ajax({
+                                     url:   jumpAction,
+                                     data: obj_data,
+                                     type:  'post',
+                                     async: true,
+                                   {#  beforeSend: function () {
+                                        modelessSetMatricula = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando Registro...</b>',
+                                                             buttons     : {}
+                                                          });                               
+                              
+                                     },#}
+                                     
+                             //         timeout: 50000
+
+                                {# dataType:'text'
+                              });
+                }#}
+           </script>
+   
+   
+  <script src="{{ asset('js/EnviarMensajes.js') }}"></script>
+    <script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>
+<script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+   
+
+        
+      <section class="content">
+
+      <div class="page-content" style="height: 545px;">
+             
+            
+            <div class="col-md-12">
+              <div class="box-header with-border">
+                <h3 class="box-title">Horarios de clases por docente</h3>
+               
+            </div><!-- /.box-header -->
+             <div class="box box-solid">
+                            <div class="panel-heading">    
+           <div class="box box-solid">
+			       
+				        <table class="table table-striped table-bordered table-hover" id="sample_1">
+				        <thead>
+				        <tr>
+					        <th> Codigo </th>	
+                                                <th> Docente </th>	
+					        <th> Descripcion   </th>					       
+                                                <th style="text-align: center">Descargar</th>
+				        </tr>
+				        </thead>
+				        <tbody>
+                   
+                           
+                           
+                                <tr><td>2</td> 
+                                    <td>JUAN CARLOS TAMAYO</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':31,'nombre':"JUAN CARLOS TAMAYO"})}}"  id="31" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>3</td> 
+                                    <td>ILEANA VERA</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':32,'nombre':"ILEANA VERA"})}}"   id="32" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>4</td> 
+                                    <td>NANCY LENIS</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':33,'nombre':"NANCY LENIS"})}}"   id="33" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>5</td> 
+                                    <td>MIRELLA CARMINA</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':34,'nombre':"MIRELLA CARMINA"})}}"  id="34" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>6</td> 
+                                    <td>LUISA EVANGELINA</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank"  href="{{path('admin_pdfhorarios', {'id':35,'nombre':"LUISA EVANGELINA"})}}"  id="35" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>7</td> 
+                                    <td>RITA AZXUCENA</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':36,'nombre':"RITA AZXUCENA"})}}"  id="36" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>8</td> 
+                                    <td>LUISA EVANGELINA</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':37,'nombre':"LUISA EVANGELINA"})}}"  id="37" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>9</td> 
+                                    <td>ROSA GRACIELA</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':38,'nombre':"ROSA GRACIELA"})}}"  id="38" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>10</td> 
+                                    <td>JESSICA MALENA</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':39,'nombre':"JESSICA MALENA"})}}"  id="39" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>11</td> 
+                                    <td>ADIEL TAMAYO</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':40,'nombre':"ADIEL TAMAYO"})}}"  id="40" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>12</td> 
+                                    <td>PATRICIA MARIA DE LOURDES</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':41,'nombre':"PATRICIA MARIA DE LOURDES"})}}"  id="41" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>13</td> 
+                                    <td>JOSE LUIS</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':41,'nombre':"JOSE LUIS"})}}"  id="41" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>14</td> 
+                                    <td>JUAN CARLOS</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':40,'nombre':"Horario De clases"})}}" id="40" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                                   <tr><td>15</td> 
+                                    <td>DARWIN BOLIVAR</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':39,'nombre':"DARWIN BOLIVAR"})}}" id="39" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>16</td> 
+                                    <td>LORENZO JOVANNY</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':38,'nombre':"LORENZO JOVANNY"})}}" id="38" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>17</td> 
+                                    <td>OSCAR OMAR</td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':37,'nombre':"OSCAR OMAR"})}}"  id="37" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                                <tr><td>18</td> 
+                                    <td>ADOLFO ENRIQUE </td> 
+                                    <td>Horario De clases</td>
+                                    <td style="text-align: center">  <a target="_blank" href="{{path('admin_pdfhorarios', {'id':36,'nombre':"ADOLFO ENRIQUE"})}}"  id="37" name="Mensaje_1">
+                                    <i class="fa fa-download"></i>                                                           
+                                    </a></td>
+                                </tr>
+                           
+                             
+                            
+                                                              
+                    </tbody>
+				        </table>
+			        
+		      
+            </div>                 
+            </div>
+          </div>
+            </div>
+        
+          </div>
+        </section>
+
+   
+                
+
+{% endblock %}
+

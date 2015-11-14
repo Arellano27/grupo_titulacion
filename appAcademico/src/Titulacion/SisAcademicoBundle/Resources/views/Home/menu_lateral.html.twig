@@ -116,13 +116,13 @@
                 <li><a href="{{path('admin_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Clases </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaHorariosExamen %}
-                <li><a href="{{path('admin_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Examen </a></li>
+                <li><a href="{{path('admin_consulta_horarios_examen_x_usuario')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Examen </a></li>
               {% endif %} 
               {% if event.id_sg_opcion == ConsultaHorariosClasesPersonalizados %}
                 <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> ConsultaHorarios Clases Personalizados </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaHorariosExamenPersonalizados %}
-                <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Examen Personalizados </a></li>
+                <li><a href="{{path('docentes_consulta_horarios_examen')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Examen Personalizados </a></li>
               {% endif %}
           {% endfor %}
         </ul>

@@ -2442,6 +2442,23 @@
            
     }#end function
     
+      public function consultahorariosexamenAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           
+          return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorariosexamen.html.twig');
+           
+    }#end function
+    
+    
       public function pdfhorariosAction(Request $request)
     {     
             $session=$request->getSession();
@@ -2521,5 +2538,82 @@
                  
     }#end function
     
-      
+        public function PdfHorariosexamenAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+            $idUsuario  = $session->get('id_user');
+            $UgServices    = new UgServices;
+         
+          
+               $datosHorarios  = $UgServices->Docentes_Horarios_Examen($idUsuario);
+
+                   $pdf= " <html> 
+                                            <body>
+                                            <img width='5%' src='images/menu/ug_logo.png'/>
+                                            <table align='center'>
+                                            <tr>
+                                              <td align='center'>
+                                                <b> Horario de Examenes</b>
+                                              </td>
+                                            <tr>
+                                            <tr>
+                                            <td>
+                                              <b>Horario</b>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            <div class='col-lg-12'>
+                                            <br><br><br><br>
+                                            <table class='table table-striped table-bordered' border='1' width='100%' >
+                                                     <thead>
+                                                        <tr>
+                                                                <th colspan='5'   style='text-align: center !important;background-color: #337AB7 !important;color: white!important;'>Periodo  </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th align='center'>Curso</th>
+                                                            <th align='center'>Materia</th>
+                                                            <th align='center'>Dia</th>
+                                                            <th align='center'>Hora</th>                                                   
+                                                        </tr>";
+
+                                                   foreach($datosHorarios as $Horario) {
+                                                 $pdf.="<tr>
+                                                            <td align='center'>".$Horario['curso.descripcion']."</td>
+                                                            <td align='center'>".$Horario['curso.materias.materia.descripcion_materia']."</td>
+                                                            <td align='center'>".$Horario['curso.dias.dia.nombre']."</td>
+                                                            <td align='center'>".$Horario['curso.horas.hora.nombre']."</td>                                                          
+                                                        </tr>";
+                                                   }
+                                            
+
+                                            $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
+
+                                                    <tr><td width='40%'><img width='80%' src='images/menu/firma.png'/></td> 
+                                                      <td width='20%'>&nbsp;</td>
+                                                      <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
+                                                    </tr>
+
+                                                    <tr><td align='center' ><b>horario</b></td>
+                                                    <td >&nbsp;</td>
+                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                    </table>";
+
+                                             $pdf.="</div></body></html>";
+ 
+                                        
+                            
+                  $mpdfService = $this->get('TFox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();               
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  return new response($mPDF->Output());
+                 
+    }#end function
    }

@@ -158,9 +158,17 @@ admin_consulta_horarios:
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consultahorarios }
     
 admin_pdfhorarios:
-    pattern:  /PdfHorarios
+    pattern:  /PdfHorarios/{id}/{nombre}
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfhorarios }
     
+admin_consulta_horarios_examen_x_usuario:
+    pattern:  /horarios_examen_docente
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:horarios_examen_docente }
+
+admin_pdfhorarios_examen:
+    pattern:  /pdfhorariosexamedocente/{id}/{nombre}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfhorariosexamedocente }
+ 
 admin_cargar_pagina:
     pattern:  /carga/pagina
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargaPagina}
