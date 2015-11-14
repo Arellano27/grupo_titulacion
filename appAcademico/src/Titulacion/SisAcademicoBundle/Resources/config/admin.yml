@@ -153,6 +153,14 @@ admin_exportaPDF_estudiantes:
     pattern:  /PDF/estudiantes/{docente}/{materia}/{docente_text}/{materia_text}/{paralelo}
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:ExportarPDFEstudiantes}
     
+admin_consulta_horarios:
+    pattern:  /consultahorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consultahorarios }
+    
+admin_pdfhorarios:
+    pattern:  /PdfHorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfhorarios }
+    
 admin_cargar_pagina:
     pattern:  /carga/pagina
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargaPagina}

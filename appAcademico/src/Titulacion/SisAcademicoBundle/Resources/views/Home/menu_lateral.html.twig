@@ -104,19 +104,19 @@
                 <li><a href="{{path('admin_academico_home')}}"><i class="fa fa-circle-o"></i> Generacion Calendario Academico </a></li>
               {% endif %}
               {% if event.id_sg_opcion == GeneracionHorariosClases %}
-                <li><a href="{{path('generacion_horarios')}}"><i class="fa fa-circle-o"></i> Generacion Horarios Clases </a></li>
+                <li><a href="{{path('admin_generacion_horario_docente')}}"><i class="fa fa-circle-o"></i> Generacion Horarios Clases </a></li>
               {% endif %}
               {% if event.id_sg_opcion == GeneracionHorariosExamen %}
-                <li><a href="{{path('generacion_horarios_examenes')}}"><i class="fa fa-circle-o"></i> Generacion Horarios Examen </a></li>
+                <li><a href="{{path('admin_generacion_horarios_examenes')}}"><i class="fa fa-circle-o"></i> Generacion Horarios Examen </a></li>
               {% endif %}
               {% if event.id_sg_opcion == SubirSolicitudes %}
                 <li><a href="{{path('admin_elegir_solicitud')}}"></i> Subir Solicitudes </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaHorariosClases %}
-                <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Clases </a></li>
+                <li><a href="{{path('admin_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Clases </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaHorariosExamen %}
-                <li><a href="{{path('admin_generacion_horario_examene2')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Examen </a></li>
+                <li><a href="{{path('admin_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Consulta Horarios Examen </a></li>
               {% endif %} 
               {% if event.id_sg_opcion == ConsultaHorariosClasesPersonalizados %}
                 <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> ConsultaHorarios Clases Personalizados </a></li>
