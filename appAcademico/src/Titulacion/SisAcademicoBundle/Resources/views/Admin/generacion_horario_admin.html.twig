@@ -485,10 +485,12 @@
                       i = i+1;
                       
                     }
+                    if(resultado == ""){
+                                        
+                     return false;
+                    }
                      arrValores["Horario"]=resultado;
-                     myArray[index]=arrValores; 
-                   
-                    
+                     myArray[index]=arrValores;  
                     var obj_data = {'arrMaterias': myArray,'contador': cont};
                     //var obj_data = {};
                               //console.log(obj_data);
