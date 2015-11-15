@@ -45,7 +45,7 @@ class UgServices {
       $this->source        = "jdbc/saugProcTmp";
       // $this->source        = "jdbc/procedimientosSaug";
       $this->sourceConsultas  = "jdbc/saugConsTmp";
-//      $this->sourceConsultas = "jdbc/consultasSaug";
+      // $this->sourceConsultas = "jdbc/consultasSaug";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
