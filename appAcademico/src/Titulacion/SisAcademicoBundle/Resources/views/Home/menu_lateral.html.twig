@@ -27,9 +27,9 @@
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{path('estudiantes_matriculacion')}}"><i class="fa fa-circle-o"></i> Matriculación</a></li>
+          <li><a href="{{path('estudiantes_matriculacion')}}"><i class="fa fa-circle-o"></i> MatriculaciÃ³n</a></li>
           <!-- <li><a href="{{path('estudiantes_deudas')}}"><i class="fa fa-circle-o"></i> Deudas Pendientes</a></li> -->
-          <li><a href="{{path('estudiantes_anulacion')}}"><i class="fa fa-circle-o"></i> Anulación</a></li>
+          <li><a href="{{path('estudiantes_anulacion')}}"><i class="fa fa-circle-o"></i> AnulaciÃ³n</a></li>
 
           <li><a href="{{path('estudiantes_notas_actuales')}}"><i class="fa fa-circle-o"></i> Consulta de Notas</a></li>
           <li><a href="{{path('estudiantes_listar_solicitudes')}}"><i class="fa fa-circle-o"></i> Listado de Solicitudes</a></li>
@@ -41,7 +41,7 @@
       {% if app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm or  app.session.get('perfil') == perfilAdmin %}
       <li class="treeview">
         <a href="#">
-          <i class="fa fa-gears"></i> <span>Administración</span>
+          <i class="fa fa-gears"></i> <span>AdministraciÃ³n</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
@@ -94,7 +94,7 @@
       {% if app.session.get('perfil') == perfilCordi or app.session.get('perfil') == perfilEstCordi or  app.session.get('perfil') == perfilDocCordi %}
       <li class="treeview">
         <a href="#">
-          <i class="fa fa-gears"></i> <span>Coordinación</span>
+          <i class="fa fa-gears"></i> <span>CoordinaciÃ³n</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
@@ -159,7 +159,7 @@
          var modelessMenuIzq = new $.flavr({
             modal   : true,
             //title       : 'Alerta del Sistema',
-            content : '<div class="mensajeError">Por favor, seleccione una carrera y luego una materia para usar esta opción.',
+            content : '<div class="mensajeError">Por favor, seleccione una carrera y luego una materia para usar esta opciÃ³n.',
             buttons : {
                   primary : { text: 'Aceptar', style: 'primary' }
             }
@@ -171,7 +171,7 @@
             var modelessMenuIzq = new $.flavr({
                modal   : true,
                //title       : 'Alerta del Sistema',
-               content : '<div class="mensajeError">Por favor, seleccione una materia para usar esta opción.',
+               content : '<div class="mensajeError">Por favor, seleccione una materia para usar esta opciÃ³n.',
                buttons : {
                      primary : { text: 'Aceptar', style: 'primary' }
                }
@@ -188,18 +188,18 @@
             if(idOpcionMateria.indexOf("asistencia")>0){
                var jumpOption                = '{{path('docentes_listado_alumnos_materia')}}';
                var obj_data                  = {'idMateria':idMateria,'idCarrera':idCarrera, 'inicioCiclo':inicioCiclo, 'finCiclo':finCiclo};
-               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentó un problema para cargar el listado de asistencias.";
+               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentÃ³ un problema para cargar el listado de asistencias.";
             }
             else if(idOpcionMateria.indexOf("listadonotas")>0){
                var jumpOption                = '{{path('docentes_notas_alumnos_materia')}}';
                var obj_data                  = {'idMateria':idMateria};
-               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentó un problema para cargar la consulta de notas.";
+               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentÃ³ un problema para cargar la consulta de notas.";
             }
             else if(idOpcionMateria.indexOf("vistageneral")>0){
                var idDocente                 = 1;
                var jumpOption                = '{{path('docentes_vision_materia')}}';
                var obj_data                  = {'idDocente': idDocente,'idMateria':idMateria};
-               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentó un problema para cargar la vista general de la materia."
+               var mensajeErrorOptMaterias   = "Lo sentimos. Se  presentÃ³ un problema para cargar la vista general de la materia."
             }
 
             if(jumpOption!=null){
