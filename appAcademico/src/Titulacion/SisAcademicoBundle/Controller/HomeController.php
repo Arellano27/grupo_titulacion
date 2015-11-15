@@ -531,8 +531,14 @@ class HomeController extends Controller
                   $datosConsultaImg       = array('DatosImgPerfil' => $datosPerfilXML_img);
                   $datosImgArray   = $UgServices->Docentes_setDataPerfilUsuarioImgPerfilEditar($datosConsultaImg);
                   
-                  $datosUsuarioRespuesta["imagenGrabada"]  = $datosImgArray["pi_estado"];
-                  $datosUsuarioRespuesta["imagenRuta"]     = $rutaImagenPerfil;
+                  if(isset($datosImgArray["pi_estado"])) {
+                     $datosUsuarioRespuesta["imagenGrabada"]  = $datosImgArray["pi_estado"];
+                     $datosUsuarioRespuesta["imagenRuta"]     = $rutaImagenPerfil;
+                  }
+                  else {
+                     $datosUsuarioRespuesta["imagenGrabada"]  = -1;
+                     $datosUsuarioRespuesta["imagenRuta"]     = NULL;
+                  }
                }
             }
             else {
