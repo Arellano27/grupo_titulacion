@@ -272,6 +272,12 @@ class HomeController extends Controller
                 // echo '<pre>'; var_dump($rsCarrera); exit();
                 $resultadoObjeto = json_encode($rsCarrera);
                 $xml_array = json_decode($resultadoObjeto,TRUE);
+                if(!isset($xml_array["registros"]["registro"]["id_sa_carrera"])) {
+                  $tempRegistro  = $xml_array["registros"]["registro"][0];
+                  $xml_array["registros"]["registro"] = array();
+                  $xml_array["registros"]["registro"] = $tempRegistro;
+                  unset($tempRegistro);
+                }
 
                 $session->set("îdcarrera_calendar",$xml_array["registros"]["registro"]["id_sa_carrera"]);
                 $session->set("îdciclo_calendar",$xml_array["registros"]["registro"]["id_sa_ciclo_detalle"]);
