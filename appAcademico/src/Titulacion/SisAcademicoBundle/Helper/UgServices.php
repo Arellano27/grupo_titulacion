@@ -42,12 +42,10 @@ class UgServices {
       //$this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
       /*Saug Temporal*/
-
-
-       $this->source        = "jdbc/saugProcTmp";
-     // $this->source        = "jdbc/procedimientosSaug";
-       $this->sourceConsultas  = "jdbc/saugConsTmp";
-      //$this->sourceConsultas = "jdbc/consultasSaug";
+     //  $this->source        = "jdbc/saugProcTmp";
+      $this->source        = "jdbc/procedimientosSaug";
+     //  $this->sourceConsultas  = "jdbc/saugConsTmp";
+      $this->sourceConsultas = "jdbc/consultasSaug";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
