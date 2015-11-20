@@ -2422,11 +2422,14 @@ public function generacion_horariosAction(Request $request){
     $UgServices = new UgServices;
     $Paralelos = $UgServices->Paralelos(4);
     $Materia = $UgServices->Materia(4,44);
-        //echo var_dump($Materia); exit();
+    $docentes = $UgServices->cargar_docente_por_carrera(4);
+           // echo var_dump($docentes); exit();
+           
     return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_admin.html.twig',
     									array(
     				'data' => array('Paralelo' => $Paralelos,
-                                                'Materia'   => $Materia)
+                                                'Materia'   => $Materia,
+                                                'Docente' => $docentes)
     										 )
                               );
    }

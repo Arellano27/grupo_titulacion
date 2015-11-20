@@ -43,7 +43,7 @@
                                             $("#btninscribe").attr("disabled", false);
                                              modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : "en estos momentos tenemos inconvenientes, favor intentelo mas tarde",
+                                                           content : respuesta.mensaje,
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -54,7 +54,7 @@
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'La solicitud ha sido cargada exitosamente!',
+                                                           content : respuesta.mensaje,
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }

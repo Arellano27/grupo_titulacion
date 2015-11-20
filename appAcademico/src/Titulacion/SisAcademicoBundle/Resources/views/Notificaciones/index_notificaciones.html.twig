@@ -8,12 +8,43 @@
           TableAdvanced.init();          
      });  
 </script>
+ <script type="text/javascript">
+    
+         
+            
+            function mensaje(id){                
+                $("#Texto").html(id);
+                $("#Modal").click();
+            }
+    
+     
+</script>
     <script src="{{ asset('js/EnviarMensajes.js') }}"></script>
     <script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>
 <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
      
 <section class="content">
+<button type="button" id="Modal" class="btn btn-info btn-lg" style="display: none" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    <!-- Modal content-->
+    <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Mensaje Enviado</h4>       
+      </div>
+      <div class="modal-body">
+        <p id="Texto"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
 
+  </div>
+</div>
+    
       <div class="page-content" style="height: 600px;">
    <div  class="col-xs-14">
      
@@ -109,7 +140,7 @@
 					        <th style="text-align: center"> Asunto   </th>
 					        <th style="text-align: center"> Detalle </th>
 					        <th style="text-align: center">Fecha </th>
-                                               {# <th style="text-align: center">Ver</th>#}
+                                               <th style="text-align: center">Ver</th>
 				        </tr>
 				        </thead>
 				        <tbody>
@@ -119,7 +150,7 @@
                                 <td style="text-align: center">{{ facultad.asunto }}</td>
                                 <td style="text-align: center">{{ facultad.mensaje }}</td>
                                 <td style="text-align: center">{{ facultad.fecha_registro }}</td>
-                                 {#<td style="text-align: center">  <a href="{{ path('dayscript_Lectura') }}"id="Mensaje_1" name="Mensaje_1"><i class="fa fa-envelope-o"></i></a></td>#}
+                                <td style="text-align: center">  <a id="{{facultad.mensaje}}" onclick="mensaje(id)" style="cursor: pointer"><i class="fa fa-envelope-o"></i></a></td>
                             </tr>
                      {%endfor%}                              
                                                               
