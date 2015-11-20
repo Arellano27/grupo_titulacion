@@ -26,8 +26,8 @@ class UgServices {
         /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - INICIO */
 
      
-      // $this->usuario         = "CapaVisualPhp";
-      // $this->clave           = "T3pZx1520pHp";
+      $this->usuario         = "CapaVisualPhp";
+      $this->clave           = "T3pZx1520pHp";
       // $this->source          = "jdbc/procedimientosSaug";
       // $this->sourceConsultas = "jdbc/consultasSaug";
       // $this->url             = "http://192.168.100.11:8080/";
@@ -38,15 +38,15 @@ class UgServices {
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      $this->usuario       = "usr_tesis";
-      $this->clave         = "Tesis2015";
+      //$this->usuario       = "usr_tesis";
+      //$this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
       /*Saug Temporal*/
 
-       $this->source        = "jdbc/saugProcTmp";
-     // $this->source        = "jdbc/procedimientosSaug";
-       $this->sourceConsultas  = "jdbc/saugConsTmp";
-      //$this->sourceConsultas = "jdbc/consultasSaug";
+     //  $this->source        = "jdbc/saugProcTmp";
+      $this->source        = "jdbc/procedimientosSaug";
+     //  $this->sourceConsultas  = "jdbc/saugConsTmp";
+      $this->sourceConsultas = "jdbc/consultasSaug";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
@@ -1450,7 +1450,7 @@ public function getConsultaDatos_Generales($idEstudiante){
     
      public function Guarda_Horarios_examen($trama) {
 
-        $this->tipo = "45";
+        $this->tipo = "51";
         $this->urlWS = $this->url . $this->urlProcedim;
         //echo  var_dump($trama); exit();
         //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
@@ -1477,6 +1477,17 @@ public function getConsultaDatos_Generales($idEstudiante){
         $response = $this->ws->doSelectHorariosDocenteExamen($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
         return $response;
     }#end function
+    
+      public function cargar_docente_por_carrera($idCarrera){
+      $this->tipo    = "27";
+      $this->urlWS   = $this->url.$this->urlConsulta;
+      $trama      = "<id_carrera>$idCarrera</id_carrera>";
+      $XML        = NULL;
+
+      $response=$this->ws->doRequestcargar_docente_por_carrera($trama,$this->sourceConsultas,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $XML);
+      return $response;
+   }#end function Docentes_getCarreras()
+
     
 }#end class
 

@@ -51,22 +51,15 @@
            
                                     
                                        
-                  <div class="contentedit2">
-
+                  
+                 <div class="col-md-4">
+                      <div class="box box-solid">
+                   <div class="panel-heading">                 
+		       <div class="box-header with-border">
+                            <h5 class="box-title">Configuración General </h5>
+                       </div>
+                    <div class="modal-body"> 
     
-
-        <section class="content-header">
-          <h3>
-            Configuración General  
-         
-          </h3>
-         
-        </section>
-
-         <!-- Main content -->
-        <section class="content">
-          <div>
-            <div class="col-md-3">
                <div class="box box-solid">
                 <div class="box-body no-padding">
                   <ul class="nav nav-pills nav-stacked">
@@ -78,8 +71,17 @@
                   </ul>
                 </div><!-- /.box-body -->
               </div><!-- /. box -->            
-            </div><!-- /.col -->
-          <div class="col-md-5">
+           </div></div></div></div>
+                  
+                  
+                   <div class="col-md-5">
+                         <div class="box box-solid">
+                   <div class="panel-heading">                 
+		       <div class="box-header with-border">
+                            <h5 class="box-title">Configuración General </h5>
+                       </div>
+     <div class="modal-body"> 
+         
            
                                     
                                 
@@ -101,50 +103,26 @@
                         <label for="inputName" class="col-sm-2 control-label">Rol</label>     
                           <input type="text" class="form-control" name="Rol_Estudiante" id="Rol_Estudiante" value="{{app.session.get('descRol')}}" placeholder="Rol" disabled>
                              
-                           <br />            
-                    
+                           <br />   
+                           <label for="inputName" class="col-sm-2 control-label">Correo</label>                       
+                          <input type="email" class="form-control" id="Correo" name="Correo" value="{{app.session.get('mail')}}" placeholder="Telefono" disabled>
                         
+                     <br />
+                    
+                       {# 
                           <button type="submit" class="btn btn-success">Guardar</button>
                           <button type="button" id="Modificar" class="btn btn-primary">Modificar</button>
-                           <button type="button" id="Cancelar" class="btn btn-danger">Cancelar</button>
+                           <button type="button" id="Cancelar" class="btn btn-danger">Cancelar</button>#}
                      
                     
                 
                                    
             </div>
 
-            <div class="col-md-4">
-           
-                                    
-                       
-                        <label for="inputName" class="col-sm-2 control-label">Twitter</label>  
-                         <input type="text" class="form-control"  id="Twitter" name="Twitter" placeholder="Twitter" disabled>
-                      
-                     <br />
-                    
-                        <label for="inputEmail" class="col-sm-2 control-label">Facebook</label>                       
-                          <input type="email" class="form-control" id="Facebook" name="Facebook" id="Email1" placeholder="Facebook" disabled>                       
-                      <br />
-                    
-                        <label for="inputName" class="col-sm-2 control-label">Telefono</label>                       
-                          <input type="text" class="form-control" id="Telefono" name="Telefono" id="Text2" placeholder="Telefono" disabled>
-                        
-                      <br />
-                    
-                        <label for="inputName" class="col-sm-2 control-label">Correo</label>                       
-                          <input type="email" class="form-control" id="Correo" name="Correo" value="{{app.session.get('mail')}}" placeholder="Telefono" disabled>
-                        
-                     <br />
-                    
-                      
-                                      
-                                   
-            </div>
-            </div>
-        </section><!-- /.content -->
-
-      </div>              
-                                      
+        
+        </div>   </div>  
+                 
+                 </div>                   
                                    
             </div>
         

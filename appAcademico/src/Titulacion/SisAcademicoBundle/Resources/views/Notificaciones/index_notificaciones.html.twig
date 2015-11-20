@@ -39,7 +39,7 @@
                         <div class="pull-right hidden-xs">
           <!-- Notifications Menu -->
              
-                         {% if app.session.get('descRol') == "UNIVERSIDAD" %}
+                       {#  {% if app.session.get('descRol') == "UNIVERSIDAD" %}
                           <input type="checkbox" name="Profesores" checked id="Profesores"/> Profesores
                            <br />
                            <input type="checkbox" name="Estudiantes"  id="Estudiantes" /> Estudiantes
@@ -48,31 +48,16 @@
                           <input type="checkbox" name="Universidad" checked id="Universidad"/> Universidad
                            <br />
                            <input type="checkbox" name="Estudiantes"  id="Estudiantes" /> Estudiantes
-                         {%endif%}    
+                         {%endif%}    #}
                          
-                        <br /> <br />
-                        {% if app.session.get('descRol') == "DOCENTE" %}
                             <select id="TipoMensaje" name="TipoMensaje">
                                <option value="0">-</option>
                                <option value="1">Mensaje</option>
                                <option value="2">Notificacion</option>
                                <option value="3">Evento</option>
                            </select>                        
-                           {#<select id="Curso" name="Curso">
-                               <option value="0">-</option>
-                               <option value="1">S3K</option>
-                               <option value="2">S5K</option>
-                               <option value="3">S5J</option>
-                           </select>#}
-                        {%endif%}
-                        {% if app.session.get('descRol') == "UNIVERSIDAD" %}
-                            <select id="TipoMensaje" name="TipoMensaje">
-                               <option value="0">-</option>
-                               <option value="1">Mensaje</option>
-                               <option value="2">Notificacion</option>
-                               <option value="3">Evento</option>
-                           </select>                        
-                        {%endif%}
+                         
+                      
                           
         </div>
                         </div>
