@@ -2651,9 +2651,17 @@ public function generacion_horariosAction(Request $request){
             $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
             $estudiante  = $session->get('nom_usuario'); 
-
+             $idUsuario  = $session->get('id_user');
+             
+               $UgServices = new UgServices;
+               $docentes = $UgServices->cargar_docente_por_carrera(4);
+           // echo var_dump($docentes); exit();
            
-          return $this->render('TitulacionSisAcademicoBundle:Admin:consultahorariosgenerales.html.twig');
+          return $this->render('TitulacionSisAcademicoBundle:Admin:consultahorariosgenerales.html.twig',
+    									array(
+    				'data' => array('docentes' => $docentes)
+    										 )
+                              );
            
     }#end function
     
@@ -2745,8 +2753,16 @@ public function generacion_horariosAction(Request $request){
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
             $estudiante  = $session->get('nom_usuario'); 
 
+           $UgServices = new UgServices;
+               $docentes = $UgServices->cargar_docente_por_carrera(4);
+           // echo var_dump($docentes); exit();
            
-          return $this->render('TitulacionSisAcademicoBundle:Admin:horarios_examen_docente.html.twig');
+          return $this->render('TitulacionSisAcademicoBundle:Admin:horarios_examen_docente.html.twig',
+    									array(
+    				'data' => array('docentes' => $docentes)
+    										 )
+                              );
+        
            
     }#end function
     
@@ -2759,7 +2775,7 @@ public function generacion_horariosAction(Request $request){
             $UgServices    = new UgServices;
           
             $datosHorarios  = $UgServices->Docentes_Horarios_Examen($id);
-
+       
                    $pdf= " <html> 
                                             <body>
                                             <img width='5%' src='images/menu/ug_logo.png'/>
