@@ -42,10 +42,10 @@ class UgServices {
       $this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
       /*Saug Temporal*/
-      // $this->source        = "jdbc/saugProcTmp";
-      $this->source        = "jdbc/procedimientosSaug";
-      // $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->sourceConsultas = "jdbc/consultasSaug";
+       $this->source        = "jdbc/saugProcTmp";
+     // $this->source        = "jdbc/procedimientosSaug";
+       $this->sourceConsultas  = "jdbc/saugConsTmp";
+      //$this->sourceConsultas = "jdbc/consultasSaug";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
@@ -1430,7 +1430,7 @@ public function getConsultaDatos_Generales($idEstudiante){
     public function subir_solicitud($trama) {
 
         $this->tipo = "47";
-        $this->urlWS = $this->url . $this->urlProcedim;
+        $this->urlWS = $this->url.$this->urlProcedim;
         //echo  var_dump($trama); exit();
         //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
         $response = $this->ws->dosubir_solicitud($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
@@ -1440,8 +1440,8 @@ public function getConsultaDatos_Generales($idEstudiante){
       public function Guarda_Horarios_docente($trama) {
 
         $this->tipo = "45";
-        $this->urlWS = $this->url . $this->urlProcedim;
-        //echo  var_dump($trama); exit();
+        $this->urlWS = $this->url.$this->urlProcedim;
+        //echo  var_dump(urlWS); exit();
         //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
         $response = $this->ws->doGuardaHorariosDocentes($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
         return $response;

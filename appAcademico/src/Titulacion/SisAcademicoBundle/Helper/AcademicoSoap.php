@@ -4537,8 +4537,9 @@ function doGuardaHorariosDocentes($datosCuenta,$source,$tipo,$usuario,$clave,$ur
       </ser:ejecucionObjeto>
    </soapenv:Body>
 </soapenv:Envelope>";
-   //echo var_dump($post_string); exit();
-//echo var_dump($post_string); exit();
+   //echo var_dump($post_string); 
+   //echo var_dump($host); exit();
+//echo var_dump($url); exit();
    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
    $soap_do = curl_init();
    curl_setopt ($soap_do, CURLOPT_VERBOSE , true );
@@ -4558,28 +4559,24 @@ function doGuardaHorariosDocentes($datosCuenta,$source,$tipo,$usuario,$clave,$ur
       $result = $XML;
    }
 //var_dump($result);
-   if(!$result){
-        return "error";
-   }else{
-         /*$response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-         $xml = new \SimpleXMLElement($response);
-         $body = $xml->xpath('//soapBody')[0];
-         $return = $xml->xpath('//return')[0];
-         $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
-         return $respuestaConsulta; */
+   if(!$result)
+                    {
+                        return "error";
+                    }
+                    else
+                    {
+                       
+                        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+                        $xml = new \SimpleXMLElement($response);
+                       
+                        $body = $xml->xpath('//soapBody')[0];
+                        $return = $xml->xpath('//return')[0];
+                        $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
+                        
+                        return $respuestaConsulta;
+                        //echo var_dump($respuestaConsulta); exit();
+                    }
 
-         $response  = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-         $respuesta  = $this->eliminaCabecerasAcademicoConsultas($response);
-         $respuesta  = $this->Response("<registros>".$respuesta."</registros>");
-
-         
-
-         return $respuesta;
-
-
-
-
-    }
 
 }#end function 
 
@@ -4623,28 +4620,24 @@ function doGuardaHorariosExamen($datosCuenta,$source,$tipo,$usuario,$clave,$url,
       $result = $XML;
    }
 //var_dump($result);
-   if(!$result){
-        return "error";
-   }else{
-         /*$response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-         $xml = new \SimpleXMLElement($response);
-         $body = $xml->xpath('//soapBody')[0];
-         $return = $xml->xpath('//return')[0];
-         $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
-         return $respuestaConsulta; */
+   if(!$result)
+                    {
+                        return "error";
+                    }
+                    else
+                    {
+                       
+                        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+                        $xml = new \SimpleXMLElement($response);
+                       
+                        $body = $xml->xpath('//soapBody')[0];
+                        $return = $xml->xpath('//return')[0];
+                        $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
+                        
+                        return $respuestaConsulta;
+                        //echo var_dump($respuestaConsulta); exit();
+                    }
 
-         $response  = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-         $respuesta  = $this->eliminaCabecerasAcademicoConsultas($response);
-         $respuesta  = $this->Response("<registros>".$respuesta."</registros>");
-
-         
-
-         return $respuesta;
-
-
-
-
-    }
 
 }#end function 
 
@@ -4671,7 +4664,7 @@ function doSelectHorariosDocente_generacion($datosCuenta,$source,$tipo,$usuario,
       </ser:ejecucionObjeto>
    </soapenv:Body>
 </soapenv:Envelope>";
-     //  echo var_dump($post_string); exit();
+     //echo var_dump($post_string); exit();
          
    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
    $soap_do = curl_init();
@@ -4692,31 +4685,30 @@ function doSelectHorariosDocente_generacion($datosCuenta,$source,$tipo,$usuario,
       $result = $XML;
    }
      
-   if(!$result){
-        return "error";
-   }else{
-         /*$response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-         $xml = new \SimpleXMLElement($response);
-         $body = $xml->xpath('//soapBody')[0];
-         $return = $xml->xpath('//return')[0];
-         $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
-         return $respuestaConsulta; */
+    if(!$result)
+                    {
+                        return "error";
+                    }
+                    else
+                    {
+                       
+                        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+                        $xml = new \SimpleXMLElement($response);
+                       
+                        $body = $xml->xpath('//soapBody')[0];
+                        $return = $xml->xpath('//return')[0];
+                        $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
+                        
+                        return $respuestaConsulta;
+                        //echo var_dump($respuestaConsulta); exit();
+                    }
 
-
-         $response  = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-         $respuesta  = $this->eliminaCabecerasAcademicoConsultas($response);
-         $respuesta  = $this->Response("<registros>".$respuesta."</registros>");
-        
-         //var_dump($respuesta);
-
-         return $respuesta;
-            
  
 
     }
-}#end function
-
-function dosubir_solicitud($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){
+    
+    
+    function dosubir_solicitud($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host, $XML=NULL){
 //echo "-----------------------------------------".$datosCuenta."--".$source."--".$tipo."--".$usuario."--".$clave."--".$url."--".$host."--";
    $post_string="
         <soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://servicios.ug.edu.ec/\">
@@ -4756,28 +4748,24 @@ function dosubir_solicitud($datosCuenta,$source,$tipo,$usuario,$clave,$url,$host
       $result = $XML;
    }
 //var_dump($result);
-   if(!$result){
-        return "error";
-   }else{
-         /*$response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-         $xml = new \SimpleXMLElement($response);
-         $body = $xml->xpath('//soapBody')[0];
-         $return = $xml->xpath('//return')[0];
-         $respuestaConsulta = $xml->xpath('//respuestaConsulta')[0];
-         return $respuestaConsulta; */
+  if(!$result)
+                    {
+                        return "error";
+                    }
+                    else
+                    {
+                       
+                        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+                        $xml = new \SimpleXMLElement($response);
+                       
+                        $body = $xml->xpath('//soapBody')[0];
+                        $return = $xml->xpath('//return')[0];
+                        $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
+                        
+                        return $respuestaConsulta;
+                        //echo var_dump($respuestaConsulta); exit();
+                    }
 
-         $response  = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-         $respuesta  = $this->eliminaCabecerasAcademicoConsultas($response);
-         $respuesta  = $this->Response("<registros>".$respuesta."</registros>");
-
-         
-
-         return $respuesta;
-
-
-
-
-    }
 
 }#end function 
 
@@ -4788,10 +4776,10 @@ function doSelectHorariosDocenteExamen($datosCuenta,$source,$tipo,$usuario,$clav
         <soapenv:Header/>
         <soapenv:Body>
       <ser:ejecucionObjeto>
-         <dataSource>jdbc/saugProcTmp</dataSource>
+         <dataSource>$source</dataSource>
          <idServicio>$tipo</idServicio>
-         <usuario>CapaVisualPhp</usuario>
-         <clave>T3pZx1520pHp</clave>
+         <usuario>$usuario</usuario>
+         <clave>$clave</clave>
          <parametrosObjeto>   
           <parametros>
              ".$datosCuenta."
@@ -4800,7 +4788,7 @@ function doSelectHorariosDocenteExamen($datosCuenta,$source,$tipo,$usuario,$clav
       </ser:ejecucionObjeto>
    </soapenv:Body>
 </soapenv:Envelope>";
-  
+  //echo var_dump($post_string); exit();
          
    $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionConsulta"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
    $soap_do = curl_init();
@@ -4842,15 +4830,18 @@ function doSelectHorariosDocenteExamen($datosCuenta,$source,$tipo,$usuario,$clav
         // $respuesta  = $cabecera->eliminaCabecerasRespuesta($result);
         // $respuesta  = $this->Response("<elements>".$respuesta."</elements>");
         // $respuesta   = $cabecera->ReemplazaCaracteres($respuesta);
-        // return $respuesta;
+        // return $respuesta;//
 //echo '<pre>'; var_dump($resultadoObjeto); exit();
         return $resultadoObjeto;
-            
- 
+   }   
 
-    }
-}#end function
-
+    
 }#end Clase
+
+
+    
+    
+    
+}#end function
 
 
