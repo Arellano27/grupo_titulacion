@@ -42,10 +42,12 @@ class UgServices {
       //$this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
       /*Saug Temporal*/
-     //  $this->source        = "jdbc/saugProcTmp";
-      $this->source        = "jdbc/procedimientosSaug";
-     //  $this->sourceConsultas  = "jdbc/saugConsTmp";
-      $this->sourceConsultas = "jdbc/consultasSaug";
+
+
+       $this->source        = "jdbc/saugProcTmp";
+     // $this->source        = "jdbc/procedimientosSaug";
+       $this->sourceConsultas  = "jdbc/saugConsTmp";
+      //$this->sourceConsultas = "jdbc/consultasSaug";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
@@ -986,7 +988,7 @@ XML;
             <respuestaConsulta>
                <registros>
                   <registro>
-                     <fecha>2015-11-09</fecha>
+                     <fecha>2015-11-19</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                   <registro>
@@ -1001,7 +1003,7 @@ XML;
 </soap:Envelope>
 XML;
 
-      // $XML =null;
+       //$XML =null;
 
         $response = $ws->doRequestConsultaFechas($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML);
 
