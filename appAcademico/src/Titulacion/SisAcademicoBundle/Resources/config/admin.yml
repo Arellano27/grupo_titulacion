@@ -113,14 +113,62 @@ admin_cmb_materias:
     pattern:  /combo/materias
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cmbMaterias}
     
+admin_generacion_horario_docente:
+   path:     /generacion_horarios
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios }
+
+admin_generacion_horario_docente_grabar:
+   path:     /generacion_horarios_grabar
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios_grabar }
+
+admin_generacion_horario_examen:
+   path:     /generacion_horario_examen
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios_examen }
+ 
+admin_generacion_horario_examene2:
+   path:     /generacion_horario_examene2
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horario_examene2 }
+   
+admin_generacion_horarios_examenes:
+   path:     /generacion_horarios_examenes
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:generacion_horarios_examenes }
+   
+admin_elegir_solicitud:
+   path:     /carga_solicitud
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:carga_solicitud }
+   
+admin_subir_solicitud:
+   path:     /subir_solicitud
+   defaults: { _controller: TitulacionSisAcademicoBundle:Admin:subir_solicitud }
+   
 admin_muestra_estudiantes:
     pattern:  /muestra/estudiantes
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:muestraEstudiantes}
+
+admin_muestra_docente_horario:
+    pattern:  /docente_horario
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:docente_horario}
     
 admin_exportaPDF_estudiantes:
     pattern:  /PDF/estudiantes/{docente}/{materia}/{docente_text}/{materia_text}/{paralelo}
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:ExportarPDFEstudiantes}
     
+admin_consulta_horarios:
+    pattern:  /consultahorarios
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:consultahorarios }
+    
+admin_pdfhorarios:
+    pattern:  /PdfHorarios/{id}/{nombre}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfhorarios }
+    
+admin_consulta_horarios_examen_x_usuario:
+    pattern:  /horarios_examen_docente
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:horarios_examen_docente }
+
+admin_pdfhorarios_examen:
+    pattern:  /pdfhorariosexamedocente/{id}/{nombre}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfhorariosexamedocente }
+ 
 admin_cargar_pagina:
     pattern:  /carga/pagina
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargaPagina}

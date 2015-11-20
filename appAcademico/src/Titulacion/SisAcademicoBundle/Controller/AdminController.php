@@ -2414,4 +2414,414 @@ class AdminController extends Controller
 
             return $response;
         }
+        
+public function generacion_horariosAction(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $UgServices = new UgServices;
+    $Paralelos = $UgServices->Paralelos(4);
+    $Materia = $UgServices->Materia(4,44);
+        //echo var_dump($Materia); exit();
+    return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_admin.html.twig',
+    									array(
+    				'data' => array('Paralelo' => $Paralelos,
+                                                'Materia'   => $Materia)
+    										 )
+                              );
+   }
+   
+   public function generacion_horarios_examenAction(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $UgServices = new UgServices;
+    $Paralelos = $UgServices->Paralelos(4);
+    $Materia = $UgServices->Materia(4,44);
+        //echo var_dump($Materia); exit();
+    return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_examen.html.twig',
+    									array(
+    				'data' => array('Paralelo' => $Paralelos,
+                                                'Materia'   => $Materia)
+    										 )
+                              );
+   }
+   
+    public function generacion_horarios_grabarAction(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $materias  = $request->request->get('arrMaterias');
+    $contador  = $request->request->get('contador');
+             $UgServices = new UgServices;
+                 foreach ($materias as $key => $value) {
+                     $valore = explode(";",$value['Horario']);  
+                        for($i=0;$i<$contador;$i++){
+                            $datos = explode("_",$valore[$i]); 
+                            $hora_inicio = $datos[4].":00";
+                            $hora_fin = $datos[5].":00";
+                           $xmlfinal=" <pi_id_sg_usuario_profesor>$datos[2]</pi_id_sg_usuario_profesor>
+                        <pi_id_sa_materia>$datos[0]</pi_id_sa_materia>
+                        <pi_id_sa_paralelo>$datos[1]</pi_id_sa_paralelo>
+                        <pi_cupo_estudiantes>$datos[3]</pi_cupo_estudiantes>
+                        <pi_dia_semana>1</pi_dia_semana>
+                        <pt_hora_inicio>$hora_inicio</pt_hora_inicio>
+                        <pt_hora_fin>$hora_fin</pt_hora_fin>
+                        <pi_id_sg_usuario_registro>1</pi_id_sg_usuario_registro>
+                        <pc_opcion>A</pc_opcion>
+                        <pi_id_sa_materia_paralelo>2330</pi_id_sa_materia_paralelo>
+                        <pi_id_sa_horario>1091</pi_id_sa_horario>
+                        <pi_id_sa_profesor_materia_carrera>2115</pi_id_sa_profesor_materia_carrera>";
+                                                
+                         $xml = $UgServices->Guarda_Horarios_docente($xmlfinal);
+                        }                                         
+                }
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']=$Mensaje;
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
+   
+    public function generacion_horario_examene2Action(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $cedula = $request->request->get('cedula');
+
+             $UgServices = new UgServices;
+
+                           $xmlfinal=" <PI_ID_CICLO_DET>19</PI_ID_CICLO_DET>
+				<PI_ID_USUARIO_REG>$idUsuario</PI_ID_USUARIO_REG>";
+//                                                
+                         $xml = $UgServices->Guarda_Horarios_examen($xmlfinal);
+                         
+                      $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']=$Mensaje;
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+           
+   }
+   
+     public function docente_horarioAction(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $idMateria = $request->request->get('idMateria');
+    $dia = $request->request->get('dia');
+    $idParalelo = $request->request->get('idParalelo');
+    $horaInicio  = $request->request->get('horaInicio');
+    $horaFin  = $request->request->get('horaFin');
+           $horaInicio = $horaInicio.":00";
+                            $horaFin = $horaFin.":00";
+                            $horaFin = ltrim($horaFin);
+             $UgServices = new UgServices;
+                 
+                           $xmlfinal="		<horarios>
+                                    <idMateria>$idMateria</idMateria>
+                                    <dia>$dia</dia>
+                               <idParalelo>$idParalelo</idParalelo>
+                                <horaInicio>$horaInicio</horaInicio>
+                                <horaFin>$horaFin</horaFin>
+                                </horarios>";
+                                                
+                         $xml = $UgServices->docente_horario_c($xmlfinal);
+                        
+                  
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']="Gabriel Huayamabe";
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
+   
+     public function carga_solicitudAction(Request $request)
+            {    $session=$request->getSession();   
+            $idUsuario  = $session->get('id_user');
+                if($session->has("perfil")) {
+                   
+                    return $this->render('TitulacionSisAcademicoBundle:Admin:Subir_Solicitud.html.twig');
+                }else{
+                    return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+                }
+                   
+            }
+   
+    public function subir_solicitudAction(Request $request){
+    $respuesta= new Response("",200);
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $cedula = $request->request->get('cedula');
+    $Solicitud  = $request->request->get('Solicitud');
+    $fileSize  = $request->request->get('fileSize');
+             $UgServices = new UgServices;
+               
+                           $xmlfinal="<PX_XML>
+					<items>
+						<item>
+						    <id_sa_formato_solicitud></id_sa_formato_solicitud>
+						    <descripcion>$cedula</descripcion>
+							<ruta_archivo>$fileSize</ruta_archivo>
+							<id_usuario>$idUsuario</id_usuario>
+							<estado>A</estado>
+						</item>
+					</items>
+				</PX_XML>
+				<PC_OPCION>A</PC_OPCION>";
+                                            //echo  var_dump($xmlfinal); exit();     
+                        $xml = $UgServices->subir_solicitud($xmlfinal);
+                     
+             $Estado="";
+                $Mensaje="";
+             if ( is_object($xml))
+                {
+                    foreach($xml->parametrosSalida as $datos)
+                     {  
+                        $Estado=(int) $datos->PI_ESTADO;
+                        $Mensaje=(string) $datos->PV_MENSAJE;
+                     }
+                    
+                }
+            $arrayProceso = array();
+            $arrayProceso['codigo_error']=$Estado;
+            $arrayProceso['mensaje']=$Mensaje;
+            $jarray=json_encode($arrayProceso);          
+            $respuesta->setContent($jarray);
+            return $respuesta;
+
+   }
+   
+    public function generacion_horarios_examenesAction(Request $request){
+    
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+            if($session->has("perfil")) {
+              return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horarios_examen.html.twig');
+            }else{
+                    return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+                }
+   }
+   
+    public function consultahorariosAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           
+          return $this->render('TitulacionSisAcademicoBundle:Admin:consultahorariosgenerales.html.twig');
+           
+    }#end function
+    
+      public function pdfhorariosAction(Request $request,$id,$nombre)
+    {     
+        
+            $session=$request->getSession();          
+                       
+            $UgServices    = new UgServices;
+          
+            $datosHorarios  = $UgServices->Docentes_Horarios($id);
+            
+                   $pdf= " <html> 
+                                            <body>
+                                            <img width='5%' src='images/menu/ug_logo.png'/>
+                                            <table align='center'>
+                                            <tr>
+                                              <td align='center'>
+                                                <b> Horario de clases</b>
+                                              </td>
+                                            <tr>
+                                            <tr>
+                                            <td>
+                                              <b>Docente: $nombre</b>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            <div class='col-lg-12'>
+                                            <br><br><br><br>
+                                            <table class='table table-striped table-bordered' border='1' width='100%' >
+                                                     <thead>
+                                                        <tr>
+                                                                <th colspan='5'   style='text-align: center !important;background-color: #337AB7 !important;color: white!important;'>Periodo  </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style='text-align: center !important;'>Dia</th>
+                                                            <th style='text-align: center !important;'>Materia</th>
+                                                            <th style='text-align: center !important;'>Desde</th>
+                                                            <th style='text-align: center !important;'>Hasta</th>
+                                                            <th style='text-align: center !important;'>Curso</th> 
+                                                        </tr>";
+
+                                                   foreach($datosHorarios as $Horario) {
+                                                 $pdf.="<tr>
+                                                            <td align='center'>".$Horario['dia']."</td>
+                                                            <td align='center'>".$Horario['materia']."</td>
+                                                            <td align='center'>".$Horario['curso']."</td>
+                                                            <td align='center'>".$Horario['hora_desde']."</td>
+                                                            <td align='center'>".$Horario['hora_hasta']."</td>
+                                                        </tr>";
+                                                   }
+                                            
+
+                                            $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
+
+                                                    <tr><td width='40%'><img width='80%' src='images/menu/firma.png'/></td> 
+                                                      <td width='20%'>&nbsp;</td>
+                                                      <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
+                                                    </tr>
+
+                                                    <tr><td align='center' ><b>$nombre</b></td>
+                                                    <td >&nbsp;</td>
+                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                    </table>";
+
+                                             $pdf.="</div></body></html>";
+ 
+                                        
+                            
+                  $mpdfService = $this->get('TFox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();               
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  return new response($mPDF->Output());
+                 
+                  
+                  
+    }#end function
+    
+    
+     public function horarios_examen_docenteAction(Request $request)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+           
+          return $this->render('TitulacionSisAcademicoBundle:Admin:horarios_examen_docente.html.twig');
+           
+    }#end function
+    
+    
+      public function pdfhorariosexamedocenteAction(Request $request,$id,$nombre)
+    {     
+        
+            $session=$request->getSession();          
+                      
+            $UgServices    = new UgServices;
+          
+            $datosHorarios  = $UgServices->Docentes_Horarios_Examen($id);
+
+                   $pdf= " <html> 
+                                            <body>
+                                            <img width='5%' src='images/menu/ug_logo.png'/>
+                                            <table align='center'>
+                                            <tr>
+                                              <td align='center'>
+                                                <b> Horario de Examenes</b>
+                                              </td>
+                                            <tr>
+                                            <tr>
+                                            <td>
+                                              <b>Docente: $nombre</b>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            <div class='col-lg-12'>
+                                            <br><br><br><br>
+                                            <table class='table table-striped table-bordered' border='1' width='100%' >
+                                                     <thead>
+                                                        <tr>
+                                                                <th colspan='5'   style='text-align: center !important;background-color: #337AB7 !important;color: white!important;'>Periodo  </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th align='center'>Curso</th>
+                                                            <th align='center'>Materia</th>
+                                                            <th align='center'>Dia</th>
+                                                            <th align='center'>Hora</th>                                                   
+                                                        </tr>";
+
+                                                   foreach($datosHorarios as $Horario) {
+                                                 $pdf.="<tr>
+                                                            <td align='center'>".$Horario['curso.descripcion']."</td>
+                                                            <td align='center'>".$Horario['curso.materias.materia.descripcion_materia']."</td>
+                                                            <td align='center'>".$Horario['curso.dias.dia.nombre']."</td>
+                                                            <td align='center'>".$Horario['curso.horas.hora.nombre']."</td>                                                          
+                                                        </tr>";
+                                                   }
+                                            
+
+                                            $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
+
+                                                    <tr><td width='40%'><img width='80%' src='images/menu/firma.png'/></td> 
+                                                      <td width='20%'>&nbsp;</td>
+                                                      <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
+                                                    </tr>
+
+                                                    <tr><td align='center' ><b>$nombre</b></td>
+                                                    <td >&nbsp;</td>
+                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                    </table>";
+
+                                             $pdf.="</div></body></html>";
+ 
+                                        
+                            
+                  $mpdfService = $this->get('TFox.mpdfport');
+                  $mPDF = $mpdfService->getMpdf();               
+                  $mPDF->AddPage('','','1','i','on');
+                  $mPDF->WriteHTML($pdf);
+                  return new response($mPDF->Output());
+                 
+                  
+                  
+    }#end function
 }

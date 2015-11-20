@@ -50,7 +50,6 @@ docentes_ingreso_notas2:
     pattern:  /notas2/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:ingresonotas2 }
     
-
 docentes_consulta_horarios:
     pattern:  /consultahorarios
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:consultahorarios }
@@ -59,8 +58,14 @@ docentes_pdfhorarios:
     pattern:  /PdfHorarios
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:pdfhorarios }
     
+docentes_consulta_horarios_examen:
+    pattern:  /consultahorariosexamen
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:consultahorariosexamen }
     
-
+docentes_pdfhorarios_examen:
+    pattern:  /PdfHorariosexamen
+    defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:PdfHorariosexamen }
+    
 docentes_alumnos_asistencias:
     pattern:  /materias/asistencias/
     defaults: { _controller: TitulacionSisAcademicoBundle:Docentes:tabDocAsistencias }

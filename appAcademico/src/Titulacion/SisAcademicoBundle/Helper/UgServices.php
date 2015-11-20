@@ -42,10 +42,11 @@ class UgServices {
       $this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
       /*Saug Temporal*/
-      $this->source        = "jdbc/saugProcTmp";
-    //  $this->source        = "jdbc/procedimientosSaug";
-      $this->sourceConsultas  = "jdbc/saugConsTmp";
-     // $this->sourceConsultas = "jdbc/consultasSaug";
+
+       $this->source        = "jdbc/saugProcTmp";
+     // $this->source        = "jdbc/procedimientosSaug";
+       $this->sourceConsultas  = "jdbc/saugConsTmp";
+      //$this->sourceConsultas = "jdbc/consultasSaug";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
@@ -1281,20 +1282,13 @@ XML;
     public function getConsultaPorcentajeEstudianteCarrera($idCiclo, $idCarrera) {
 
         $ws = new AcademicoSoap();
-        $tipo = "28";
-        $usuario = "CapaVisualPhp";
-        $clave = "12CvP2015";
-        $source = "jdbc/saugConsTmp";
-        $url = "http://186.101.66.2:8080/consultas/ServicioWebConsultas?wsdl";
-        $host = "186.101.66.2:8080";
+        $this->tipo = "28";
         $trama = "<idCiclo>" . $idCiclo . "</idCiclo><carrera>" . $idCarrera . "</carrera>";
         $this->urlWS = $this->url . $this->urlConsulta;
-        $response = $this->ws->doRequestEstadosMatricula($trama, $this->sourceConsultas, $tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+        $response = $this->ws->doRequestEstadosMatricula($trama, $this->sourceConsultas, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
 
         return $response;
-    }
-
-#end function
+    }#end function
 
     public function getRolesAdmin($idUser, $idRol) {
 
@@ -1348,7 +1342,7 @@ XML;
         $trama = "<id_sg_usuario>$idUser</id_sg_usuario><id_sa_ciclo_detalle>19</id_sa_ciclo_detalle>";
         $XML = NULL;
         $response = $this->ws->doSelectHorariosDocente($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
-
+  
         return $response;
     }#end function
 
@@ -1408,6 +1402,82 @@ public function getConsultaDatos_Generales($idEstudiante){
         return $response;
       }#end function
 
+      
+        public function Paralelos($idUsuario) {
+        $this->tipo = "35";
+        $this->source = $this->sourceConsultas;
+        $this->urlWS = $this->url . $this->urlConsulta;
+        $trama = "<carrera>" . $idUsuario . "</carrera>";       
+        $XML = NULL;
+        //echo '<pre>'; var_dump($idCarrera); exit();
+        $response = $this->ws->doRequestParalelos($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+
+        return $response;
+    }
+    
+     public function Materia($IdCarrera,$IdParalelo) {
+        $this->tipo = "36";
+        $this->source = $this->sourceConsultas;
+        $this->urlWS = $this->url . $this->urlConsulta;
+        $trama = "<carrera>" . $IdCarrera . "</carrera>"
+                . "<id_paralelo>" . $IdParalelo . "</id_paralelo>";       
+        $XML = NULL;
+        //echo '<pre>'; var_dump($idCarrera); exit();
+        $response = $this->ws->doRequestMaterias($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+
+        return $response;
+    }
+    
+    public function subir_solicitud($trama) {
+
+        $this->tipo = "47";
+        $this->urlWS = $this->url.$this->urlProcedim;
+        //echo  var_dump($trama); exit();
+        //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
+        $response = $this->ws->dosubir_solicitud($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+        return $response;
+    }
+    
+      public function Guarda_Horarios_docente($trama) {
+
+        $this->tipo = "45";
+        $this->urlWS = $this->url.$this->urlProcedim;
+        //echo  var_dump(urlWS); exit();
+        //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
+        $response = $this->ws->doGuardaHorariosDocentes($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+        return $response;
+    }
+    
+     public function Guarda_Horarios_examen($trama) {
+
+        $this->tipo = "45";
+        $this->urlWS = $this->url . $this->urlProcedim;
+        //echo  var_dump($trama); exit();
+        //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
+        $response = $this->ws->doGuardaHorariosExamen($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+        return $response;
+    }
+    
+    public function docente_horario_c($trama) {
+        $this->tipo = "50";
+        $this->source = $this->sourceConsultas;
+        $this->urlWS = $this->url . $this->urlConsulta;        
+        $response = $this->ws->doSelectHorariosDocente_generacion($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
+
+        return $response;
+    }#end function
+    
+     public function Docentes_Horarios_Examen($idUser) {
+        $this->tipo = "43";
+         $this->urlWS = $this->url . $this->urlProcedim;
+        $trama = "<PV_Opcion>P</PV_Opcion>
+				<PI_Usuario>$idUser</PI_Usuario>
+				<PI_Carrera>4</PI_Carrera>";
+        $XML = NULL;
+        $response = $this->ws->doSelectHorariosDocenteExamen($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+        return $response;
+    }#end function
+    
 }#end class
 
 

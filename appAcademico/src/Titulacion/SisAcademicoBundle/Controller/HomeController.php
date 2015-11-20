@@ -272,6 +272,12 @@ class HomeController extends Controller
                 // echo '<pre>'; var_dump($rsCarrera); exit();
                 $resultadoObjeto = json_encode($rsCarrera);
                 $xml_array = json_decode($resultadoObjeto,TRUE);
+                if(!isset($xml_array["registros"]["registro"]["id_sa_carrera"])) {
+                  $tempRegistro  = $xml_array["registros"]["registro"][0];
+                  $xml_array["registros"]["registro"] = array();
+                  $xml_array["registros"]["registro"] = $tempRegistro;
+                  unset($tempRegistro);
+                }
 
                 $session->set("îdcarrera_calendar",$xml_array["registros"]["registro"]["id_sa_carrera"]);
                 $session->set("îdciclo_calendar",$xml_array["registros"]["registro"]["id_sa_ciclo_detalle"]);
@@ -531,8 +537,14 @@ class HomeController extends Controller
                   $datosConsultaImg       = array('DatosImgPerfil' => $datosPerfilXML_img);
                   $datosImgArray   = $UgServices->Docentes_setDataPerfilUsuarioImgPerfilEditar($datosConsultaImg);
                   
-                  $datosUsuarioRespuesta["imagenGrabada"]  = $datosImgArray["pi_estado"];
-                  $datosUsuarioRespuesta["imagenRuta"]     = $rutaImagenPerfil;
+                  if(isset($datosImgArray["pi_estado"])) {
+                     $datosUsuarioRespuesta["imagenGrabada"]  = $datosImgArray["pi_estado"];
+                     $datosUsuarioRespuesta["imagenRuta"]     = $rutaImagenPerfil;
+                  }
+                  else {
+                     $datosUsuarioRespuesta["imagenGrabada"]  = -1;
+                     $datosUsuarioRespuesta["imagenRuta"]     = NULL;
+                  }
                }
             }
             else {
