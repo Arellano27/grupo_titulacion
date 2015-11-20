@@ -201,6 +201,8 @@
             
                $id='1';
                $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama,$id);
+                $id='2';
+                $ingreanota = $UgServices->Docentes_gettareaxparcial($trama,$id);
 //               $datosParciales2  = json_decode($datosParciales);
 //               $datosParciales=$datosParciales2->a;
                
@@ -212,19 +214,15 @@
 //                     $arr_parcial[$i]['parcial']='parcial #'.$i;
 //                          
 //            }
+                if($ingreanota=='1'){
                $parcial=$datosParciales->registro->periodos->periodo->parcial;
             
                $tareas= $datosParciales->registro->periodos->periodo->componentePeriodo;
                $i=0;
-               foreach ($tareas->idNota as $idnota) {
-               $registros[$i]['idNota']= (string)$idnota;
-               $i++;
-               }
-               $i=0;
-               foreach ($tareas->componente as $componente) {
-               $registros[$i]['componente']= (string)$componente;
-               $i++;
-               }
+                }else{
+                    $parcial=null;
+                }
+
 //               print_r($registros);
 //               exit();
                
@@ -972,6 +970,7 @@
           /* print_r($datosParciales);*/
               // $ingreanota='0';
                if($ingreanota=='1'){
+                   if(count($arr_datos) > 0){
             $profesor=$datosParciales->registro->profesor;
             $materia=$datosParciales->registro->materia;
             $paralelo=$datosParciales->registro->paralelo;
@@ -996,11 +995,17 @@
                                                            'msg'   	=> $this->v_msg
 						  ));
                         $this->v_html=utf8_encode($this->v_html);
+                   }
+                   else{
+                   $this->v_error=true;
+                   $this->v_msg="No existen alumnos Matriculados";
+               }
                }
                else{
                    $this->v_error=true;
                    $this->v_msg="No es tiempo para ingreso de notas aun";
                }
+               
                         
                         $response->setData(
                                 array(
@@ -1388,6 +1393,7 @@
           
            /*print_r($datosParciales);
            exit();*/
+           if(count($arr_datos) > 0){
             $profesor=$datosParciales->registro->profesor;
             $materia=$datosParciales->registro->materia;
             $paralelo=$datosParciales->registro->paralelo;
@@ -1408,6 +1414,11 @@
                                                            'cantidad'   => '',
                                                            'msg'   	=> $this->v_msg
 						  ));
+              
+           } else{
+                   $this->v_error=true;
+                   $this->v_msg="No existen alumnos Matriculados";
+               }
                         
                         $response->setData(
                                 array(
@@ -1476,12 +1487,17 @@
           $arr_fechas  = $UgServices->Docentes_getfechasparcial($trama);
 //          print_r($arr_fechas);
 //          exit();
+         
            $muestrafecha="";
            $fecha_act=date('Y-m-d');
+            if(count($arr_fechas) > 0){
            foreach($arr_fechas as $fecha) {
                if ($fecha_act==$fecha['fecha'] && $fecha['ingreso'] == '1' ){
                    $muestrafecha=$fecha_act;
                }
+            }
+            }else{
+                $muestrafecha='';
             }
            // echo $fecha_act;
            // echo $arr_fechas[0]['fecha']."--".$fecha_act;
@@ -1548,11 +1564,15 @@
            $id='1';
            $datosParciales  = $UgServices->Docentes_gettareaxparcial($trama,$id);
            
+           
            /*print_r($datosParciales);
            exit();*/
+           if(count($arr_datos) > 0){
+            
             $profesor=$datosParciales->registro->profesor;
             $materia=$datosParciales->registro->materia;
             $paralelo=$datosParciales->registro->paralelo;
+           
 //            $profesor = $session->get('nom_usuario'); 
 //            $materia= $session->get('nom_materia');
 //            $paralelo= $session->get('paralelo');
@@ -1570,6 +1590,11 @@
                                                            'cantidad'   => '',
                                                            'msg'   	=> $this->v_msg
 						  ));
+        
+           } else{
+                   $this->v_error=true;
+                   $this->v_msg="No existen alumnos Matriculados";
+               }
                         
                         $response->setData(
                                 array(
