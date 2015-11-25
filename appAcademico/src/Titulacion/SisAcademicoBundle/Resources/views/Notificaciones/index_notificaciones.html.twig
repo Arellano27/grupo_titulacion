@@ -16,6 +16,16 @@
                 $("#Texto").html(id);
                 $("#Modal").click();
             }
+            
+          $(document).ready(function (){
+                
+            $("#Limpiar").click(function (){
+                $("#Paralelo").val(0);
+                $("#TipoMensaje").val(0);
+                $("#Asunto").val("");
+                $("#mensaje").val("");
+            });
+         });
     
      
 </script>
@@ -70,17 +80,25 @@
                         <div class="pull-right hidden-xs">
           <!-- Notifications Menu -->
              
-                       {#  {% if app.session.get('descRol') == "UNIVERSIDAD" %}
+                         {% if app.session.get('perfil') != perfilDoc or app.session.get('perfil') != perfilEst %}
                           <input type="checkbox" name="Profesores" checked id="Profesores"/> Profesores
                            <br />
-                           <input type="checkbox" name="Estudiantes"  id="Estudiantes" /> Estudiantes
+                           <input type="checkbox" name="Estudiantes"  id="Estudiantes" /> Estudiantes 
+                           <br><br>
                          {%endif%} 
-                         {% if app.session.get('descRol') == "DOCENTE" %}
+                        {# {% if app.session.get('descRol') == "DOCENTE" %}
                           <input type="checkbox" name="Universidad" checked id="Universidad"/> Universidad
                            <br />
                            <input type="checkbox" name="Estudiantes"  id="Estudiantes" /> Estudiantes
-                         {%endif%}    #}
-                         
+                        {%endif%} #}   
+                         {% if app.session.get('descRol') == "DOCENTE" %}
+                       <select id="Paralelo" name="Paralelo">
+                           {% for Paralelo in data.Paralelos %} 
+                        <option value="{{ Paralelo.id_paralelo }}">{{ Paralelo.nombre_paralelo }}</option>                        
+                           {%endfor%}  
+                      </select>
+                         {%endif%} 
+                          
                             <select id="TipoMensaje" name="TipoMensaje">
                                <option value="0">-</option>
                                <option value="1">Mensaje</option>
@@ -96,7 +114,7 @@
                           <div class="form-group">
                         <div class="input-group">
                         <span class="input-group-addon">Asunto:</span>
-                        <input name="Asunto" type="text" runat="server" id="Asunto" class="form-control"/>
+                        <input name="Asunto" type="text" runat="server" id="Asunto" placeholder="Escriba un asunto" class="form-control"/>
                         </div>
                         </div>
                       
@@ -108,7 +126,7 @@
                     <div class="modal-body">
                         
                         <button type="submit" class="btn btn btn-success" onclick="send_form ('enviar')" id="Enviar"> Enviar Mensajes </button>
-                     <button type="button" class="btn btn btn-danger">Limpiar</button>
+                     <button type="button" id="Limpiar" class="btn btn btn-danger">Limpiar</button>
                       
                     </div>
               

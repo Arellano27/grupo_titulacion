@@ -1269,6 +1269,19 @@
                               $Mensaje=(string) $datos->PV_MENSAJE;
                            }
                           
+                           
+                             $mailer    = $this->container->get('mailer');
+                            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                    ->setUsername('titulacion.php@gmail.com')
+                                    ->setPassword('sc123456');
+                      //$mailer  = \Swift_Mailer($transport);
+                        $message = \Swift_Message::newInstance('test')
+                                    ->setSubject("Registro de Materias")
+                                  ->setFrom('titulacion.php@gmail.com',"Universidad")
+                                   ->setTo("ghuayamabe89@gmail.com")
+                                   ->setBody("Ha registrado sus materias exitosamente!");
+                       $this->get('mailer')->send($message);
+                          
                       }
             }
             if($BanderaGrabar==2)

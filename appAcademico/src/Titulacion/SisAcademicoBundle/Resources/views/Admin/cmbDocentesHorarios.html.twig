@@ -1,0 +1,6 @@
+<label class="control-label" >Docentes :</label>
+ <select class="form-control" id="Docentes">
+{% for Docente in Docente %} 
+    <option value="{{ Docente.id_profesor }}">{{ Docente.nombre_profesor }}</option>                        
+{%endfor%} 
+ </select>

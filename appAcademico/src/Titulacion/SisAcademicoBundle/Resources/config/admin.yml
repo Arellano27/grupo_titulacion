@@ -169,6 +169,17 @@ admin_pdfhorarios_examen:
     pattern:  /pdfhorariosexamedocente/{id}/{nombre}
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfhorariosexamedocente }
  
+admin_consulta_Materia_por_paralelo:
+    pattern:  /Materia_por_paralelo
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:Materia_por_paralelo}
+
+admin_consulta_docente_disponible:
+    pattern:  /Docente_Disponible
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:Docente_Disponible}   
+    
+ 
 admin_cargar_pagina:
     pattern:  /carga/pagina
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargaPagina}
+    
+
