@@ -657,7 +657,7 @@ class AdminController extends Controller
         // $date = date_format($fec_desde, 'Y-m-d H:i:s');
         $session=$request->getSession();
         $id_usuario = $session->get("id_user");
-        $id_usuario = 11;
+       // $id_usuario = 11;
         $rsInsertEvent = $UgServices->insertarEventosCalendario($id_evento,$id_ciclo,$fec_desde,$fec_hasta,$id_usuario);
         // echo '<pre>'; var_dump($rsInsertEvent); exit();
         return new Response($rsInsertEvent);
