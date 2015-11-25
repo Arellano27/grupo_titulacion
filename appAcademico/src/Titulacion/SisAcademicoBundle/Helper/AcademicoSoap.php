@@ -1322,7 +1322,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
       
 //        var_dump($result);
 //        exit();
-//         $result = $XML;
+   //      $result = $XML;
          
          
          $xmlData["bloqueRegistros"]   = 'registros';
