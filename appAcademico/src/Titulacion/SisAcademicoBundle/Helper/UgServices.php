@@ -38,13 +38,18 @@ class UgServices {
       /* PARAMETROS PARA SERVIDORES LOCALES EN UNIVERSIDAD - FIN */
 
       /* PARAMETROS PARA SERVIDORES DISPONIBLES EN INTERNET - INICIO */
-      //$this->usuario       = "usr_tesis";
-      //$this->clave         = "Tesis2015";
+
+//      $this->usuario       = "usr_tesis";
+//      $this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
       /*Saug Temporal*/
-     //  $this->source        = "jdbc/saugProcTmp";
+      $this->usuario       = "CapaVisualPhp";
+      $this->clave         = "T3pZx1520pHp";
+
+       //$this->source        = "jdbc/saugProcTmp";
       $this->source        = "jdbc/procedimientosSaug";
-     //  $this->sourceConsultas  = "jdbc/saugConsTmp";
+       //$this->sourceConsultas  = "jdbc/saugConsTmp";
+
       $this->sourceConsultas = "jdbc/consultasSaug";
       $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
       $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
@@ -813,37 +818,7 @@ class UgServices {
 </soap:Envelope>
 XML;
 
-        /*
-          $XML  = <<<XML
-          <registros>
-          <registro>
-          <cantParciales>1</cantParciales>
-          <notaMinima>6.50</notaMinima>
-          <periodos>
-          <periodo>
-          <parcial>PARCIAL1</parcial>
-          <totalizar>SI</totalizar>
-          <componentePeriodo>
-          <idNota>51</idNota>
-          <componente>GESTIÓN FORMATIVA</componente>
-          <idNota>52</idNota>
-          <componente>GESTIÓN PRÁCTICA</componente>
-          <idNota>53</idNota>
-          <componente>ACREDITACIÓN</componente>
-          </componentePeriodo>
-          </periodo>
-          </periodos>
-          <idProfesor>5</idProfesor>
-          <profesor>BARRETO BARRETO KATIUSKA ELIZABETH </profesor>
-          <idMateria>30</idMateria>
-          <materia>Investigación Operaciones</materia>
-          <idParalelo>65</idParalelo>
-          <paralelo>S5K</paralelo>
-          </registro>
-          </registros>
-          XML; */
-
-        $XML = null;
+        //$XML = null;
 
         $response = $ws->doRequestSreReceptaTransacionConsultasdoc2($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML,$id);
 
@@ -986,7 +961,7 @@ XML;
             <respuestaConsulta>
                <registros>
                   <registro>
-                     <fecha>2015-11-19</fecha>
+                     <fecha>2015-11-24</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                   <registro>
@@ -1001,7 +976,7 @@ XML;
 </soap:Envelope>
 XML;
 
-       //$XML =null;
+       $XML =null;
 
         $response = $ws->doRequestConsultaFechas($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML);
 
