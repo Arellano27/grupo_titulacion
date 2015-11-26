@@ -415,7 +415,7 @@
                   var Tabla_Horarios = document.getElementById("Horario");
                   
                   var f = Tabla_Horarios.rows.length;
-                 
+                 if(f>1){
                   var Hora = "";
                   var Hora_Sabado = "";
                   var Lunes = "";
@@ -430,7 +430,7 @@
                   var index = 0;
                   var i = 0;
                   var cont = 0;
-                  while(i <= 7) { 
+                  while(i <= 20) { 
                       if(i>=1){
                         Lunes = $("#Lunes_" + i).attr("class");
                         Martes = $("#Martes_" + i).attr("class");
@@ -556,7 +556,7 @@
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'SeÃ±or administrativo el horario fue creado exitosamente!',
+                                                           content : 'Señor administrativo el horario fue creado exitosamente!',
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -582,7 +582,11 @@
 
                                  dataType:'text'
                               });
-                  
+                          }else
+                          {
+                               $( "#Guardar").css("display","none");
+                               alert("Agregue Materias y Profesores al Horario para Generarlo");
+                          }
                 });
                 
                
@@ -704,7 +708,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                      <label>Seleccione dÃ¬a:</label>
+                      <label>Seleccione dìa:</label>
                       <select class="form-control" Id="Dia">
                             <option value="1">Lunes</option>
                             <option value="2">Martes</option>
