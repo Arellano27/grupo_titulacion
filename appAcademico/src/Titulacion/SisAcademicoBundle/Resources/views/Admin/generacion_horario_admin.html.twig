@@ -18,16 +18,16 @@
                 if(docente != 0){
                $( "#Guardar").css("display","");
                var ParaleloText = $("#Paralelo option:selected").text();
-               var ParaleloId = $("#Paralelo").val();
+               var ParaleloId = $("#Paralelo option:selected").val();
                var MateriaText = $("#Materia option:selected").text();
                var MateriaId = $("#Materia option:selected").val();
                var DiaText = $("#Dia option:selected").text();
-               var DiaId = $("#Dia").val();
+               var DiaId = $("#Dia option:selected").val();
                var HoraText = $("#Hora option:selected").text();
-               var HoraloId = $("#Hora").val();
+               var HoraloId = $("#Hora option:selected").val();
                var DocenteText = $("#Docentes option:selected").text();
-               var DocenteId = $("#Docentes").val();
-             
+               var DocenteId = $("#Docentes option:selected").val();
+            
                var Tabla_Horarios = document.getElementById("Horario");           
                var i = Tabla_Horarios.rows.length;
                var fila = i
@@ -430,15 +430,15 @@
                   var index = 0;
                   var i = 0;
                   var cont = 0;
-                  while(i <= f) { 
-                      if(i>=2){
+                  while(i <= 7) { 
+                      if(i>=1){
                         Lunes = $("#Lunes_" + i).attr("class");
                         Martes = $("#Martes_" + i).attr("class");
                         Miercoles = $("#Miercoles_" + i).attr("class");
                         Jueves = $("#Jueves_" + i).attr("class");
                         Viernes = $("#Viernes_" + i).attr("class");
                         Sabado = $("#Sabado_" + i).attr("class");  
-                        
+                      
                                       
                          if(typeof(Lunes) !== "undefined"){                              
                                 //arrValores["Lunes"]=Lunes;                                     
@@ -509,6 +509,7 @@
                       i = i+1;
                       
                     }
+                     
                     if(resultado == ""){
                                         
                      return false;
@@ -544,7 +545,7 @@
                                             $("#btninscribe").attr("disabled", false);
                                              modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : "en estos momentos tenemos inconvenientes, favor intentelo mas tarde",
+                                                           content : "Horario para ese dia ya fue creado",
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -696,7 +697,7 @@
                       <div id="Materia" class="form-group">
                       <label>Seleccione Materia:</label>
                         <select class="form-control" Id="Materia">
-                            <option>Seleccione un paralelo</option>
+                            <option>Seleccione un paralelo para ver Materias disponibles</option>
                             {# {% for Materia in data.Materia %} 
                         <option value="{{ Materia.idmateria }}">{{ Materia.materia}}</option>                        
                            {%endfor%}  #}
@@ -735,7 +736,7 @@
                     <div id="Docente_" class="form-group">
                       <label>Seleccione Docente:</label>
                         <select class="form-control" Id="Docente">
-                              <option>Seleccione la Hora</option>
+                              <option>Seleccione una Hora para ver docentes disponibles</option>
                               {#{% for Docente in data.Docente %} 
                         <option value="{{ Docente.id_sg_usuario }}">{{ Docente.profesor}}</option>                        
                            {%endfor%}  #}

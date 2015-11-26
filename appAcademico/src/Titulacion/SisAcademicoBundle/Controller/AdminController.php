@@ -2452,6 +2452,7 @@ public function generacion_horariosAction(Request $request){
     $materias  = $request->request->get('arrMaterias');
     $contador  = $request->request->get('contador');
              $UgServices = new UgServices;
+             //echo var_dump($materias); exit();
                  foreach ($materias as $key => $value) {
                      $valore = explode(";",$value['Horario']);
                         for($i=0;$i<$contador;$i++){
@@ -2461,8 +2462,8 @@ public function generacion_horariosAction(Request $request){
                            $xmlfinal=" <pi_id_sg_usuario_profesor>$datos[2]</pi_id_sg_usuario_profesor>
                         <pi_id_sa_materia>$datos[0]</pi_id_sa_materia>
                         <pi_id_sa_paralelo>$datos[1]</pi_id_sa_paralelo>
-                        <pi_cupo_estudiantes>$datos[3]</pi_cupo_estudiantes>
-                        <pi_dia_semana>1</pi_dia_semana>
+                        <pi_cupo_estudiantes>50</pi_cupo_estudiantes>
+                        <pi_dia_semana>$datos[3]</pi_dia_semana>
                         <pt_hora_inicio>$hora_inicio</pt_hora_inicio>
                         <pt_hora_fin>$hora_fin</pt_hora_fin>
                         <pi_id_sg_usuario_registro>1</pi_id_sg_usuario_registro>

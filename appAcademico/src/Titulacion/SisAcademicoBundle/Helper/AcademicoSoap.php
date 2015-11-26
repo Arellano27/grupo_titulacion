@@ -4574,7 +4574,7 @@ function doGuardaHorariosDocentes($datosCuenta,$source,$tipo,$usuario,$clave,$ur
                         $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
                         
                         return $respuestaConsulta;
-                        //echo var_dump($respuestaConsulta); exit();
+                        echo var_dump($respuestaConsulta); exit();
                     }
 
 
