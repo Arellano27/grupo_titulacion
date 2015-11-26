@@ -2470,7 +2470,7 @@ public function generacion_horariosAction(Request $request){
                         <pi_id_sa_materia_paralelo>2330</pi_id_sa_materia_paralelo>
                         <pi_id_sa_horario>1091</pi_id_sa_horario>
                         <pi_id_sa_profesor_materia_carrera>2115</pi_id_sa_profesor_materia_carrera>";
-
+ //echo var_dump($xmlfinal); exit();
                          $xml = $UgServices->Guarda_Horarios_docente($xmlfinal);
                         }
                 }
@@ -2527,7 +2527,7 @@ public function generacion_horariosAction(Request $request){
     $xmldocente = "<PX_Entrada>
 					<horarios>
 						 <idMateria>$Materia</idMateria>
-						 <idParalelo>$Paralelo</idParalelo>
+						 <idCiclo>19</idCiclo>
 						 <dia>$Dia</dia>
 						 <horaInicio>$hora_inicio</horaInicio>
 						 <horaFin>$hora_fin</horaFin>
@@ -2535,20 +2535,19 @@ public function generacion_horariosAction(Request $request){
 				</PX_Entrada>";
             //echo var_dump($xmldocente); exit();
     $Docente = $UgServices->Docente_disponible($xmldocente);
+    //echo var_dump($Docente); exit();
     $Estado="";
                 $Mensaje="";
-             if ( is_object($Docente))
-                {
-                    foreach($Docente->parametrosSalida as $datos)
-                     {
-                        $Estado=(int) $datos->PI_ESTADO;
-                        $Mensaje=(string) $datos->PV_MENSAJE;
-                     }
-
+             if (count($Docente)> 0)
+                {               
+                   $Mensaje="con datos";
+                }else{
+                    $Mensaje="";
                 }
-                
-                if($Mensaje == "CONSULTA SIN DATOS"){
+               //echo var_dump($Mensaje); exit();
+                if($Mensaje == ""){
                  
+                    
                           return $this->render('TitulacionSisAcademicoBundle:Admin:cmbDocentesHorarios.html.twig',
 						  array(
 							 //  'arr_datos' => $arr_datos,
@@ -2621,7 +2620,7 @@ public function generacion_horariosAction(Request $request){
                                 <horaInicio>$horaInicio</horaInicio>
                                 <horaFin>$horaFin</horaFin>
                                 </horarios>";
-
+            
                          $xml = $UgServices->docente_horario_c($xmlfinal);
 
 

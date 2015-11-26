@@ -4953,15 +4953,20 @@ function doDocente_disponible($datosCuenta,$source,$tipo,$usuario,$clave,$url,$h
                     else
                     {
                        
-                        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
-                        $xml = new \SimpleXMLElement($response);
-                       
-                        $body = $xml->xpath('//soapBody')[0];
-                        $return = $xml->xpath('//return')[0];
-                        $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
-                        
-                        return $respuestaConsulta;
-                        //echo var_dump($respuestaConsulta); exit();
+                       $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
+                    $xml = new \SimpleXMLElement($response);
+                    $body = $xml->xpath('//soapBody')[0];
+                    $return = $xml->xpath('//return')[0];
+
+                    $resultadoObjeto = $xml->xpath('//parametrosSalida')[0];
+                    $resultadoObjeto = $xml->xpath('//PX_Salida')[0];
+                    // $resultadoObjeto = $xml->xpath('//item')[0];
+                    $resultadoObjeto = $this->Response($resultadoObjeto);
+                             //echo var_dump($resultadoObjeto); exit();
+                    return $resultadoObjeto;
+
+      
+                     
                     }
 
 
