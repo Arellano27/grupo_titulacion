@@ -35,10 +35,26 @@
                         <tfoot>
                            
                                     <tr>
-                                            <td width='5%' colspan='5' align="right">
-                                              {% if (EstadoAlumno=='REGISTRADO')%}
-                                              <a class="btn btn-success " id='btnlegalorden'>Inscribir</a>
+                                      <td width='5%' colspan='3' align="center">
+                                           {% if (identificacion!='' and EstadoAlumno=='REGISTRADO' )%}
+                                              
+                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_cedula" onclick="Seleccion()"> <b>Cédula de Identidad</b>
+                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_votacion" onclick="Seleccion()"> <b>Papeleta de Votación</b>
+                                                   
+                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_foto" onclick="Seleccion()"> <b>Fotos</b>
+                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_hoja" onclick="Seleccion()"> <b>Hoja de inscripción </b>
+
+                                              
                                               {% endif %}
+                                              </td>
+                                            <td width='5%' colspan='2' align="right">
+                                              {% if (EstadoAlumno=='REGISTRADO')%}
+                                             
+                                              <a class="btn btn-success" id='btnlegalorden'>Inscribir</a>
+                                              
+                                              {% endif %}
+                                              <a class="btn btn-success" id='btnpdfordenpag' href="{{ path('admin_pdf_ordenpago',{ 'idEstudiante': idUsuarioEst,'idCarrera':idCarrera,'ciclo':idCiclo,'carrera':carrera,'identificacion':identificacion}) }}" target="_blank">Imprimir Orden de Pago</a>
+
                                             </td>
                                     </tr>
                            
@@ -58,57 +74,135 @@
        
 </div>
 <script>
-        $("#btnlegalorden").on("click",function(event){
-        $("#btnlegalorden").attr("disabled", true);
-                        var idEstudiante='{{idUsuarioEst}}';
-                        var idCiclo='{{idCiclo}}';
-                        var obj_data = {'idUsuarioEst':idEstudiante,'idCiclo':idCiclo};
-                        var jumpAction = '{{path('admin_inscripcion_resgistrar')}}';
-                        $.ajax({
-                           url:   jumpAction,
-                           data: obj_data,
-                           type:  'post',
-                           async: true,
-                           beforeSend: function () 
-                           {
-                            
-                           },
-                           success:  function (dataResponse) 
-                           {
-                               var respuesta=jQuery.parseJSON(dataResponse);
-                               if (respuesta.codigo_error!=1)
-                               {
-                                    $("#btnlegalorden").attr("disabled", false);
-                                    modelessActualizadOrden2= new $.flavr({
-                                           modal   : true,
-                                           content : 'No se ha podido realizar la inscripcion',
-                                           buttons     : {
-                                              primary : { text: 'Aceptar', 
-                                              style: 'primary' }
+        var Indicaestado='{{EstadoAlumno}}';
+         $(document).ready(function() {
+            $("#btnlegalorden").attr("disabled", true);
+            //$('#btnlegalorden').addClass('buttonDisabled');
+            if (Indicaestado=='REGISTRADO')
+                $("#btnpdfordenpag").hide(); 
+            else
+              $("#btnpdfordenpag").show(); 
+          })
+
+
+          function Seleccion() {
+            var cuenta=0;
+                  if ($("#selchk_hoja").is(':checked'))
+                  {
+                    cuenta=cuenta+1;
+                  }
+                   if ($('#selchk_foto').is(':checked'))
+                  {
+                    cuenta=cuenta+1;
+                  } 
+                  if ($('#selchk_cedula').is(':checked'))
+                  {
+                    cuenta=cuenta+1;
+                  } 
+                  if ($('#selchk_votacion').is(':checked'))
+                  {
+                    cuenta=cuenta+1;
+                  } 
+                  if (cuenta==4)
+                  {
+                    $("#btnlegalorden").attr("disabled", false);
+                  }
+                  else
+                  {
+                    $("#btnlegalorden").attr("disabled", true);
+                  }
+
+                   
+         }
+
+          
+                $("#btnlegalorden").on("click",function(event){
+                              if ($("#btnlegalorden").is('[disabled]'))
+                                          {
+                                              
+                                          }
+                                else
+                                {
+                    
+                                  $("#btnlegalorden").attr("disabled", true);
+                                    var idEstudiante='{{idUsuarioEst}}';
+                                    var idCiclo='{{idCiclo}}';
+                                    var cuenta=0;
+                                    if ($("#selchk_hoja").is(':checked'))
+                                    {
+                                      cuenta=cuenta+1;
+                                    }
+                                     if ($('#selchk_foto').is(':checked'))
+                                    {
+                                      cuenta=cuenta+1;
+                                    } 
+                                    if ($('#selchk_cedula').is(':checked'))
+                                    {
+                                      cuenta=cuenta+1;
+                                    } 
+                                    if ($('#selchk_votacion').is(':checked'))
+                                    {
+                                      cuenta=cuenta+1;
+                                    }
+                                    var obj_data = {'idUsuarioEst':idEstudiante,'idCiclo':idCiclo,'documentos':cuenta};
+                                    var jumpAction = '{{path('admin_inscripcion_resgistrar')}}';
+                                    $.ajax({
+                                       url:   jumpAction,
+                                       data: obj_data,
+                                       type:  'post',
+                                       async: true,
+                                       beforeSend: function () 
+                                       {
+                                        
+                                       },
+                                       success:  function (dataResponse) 
+                                       {
+                                           var respuesta=jQuery.parseJSON(dataResponse);
+                                           if (respuesta.codigo_error!=1)
+                                           {
+                                              var mensaje='No se ha podido realizar la inscripción';
+                                              if (respuesta.codigo_error==55)
+                                              {
+                                                 mensaje=respuesta.mensaje;
+                                              }
+                                                $("#btnlegalorden").attr("disabled", false);
+                                                modelessActualizadOrden2= new $.flavr({
+                                                       modal   : true,
+                                                       content : mensaje,
+                                                       buttons     : {
+                                                          primary : { text: 'Aceptar', 
+                                                          style: 'primary' }
+                                                       }
+                                                    });
                                            }
-                                        });
-                               }
-                               else
-                               {
-                                modelessActualizadOrden2= new $.flavr({
-                                           modal   : true,
-                                           content : 'Proceso Exitoso',
-                                           buttons     : {
-                                              primary : { text: 'Aceptar', 
-                                              style: 'primary' }
-                                           }
-                                        });
-                                             $(".divordentemp").remove();
-                               }         
-                           },
-                           error: function(dataResponse)
-                           {
-                              form="accordion";
-                              msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
-                                      $( '#'+form ).append( msg_alert );
-                                      $('#modal-'+form).modal('show');
-                           },
-                           dataType:'html'
-                        });             
-            });
+                                           else
+                                           {
+                                            modelessActualizadOrden2= new $.flavr({
+                                                       modal   : true,
+                                                       content : 'Proceso Exitoso',
+                                                       buttons     : {
+                                                          primary : { text: 'Aceptar', 
+                                                          style: 'primary' }
+                                                       }
+                                                    });
+                                                         //$(".divordentemp").remove();
+                                                         $("#btnlegalorden").remove();
+                                                         $("#btnpdfordenpag").show(); 
+                                                         
+                                           }         
+                                       },
+                                       error: function(dataResponse)
+                                       {
+                                          form="accordion";
+                                          msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                  $( '#'+form ).append( msg_alert );
+                                                  $('#modal-'+form).modal('show');
+                                       },
+                                       dataType:'html'
+                                    });  
+                                    } 
+                                   
+                    });
+                
+              
 </script>
