@@ -21,6 +21,13 @@ class NotificacionesController extends Controller
         public function index_notificacionesAction(Request $request)
         {   
             $session=$request->getSession();
+              $perfilEst   = $this->container->getParameter('perfilEst');
+                $perfilDoc   = $this->container->getParameter('perfilDoc');
+                $perfilAdmin = $this->container->getParameter('perfilAdmin');
+                $perfilEstDoc = $this->container->getParameter('perfilEstDoc');
+                $perfilEstAdm = $this->container->getParameter('perfilEstAdm');
+                $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            
             $idUsuario  = $session->get('id_user');
            $idUsuario = Rtrim($idUsuario); 
             $Emisor   = $request->request->get('Emisor');
@@ -30,17 +37,25 @@ class NotificacionesController extends Controller
             $Curso = $request->request->get('Curso'); 
             $Asunto = $request->request->get('Asunto');
             $mensaje = $request->request->get('mensaje');
+             $Profesores = $request->request->get('Profesores');
+             $Estudiantes = $request->request->get('Estudiantes');
+             $Paralelo = $request->request->get('Paralelo');
+//              echo var_dump($Profesores); 
+//              echo var_dump($Estudiantes);
+//              echo var_dump($Paralelo);exit();
          if($session->has("perfil")) {
             if($mensaje == null){
            $lcFacultad="";
                      $lcCarrera="";
                        $Carreras = array();
                         $UgServices = new UgServices;
-                        $facultades = $UgServices->Mensajes_Enviados($idUsuario);
+                        $facultades = $UgServices->Mensajes_Enviados(3);
+                        $Paralelos = $UgServices->Paralelos(4);
                         
                              return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',
     									array(
-    											'data' => array('facultades' => $facultades)
+    											'data' => array('facultades' => $facultades,
+                                                                                                        'Paralelos' => $Paralelos )
     										 )
                               );
                
@@ -61,11 +76,11 @@ class NotificacionesController extends Controller
                      $UgServices = new UgServices;
                     $xml = $UgServices->Guarda_Mensajes($xmlFinal);
                        
-                    $Correos_Numeros = $UgServices->Datos($idUsuario);
-                    //echo var_dump($Correos_Numeros); exit();
+                    $Correos_Numeros = $UgServices->Datos(3);
+                   // echo var_dump($Correos_Numeros); exit();
                   
                    $i=0;
-                   
+                     
                    foreach($Correos_Numeros as $Correos_Numeros_) {
                               
                        if($Correos_Numeros_['correo_institucional']!=""){

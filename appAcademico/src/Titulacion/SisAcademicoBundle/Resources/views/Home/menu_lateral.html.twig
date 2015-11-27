@@ -129,6 +129,8 @@
       </li>
       {% endif %}
      {#  {% if app.session.get('perfil') == perfilDoc or app.session.get('perfil') == perfilDocAdm %}#}
+     
+        {% if app.session.get('perfil') != perfilEst %}
         <li class="treeview">
         <a href="{{path('SisAcademico_Docentes_home')}}">
           <i class="fa fa-comments-o"></i><span>Mensajes</span>
@@ -139,7 +141,13 @@
           <li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-circle-o"></i> Configuracion Mensajes</a></li>
           <!-- <li><a href="{#{ path('dayscript_configuracion') }#}"><i class="fa fa-circle-o"></i> Aprobar</a></li> -->
         </ul>
-      </li>  
+      </li>        
+      {% endif %}
+      
+      
+      
+      
+      
           <li class="treeview">
         <a href="{{path('titulacion_informacion_portal')}}">
           <i class="fa fa-question"></i><span>Informacion del Sitio</span>

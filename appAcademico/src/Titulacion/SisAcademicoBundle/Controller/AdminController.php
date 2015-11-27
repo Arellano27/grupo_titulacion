@@ -2168,7 +2168,7 @@ class AdminController extends Controller
                $session->set("parcial",$parcial);
 
 
-            $response   		= new JsonResponse();
+            $response   = new JsonResponse();
             $withoutModal       = true;
 
             $idDocente     = 1;
@@ -2441,15 +2441,13 @@ public function generacion_horariosAction(Request $request){
     $idUsuario  = $session->get('id_user');
     $UgServices = new UgServices;
     $Paralelos = $UgServices->Paralelos(4);
-    $Materia = $UgServices->Materia(4,44);
-    $docentes = $UgServices->cargar_docente_por_carrera(4);
+//    $Materia = $UgServices->Materia(4,44);
+//    $docentes = $UgServices->cargar_docente_por_carrera(4);
            // echo var_dump($docentes); exit();
            
     return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_admin.html.twig',
     									array(
-    				'data' => array('Paralelo' => $Paralelos,
-                                                'Materia'   => $Materia,
-                                                'Docente' => $docentes)
+    				'data' => array('Paralelo' => $Paralelos)
     										 )
                               );
    }
@@ -2460,14 +2458,11 @@ public function generacion_horariosAction(Request $request){
     $idUsuario  = $session->get('id_user');
     $UgServices = new UgServices;
     $Paralelos = $UgServices->Paralelos(4);
-    $Materia = $UgServices->Materia(4,44);
+//    $Materia = $UgServices->Materia(4,44);
         //echo var_dump($Materia); exit();
     return $this->render('TitulacionSisAcademicoBundle:Admin:generacion_horario_examen.html.twig',
     									array(
-    				'data' => array('Paralelo' => $Paralelos,
-                                                'Materia'   => $Materia)
-    										 )
-                              );
+    				'data' => array('Paralelo' => $Paralelos)));
    }
 
     public function generacion_horarios_grabarAction(Request $request){
@@ -2477,6 +2472,7 @@ public function generacion_horariosAction(Request $request){
     $materias  = $request->request->get('arrMaterias');
     $contador  = $request->request->get('contador');
              $UgServices = new UgServices;
+             //echo var_dump($materias); exit();
                  foreach ($materias as $key => $value) {
                      $valore = explode(";",$value['Horario']);
                         for($i=0;$i<$contador;$i++){
@@ -2486,8 +2482,8 @@ public function generacion_horariosAction(Request $request){
                            $xmlfinal=" <pi_id_sg_usuario_profesor>$datos[2]</pi_id_sg_usuario_profesor>
                         <pi_id_sa_materia>$datos[0]</pi_id_sa_materia>
                         <pi_id_sa_paralelo>$datos[1]</pi_id_sa_paralelo>
-                        <pi_cupo_estudiantes>$datos[3]</pi_cupo_estudiantes>
-                        <pi_dia_semana>1</pi_dia_semana>
+                        <pi_cupo_estudiantes>50</pi_cupo_estudiantes>
+                        <pi_dia_semana>$datos[3]</pi_dia_semana>
                         <pt_hora_inicio>$hora_inicio</pt_hora_inicio>
                         <pt_hora_fin>$hora_fin</pt_hora_fin>
                         <pi_id_sg_usuario_registro>1</pi_id_sg_usuario_registro>
@@ -2495,7 +2491,7 @@ public function generacion_horariosAction(Request $request){
                         <pi_id_sa_materia_paralelo>2330</pi_id_sa_materia_paralelo>
                         <pi_id_sa_horario>1091</pi_id_sa_horario>
                         <pi_id_sa_profesor_materia_carrera>2115</pi_id_sa_profesor_materia_carrera>";
-
+ //echo var_dump($xmlfinal); exit();
                          $xml = $UgServices->Guarda_Horarios_docente($xmlfinal);
                         }
                 }
@@ -2518,6 +2514,78 @@ public function generacion_horariosAction(Request $request){
             return $respuesta;
 
    }
+   
+   public function Materia_por_paraleloAction(Request $request){
+    
+    $response   = new JsonResponse();       
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $Paralelo  = $request->request->get('Paralelo');
+    $UgServices = new UgServices;    
+    $Materia = $UgServices->Materia(4,$Paralelo);
+    //echo var_dump($Materia); exit();
+    return $this->render('TitulacionSisAcademicoBundle:Admin:cmbMateriaHorarios.html.twig',
+						  array(
+							 //  'arr_datos' => $arr_datos,
+                                                           'Materia'   => $Materia 
+						  ));
+            
+   }
+   
+    public function Docente_DisponibleAction(Request $request){
+    
+    $response   = new JsonResponse();       
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $Paralelo  = $request->request->get('Paralelo');
+    $Materia  = $request->request->get('Materia');
+    $Dia = $request->request->get('Dia');
+    $Hora  = $request->request->get('Hora');
+    $datos = explode("_",$Hora);
+    $hora_inicio = $datos[0].":00";
+    $hora_fin = $datos[1].":00";
+    $UgServices = new UgServices;    
+    $xmldocente = "<PX_Entrada>
+					<horarios>
+						 <idMateria>$Materia</idMateria>
+						 <idCiclo>19</idCiclo>
+						 <dia>$Dia</dia>
+						 <horaInicio>$hora_inicio</horaInicio>
+						 <horaFin>$hora_fin</horaFin>
+					</horarios>
+				</PX_Entrada>";
+            //echo var_dump($xmldocente); exit();
+    $Docente = $UgServices->Docente_disponible($xmldocente);
+    //echo var_dump($Docente); exit();
+    $Estado="";
+                $Mensaje="";
+             if (count($Docente)> 0)
+                {               
+                   $Mensaje="con datos";
+                }else{
+                    $Mensaje="";
+                }
+               //echo var_dump($Mensaje); exit();
+                if($Mensaje == ""){
+                 
+                    
+                          return $this->render('TitulacionSisAcademicoBundle:Admin:cmbDocentesHorarios.html.twig',
+						  array(
+							 //  'arr_datos' => $arr_datos,
+                                                           'Docente'   => $Mensaje 
+						  ));              
+                }else{
+           
+    return $this->render('TitulacionSisAcademicoBundle:Admin:cmbDocentesHorarios.html.twig',
+						  array(
+							 //  'arr_datos' => $arr_datos,
+                                                           'Docente'   => $Docente 
+						  ));
+                }
+            
+   }
+   
+   
 
     public function generacion_horario_examene2Action(Request $request){
     $respuesta= new Response("",200);
@@ -2573,7 +2641,7 @@ public function generacion_horariosAction(Request $request){
                                 <horaInicio>$horaInicio</horaInicio>
                                 <horaFin>$horaFin</horaFin>
                                 </horarios>";
-
+            
                          $xml = $UgServices->docente_horario_c($xmlfinal);
 
 

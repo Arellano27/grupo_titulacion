@@ -6,21 +6,28 @@
     <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
     
     <script type="text/javascript">
+        function borrar(row){
+            row.closest('tr').remove();
+        }
         
         $(document).ready(function () {
          
             $("#Asignar").click(function () {
+                var docente = $( "#Docentes option:selected").val();
+           
+                if(docente != 0){
+               $( "#Guardar").css("display","");
                var ParaleloText = $("#Paralelo option:selected").text();
-               var ParaleloId = $("#Paralelo").val();
+               var ParaleloId = $("#Paralelo option:selected").val();
                var MateriaText = $("#Materia option:selected").text();
-               var MateriaId = $("#Materia").val();
+               var MateriaId = $("#Materia option:selected").val();
                var DiaText = $("#Dia option:selected").text();
-               var DiaId = $("#Dia").val();
+               var DiaId = $("#Dia option:selected").val();
                var HoraText = $("#Hora option:selected").text();
-               var HoraloId = $("#Hora").val();
-               var DocenteText = $("#Docente option:selected").text();
-               var DocenteId = $("#Docente").val();
-             
+               var HoraloId = $("#Hora option:selected").val();
+               var DocenteText = $("#Docentes option:selected").text();
+               var DocenteId = $("#Docentes option:selected").val();
+            
                var Tabla_Horarios = document.getElementById("Horario");           
                var i = Tabla_Horarios.rows.length;
                var fila = i
@@ -114,6 +121,9 @@
                 tds += "";
                 tds += '</td>';   
                 }
+                tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
+                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += '</td>'; 
                 tds += '</tr>';
                 $("#Horario").append(tds);
                }
@@ -211,6 +221,10 @@
                 tds += "";
                 tds += '</td>';   
                 }
+                tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
+                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += '</td>';          
+
                 tds += '</tr>';
                 $("#Horario").prepend(tds);
                }else{
@@ -377,12 +391,22 @@
                 tds += "";
                 tds += '</td>';   
                 }
+                tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
+                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += '</td>'; 
                 tds += '</tr>';
                 $("#Horario").append(tds);
                 
                }
                  }                  
                }
+                }else{
+                   
+                   var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "No puede asignar una hora de clase sin docente", 'sm', 'alert');
+                    $( "#content-enviar" ).append( msg_alert );
+                    $('#modal-enviar').modal('show');
+                   
+                }
                                
             });
             
@@ -391,7 +415,7 @@
                   var Tabla_Horarios = document.getElementById("Horario");
                   
                   var f = Tabla_Horarios.rows.length;
-                 
+                 if(f>1){
                   var Hora = "";
                   var Hora_Sabado = "";
                   var Lunes = "";
@@ -406,15 +430,15 @@
                   var index = 0;
                   var i = 0;
                   var cont = 0;
-                  while(i <= f) { 
-                      if(i>=2){
+                  while(i <= 20) { 
+                      if(i>=1){
                         Lunes = $("#Lunes_" + i).attr("class");
                         Martes = $("#Martes_" + i).attr("class");
                         Miercoles = $("#Miercoles_" + i).attr("class");
                         Jueves = $("#Jueves_" + i).attr("class");
                         Viernes = $("#Viernes_" + i).attr("class");
                         Sabado = $("#Sabado_" + i).attr("class");  
-                        
+                      
                                       
                          if(typeof(Lunes) !== "undefined"){                              
                                 //arrValores["Lunes"]=Lunes;                                     
@@ -485,6 +509,7 @@
                       i = i+1;
                       
                     }
+                     
                     if(resultado == ""){
                                         
                      return false;
@@ -520,7 +545,7 @@
                                             $("#btninscribe").attr("disabled", false);
                                              modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : "en estos momentos tenemos inconvenientes, favor intentelo mas tarde",
+                                                           content : "Horario para ese dia ya fue creado",
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -531,7 +556,7 @@
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'SeÃ±or administrativo el horario fue creado exitosamente!',
+                                                           content : 'Señor administrativo el horario fue creado exitosamente!',
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -557,16 +582,97 @@
 
                                  dataType:'text'
                               });
-                  
+                          }else
+                          {
+                               $( "#Guardar").css("display","none");
+                               alert("Agregue Materias y Profesores al Horario para Generarlo");
+                          }
                 });
+                
+               
+    $("#Paralelo").change(function () {
+         
+                
+        var selected = $("#Paralelo option:selected").val();
+        var datos = {'Paralelo':selected};
+        var path = '{{path('admin_consulta_Materia_por_paralelo')}}';
+        $.ajax
+        ({
+            type: 'post',
+            url: path,
+            data: datos,
+            dataType: "html",
+            beforeSend: function()
+            {
+                CargandoDocentes = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
+                $( "#Materia_").html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+            },
+            success: function(data) 
+            {
+                    CargandoDocentes.close();
+                    $( "#Materia").html( data );
+                
+            }
         });
+    
+    });
+    
+    $("#Hora").change(function () {
+         
+          
+        var ParaleloId = $("#Paralelo option:selected").val();      
+        var MateriaId = $("#Materia option:selected").val();       
+        var DiaId = $("#Dia option:selected").val();
+        var HoraText = $("#Hora option:selected").text();     
+       HoraText = HoraText.replace("-","_");
+       HoraText = HoraText.replace(" ","");
+       HoraText = HoraText.replace(" ","");
+        var datos = {'Paralelo':ParaleloId,'Materia':MateriaId,'Dia':DiaId,'Hora':HoraText};
+        var path = '{{path('admin_consulta_docente_disponible')}}';
+        $.ajax
+        ({
+            type: 'post',
+            url: path,
+            data: datos,
+            dataType: "html",
+            beforeSend: function()
+            {
+                CargandoDocentes = new $.flavr({
+                                                modal   : true,
+                                                content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                buttons     : {}
+                                             });
+                $( "#Docente_").html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+            },
+            success: function(data) 
+            {
+                    CargandoDocentes.close();
+                  
+             
+               
+                  $( "#Docente_").html( data );
+                    $( "#Asignar").css("display","");
+                    
+                
+            }
+        });
+    
+    });
+             
+
+
+   });
         
     </script>
 
 <section class="content">
           <div class="row">
               <form id="form-enviar" method="post">
-            <div class="col-md-5">
+            <div id="content-enviar" class="col-md-4">
              
               <div class="box box-solid">
                 <div class="box-header with-border">
@@ -592,16 +698,17 @@
                           
                       </select>#}
                     </div>
-                      <div class="form-group">
+                      <div id="Materia" class="form-group">
                       <label>Seleccione Materia:</label>
                         <select class="form-control" Id="Materia">
-                             {% for Materia in data.Materia %} 
+                            <option>Seleccione un paralelo para ver Materias disponibles</option>
+                            {# {% for Materia in data.Materia %} 
                         <option value="{{ Materia.idmateria }}">{{ Materia.materia}}</option>                        
-                           {%endfor%}  
+                           {%endfor%}  #}
                         </select>
                     </div>
                     <div class="form-group">
-                      <label>Seleccione dÃ¬a:</label>
+                      <label>Seleccione dìa:</label>
                       <select class="form-control" Id="Dia">
                             <option value="1">Lunes</option>
                             <option value="2">Martes</option>
@@ -613,8 +720,7 @@
                     </div>
                     <div class="form-group">
                       <label>Seleccione Hora:</label>
-                      <select class="form-control" id="Hora">
-                           
+                      <select class="form-control" id="Hora">                           
                             <option value="1">07:00 - 08:00</option>
                             <option value="2">08:00 - 09:00</option>
                             <option value="3">09:00 - 10:00</option>
@@ -631,12 +737,13 @@
                             <option value="14">21:00 - 22:00</option>                            
                       </select>
                     </div>
-                    <div class="form-group">
+                    <div id="Docente_" class="form-group">
                       <label>Seleccione Docente:</label>
                         <select class="form-control" Id="Docente">
-                              {% for Docente in data.Docente %} 
+                              <option>Seleccione una Hora para ver docentes disponibles</option>
+                              {#{% for Docente in data.Docente %} 
                         <option value="{{ Docente.id_sg_usuario }}">{{ Docente.profesor}}</option>                        
-                           {%endfor%}  
+                           {%endfor%}  #}
                         </select>
                     </div>
                                         
@@ -646,7 +753,7 @@
                     {#<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save changes</button>#}
                     {#<input type="submit" class="fa fa-save  btn btn-primary btn-sm"><a href=""> </a></button>#}
-                    <a id="Asignar" class="fa fa-pencil-square-o btn btn-warning btn-sm" role="button"> Asignar</a>
+                    <a id="Asignar" style="display:none" class="fa fa-pencil-square-o btn btn-warning btn-sm" role="button"> Asignar</a>
                    {# <a id="Asignar" class="fa fa-save btn btn-info" role="button"> Asignar</a>
                     <button type="submit" class="fa fa-pencil-square-o btn btn-warning btn-sm"> MODIFICAR</button>
                     <button type="submit" class="fa fa-ban  btn btn-danger btn-sm"> CANCELAR</button>#}
@@ -657,22 +764,20 @@
               </div>
             </div>
                     
-            <div class="col-md-7">
+            <div class="col-md-8">
                           
                                  <div class="box box-solid">
-                            <div class="panel-heading">    
+                             
                                        
                                 
-				
+		<div class="box-header with-border">		
                 <h5 class="box-title">Horario de Profesores</h5>
-               
+                </div>
            
              <br/>
                
-                  <div class="portlet-body form">
-                      
-			         <div class="form-wizard">
-                                    <div class="form-body">
+                  <div class="box-body">
+                  <div id="external-events">
 				        <table id="Horario" class="table table-bordered">
                  
                     <thead>
@@ -685,6 +790,7 @@
                       <th>Viernes</th>
                       <th>Sabado</th>
                       <th>Horas</th>
+                      <th>Borrar</th>
                     </tr> 
                   </thead>
                   <tbody>
@@ -693,14 +799,14 @@
                   </table>
                   
                             </div>
-                           </div>
+                           
                    
                        
                    </div>
                     <div class="modal-footer col-md-12">
-             <a id="Guardar" class="fa fa-save btn btn-info" role="button"> Generar Horario Docente</a>  
+             <a id="Guardar" style="display:none" class="fa fa-save btn btn-info" role="button"> Generar Horario Docente</a>  
                                      </div>
-              </div>
+            
                                        
               </div>
             

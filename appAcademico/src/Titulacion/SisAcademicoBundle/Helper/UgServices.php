@@ -51,8 +51,8 @@ class UgServices {
        //$this->sourceConsultas  = "jdbc/saugConsTmp";
 
       $this->sourceConsultas = "jdbc/consultasSaug";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlConsulta   = "consultasJPA/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUgJPA/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
       $this->host          = "186.101.66.2:8080";
 
@@ -1399,6 +1399,16 @@ public function getConsultaDatos_Generales($idEstudiante){
         //echo '<pre>'; var_dump($idCarrera); exit();
         $response = $this->ws->doRequestMaterias($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
 
+        return $response;
+    }
+    
+     public function Docente_disponible($trama) {
+
+        $this->tipo = "48";
+        $this->urlWS = $this->url.$this->urlProcedim;
+        //echo  var_dump($trama); exit();
+        //$response=$ws->doSetMatricula($trama,$source,$tipo,$usuario,$clave,$url,$host);      
+        $response = $this->ws->doDocente_disponible($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host);
         return $response;
     }
     
