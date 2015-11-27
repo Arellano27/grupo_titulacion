@@ -693,13 +693,21 @@ function confirm(form, item)
                                                 content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
                                                 buttons     : {}
                                              });
-                $( "#content-main-services" ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+                //$( "#content-main-services" ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
             },
             success: function(data) 
-            {   CargandoDocentes.close();	
+            {   CargandoDocentes.close();
+                if(data.error) //SI EXISTE ALGÚN ERROR
+                { var form ='listaEstudiantes2';
+                        
+                       // close_modal(form);
+                       var msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', data.msg, 'sm', 'alert');
+                        $( "#form-"+form ).append( msg_alert );
+                        $('#modal-'+form).modal('show');
+                }
 		//window.location.href = data.section;
                 //alert(data.prueba);
-                window.open(data.section,'_blank');
+               else { window.open(data.section,'_blank');}
                 // window.open(data.section,'_blank');
                 //window.open(data.section);
 				

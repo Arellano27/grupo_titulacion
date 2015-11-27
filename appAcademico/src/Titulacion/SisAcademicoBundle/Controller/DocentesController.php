@@ -1811,8 +1811,8 @@
                   $xmlfinal= $doc->saveXML() . "\n";
                  
                  $xmlfinal= str_replace ( '<?xml version="1.0"?>' , '' , $xmlfinal);
-                 echo $xmlfinal;
-                 exit();
+//                 echo $xmlfinal;
+//                 exit();
          $response   		= new JsonResponse();
           $respuesta  = $UgServices->Docentes_ingresoAsistencia($xmlfinal);
               
