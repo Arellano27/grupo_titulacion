@@ -2406,6 +2406,21 @@ class AdminController extends Controller
             $Docente =$request->request->get('docente_text');
 
             $Materia =$request->request->get('materia_text');
+            $section="";
+            $this->v_error	= false;
+            
+           if ($idDocente==="")
+            {
+                    $this->v_error	= true;
+                    $this->v_msg ='Debe seleccionar un Docente';
+                 }else {
+
+                    if($idMateria==="")
+                   {
+                        $this->v_error	= true;
+                          $this->v_msg ='Debe seleccionar una Materia';
+                        }else {
+            
            list($Materia,$paralelo) = split('[-]', $Materia);
 
            $Docente= trim($Docente);
@@ -2416,8 +2431,13 @@ class AdminController extends Controller
              $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
 
            $section =$baseurl.'/admin/PDF/estudiantes/'.$idDocente.'/'.$idMateria.'/'.$Docente.'/'.$Materia.'/'.$paralelo;
+                        }
+                 }
+                 
             $response->setData(
                                 array(
+                                        'error' => $this->v_error,
+                                        'msg' => $this->v_msg,
                                         'redirect' => true,
                                         'section' => $section,
                                      )

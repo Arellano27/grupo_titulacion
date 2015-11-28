@@ -401,17 +401,22 @@ class HomeController extends Controller
     public function editarPerfilAction(Request $request) {
          $session    =$request->getSession();
          $idUsuario  = $session->get('id_user');
-         
-         $UgServices          = new UgServices;
-         $datosConsulta       = array( 'idUsuario' => $idUsuario);
-         $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
+         if($idUsuario!=NULL) {
+            $UgServices          = new UgServices;
+            $datosConsulta       = array( 'idUsuario' => $idUsuario);
+            $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
 
-         $datosUsuario        = $datosUsuarioArray[0];
-         if($datosUsuario['directoriofoto']!=NULL) {
-            $datosUsuario['existefotoperfil'] = 1;
+            $datosUsuario        = $datosUsuarioArray[0];
+            if($datosUsuario['directoriofoto']!=NULL) {
+               $datosUsuario['existefotoperfil'] = 1;
+            }
+            else {
+               $datosUsuario['existefotoperfil'] = 0;
+            }
          }
          else {
-            $datosUsuario['existefotoperfil'] = 0;
+            $datosUsuario  = NULL;
+            return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
          }
          return $this->render('TitulacionSisAcademicoBundle:Home:visualizarPerfil.html.twig',
                            array(
@@ -424,62 +429,68 @@ class HomeController extends Controller
       {
          $session=$request->getSession();
          $idUsuario  = $session->get('id_user');
-         
-         $UgServices          = new UgServices;
-         //Consulta los datos del usuario
-         $datosConsulta       = array( 'idUsuario' => $idUsuario);
-         $datosUsuario        = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
-         
-         //Consulta de parametro - Tipo de sangre
-         $datosConsulta       = array( 'parametro' => 6);
-         $datosTiposSangre    = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
-         //Consulta de parametro - sexo
-         $datosConsulta       = array( 'parametro' => 7);
-         $datosGeneros        = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
-         //Consulta de parametro - estado civil
-         $datosConsulta       = array( 'parametro' => 5);
-         $datosEstadosCiviles = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
-         //Consulta de parametro - nacionalidad
-         $datosConsulta       = array( 'parametro' => 23);
-         $datosNacionalidades = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
-         //Consulta de parametro - pais
-         $datosConsulta       = array( 'parametro' => 4);
-         $datosPaises         = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
-//         
-//         $UgServices          = new UgServices;
-//         $datosConsulta       = array( 'idUsuario' => $idUsuario);
-//         $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuarioEditar($datosConsulta);
+         if($idUsuario){
+            $UgServices          = new UgServices;
+            //Consulta los datos del usuario
+            $datosConsulta       = array( 'idUsuario' => $idUsuario);
+            $datosUsuario        = $UgServices->Titulacion_getConsultaPerfilUsuario($datosConsulta);
 
-//         $datosUsuario        = $datosUsuarioArray[0];
-         if(!isset($datosUsuario['nombres'])){
-            if(isset($datosUsuario[0])) {
-               $tempDataUsuario  = $datosUsuario[0];
-               $datosUsuario     = NULL;
-               $datosUsuario     = $tempDataUsuario;
-               unset($tempDataUsuario);
-               
-               if($datosUsuario['directoriofoto']!=NULL) {
-                  $datosUsuario['existefotoperfil'] = 1;
+            //Consulta de parametro - Tipo de sangre
+            $datosConsulta       = array( 'parametro' => 6);
+            $datosTiposSangre    = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+            //Consulta de parametro - sexo
+            $datosConsulta       = array( 'parametro' => 7);
+            $datosGeneros        = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+            //Consulta de parametro - estado civil
+            $datosConsulta       = array( 'parametro' => 5);
+            $datosEstadosCiviles = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+            //Consulta de parametro - nacionalidad
+            $datosConsulta       = array( 'parametro' => 23);
+            $datosNacionalidades = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+            //Consulta de parametro - pais
+            $datosConsulta       = array( 'parametro' => 4);
+            $datosPaises         = $UgServices->Titulacion_getParametroPerfilUsuario($datosConsulta);
+   //         
+   //         $UgServices          = new UgServices;
+   //         $datosConsulta       = array( 'idUsuario' => $idUsuario);
+   //         $datosUsuarioArray   = $UgServices->Titulacion_getConsultaPerfilUsuarioEditar($datosConsulta);
+
+   //         $datosUsuario        = $datosUsuarioArray[0];
+            if(!isset($datosUsuario['nombres'])){
+               if(isset($datosUsuario[0])) {
+                  $tempDataUsuario  = $datosUsuario[0];
+                  $datosUsuario     = NULL;
+                  $datosUsuario     = $tempDataUsuario;
+                  unset($tempDataUsuario);
+
+                  if($datosUsuario['directoriofoto']!=NULL) {
+                     $datosUsuario['existefotoperfil'] = 1;
+                  }
+                  else {
+                     $datosUsuario['existefotoperfil'] = 0;
+                  }
                }
                else {
-                  $datosUsuario['existefotoperfil'] = 0;
+                  $datosUsuario = NULL;
                }
             }
-            else {
-               $datosUsuario = NULL;
-            }
+
+            return $this->render('TitulacionSisAcademicoBundle:Home:editarPerfil.html.twig',
+                              array(
+                                 'dataUsuario' => $datosUsuario,
+                                 'datosTiposSangre' => $datosTiposSangre,
+                                 'datosGeneros' => $datosGeneros,
+                                 'datosEstadosCiviles' => $datosEstadosCiviles,
+                                 'datosNacionalidades' => $datosNacionalidades,
+                                 'datosPaises' => $datosPaises,
+                              )
+                           );
+            
          }
-         
-         return $this->render('TitulacionSisAcademicoBundle:Home:editarPerfil.html.twig',
-                           array(
-                              'dataUsuario' => $datosUsuario,
-                              'datosTiposSangre' => $datosTiposSangre,
-                              'datosGeneros' => $datosGeneros,
-                              'datosEstadosCiviles' => $datosEstadosCiviles,
-                              'datosNacionalidades' => $datosNacionalidades,
-                              'datosPaises' => $datosPaises,
-                           )
-                        );
+         else {
+            $datosUsuario  = NULL;
+            return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+         }
       } // editarPerfilAction()
       
       public function grabarEditarPerfilActualizarAction(Request $request)
