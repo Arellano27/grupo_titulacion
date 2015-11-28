@@ -10,12 +10,12 @@
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
+          <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Clases</a></li>
           <li><a href="{{path('SisAcademico_Docentes_home')}}"><i class="fa fa-circle-o"></i> Datos Generales</a></li>
+          <li><a href="{{path('docentes_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Examen</a></li>
           {#<li><a id="menuizqDoc_asistencia" href="#"><i class="fa fa-circle-o"></i> Asistencia de Alumnos</a></li>
           <li><a id="menuizqDoc_listadonotas" href="#"><i class="fa fa-circle-o"></i> Listado de Notas</a></li>#}
-          <li><a href="{{path('docentes_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Examen</a></li>
           {#<li><a id="menuizqDoc_vistageneral" href="#"><i class="fa fa-circle-o"></i> Vista por Asignatura</a></li>#}
-          <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Clases</a></li>
         </ul>
       </li>
       {% endif %}
@@ -27,7 +27,6 @@
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{path('estudiantes_matriculacion')}}"><i class="fa fa-circle-o"></i> Matriculación</a></li>
           <!-- <li><a href="{{path('estudiantes_deudas')}}"><i class="fa fa-circle-o"></i> Deudas Pendientes</a></li> -->
           <li><a href="{{path('estudiantes_anulacion')}}"><i class="fa fa-circle-o"></i> Anulación</a></li>
 
@@ -35,6 +34,7 @@
           <li><a href="{{path('estudiantes_listar_solicitudes')}}"><i class="fa fa-circle-o"></i> Listado de Solicitudes</a></li>
 
           <li><a href="{{path('estudiantes_horarios')}}"><i class="fa fa-circle-o"></i> Horarios </a></li>
+          <li><a href="{{path('estudiantes_matriculacion')}}"><i class="fa fa-circle-o"></i> Matriculación</a></li>
         </ul>
       </li>
       {% endif %}
