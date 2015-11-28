@@ -101,13 +101,13 @@
           {%for event in app.session.get('data_coordinador').opcion %}
               {#{dump(event.id_sg_opcion)}#}
               {% if event.id_sg_opcion == GeneracionCalendarioAcademico %}
-                <li><a href="{{path('admin_academico_home')}}"><i class="fa fa-circle-o"></i> Generacion Calendario Academico </a></li>
+                <li><a href="{{path('admin_academico_home')}}"><i class="fa fa-circle-o"></i> Generación Calendario Academico </a></li>
               {% endif %}
               {% if event.id_sg_opcion == GeneracionHorariosClases %}
-                <li><a href="{{path('admin_generacion_horario_docente')}}"><i class="fa fa-circle-o"></i> Generacion Horarios Clases </a></li>
+                <li><a href="{{path('admin_generacion_horario_docente')}}"><i class="fa fa-circle-o"></i> Generación Horarios Clases </a></li>
               {% endif %}
               {% if event.id_sg_opcion == GeneracionHorariosExamen %}
-                <li><a href="{{path('admin_generacion_horarios_examenes')}}"><i class="fa fa-circle-o"></i> Generacion Horarios Examen </a></li>
+                <li><a href="{{path('admin_generacion_horarios_examenes')}}"><i class="fa fa-circle-o"></i> Generación Horarios Examen </a></li>
               {% endif %}
               {% if event.id_sg_opcion == SubirSolicitudes %}
                 <li><a href="{{path('admin_elegir_solicitud')}}"><i class="fa fa-circle-o"></i> Subir Solicitudes </a></li>
@@ -150,7 +150,7 @@
       
           <li class="treeview">
         <a href="{{path('titulacion_informacion_portal')}}">
-          <i class="fa fa-question"></i><span>Informacion del Sitio</span>
+          <i class="fa fa-question"></i><span>Información del Sitio</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
       </li>

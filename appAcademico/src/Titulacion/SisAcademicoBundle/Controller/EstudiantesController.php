@@ -145,6 +145,7 @@
                        //$estudiante='Jeferson Bohorquez';
                         $UgServices = new UgServices;
                         $xml = $UgServices->getConsultaCarreras_Matricula($idEstudiante);
+                        
                         if ( is_object($xml))
                         {
                           foreach($xml->registros->registro as $lcCarreras) 

@@ -59,7 +59,7 @@
       $('.temporal').removeClass('active');
      }
 
-       var obj_data = {'idCarrera':idCarrera,'idCiclo':idCiclo};
+       var obj_data = {'idCarrera':idCarrera,'idCiclo':idCiclo,'carrera':carrera};
        var jumpAction = '{{path('admin_inscripcion_datos')}}';
         $.ajax({
            url:   jumpAction,

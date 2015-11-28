@@ -5,7 +5,7 @@
             <thead>
                 <tr>
                     <th align='center' colspan='4'>
-                          <h4 align="center"><b>Registro de Inscripcion</b></h4>  
+                          <h4 align="center"><b>Registro de Inscripción</b></h4>  
                     </th>
                 </tr>
                 <tr>
@@ -14,7 +14,7 @@
                     </th>
                   
                     <th style="text-align:center">
-                          Numero de Cedula
+                          Número de Cédula
                     </th>
                 </tr>
             </thead>
@@ -23,7 +23,7 @@
                     <td align='left' valign='center'>
                         
                         <select  name='selconsulta'>
-                          <option value="cedula" > Cedula de Identicada</option>
+                          <option value="cedula" > Cédula de Identidad</option>
                         </select >
                
                     <td align='left'>
@@ -65,7 +65,8 @@
                 var valorBuscado=$("#busquedaest").val();
                 var idCarrera='{{idCarrera}}';
                 var idCiclo='{{idCiclo}}';
-                var obj_data = {'idEstudiante':valorBuscado,'idCarrera':idCarrera,'idCiclo':idCiclo,'criterio':criterio};
+                var carrera='{{carrera}}';
+                var obj_data = {'idEstudiante':valorBuscado,'idCarrera':idCarrera,'idCiclo':idCiclo,'criterio':criterio,'carrera':carrera};
                 var resultado = $('#divodenespagos');
                 var jumpAction = '{{path('admin_inscripcion_listar')}}';
           // Enviamos el formulario usando AJAX
