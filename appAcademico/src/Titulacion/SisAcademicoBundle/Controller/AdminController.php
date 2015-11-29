@@ -2669,7 +2669,7 @@ public function generacion_horariosAction(Request $request){
                 }
             $arrayProceso = array();
             $arrayProceso['codigo_error']=$Estado;
-            $arrayProceso['mensaje']="Gabriel Huayamabe";
+            $arrayProceso['mensaje']=$Mensaje;
             $jarray=json_encode($arrayProceso);
             $respuesta->setContent($jarray);
             return $respuesta;
@@ -2688,48 +2688,73 @@ public function generacion_horariosAction(Request $request){
 
             }
 
-    public function subir_solicitudAction(Request $request){
-    $respuesta= new Response("",200);
+  public function subir_solicitudAction(Request $request){
+    
     $session=$request->getSession();
     $idUsuario  = $session->get('id_user');
-    $cedula = $request->request->get('cedula');
+    $nombre = $request->request->get('NSolicitud');
     $Solicitud  = $request->request->get('Solicitud');
-    $fileSize  = $request->request->get('fileSize');
-             $UgServices = new UgServices;
-
-                           $xmlfinal="<PX_XML>
-					<items>
-						<item>
-						    <id_sa_formato_solicitud></id_sa_formato_solicitud>
-						    <descripcion>$cedula</descripcion>
-							<ruta_archivo>$fileSize</ruta_archivo>
-							<id_usuario>$idUsuario</id_usuario>
-							<estado>A</estado>
-						</item>
-					</items>
-				</PX_XML>
-				<PC_OPCION>A</PC_OPCION>";
-                                            //echo  var_dump($xmlfinal); exit();
-                        $xml = $UgServices->subir_solicitud($xmlfinal);
-
-             $Estado="";
-                $Mensaje="";
-             if ( is_object($xml))
-                {
-                    foreach($xml->parametrosSalida as $datos)
-                     {
-                        $Estado=(int) $datos->PI_ESTADO;
-                        $Mensaje=(string) $datos->PV_MENSAJE;
+    $fileSize  = $request->request->get('ruta');
+    
+     $Estado="";
+                        $Mensaje="";
+         if($session->has("perfil")) {  
+             if($nombre != ""){
+                if ( is_uploaded_file($_FILES['imagen_']['tmp_name']) ){          
+                     $rand = rand(1000,999999);
+                     $origen = $_FILES['imagen_']['tmp_name'];
+                     $destino = 'upload_files/formato_solicitudes/'.$rand.$_FILES['imagen_']['name'];
+                     move_uploaded_file($origen, $destino);
+                     $respuesta = false;
+                     if(file_exists($destino)){
+                         $respuesta = true;
                      }
 
-                }
-            $arrayProceso = array();
-            $arrayProceso['codigo_error']=$Estado;
-            $arrayProceso['mensaje']=$Mensaje;
-            $jarray=json_encode($arrayProceso);
-            $respuesta->setContent($jarray);
-            return $respuesta;
+                     if($respuesta){
+                     $UgServices = new UgServices;
 
+                                   $xmlfinal="<PX_XML>
+                                                <items>
+                                                        <item>
+                                                            <id_sa_formato_solicitud></id_sa_formato_solicitud>
+                                                            <descripcion>$nombre</descripcion>
+                                                                <ruta_archivo>$destino</ruta_archivo>
+                                                                <id_usuario>$idUsuario</id_usuario>
+                                                                <estado>A</estado>
+                                                        </item>
+                                                </items>
+                                        </PX_XML>
+                                        <PC_OPCION>I</PC_OPCION>";
+                                                   //echo  var_dump($xmlfinal); exit();
+                     $xml = $UgServices->subir_solicitud($xmlfinal);
+         //echo  var_dump($xml); exit();
+                    
+                     if (is_object($xml))
+                        {
+                            foreach($xml->parametrosSalida as $datos)
+                             {
+                                $Estado=(int) $datos->PI_ESTADO;
+                                $Mensaje=(string) $datos->PV_MENSAJE;
+                             }
+                                    
+                        }
+                        
+                        $session->set("respuesta","cargo");
+                         $respuesta  = $session->get('respuesta');
+                        
+                        //echo  var_dump($respuesta); exit();
+                         return $this->render('TitulacionSisAcademicoBundle:Admin:Subir_Solicitud.html.twig');
+                  }else{
+                      $Mensaje = "-2";
+                  }
+                 
+               }            
+             }else{  $session->set("respuesta","no");  
+                  return $this->render('TitulacionSisAcademicoBundle:Admin:Subir_Solicitud.html.twig');
+             }
+         }else{
+                    return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+                }
    }
 
     public function generacion_horarios_examenesAction(Request $request){

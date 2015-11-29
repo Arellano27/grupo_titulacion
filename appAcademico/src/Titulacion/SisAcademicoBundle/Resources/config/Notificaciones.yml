@@ -1,32 +1,20 @@
-dayscript_index:
+notificaciones_index:
     path:     /
     defaults: { _controller: TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones }
 
-dayscript_mensajes:
+notificaciones_mensajes:
     path:     /Mensajes
     defaults: { _controller: TitulacionSisAcademicoBundle:Notificaciones:mensajes_universidad }
     
-dayscript_eventos:
+notificaciones_eventos:
     path:     /Eventos
     defaults: { _controller: TitulacionSisAcademicoBundle:Notificaciones:eventos_universidad }
     
-dayscript_notificaciones:
+notificaciones_notificaciones:
     path:     /Notificaciones
     defaults: { _controller: TitulacionSisAcademicoBundle:Notificaciones:notificaciones_universidad }
     
-dayscript_configuracion:
-    path:     /Configuracion
-    defaults: { _controller: TitulacionSisAcademicoBundle:Notificaciones:perfil }
-
-dayscript_CambioContraseña:
-    path:     /Clave
-    defaults: { _controller: TitulacionSisAcademicoBundle:Notificaciones:password }
-
-dayscript_Sugerencia:
-    path:     /Sugerencia
-    defaults: { _controller: TitulacionSisAcademicoBundle:Notificaciones:sugerencia }
-    
-dayscript_Lectura:
+notificaciones_Lectura:
     path:     /Lectura
     defaults: { _controller: TitulacionSisAcademicoBundle:Notificaciones:Lectura }
 

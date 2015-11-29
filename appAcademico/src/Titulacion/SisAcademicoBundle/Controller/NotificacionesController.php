@@ -49,7 +49,7 @@ class NotificacionesController extends Controller
                      $lcCarrera="";
                        $Carreras = array();
                         $UgServices = new UgServices;
-                        $facultades = $UgServices->Mensajes_Enviados(3);
+                        $facultades = $UgServices->Mensajes_Enviados($idUsuario);
                         $Paralelos = $UgServices->Paralelos(4);
                         
                              return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',
@@ -137,10 +137,11 @@ class NotificacionesController extends Controller
                        $Carreras = array();
                         $UgServices = new UgServices;
                         $facultades = $UgServices->Mensajes_Enviados($idUsuario);
-                        
+                     $Paralelos = $UgServices->Paralelos(4);
                              return $this->render('TitulacionSisAcademicoBundle:Notificaciones:index_notificaciones.html.twig',
     									array(
-    											'data' => array('facultades' => $facultades)
+    											'data' => array('facultades' => $facultades,
+                                                                                                        'Paralelos' => $Paralelos )
     										 )
                               );
                         
