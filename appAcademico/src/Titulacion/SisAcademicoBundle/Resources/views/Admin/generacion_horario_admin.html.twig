@@ -556,7 +556,7 @@
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Señor administrativo el horario fue creado exitosamente!',
+                                                           content : 'Seï¿½or administrativo el horario fue creado exitosamente!',
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -585,7 +585,11 @@
                           }else
                           {
                                $( "#Guardar").css("display","none");
-                               alert("Agregue Materias y Profesores al Horario para Generarlo");
+                var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Agregue Materias y Profesores al Horario para Generarlo", 'sm', 'alert');
+                    $( "#content-enviar" ).append( msg_alert );
+                    $('#modal-enviar').modal('show');
+                   
+                               //alert("Agregue Materias y Profesores al Horario para Generarlo");
                           }
                 });
                 
@@ -708,7 +712,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                      <label>Seleccione dìa:</label>
+                      <label>Seleccione dï¿½a:</label>
                       <select class="form-control" Id="Dia">
                             <option value="1">Lunes</option>
                             <option value="2">Martes</option>

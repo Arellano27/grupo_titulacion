@@ -1,70 +1,81 @@
 {% extends 'TitulacionSisAcademicoBundle:Home:index.html.twig' %}
 
 
-{% block contenido %}
-     <script type="text/javascript">
-  $(function () {
-           TableAdvanced.init();
-    });  
+{% block home %}
+    <script type="text/javascript">
+   $(function () {
+          TableAdvanced.init();          
+     });  
 </script>
-  <script src="{{ asset('js/EnviarMensajes.js') }}"></script>
-    <script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>
-<script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
-   
+</script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+ 
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  
+  <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
 
+ 
+</head>
+<body>
+ 
         
        <section class="content">
 
-      <div class="page-content" style="height: 545px;">
+            
+      <div id="content-enviar" class="page-content" style="height: 545px;">
              
             
             <div class="col-md-12">
               <div class="box-header with-border">
-                <h3 class="box-title">Listado de Solicitudes</h3>
+                
                
             </div><!-- /.box-header -->
              <div class="box box-solid">
                             <div class="panel-heading">    
-           <div class="box box-solid">
-			       
-				        <table class="table table-striped table-bordered table-hover" id="sample_1">
+                                <br/>
+                               
+                                     <h3 class="box-title">Listado de Solicitudes</h3>  
+                                     
+                                    
+                            </div>
+                                    
+                                     
+                                           
+                                          
+			         <div class="modal-body" id="tabla">
+				      
+                                     
+                                     <table class="table table-striped table-bordered table-hover" id="sample_1">
 				        <thead>
 				        <tr>
-					        <th> Codigo </th>	
-                                                <th> Solicitud </th>	
-					        <th> Descripcion   </th>
-					        <th> Estado </th>
-                                                <th style="text-align: center">Fecha de Envio</th>
-                                                <th style="text-align: center">Descargar</th>
+					       <th style="text-align: center"> Solicitud </th>	
+					        <th style="text-align: center"> Descargar   </th>
 				        </tr>
 				        </thead>
 				        <tbody>
-                   
-                           
-                                <tr>
-                                    <td>SOL-89-89-98</td>   
-                                     <td>CAMBIO DE CURSO</td> 
-                                    <td>Cambio de Paralelo</td>
-                                    <td>Aceptada</td>
-                                    <td style="text-align: center">12/12/12</td>
-                                    <td style="text-align: center">  <a target="_blank" href="{{path('estudiantes_pdf_solicitudes')}}" id="Mensaje_1" name="Mensaje_1">
-                                    <i class="fa fa-download"></i>                                                           
-                                    </a></td>
-                                </tr>
-                           
-                             
+                                        {% for solicitudes in solicitud %} 
+                                        
+                                            <tr>
+                                                <td style="text-align:center">{{solicitudes.descripcion}}</td>
+                                                <td style="text-align:center">
+                                                <a target="_blank" href="../{{ solicitudes.ruta_archivo }}"><i class="fa fa-download"></i></a>
+                                            </td>
+                                          </tr>
                             
-                                                              
-                    </tbody>
-				        </table>
-			        
+                                       {%endfor%}                        
+                                        </tbody>
+				        </table>           
 		      
-            </div>                 
-            </div>
+            </div>  
+                                       
+                                         
           </div>
             </div>
         
           </div>
+    
         </section>
 
    

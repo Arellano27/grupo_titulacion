@@ -136,9 +136,13 @@
           <i class="fa fa-comments-o"></i><span>Mensajes</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
+          
         <ul class="treeview-menu">
-          <li><a href="{{path('dayscript_index')}}"><i class="fa fa-circle-o"></i> Envio de Mensajes</a></li>
-          <li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-circle-o"></i> Configuracion Mensajes</a></li>
+          <li><a href="{{path('notificaciones_index')}}"><i class="fa fa-circle-o"></i> Envio de Mensajes</a></li>
+          <li><a href="{{path('notificaciones_mensajes')}}"><i class="fa fa-circle-o"></i> Mensajes Recibidos</a></li>
+          <li><a href="{{path('notificaciones_eventos')}}"><i class="fa fa-circle-o"></i> Eventos Recibidos</a></li>
+          <li><a href="{{path('notificaciones_notificaciones')}}"><i class="fa fa-circle-o"></i> Notificaciones Recibidas</a></li>
+          {#<li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-circle-o"></i> Configuracion Mensajes</a></li>#}
           <!-- <li><a href="{#{ path('dayscript_configuracion') }#}"><i class="fa fa-circle-o"></i> Aprobar</a></li> -->
         </ul>
       </li>        
