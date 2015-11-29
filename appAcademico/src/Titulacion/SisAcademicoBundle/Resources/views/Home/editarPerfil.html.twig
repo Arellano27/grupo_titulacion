@@ -184,7 +184,7 @@
 
          var canvas = document.getElementById('imagen_perfil_prev');
          var ctx = canvas.getContext('2d');
-         {% endif %}
+         
          $("#tipo_sangre").val('{{dataUsuario.idtiposangre}}');
          $("#sexo").val('{{dataUsuario.idsexo}}');
          $("#estado_civil").val('{{dataUsuario.idestadocivil}}');
@@ -197,7 +197,7 @@
              $("#"+idSelectSinError+"-errorSel").hide();
            }
          });
-         
+         {% endif %}
          modelessPerfilEditar.close();
 
          function handleImage(e){
@@ -398,7 +398,6 @@
       });
       
       $( "#fecha_nacimiento" ).datepicker({ format: 'dd/mm/yyyy' });
-      //$( "#fecha_nacimiento" ).val('{{dataUsuario.fecha_nacimiento}}');
       $( "#fecha_nacimiento" ).datepicker('update');
 
       $("#grabarDataPerfil").on('click', function(event){

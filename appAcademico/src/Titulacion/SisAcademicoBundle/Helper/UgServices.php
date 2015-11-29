@@ -51,8 +51,8 @@ class UgServices {
        //$this->sourceConsultas  = "jdbc/saugConsTmp";
 
       $this->sourceConsultas = "jdbc/consultasSaug";
-      $this->urlConsulta   = "consultas/ServicioWebConsultas?wsdl";
-      $this->urlProcedim   = "WSObjetosUg/ServicioWebObjetos?wsdl";
+      $this->urlConsulta   = "consultasJPA/ServicioWebConsultas?wsdl";
+      $this->urlProcedim   = "WSObjetosUgJPA/ServicioWebObjetos?wsdl";
       $this->urlWS         = "";
       $this->host          = "186.101.66.2:8080";
 
