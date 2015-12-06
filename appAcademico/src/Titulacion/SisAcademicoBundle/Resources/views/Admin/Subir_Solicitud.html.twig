@@ -10,25 +10,20 @@
     
     
         
-         {# <script type="text/javascript">
+        <script type="text/javascript">
     var modelessrespuesta;           
     $(function () {
                        
-                         var sesion_= <?php echo $_SESSION['respuesta']; ?>; 
-                         if(sesion == "cargo"){
-                           $( "#Guardar").css("display","none");
-                                         var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Formato de solicitud cargada correctamente", 'sm', 'alert');
+                         var respuesta= $("#respuesta").val(); 
+                         if(respuesta == "exito"){
+                         
+                                      var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Formato de solicitud cargada correctamente", 'sm', 'alert');
                                              $("#content-enviar" ).append( msg_alert );
                                              $('#modal-enviar').modal('show');
                                              
-                                                modelessrespuesta = new $.flavr({
-                        modal   : true,
-                        content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
-                        buttons     : {}
-                     });
-                                         }        
+                                             }        
                   });  
-             </script>#}
+             </script>
     
 <script type="text/javascript">
                var modelessSubirSolicitudes;
@@ -80,9 +75,10 @@
                       
                   });          
               });  
-         </script>
+</script>
    
-     
+<input type="hidden"  value="{{app.session.get('respuesta')}}" id="respuesta">
+                      
 <section class="content">
 
    <div class="page-content" style="height: 600px;">

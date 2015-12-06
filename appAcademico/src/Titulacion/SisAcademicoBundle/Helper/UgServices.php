@@ -71,7 +71,8 @@ class UgServices {
       $this->tipo    = "8";
       $this->urlWS   = $this->url.$this->urlProcedim;
       $trama         = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
-      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos
+              ($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
 
       return $response;
    }#end function
