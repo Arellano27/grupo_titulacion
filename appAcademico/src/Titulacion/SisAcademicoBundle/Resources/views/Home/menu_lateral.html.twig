@@ -10,12 +10,12 @@
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
+          <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Clases</a></li>
           <li><a href="{{path('SisAcademico_Docentes_home')}}"><i class="fa fa-circle-o"></i> Datos Generales</a></li>
+          <li><a href="{{path('docentes_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Examen</a></li>
           {#<li><a id="menuizqDoc_asistencia" href="#"><i class="fa fa-circle-o"></i> Asistencia de Alumnos</a></li>
           <li><a id="menuizqDoc_listadonotas" href="#"><i class="fa fa-circle-o"></i> Listado de Notas</a></li>#}
-          <li><a href="{{path('docentes_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Examen</a></li>
           {#<li><a id="menuizqDoc_vistageneral" href="#"><i class="fa fa-circle-o"></i> Vista por Asignatura</a></li>#}
-          <li><a href="{{path('docentes_consulta_horarios')}}"><i class="fa fa-circle-o"></i> Horario de Clases</a></li>
         </ul>
       </li>
       {% endif %}
@@ -27,7 +27,6 @@
           <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{path('estudiantes_matriculacion')}}"><i class="fa fa-circle-o"></i> Matriculación</a></li>
           <!-- <li><a href="{{path('estudiantes_deudas')}}"><i class="fa fa-circle-o"></i> Deudas Pendientes</a></li> -->
           <li><a href="{{path('estudiantes_anulacion')}}"><i class="fa fa-circle-o"></i> Anulación</a></li>
 
@@ -35,6 +34,7 @@
           <li><a href="{{path('estudiantes_listar_solicitudes')}}"><i class="fa fa-circle-o"></i> Listado de Solicitudes</a></li>
 
           <li><a href="{{path('estudiantes_horarios')}}"><i class="fa fa-circle-o"></i> Horarios </a></li>
+          <li><a href="{{path('estudiantes_matriculacion')}}"><i class="fa fa-circle-o"></i> Matriculación</a></li>
         </ul>
       </li>
       {% endif %}
@@ -101,13 +101,13 @@
           {%for event in app.session.get('data_coordinador').opcion %}
               {#{dump(event.id_sg_opcion)}#}
               {% if event.id_sg_opcion == GeneracionCalendarioAcademico %}
-                <li><a href="{{path('admin_academico_home')}}"><i class="fa fa-circle-o"></i> Generacion Calendario Academico </a></li>
+                <li><a href="{{path('admin_academico_home')}}"><i class="fa fa-circle-o"></i> Generación Calendario Academico </a></li>
               {% endif %}
               {% if event.id_sg_opcion == GeneracionHorariosClases %}
-                <li><a href="{{path('admin_generacion_horario_docente')}}"><i class="fa fa-circle-o"></i> Generacion Horarios Clases </a></li>
+                <li><a href="{{path('admin_generacion_horario_docente')}}"><i class="fa fa-circle-o"></i> Generación Horarios Clases </a></li>
               {% endif %}
               {% if event.id_sg_opcion == GeneracionHorariosExamen %}
-                <li><a href="{{path('admin_generacion_horarios_examenes')}}"><i class="fa fa-circle-o"></i> Generacion Horarios Examen </a></li>
+                <li><a href="{{path('admin_generacion_horarios_examenes')}}"><i class="fa fa-circle-o"></i> Generación Horarios Examen </a></li>
               {% endif %}
               {% if event.id_sg_opcion == SubirSolicitudes %}
                 <li><a href="{{path('admin_elegir_solicitud')}}"><i class="fa fa-circle-o"></i> Subir Solicitudes </a></li>
@@ -136,9 +136,13 @@
           <i class="fa fa-comments-o"></i><span>Mensajes</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
+          
         <ul class="treeview-menu">
-          <li><a href="{{path('dayscript_index')}}"><i class="fa fa-circle-o"></i> Envio de Mensajes</a></li>
-          <li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-circle-o"></i> Configuracion Mensajes</a></li>
+          <li><a href="{{path('notificaciones_index')}}"><i class="fa fa-circle-o"></i> Envio de Mensajes</a></li>
+          <li><a href="{{path('notificaciones_mensajes')}}"><i class="fa fa-circle-o"></i> Mensajes Recibidos</a></li>
+          <li><a href="{{path('notificaciones_eventos')}}"><i class="fa fa-circle-o"></i> Eventos Recibidos</a></li>
+          <li><a href="{{path('notificaciones_notificaciones')}}"><i class="fa fa-circle-o"></i> Notificaciones Recibidas</a></li>
+          {#<li><a href="{{ path('dayscript_configuracion') }}"><i class="fa fa-circle-o"></i> Configuracion Mensajes</a></li>#}
           <!-- <li><a href="{#{ path('dayscript_configuracion') }#}"><i class="fa fa-circle-o"></i> Aprobar</a></li> -->
         </ul>
       </li>        
@@ -150,7 +154,7 @@
       
           <li class="treeview">
         <a href="{{path('titulacion_informacion_portal')}}">
-          <i class="fa fa-question"></i><span>Informacion del Sitio</span>
+          <i class="fa fa-question"></i><span>Información del Sitio</span>
           <i class="fa fa-angle-left pull-right"></i>
         </a>
       </li>

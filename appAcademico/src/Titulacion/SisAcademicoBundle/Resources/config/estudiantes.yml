@@ -74,6 +74,9 @@ estudiantes_pdf_datosgenerales:
 SisAcademico_docentes:
     resource: "@TitulacionSisAcademicoBundle/Resources/config/docentes.yml"
     prefix:   /docentes
+estudiantes_consultar_solicitud:
+    pattern:  /consultar_solicitud
+    defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:consultar_solicitud}
 estudiantes_pdf_solicitudes:
     pattern:  /PdfSolicitudes
     defaults: { _controller: TitulacionSisAcademicoBundle:Estudiantes:PdfSolicitudes }

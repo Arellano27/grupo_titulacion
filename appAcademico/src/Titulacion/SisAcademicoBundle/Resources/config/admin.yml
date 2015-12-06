@@ -181,5 +181,10 @@ admin_consulta_docente_disponible:
 admin_cargar_pagina:
     pattern:  /carga/pagina
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:cargaPagina}
+
+
+admin_pdf_ordenpago:
+    pattern:  /pdfordenpago/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}/{identificacion}
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfordenpago}
     
 

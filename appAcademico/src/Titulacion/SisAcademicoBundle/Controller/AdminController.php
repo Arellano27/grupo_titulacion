@@ -859,8 +859,9 @@ class AdminController extends Controller
     {
         $idCarrera  = $request->request->get('idCarrera');
         $idCiclo  = $request->request->get('idCiclo');
+        $carrera  = $request->request->get('carrera');
 
-        return $this->render('TitulacionSisAcademicoBundle:Admin:admin_buscar_inscripcion.html.twig', array('idCarrera'=>$idCarrera,'idCiclo'=>$idCiclo));
+        return $this->render('TitulacionSisAcademicoBundle:Admin:admin_buscar_inscripcion.html.twig', array('idCarrera'=>$idCarrera,'idCiclo'=>$idCiclo,'carrera'=>$carrera));
     }
 
     public function inscripcion_listarAction(Request $request)
@@ -896,6 +897,7 @@ class AdminController extends Controller
                               $idEstudiante  = $request->request->get('idEstudiante');
                               $idCarrera  = $request->request->get('idCarrera');
                               $idCiclo=$request->request->get('idCiclo');
+                              $carrera=$request->request->get('carrera');
                               //$modoConsulta  = $request->request->get('criterio');
 
                               $arrInscripcion = array();
@@ -947,7 +949,7 @@ class AdminController extends Controller
                             $bolCorrecto=0;
                             $cuantos=0;
 
-                     }
+                     }                  
                       return $this->render('TitulacionSisAcademicoBundle:Admin:admin_listado_inscripcion.html.twig',array(
                                                           'inscripcion' => $arrInscripcion,
                                                           'idUsuarioEst' => $idUsuarioEst,
@@ -956,7 +958,8 @@ class AdminController extends Controller
                                                           'identificacion'=>$lcCedula,
                                                           'EstadoAlumno'=>$lcEstadoAlumno,
                                                           'idCarrera'=>$idCarrera,
-                                                          'idCiclo'=>$idCiclo
+                                                          'idCiclo'=>$idCiclo,
+                                                          'carrera'=>$carrera
                                                        ));
            }
                     else
@@ -984,29 +987,37 @@ class AdminController extends Controller
             $respuesta= new Response("",200);
             $idEstudiante  = $request->request->get('idUsuarioEst');
             $idCiclo  = $request->request->get('idCiclo');
+            $documentos  = $request->request->get('documentos');
             //$idUser=$session->get('id_user'); USUARIO LOGONEADO  <id_sg_usuario_modifica>" .$idUser."</id_sg_usuario_modifica>
+            if ($documentos==4)
+            {
+                  $datosCuenta="<PX_XML><items> ";
+                  $datosCuenta.= "<item>
+                                              <id_sg_usuario>".$idEstudiante."</id_sg_usuario>
+                                              <id_sa_ciclo_detalle>".$idCiclo."</id_sa_ciclo_detalle>
+                                  </item>";
+                  $datosCuenta.="</items></PX_XML><pc_opcion>1</pc_opcion>";
 
-            $datosCuenta="<PX_XML><items> ";
-            $datosCuenta.= "<item>
-                                        <id_sg_usuario>".$idEstudiante."</id_sg_usuario>
-                                        <id_sa_ciclo_detalle>".$idCiclo."</id_sa_ciclo_detalle>
-                            </item>";
-            $datosCuenta.="</items></PX_XML><pc_opcion>1</pc_opcion>";
-
-            $UgServices = new UgServices;
-            $xml = $UgServices->setActualizaInscripcion($datosCuenta);
+                  $UgServices = new UgServices;
+                  $xml = $UgServices->setActualizaInscripcion($datosCuenta);
 
 
-            $Estado=0;
-            $Mensaje="";
-            if ( is_object($xml))
-             {
-                    foreach($xml->parametrosSalida as $datos)
-                     {
-                        $Estado=(int) $datos->PI_ESTADO;
-                        $Mensaje=(string) $datos->PV_MENSAJE;
-                     }
-             }
+                  $Estado=0;
+                  $Mensaje="";
+                  if ( is_object($xml))
+                   {
+                          foreach($xml->parametrosSalida as $datos)
+                           {
+                              $Estado=(int) $datos->PI_ESTADO;
+                              $Mensaje=(string) $datos->PV_MENSAJE;
+                           }
+                   }
+              }
+              else
+              {
+                $Estado=55;
+                $Mensaje="Por favor confirme la documentacion entregada por el estudiante";
+              }
 
 
                 $arrayProceso=array();
@@ -2658,7 +2669,7 @@ public function generacion_horariosAction(Request $request){
                 }
             $arrayProceso = array();
             $arrayProceso['codigo_error']=$Estado;
-            $arrayProceso['mensaje']="Gabriel Huayamabe";
+            $arrayProceso['mensaje']=$Mensaje;
             $jarray=json_encode($arrayProceso);
             $respuesta->setContent($jarray);
             return $respuesta;
@@ -2677,48 +2688,73 @@ public function generacion_horariosAction(Request $request){
 
             }
 
-    public function subir_solicitudAction(Request $request){
-    $respuesta= new Response("",200);
+  public function subir_solicitudAction(Request $request){
+    
     $session=$request->getSession();
     $idUsuario  = $session->get('id_user');
-    $cedula = $request->request->get('cedula');
+    $nombre = $request->request->get('NSolicitud');
     $Solicitud  = $request->request->get('Solicitud');
-    $fileSize  = $request->request->get('fileSize');
-             $UgServices = new UgServices;
-
-                           $xmlfinal="<PX_XML>
-					<items>
-						<item>
-						    <id_sa_formato_solicitud></id_sa_formato_solicitud>
-						    <descripcion>$cedula</descripcion>
-							<ruta_archivo>$fileSize</ruta_archivo>
-							<id_usuario>$idUsuario</id_usuario>
-							<estado>A</estado>
-						</item>
-					</items>
-				</PX_XML>
-				<PC_OPCION>A</PC_OPCION>";
-                                            //echo  var_dump($xmlfinal); exit();
-                        $xml = $UgServices->subir_solicitud($xmlfinal);
-
-             $Estado="";
-                $Mensaje="";
-             if ( is_object($xml))
-                {
-                    foreach($xml->parametrosSalida as $datos)
-                     {
-                        $Estado=(int) $datos->PI_ESTADO;
-                        $Mensaje=(string) $datos->PV_MENSAJE;
+    $fileSize  = $request->request->get('ruta');
+    
+     $Estado="";
+                        $Mensaje="";
+         if($session->has("perfil")) {  
+             if($nombre != ""){
+                if ( is_uploaded_file($_FILES['imagen_']['tmp_name']) ){          
+                     $rand = rand(1000,999999);
+                     $origen = $_FILES['imagen_']['tmp_name'];
+                     $destino = 'upload_files/formato_solicitudes/'.$rand.$_FILES['imagen_']['name'];
+                     move_uploaded_file($origen, $destino);
+                     $respuesta = false;
+                     if(file_exists($destino)){
+                         $respuesta = true;
                      }
 
-                }
-            $arrayProceso = array();
-            $arrayProceso['codigo_error']=$Estado;
-            $arrayProceso['mensaje']=$Mensaje;
-            $jarray=json_encode($arrayProceso);
-            $respuesta->setContent($jarray);
-            return $respuesta;
+                     if($respuesta){
+                     $UgServices = new UgServices;
 
+                                   $xmlfinal="<PX_XML>
+                                                <items>
+                                                        <item>
+                                                            <id_sa_formato_solicitud></id_sa_formato_solicitud>
+                                                            <descripcion>$nombre</descripcion>
+                                                                <ruta_archivo>$destino</ruta_archivo>
+                                                                <id_usuario>$idUsuario</id_usuario>
+                                                                <estado>A</estado>
+                                                        </item>
+                                                </items>
+                                        </PX_XML>
+                                        <PC_OPCION>I</PC_OPCION>";
+                                                   //echo  var_dump($xmlfinal); exit();
+                     $xml = $UgServices->subir_solicitud($xmlfinal);
+         //echo  var_dump($xml); exit();
+                    
+                     if (is_object($xml))
+                        {
+                            foreach($xml->parametrosSalida as $datos)
+                             {
+                                $Estado=(int) $datos->PI_ESTADO;
+                                $Mensaje=(string) $datos->PV_MENSAJE;
+                             }
+                                    
+                        }
+                        
+                        $session->set("respuesta","cargo");
+                         $respuesta  = $session->get('respuesta');
+                        
+                        //echo  var_dump($respuesta); exit();
+                         return $this->render('TitulacionSisAcademicoBundle:Admin:Subir_Solicitud.html.twig');
+                  }else{
+                      $Mensaje = "-2";
+                  }
+                 
+               }            
+             }else{  $session->set("respuesta","no");  
+                  return $this->render('TitulacionSisAcademicoBundle:Admin:Subir_Solicitud.html.twig');
+             }
+         }else{
+                    return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
+                }
    }
 
     public function generacion_horarios_examenesAction(Request $request){
@@ -2930,5 +2966,210 @@ public function generacion_horariosAction(Request $request){
 
 
 
+    }#end function
+    public function pdfordenpagoAction(Request $request,$idEstudiante,$idCarrera,$ciclo,$carrera,$identificacion)
+    {     
+            $session=$request->getSession();
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin'); 
+            $perfilEstDoc = $this->container->getParameter('perfilEstDoc'); 
+            $perfilEstAdm = $this->container->getParameter('perfilEstAdm'); 
+            $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
+            $estudiante  = $session->get('nom_usuario'); 
+
+
+           if ($session->has("perfil")) {
+               if($session->get('perfil') == $perfilAdmin){
+
+
+                $UgServices = new UgServices;
+                $xml1 = $UgServices->getConsultaRegistro_OrdenPago($idEstudiante,$idCarrera,$ciclo);
+              //obtenet el ciclo de matriculacion del XML
+                $lcNombre="";
+                $lcApellidos="";                
+                $lcCedula="";
+                $xmldatos = $UgServices->getConsulta_listado_inscripcion($identificacion,$idCarrera,$ciclo);
+
+                  if ( is_object($xmldatos))
+                  {
+                      foreach($xmldatos->PX_SALIDA as $xmlReg)
+                      {
+                                          $lcNombre=$xmlReg->registros->registro->estudiante->nombres;
+                                          $lcApellidos=$xmlReg->registros->registro->estudiante->apellidos;
+                                          $lcCedula=$xmlReg->registros->registro->estudiante->cedula;
+                      }
+                  }
+
+
+
+                $pdfGen="";
+               $mpdfService = $this->get('tfox.mpdfport');
+                $mPDF = $mpdfService->getMpdf();
+                $mPDF->AddPage('','','1','i','on');
+                $lnPage=1;
+                $lnCuenta=0;
+                $lnhasta=0;
+                $lcNombre=$lcNombre.' '.$lcNombre;
+               //var_dump($xml1);
+               if ( is_object($xml1))
+                  {
+                            foreach($xml1->PX_SALIDA as $xml)
+                             {  
+                                  
+                                  foreach($xml->OrdenPagos as $lscaborden)
+                                  {
+                                        $lnhasta=count ($lscaborden->OrdenPago);
+                                        foreach($lscaborden->OrdenPago as $lsOrden) 
+                                          {
+                                              $lnCuenta=$lnCuenta+1;
+                                              $NumOrden= (string ) $lsOrden->numero_orden;
+                                              $FecOrden= (string ) $lsOrden->fecha_limite_pago;
+                                              $ValorOrden=(string ) $lsOrden->valor_total;
+
+                                              $pdf= " <html> 
+                                                  <body>
+                                                  <table class='table table-striped table-bordered' border='1' width='100%'  >
+                                                  <tr>
+                                                  <td width='100%'>
+                                                    <img width='5%' src='images/menu/ug_logo.png'/>
+                                                    <b> $carrera </b>
+                                                  </td>
+                                                  </tr>
+                                                  <tr>
+                                                  <td width='100%'>
+                                                    <table align='center'>
+                                                    <tr>
+                                                      <td align='left'>
+                                                        <b> Estudiante:</b>
+                                                      </td>
+                                                      <td>
+                                                        $lcNombre
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td align='left'>
+                                                        <b> Identificación:</b>
+                                                      </td>
+                                                      <td>
+                                                        $lcCedula
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td align='left'>
+                                                        <b> Orden de Pago  N° </b>
+                                                      </td>
+                                                      <td>
+                                                        $NumOrden
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td align='left'>
+                                                        <b> Fecha Maxima de Pago </b>
+                                                      </td>
+                                                      <td>
+                                                        $FecOrden
+                                                      </td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td align='left'>
+                                                        <b> Valor a Pagar </b>
+                                                      </td>
+                                                      <td>
+                                                        $ValorOrden
+                                                      </td>
+                                                    </tr>
+                                                    </table>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                <td width='105%'>    
+                                                    <table  border='1' width='100%' align='center'>
+                                                                <tr>
+                                                                        <th colspan='2' > Detalle de Orden de Pago  </th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th  align='center'>Detalle</th>
+                                                                    <th  align='center'>Valor</th>
+                                                                </tr>"; 
+
+
+                                             foreach($lsOrden->Detalles->Detalle as $lsDetOrden) 
+                                                {
+                                                  $Rubro=$lsDetOrden->Rubro;
+                                                  $Valor=$lsDetOrden->valor;
+                                                  $pdf.="<tr>
+                                                            <td  width='100%' align='center'>$Rubro</td>
+                                                            <td  width='100%' align='center'>$Valor</td>
+                                                        </tr>"; 
+                                                } 
+                                                 $pdf.="</table>";
+
+                                               $pdf.="</td>
+                                                        </tr>
+                                                      </table> <br><br><br><br>
+                                               </body></html>";
+                                               //$pdfGen.=$pdf;
+                                               
+                                               if ($lnPage==3)
+                                               {
+                                                  $lnPage=1;
+                                                  $mPDF->AddPage('','','1','i','on');
+                                                  
+                                               }
+                                               else
+                                               {
+                                                $lnPage=$lnPage+1;
+                                                if ($lnhasta==$lnCuenta)
+                                                  {
+                                                    $mPDF->AddPage('','','1','i','on'); 
+                                                    
+                                                  }
+                                               }
+                                               
+
+                                               $mPDF->WriteHTML($pdf);
+                                               
+                                          }
+                                      }
+                                  }
+                                      
+                  }
+                 
+                  //$mPDF->WriteHTML($pdfGen);
+                  
+                  //$mPDF->AddPage('','','1','i','on');
+                  //$mPDF->WriteHTML($pdf);
+                  //$mPDF->Output();
+                  if ($lnhasta<=0)
+                  {
+                    $mPDF->WriteHTML("No existen Datos para Generar");
+                  }
+                  return new response($mPDF->Output());
+                   // $html =  $pdf;
+
+                    //$mpdfService->SetTitle("Acme Trading Co. - Invoice");
+                    //$mpdfService->Output("Pruebas.pdf")
+
+
+                    //$response = $mpdfService->generatePdfResponse($html);
+                    //return $response;
+
+
+
+        } else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }else{
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+           }  
     }#end function
 }
