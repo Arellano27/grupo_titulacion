@@ -39,7 +39,7 @@
                           <option value="{{parametro.codigo}}">{{parametro.nombre}}</option>
                           {% endfor %}  
                 </select></div>
-                <div class="col-lg-2"> <a class="btn btn-success" href="{{path('admin_academico_estudiante_carrera_pdf', {'idCarrera':carrera.idCarrera,'ciclo':carrera.idCiclo,'carrera':carrera.nombre})}}" target="_blank">PDF</a></div>
+                <div class="col-lg-2"> <a class="btn btn-success" href="{{path('admin_academico_estudiante_carrera_pdf', {'idCarrera':carrera.idCarrera,'ciclo':carrera.idCiclo,'carrera':carrera.nombre})}}" target="_blank">Exportar a PDF</a></div>
                     
               </div>
             </div>
