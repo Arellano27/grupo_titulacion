@@ -3010,7 +3010,7 @@ public function generacion_horariosAction(Request $request){
                 $lnPage=1;
                 $lnCuenta=0;
                 $lnhasta=0;
-                $lcNombre=$lcNombre.' '.$lcNombre;
+                $lcNombre=$lcNombre.' '.$lcApellidos;
                //var_dump($xml1);
                if ( is_object($xml1))
                   {
@@ -3065,7 +3065,7 @@ public function generacion_horariosAction(Request $request){
                                                     </tr>
                                                     <tr>
                                                       <td align='left'>
-                                                        <b> Fecha Maxima de Pago </b>
+                                                        <b> Fecha Máxima de Pago </b>
                                                       </td>
                                                       <td>
                                                         $FecOrden
