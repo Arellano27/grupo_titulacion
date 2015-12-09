@@ -471,7 +471,7 @@ function confirm(form, item)
                     if(form==='ingresoAsis' ||  form==='actualizaAsis' ){
                         
                        
-                        var form_data = {'arr_checked':arr_datos1,'arr_unchecked':arr_datos2,'materia':$('#hdmateria').val()};
+                        var form_data = {'arr_checked':arr_datos1,'arr_unchecked':arr_datos2,'materia':$('#hdmateria').val(),'combofecha':$('#combofecha').val()};
                     }
                                         
                                          

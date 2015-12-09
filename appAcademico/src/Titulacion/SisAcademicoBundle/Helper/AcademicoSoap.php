@@ -315,7 +315,7 @@ $post_string="
                </ser:ejecucionObjeto>
             </soapenv:Body>
          </soapenv:Envelope>";
-   echo var_dump($post_string); exit();
+  // echo var_dump($post_string); exit();
         $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
         $soap_do = curl_init();
         curl_setopt($soap_do, CURLOPT_VERBOSE ,       true );
@@ -1319,7 +1319,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
         curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
         $result = curl_exec($soap_do);
-      
+      $result = $XML;
 //        var_dump($result);
 //        exit();
    //      $result = $XML;
@@ -1471,7 +1471,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
                      <dataSource>".$source."</dataSource>
                      <idServicio>".$tipo."</idServicio>
                      <usuario>".$usuario."</usuario>
-                     <clave>".$clave." </clave>
+                     <clave>".$clave."</clave>
                      <parametrosObjeto>
                         <parametros>
             				 ".$datosCuenta." 
@@ -4574,7 +4574,7 @@ function doGuardaHorariosDocentes($datosCuenta,$source,$tipo,$usuario,$clave,$ur
                         $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
                         
                         return $respuestaConsulta;
-                        echo var_dump($respuestaConsulta); exit();
+                        //echo var_dump($respuestaConsulta); exit();
                     }
 
 
