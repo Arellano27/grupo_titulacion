@@ -25,12 +25,44 @@
                 $("#Asunto").val("");
                 $("#mensaje").val("");
             });
+            
+            $("#Enviar").click(function (){
+          
+                    var Tipo = $("#TipoMensaje").val();
+                    var Asunto = $("#Asunto").val();
+                    var Mensaje = $("#mensaje").val();
+
+                    if(Tipo == 0){
+                        var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Seleccione Un tipo de mensaje", 'sm', 'alert');
+                                $( "#content-enviar" ).append( msg_alert );
+                                $('#modal-enviar').modal('show');
+                                $("#TipoMensaje").focus();
+                          return false;
+                       
+                    }
+                    if(Asunto == ""){
+                           var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Escriba un Asunto", 'sm', 'alert');
+                                $( "#content-enviar" ).append( msg_alert );
+                                $('#modal-enviar').modal('show');
+                                $("#Asunto").focus();
+                          return false;
+                    }
+                    if(Mensaje == ""){
+                            var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Redacte su mensaje", 'sm', 'alert');
+                                $( "#content-enviar" ).append( msg_alert );
+                                $('#modal-enviar').modal('show');
+                                $("#mensaje").focus();
+                          return false;
+                    }
+
+                  return true;
+               });
          });
     
      
 </script>
     <script src="{{ asset('js/EnviarMensajes.js') }}"></script>
-    <script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>
+    {#<script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>#}
 <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
      
 <section class="content">
@@ -39,7 +71,7 @@
     <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     
-    <div class="modal-content">
+    <div class="modal-content" >
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Mensaje Enviado</h4>       
@@ -58,9 +90,9 @@
       <div class="page-content" style="height: 600px;">
    <div  class="col-xs-14">
      
-       <form id="form-enviar" method="post" action="{{ path('dayscript_index') }}">  
+       <form id="form-enviar" method="post" action="{{ path('notificaciones_index') }}">  
            
-            <div class="col-md-5">
+            <div class="col-md-5" id="content-enviar">
                <div class="box box-solid">
                    <div class="panel-heading">                 
 		       <div class="box-header with-border">

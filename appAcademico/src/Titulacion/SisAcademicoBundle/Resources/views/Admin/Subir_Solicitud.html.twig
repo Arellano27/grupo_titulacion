@@ -7,109 +7,82 @@
       <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
-
-       <script type="text/javascript">
-           
+    
+    
+        
+        <script type="text/javascript">
+    var modelessrespuesta;           
+    $(function () {
+                       
+                         var respuesta= $("#respuesta").val(); 
+                         if(respuesta == "exito"){
+                         
+                                      var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Formato de solicitud cargada correctamente", 'sm', 'alert');
+                                             $("#content-enviar" ).append( msg_alert );
+                                             $('#modal-enviar').modal('show');
+                                             
+                                             }        
+                  });  
+             </script>
+    
+<script type="text/javascript">
+               var modelessSubirSolicitudes;
             $(document).ready(function (){
                 var fileExtension = "";
                 var fileSize="";
+                var fileType="";
                     //función que observa los cambios del campo file y obtiene información
-                    $("#imagen").change(function()
+                    $("#imagen_").change(function()
                     { 
-                        //obtenemos un array con los datos del archivo
-                        var file = $("#imagen")[0].files[0];
-                        //obtenemos el nombre del archivo
-                        var fileName = file.name;
-                        //obtenemos la extensión del archivo
-                        fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-                        //obtenemos el tamaño del archivo
-                        fileSize = file.size;
-                        //obtenemos el tipo de archivo image/png ejemplo
-                        var fileType = file.type;
-                        //mensaje con la información del archivo
+                        var file = $("#imagen_")[0].files[0];                      
+                        var fileName = file.name;                        
+                        fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);                       
+                        fileSize = file.size;                       
+                        fileType = file.type;
+                 //word y pdf
                    });
+                   
+                   
                 
                   $("#SubirS").click(function (){
-                      var cedula = $("#Cedula").val();
-                      var Solicitud = $("#imagen").val();                      
                       
-                      if(fileSize == ""){
-                          alert("Debe Seleccionar un archivo");
+                      var cedula = $("#NSolicitud").val();
+                      var Solicitud = $("#imagen_").val();   
+                      
+                      if(cedula == ""){
+                          //alert("Debe Seleccionar un archivo");
+                           $( "#Guardar").css("display","none");
+                            var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Ingrese Nombre de la Solicitud", 'sm', 'alert');
+                                $("#content-enviar" ).append( msg_alert );
+                                $('#modal-enviar').modal('show');
                           return false;
                       }
-                       var obj_data = {'cedula': cedula,'Solicitud': Solicitud,'fileSize': fileSize};
-                    
-                    var jumpAction = '{{path('admin_subir_solicitud')}}';
-                                 var modelessSetMatricula;
-                                  $.ajax({
-                                     url:   jumpAction,
-                                     data: obj_data,
-                                     type:  'post',
-                                     async: true,
-                                     beforeSend: function () {
-                                        modelessSetMatricula = new $.flavr({
-                                                             modal   : true,
-                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando Registro...</b>',
-                                                             buttons     : {}
-                                                          });                               
-                              
-                                     },
-                                     success:  function (dataResponse) {
-                                        modelessSetMatricula.close();
-                                       var respuesta=jQuery.parseJSON(dataResponse);
-                                       $("#div_respuesta").html(respuesta.mensaje);
-                                       if (respuesta.codigo_error!=1)
-                                       {
-                                            $('.botonMatriculaSig').addClass('buttonDisabled');
-                                            $('.botonAnterior').removeClass('buttonDisabled');
-                                            $("#btninscribe").attr("disabled", false);
-                                             modelessProcesoMat= new $.flavr({
-                                                           modal   : true,
-                                                           content : "en estos momentos tenemos inconvenientes, favor intentelo mas tarde",
-                                                           buttons     : {
-                                                              primary : { text: 'Aceptar', style: 'primary' }
-                                                           }
-                                                        });
-                                           
-                                       }
-                                       else
-                                       {
-                                        modelessProcesoMat= new $.flavr({
-                                                           modal   : true,
-                                                           content : 'La solicitud ha sido cargada exitosamente!',
-                                                           buttons     : {
-                                                              primary : { text: 'Aceptar', style: 'primary' }
-                                                           }
-                                                        });
-                                        $('.botonAnterior').addClass('buttonDisabled');
-                                        $('.botonMatriculaSig').removeClass('buttonDisabled');
-                                        $("#btninscribe").remove();
-                                        $(".botonMatriculaSig").show();
-
-                                       }
-                                     },
-                                      error: function(dataResponse)
-                                      {
-                                        modelessSetMatricula.close();
-                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
-                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
-                                        form="accordion";
-                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
-                                                        $( '#'+form ).append( msg_alert );
-                                                        $('#modal-'+form).modal('show');
-                                      },
-                             //         timeout: 50000
-
-                                 dataType:'text'
-                              });
+                      if(fileSize == ""){
+                         // alert("Debe Seleccionar un archivo");
+                           $( "#Guardar").css("display","none");
+                            var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Debe Seleccionar un archivo", 'sm', 'alert');
+                                $( "#content-enviar" ).append( msg_alert );
+                                $('#modal-enviar').modal('show');
+                          return false;
+                      }
+                       
+                        modelessSubirSolicitudes = new $.flavr({
+                        modal   : true,
+                        content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                        buttons     : {}
+                     });
+        
                       
                   });          
               });  
-         </script>
+</script>
+   
+<input type="hidden"  value="{{app.session.get('respuesta')}}" id="respuesta">
+                      
 <section class="content">
 
    <div class="page-content" style="height: 600px;">
-        <div  class="col-xs-14">
+        <div id="content-enviar" class="col-xs-14">
      
            {#  <form id="form-enviar" method="post" action="{{ path('dayscript_index') }}">  #}
            
@@ -122,7 +95,7 @@
 
                         </h3>
                <div>
-
+                   <form method="post" action="{{path('admin_subir_solicitud')}}" enctype="multipart/form-data">
                             <div class="col-md-5">
 
                                  <div class="box box-solid">
@@ -155,24 +128,33 @@
 
 
                                     <div class="box box-solid">
-                                    <div class="panel-heading">                 
-                                        <div class="box-header with-border">
-                                             <h5 class="box-title">Elegir Solicitud</h5>
+                                          <div class="panel-heading"> 
+                                    <div class="box-header with-border">
+                                             <h5 class="box-title">Datos Solicitud</h5>
                                         </div>
+                                        <div class="modal-body">
+                                            <label for="inputName" class="col-sm-4 control-label">Nombre de Solicitud:</label>                       
+                                            <input type="text" class="form-control" id="NSolicitud"  name="NSolicitud" placeholder="Escriba Nombre de la Solicitud">
+
+                                        <br />
+                                            
+                                             <h5 class="box-title">Elegir Solicitud</h5>
+                                       
                 
-                                         <div class="modal-body">
-                                                <input name="archivo" type="file" id="imagen" />
+                                        
+                                             <input name="imagen_" type="file" id="imagen_" accept="application/msword, application/pdf"/>
                                          
                                          </div>
                                     
                                     <div class="modal-body">
                                           <button id="SubirS" type="submit" class="btn btn-success">Subir Solicitud</button>
                                      </div>
+                                          </div>              
 
-                              </div>
+                              
                           </div>
                                  </div>
-
+</form>
                        </div>
 
                   </div>

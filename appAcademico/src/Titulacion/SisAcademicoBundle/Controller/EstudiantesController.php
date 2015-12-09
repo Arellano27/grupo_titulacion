@@ -145,6 +145,7 @@
                        //$estudiante='Jeferson Bohorquez';
                         $UgServices = new UgServices;
                         $xml = $UgServices->getConsultaCarreras_Matricula($idEstudiante);
+                        
                         if ( is_object($xml))
                         {
                           foreach($xml->registros->registro as $lcCarreras) 
@@ -1269,24 +1270,6 @@
                               $Mensaje=(string) $datos->PV_MENSAJE;
                            }
                           
-                           
-                         $session=$request->getSession();
-                              $Email= $session->get('mail');
-                              $Nombre = $session->get('nom_usuario');
-                                                 $mailer    = $this->container->get('mailer');
-                                      $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-                                                  ->setUsername('titulacion.php@gmail.com')
-                                                  ->setPassword('sc123456');
-                                     //$mailer  = \Swift_Mailer($transport);
-                                      $message = \Swift_Message::newInstance('test')
-                                                  ->setSubject("Registro de Materia Exitosa")
-                                                  ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
-                                                  ->setTo($Email)
-                                                  ->setBody("$Nombre usted a completado su registro de materias con exito");
-                                      // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
-                                      $this->get('mailer')->send($message);   
-                               
-                          
                       }
             }
             if($BanderaGrabar==2)
@@ -1305,20 +1288,22 @@
             $arrayProceso=array();
             $arrayProceso['codigo_error']=$Estado;
             $arrayProceso['mensaje']=$Mensaje;
-            $jarray=json_encode($arrayProceso);
-            
-            //exit();
-
-          // $serializer = $this->container->get('jms_serializer');
-           //$response = $serializer->serialize($data["title"], 'json');
-            //$idCarrera  = $request->request->get('idCarrera');
-            
-
-           // $respuesta="SI";
-
-            //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:estudiantes_deudas.html.twig',compact("notas_act"));
-           //return $jarray;
+            $jarray=json_encode($arrayProceso);         
             $respuesta->setContent($jarray);
+                
+                        $session=$request->getSession();
+                        $Email= $session->get('mail');
+                        $Nombre = $session->get('nom_usuario');
+                        $mailer    = $this->container->get('mailer');
+                        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                 ->setUsername('titulacion.php@gmail.com')
+                                 ->setPassword('sc123456');
+                        $message = \Swift_Message::newInstance('test')
+                                 ->setSubject("Registro de Materias Exitosa")
+                                 ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                 ->setTo($Email)
+                                 ->setBody("$Nombre usted a completado su registro de materias con exito");                  
+                       $this->get('mailer')->send($message);   
             return $respuesta;
         }
 
@@ -1981,9 +1966,27 @@
     
     
       public function listarsolicitudesAction(Request $request)
-    {
-       
-          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes.html.twig');
+    {      $session=$request->getSession();
+           if ($session->has("perfil")) {
+           $UgServices = new UgServices;    
+          $xmlsolicitudes = "<parametros>
+			
+				</parametros>";
+           
+       $solicitudes = $UgServices->Solicitudes_disponible($xmlsolicitudes);
+       //echo var_dump($solicitudes); exit();
+          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes.html.twig',
+						  array(
+							
+                                                           'solicitud'   => $solicitudes 
+						  ));
+           } else{
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
            
     }#end function
     
@@ -2710,109 +2713,62 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
             $UgServices    = new UgServices;
             $datosHorarios  = $UgServices->Docentes_Horarios($idUsuario);
           
-                 $pdf= " <html> 
-                                            <body>
-                                            <img width='5%' src='images/menu/ug_logo.png'/>
-                                            <br/><br/><br/><br/>
-                                            <table align='center'>
-                                            <tr>
-                                              <td align='center'>
-                                                <b> Solicitud </b>
-                                              </td>
-                                            <tr>
-                                            <tr>
-                                            <td>
-                                              <b> $estudiante </b>
-                                            </td>
-                                            </tr>                                           
-                                            </table>
-                                            
-                                            <br/><br/><br/><br/>
-                                             <div class='col-lg-4'>
-                                              <table align='left'>
-                                            <tr>
-                                              <td>
-                                                <b>Director Harry Luna</b>
-                                              </td>
-                                            <tr>
-                                            <tr>
-                                            <td>
-                                              <b>En su Despacho</b>
-                                            </td>
-                                            </tr>                                           
-                                            </table>
-                                             </div>
-                                            <div class='col-lg-12'>
-                                            <br><br><br><br>
-                                            <table class='table table-striped table-bordered' border='0' width='100%' >
-                                                                                           ";
+                // $archivo = basename($_GET['archivo']);
+                $destino = 'upload_files/formato_solicitudes28682Huayamabe_Gabriel_Documento';
+                $ruta = $destino;
 
-                                                 
-                                                 $pdf.="<tr>
-                                                            <td align='left'>
-                                                            Yo $estudiante con C.I $cedula pido se me conceda la matricula en las sigueintes materias, ya que no 
-                                                            alcanze cupo.
-                                                            </td>                                                           
-                                                        </tr>";
-                                                   
-                                                    $pdf.="<br/><br/><br/><br/> <table align='center' border='1'>
-                                            <tr>
-                                              <td>
-                                                <b>Nombre Materia</b>
-                                              </td>
-                                              <td>
-                                                <b>Curso</b>
-                                              </td>
-                                            <tr>
-                                            <tr>
-                                            <td>
-                                              Base de datos
-                                            </td>
-                                             <td>
-                                              S5K
-                                            </td>                                                                                     
-                                            </tr> 
-                                            <tr>
-                                            <td>
-                                              Programacion 3
-                                            </td>     
-                                            <td>
-                                              S3K
-                                            </td>                                                                                    
-                                            </tr>
-                                            <tr>
-                                             <td>
-                                              Circuitos
-                                            </td>
-                                             <td>
-                                              S4L
-                                            </td>    
-                                            </tr>
-                                            </table>"
-                                                            ;
+                
+                   header('Content-Type: application/force-download');
+                   header('Content-Disposition: attachment; filename='."HOLA");
+                   header('Content-Transfer-Encoding: binary');
+                   header('Content-Length: '.filesize($ruta));
 
-                                            $pdf.="</table><br><br><br><br><br><br>  <table align='center' class='table table-striped'> 
-
-                                                    <tr><td width='40%'><img width='80%' src='images/menu/firma.png'/></td> 
-                                                      <td width='20%'>&nbsp;</td>
-                                                      <td width='40%'><img width='80%' src='images/menu/firma.png'/></td>
-                                                    </tr>
-
-                                                    <tr><td align='center' ><b>$estudiante</b></td>
-                                                    <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
-                                                    </table>";
-
-                                             $pdf.="</div></body></html>";
- 
-                                            
-                            
-                  $mpdfService = $this->get('TFox.mpdfport');
-                  $mPDF = $mpdfService->getMpdf();               
-                  $mPDF->AddPage('','','1','i','on');
-                  $mPDF->WriteHTML($pdf);
-                  return new response($mPDF->Output());
-                 
+                   readfile($ruta);
+                    return $this->render('TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes.html.twig');
+             
     }#end function
+    
+    public function consultar_solicitudAction(Request $request){
+    
+    $response   = new JsonResponse();       
+    $session=$request->getSession();
+    $idUsuario  = $session->get('id_user');
+    $desde  = $request->request->get('desde');
+    $hasta  = $request->request->get('hasta');
+    
+    $UgServices = new UgServices;    
+    $xmlsolicitudes = "<parametros>
+			
+				</parametros>";
+           
+    $Solicitudes = $UgServices->Solicitudes_disponible($xmlsolicitudes);
+    //echo var_dump($Solicitudes); exit();
+    $Estado="";
+                $Mensaje="";
+             if (count($Solicitudes)> 0)
+                {               
+                   $Mensaje="con";
+                }else{
+                    $Mensaje="";
+                }
+               //echo var_dump($Mensaje); exit();
+                if($Mensaje == ""){
+                 
+                    
+                          return $this->render('TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes.html.twig',
+						  array(
+							 //  'arr_datos' => $arr_datos,
+                                                           'solicitudes'   => $Solicitudes 
+						  ));              
+                }else{
+           
+    return $this->render('TitulacionSisAcademicoBundle:Estudiantes:listarsolicitudes.html.twig',
+						  array(
+							 //  'arr_datos' => $arr_datos,
+                                                           'solicitud'   => $Solicitudes 
+						  ));
+                }
+            
+   }
 
     }

@@ -71,7 +71,8 @@ class UgServices {
       $this->tipo    = "8";
       $this->urlWS   = $this->url.$this->urlProcedim;
       $trama         = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
-      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos
+              ($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
 
       return $response;
    }#end function
@@ -1403,6 +1404,18 @@ public function getConsultaDatos_Generales($idEstudiante){
         $XML = NULL;
         //echo '<pre>'; var_dump($idCarrera); exit();
         $response = $this->ws->doRequestMaterias($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
+
+        return $response;
+    }
+    
+     public function Solicitudes_disponible($xml) {
+        $this->tipo = "34";
+        $this->source = $this->sourceConsultas;
+        $this->urlWS = $this->url . $this->urlConsulta;
+        $trama = $xml;       
+        $XML = NULL;
+        //echo '<pre>'; var_dump($idCarrera); exit();
+        $response = $this->ws->doRequestSolicitudes_disponible($trama, $this->source, $this->tipo, $this->usuario, $this->clave, $this->urlWS, $this->host, $XML);
 
         return $response;
     }
