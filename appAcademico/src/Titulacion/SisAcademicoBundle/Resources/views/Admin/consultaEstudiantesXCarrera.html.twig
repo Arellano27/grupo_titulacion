@@ -26,7 +26,7 @@
             <div id="parametrosBusqueda_{{ carrera.idCarrera }}" class="col-lg-12">
               <div class="col-lg-6" style="margin-bottom: 20px;">
                 <div class="col-lg-5" style="padding-top: 6px; font-weight: bold;">Identificación Estudiante:</div>
-                <div class="col-lg-4" style="padding-top: 3px;"><input type="text"  onkeypress="return valideKey(event);" id="ident_{{ carrera.idCarrera }}"maxlength="10"></div>
+                <div class="col-lg-4" style="padding-top: 3px;"><input type="text"  onkeypress="return SoloNumeros(event);" id="ident_{{ carrera.idCarrera }}"maxlength="10"></div>
                 <div class="col-lg-2"> <a id="buscarEstudiante_{{ carrera.idCarrera }}" class="btn btn-primary">BUSCAR</a></div>
 
               </div>
@@ -47,11 +47,11 @@
               <div class="col-md-8">
                 <div id="tabla_{{ carrera.idCarrera }}"></div>
                 <table id="tblEstudiantes_{{ carrera.idCarrera }}" class="table table-bordered table-hover">
-                  <thead>
+                  <thead style="background-color: #3C8DBC;color:#fff;">
                     <tr>
-                      <th>Identificacion</th>
-                      <th>Nombre Estudiante</th>
-                      <th>Estado Matricula</th>
+                      <th class="text-center">Identificacion</th>
+                      <th class="text-center">Nombre Estudiante</th>
+                      <th class="text-center">Estado Matricula</th>
                     </tr>
                   </thead>
                 </table>
@@ -90,24 +90,10 @@
 
 <script type="text/javascript">
 
-  function valideKey(evt)
-    {
-      var code = (evt.which) ? evt.which : evt.keyCode;
-      if(code==8)
-      {
-          //backspace
-          return true;
-      }
-      else if(code>=48 && code<=57)
-      {
-          //is a number
-          return true;
-      }
-      else
-      {
-          return false;
-      }
-  }
+  function SoloNumeros(e) {
+    var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+    return ((tecla > 47 && tecla < 58) || (tecla >= 00 && tecla < 32) || tecla == 127);
+}
 
   $(document).ready(function() { 
     $('.tabscarrera').click(function() {
