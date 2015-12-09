@@ -276,7 +276,7 @@ $post_string="
                </ser:ejecucionObjeto>
             </soapenv:Body>
          </soapenv:Envelope>";
-   echo var_dump($post_string); exit();
+   
         $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
         $soap_do = curl_init();
         curl_setopt($soap_do, CURLOPT_VERBOSE ,       true );
