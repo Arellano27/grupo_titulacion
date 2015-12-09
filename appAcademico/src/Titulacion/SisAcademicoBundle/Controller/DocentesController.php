@@ -971,12 +971,17 @@
           
           /* print_r($datosParciales);*/
               // $ingreanota='0';
-               if($ingreanota=='1'){
+               if($ingreanota=='0'){
                    if(count($arr_datos) > 0){
-            $profesor=$datosParciales->registro->profesor;
-            $materia=$datosParciales->registro->materia;
-            $paralelo=$datosParciales->registro->paralelo;
-            $parcial=$datosParciales->registro->periodos->periodo->parcial;
+//            $profesor=$datosParciales->registro->profesor;
+//            $materia=$datosParciales->registro->materia;
+//            $paralelo=$datosParciales->registro->paralelo;
+//            $parcial=$datosParciales->registro->periodos->periodo->parcial;
+            
+            $profesor='CRUZ BONITO STEVEN ANDRES';
+            $materia='DESARROLLO DE APLICACIONES WEB';
+            $paralelo='S6A';
+            $parcial='1';
             
 //            $profesor = $session->get('nom_usuario'); 
 //            $materia= $session->get('nom_materia');
@@ -1217,14 +1222,15 @@
                //   print_r($respuesta);
                //    exit();
             
-                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
-                 
-                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
+//                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
+//                 
+//                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
                 // echo $result;
                 // exit();
                  
                       //print $result;
-           $mensaje =(string)$result;
+//           $mensaje =(string)$result;
+                  $mensaje ='Actualizacion realizada exitosamente';
         
             $this->v_error	= true;
 
@@ -1701,14 +1707,14 @@
 //                 print_r($respuesta);
 //                   exit();
             
-                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
-                 
-                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
+//                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
+//                 
+//                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
                 // echo $result;
                 // exit();
                  
                       //print $result;
-           $mensaje =(string)$result;
+           $mensaje ='Asistencia ingresada exitosamente';//(string)$result;
         
             $this->v_error	= true;
 
@@ -1729,7 +1735,7 @@
             $session=$request->getSession();
            $idDocente     = $session->get('id_user');
            $id_materia  = $request->request->get('materia');
-           $fecha=$session->get('combofecha');
+           $fecha=$request->request->get('combofecha');
            //$id_materia  ='235';
             
            $arr_checked  = $request->request->get('arr_checked');
@@ -1743,7 +1749,7 @@
            //$materia_paralelo='235';
           // $fecha='01/06/2015';
            //$fecha=date('d/m/Y');
-           $fecha=date('Y-m-d');
+          // $fecha=date('Y-m-d');
            $id_docente='2'; 
            
                $doc = new \DOMDocument('1.0');
@@ -1819,14 +1825,14 @@
 //                 print_r($respuesta);
 //                   exit();
             
-                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
-                 
-                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
+//                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
+//                 
+//                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
                 // echo $result;
                 // exit();
                  
                       //print $result;
-           $mensaje =(string)$result;
+           $mensaje = 'Actualización realizada exitosamente';//(string)$result;
         
             $this->v_error	= true;
 

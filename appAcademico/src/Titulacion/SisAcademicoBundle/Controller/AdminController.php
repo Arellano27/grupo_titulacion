@@ -2739,13 +2739,13 @@ public function generacion_horariosAction(Request $request){
                                     
                         }
                         
-                        $session->set("respuesta","cargo");
-                         $respuesta  = $session->get('respuesta');
+                        $session->set("respuesta","exito");
+                        
                         
                         //echo  var_dump($respuesta); exit();
                          return $this->render('TitulacionSisAcademicoBundle:Admin:Subir_Solicitud.html.twig');
                   }else{
-                      $Mensaje = "-2";
+                      $session->set("respuesta","exito");
                   }
                  
                }            

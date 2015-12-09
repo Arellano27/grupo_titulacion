@@ -43,12 +43,12 @@ class UgServices {
 //      $this->clave         = "Tesis2015";
       $this->url           = "http://186.101.66.2:8080/";
       /*Saug Temporal*/
-      $this->usuario       = "CapaVisualPhp";
-      $this->clave         = "T3pZx1520pHp";
+//      $this->usuario       = "CapaVisualPhp";
+//      $this->clave         = "T3pZx1520pHp";
 
-       //$this->source        = "jdbc/saugProcTmp";
+      // $this->source        = "jdbc/saugProcTmp";
       $this->source        = "jdbc/procedimientosSaug";
-       //$this->sourceConsultas  = "jdbc/saugConsTmp";
+     //  $this->sourceConsultas  = "jdbc/saugConsTmp";
 
       $this->sourceConsultas = "jdbc/consultasSaug";
       $this->urlConsulta   = "consultasJPA/ServicioWebConsultas?wsdl";
@@ -71,7 +71,8 @@ class UgServices {
       $this->tipo    = "8";
       $this->urlWS   = $this->url.$this->urlProcedim;
       $trama         = "<usuario>".$username."</usuario><contrasena>".$password."</contrasena>";
-      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
+      $response      = $this->ws->doRequestSreReceptaTransacionProcedimientos
+              ($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host);
 
       return $response;
    }#end function
@@ -891,6 +892,7 @@ XML;
 
         $XML = null;
 
+        //echo $trama."-". $source."-". $tipo."-". $usuario."-". $clave."-". $url."-". $host;
 
         $response = $ws->doRequestConsultaAlumnos($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML);
 
@@ -903,8 +905,8 @@ XML;
     public function Docentes_ingresoNotas($trama) {
         $ws = new AcademicoSoap();
         $tipo = "14";
-        $usuario = "CapaVisual";
-        $clave = "123";
+        $usuario = $this->usuario;
+        $clave = $this->clave;
         $source = $this->source;
         $url = $this->url . $this->urlProcedim;
         $host = $this->host;
@@ -961,11 +963,15 @@ XML;
             <respuestaConsulta>
                <registros>
                   <registro>
-                     <fecha>2015-11-24</fecha>
+                     <fecha>2015-12-06</fecha>
+                     <ingreso>1</ingreso>
+                  </registro>
+                <registro>
+                     <fecha>2015-12-04</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                   <registro>
-                     <fecha>2015-10-28</fecha>
+                     <fecha>2015-12-01</fecha>
                      <ingreso>1</ingreso>
                   </registro>
                </registros>
@@ -976,7 +982,7 @@ XML;
 </soap:Envelope>
 XML;
 
-       $XML =null;
+      // $XML =null;
 
         $response = $ws->doRequestConsultaFechas($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML);
 
