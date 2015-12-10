@@ -188,3 +188,6 @@ admin_pdf_ordenpago:
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfordenpago}
     
 
+admin_accesos_secretaria:
+    path:     /secretariado
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:accesos_secretaria }

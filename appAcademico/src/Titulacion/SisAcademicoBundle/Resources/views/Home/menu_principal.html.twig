@@ -75,11 +75,17 @@
           <a href="{{path('estudiantes_notas_actuales')}}"><i class="fa fa-child"></i></a>
         </li>
          {% endif %}
-         {% if app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm %}
+         {% if app.session.get('perfil') == perfilDoc or app.session.get('perfil') == perfilDocAdm %}
         <li>
           <a href="{{path('SisAcademico_Docentes_home')}}"><i class="fa fa-user-plus"></i></a>
         </li>
         {% endif %}
+        {% if app.session.get('perfil') == perfilAdmin or app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm %}
+        <li>
+          <a href="{{path('admin_accesos_secretaria')}}"><i class="fa fa-pencil-square-o"></i></a>
+        </li>
+        {% endif %}
+
       </ul>
     </div>
   </nav>

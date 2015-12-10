@@ -48,10 +48,6 @@
 
           
           {%for event in app.session.get('data_secretario').opcion %}
-              {#{dump(event.id_sg_opcion)}#}
-              {#% if event.id_sg_opcion == ReporteEstudiantePorCarrera %}
-                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Estudiante Por Carrera </a></li>
-              {% endif %#}
               {% if event.id_sg_opcion == ReporteInscritosMatriculados %}
                 <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Inscritos Matriculados </a></li>
               {% endif %}
@@ -70,16 +66,7 @@
               {% if event.id_sg_opcion == AnulacionMateria %}
                 <li><a href="{{path('admin_anulacion')}}"><i class="fa fa-circle-o"></i> Anulacion Materia </a></li>
               {% endif %}
-               {#{% if event.id_sg_opcion == AnulacionMateria %}
-                <li><a href="{{path('admin_generacion_horario_examen')}}"><i class="fa fa-circle-o"></i> Generacion Horario Examen </a></li>
-              {% endif %}#}
           {% endfor %}
-          <!-- <li><a href="{#{path('admin_academico_home')}#}"><i class="fa fa-circle-o"></i> Calendario Academico </a></li> -->
-          <!-- <li><a href="{#{path('admin_carreras_ordenpago')}#}"><i class="fa fa-circle-o"></i> Orden de Pago </a></li> -->
-          <!-- <li><a href="{#{path('admin_inscripcion')}#}"><i class="fa fa-circle-o"></i> Inscripcion </a></li> -->
-          <!-- <li><a href="{#{path('admin_anulacion')}#}"><i class="fa fa-circle-o"></i> Anulaciones </a></li> -->
-          <!-- <li><a href="{#{path('admin_academico_estudiante_carrera')}#}"><i class="fa fa-circle-o"></i> Estudiantes por Carrera</a></li> -->
-          {# <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i>Materias Aprobadas por Estudiante</a></li> #}
         </ul>
       </li>
      
