@@ -7,6 +7,40 @@
 
                 <div class="col-lg-12">
                     <div class="table-responsive">
+
+                      {%if (identificacion!='' and EstadoAlumno=='REGISTRADO' )%}
+                        <table  align='center' border='0' id="table-documentos">   
+                            <thead> 
+                                <tr>
+                                    <td colspan='3' align='center'> <input    type="label" placeholder="Documentación requerida" disabled STYLE="color: #000; font-family: Verdana; font-weight: bold; font-size: 12px; background-color: #0B2161;" text-align='center' ></td>
+                                </tr>
+                            </thead>
+                            <tr>      
+                                <td>       
+                                    <input type="checkbox" name="matricular_select" value="" id="selchk_cedula" onclick="Seleccion()"> <b>Cédula de Identidad</b>
+                                </td>
+                                <td >&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" name="matricular_select" value="" id="selchk_votacion" onclick="Seleccion()"> <b>Papeleta de Votación</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="matricular_select" value="" id="selchk_foto" onclick="Seleccion()"> <b>Fotos</b>
+                                </td>
+                                <td >&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <input type="checkbox" name="matricular_select" value="" id="selchk_hoja" onclick="Seleccion()"> <b>Hoja de inscripción </b>
+                                </td>
+                            </tr>
+                            <tr>
+                              <td >&nbsp;&nbsp;&nbsp;</td>
+                              <td >&nbsp;&nbsp;&nbsp;</td>
+                              <td >&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+
+                        </table>
+                      {% endif %}
                     
                     <table  align='center' border='1' id="table-listarpago">
                         <thead>
@@ -36,17 +70,8 @@
                            
                                     <tr>
                                       <td width='5%' colspan='3' align="center">
-                                           {% if (identificacion!='' and EstadoAlumno=='REGISTRADO' )%}
-                                              
-                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_cedula" onclick="Seleccion()"> <b>Cédula de Identidad</b>
-                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_votacion" onclick="Seleccion()"> <b>Papeleta de Votación</b>
-                                                   
-                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_foto" onclick="Seleccion()"> <b>Fotos</b>
-                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_hoja" onclick="Seleccion()"> <b>Hoja de inscripción </b>
-
-                                              
-                                              {% endif %}
-                                              </td>
+                                           
+                                       </td>
                                             <td width='5%' colspan='2' align="right">
                                               {% if (EstadoAlumno=='REGISTRADO')%}
                                              
@@ -75,13 +100,15 @@
 </div>
 <script>
         var Indicaestado='{{EstadoAlumno}}';
+        var idEstudiante='{{idUsuarioEst}}';
          $(document).ready(function() {
+
             $("#btnlegalorden").attr("disabled", true);
             //$('#btnlegalorden').addClass('buttonDisabled');
-            if (Indicaestado=='REGISTRADO')
+            if (Indicaestado=='REGISTRADO' || idEstudiante=='0')
                 $("#btnpdfordenpag").hide(); 
             else
-              $("#btnpdfordenpag").show(); 
+                $("#btnpdfordenpag").show(); 
           })
 
 
