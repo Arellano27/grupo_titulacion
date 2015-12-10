@@ -1,21 +1,18 @@
  
 <div class="col-lg-12 divordentemp">
-    <h4 class="StepTitle" align="center" >Listado de Órdenes</h4>
         <div class="panel panel-default">
             <!-- /.panel-heading -->
             <div class="panel-body">
 
                 <div class="col-lg-12">
                     <div class="table-responsive">
-                    <table  align='center' border='1' id="table-listarpago">
-                        <thead>
-                            <tr>
-                                <td colspan='5'><input   class="form-control" id="disabledInput" type="text" placeholder="Estudiante : {{ estudiante }} Identificación : {{ identificacion }}" disabled STYLE="color: #FFFFFF; font-family: Verdana; font-weight: bold; font-size: 15px; background-color: #0B2161;" > </td>
-                            </tr>
+                    <table  align='center' class="table table-bordered table-hover" id="table-listarpago">
+                    <caption STYLE="text-align:center;font-size: 15px;"><label>{{ estudiante }}    -    Nº. Identificación: {{ identificacion }}</label></caption>
+                        <thead style="background-color: #3C8DBC;color:#fff;">
                             <tr>
                                 <th style="text-align:center" >Ciclo</th>
                                 <th style="text-align:center" >N° de Orden</th>
-                                <th style="text-align:center">Fecha Maxima de Pago</th>
+                                <th style="text-align:center">Fecha Máxima de Pago</th>
                                 <th style="text-align:center">Valor</th>
                                 <th style="text-align:center">Sel.</th>
                             </tr>
@@ -45,21 +42,16 @@
                             {% endif %}
                            
                         </tbody>
-                        <tfoot>
-                            {% if cuenta==1 %}
-                                {% if banderalegalizar==1 %}
-                            
-                                    <tr>
-                                            <td width='5%' colspan='5' align="right">
-                                              <!--   <input type="submit" name="legalizaorden" id="btnlegalorden" value="Legalizar"></td> -->
-                                              <a class="btn btn-success " id='btnlegalorden'>Legalizar</a>
-                                            </td>
-                                    </tr>
-                                {% endif %}        
-                            {% endif %}
-                        </tfoot>
+                        <tfoot></tfoot>
                     
                     </table>
+                    <div class="col-lg-12" style="margin-top:10px;"><div class="col-lg-10"></div><div class="col-lg-2" style="right:-15px; padding-top: 6px; font-weight: bold;">
+                      {% if cuenta==1 %}
+                                {% if banderalegalizar==1 %}
+                                              <a class="btn btn-success " id='btnlegalorden'>Legalizar</a>
+                                {% endif %}        
+                            {% endif %}
+                    </div></div>
                 </div>
                 </div>
                 <!-- /.table-responsive -->

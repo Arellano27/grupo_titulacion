@@ -215,7 +215,7 @@ function login(){
                                         case '{{perfilAdmin}}':
                                             // mensaje_cisc( "error", "Perfil NO habilitado");
                                             $.growl({ title: "Bienvenido!", message: nombreUsuario });
-                                            location.href = '{{path('admin_anulacion')}}';
+                                            location.href = '{{path('admin_accesos_secretaria')}}';
                                             break;
                                         case '{{perfilEstDoc}}':
                                             $.growl({ title: "Bienvenido!", message: nombreUsuario });
@@ -223,11 +223,11 @@ function login(){
                                             break;
                                         case '{{perfilEstAdm}}':
                                             $.growl({ title: "Bienvenido!", message: nombreUsuario });
-                                            location.href = '{{path('estudiantes_notas_actuales')}}';
+                                            location.href = '{{path('admin_accesos_secretaria')}}';
                                             break;
                                         case '{{perfilDocAdm}}':
                                             $.growl({ title: "Bienvenido!", message: nombreUsuario });
-                                            location.href = '{{path('SisAcademico_Docentes_home')}}';
+                                            location.href = '{{path('admin_accesos_secretaria')}}';
                                             break;
                                         case '{{perfilCordi}}':
                                             // mensaje_cisc( "error", "Perfil NO habilitado");

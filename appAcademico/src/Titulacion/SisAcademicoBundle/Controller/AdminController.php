@@ -35,6 +35,10 @@ class AdminController extends Controller
         return $this->render('TitulacionSisAcademicoBundle:Admin:cambio_password.html.twig', array());
     }
 
+    public function accesos_secretariaAction(){
+        return $this->render('TitulacionSisAcademicoBundle:Admin:accesos_secretaria_principal.html.twig', array());
+    }
+
      public function cambio_password_intAction(Request $request){
       $session=$request->getSession();
        if ($session->has("id_user"))

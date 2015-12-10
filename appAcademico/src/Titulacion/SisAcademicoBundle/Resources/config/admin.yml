@@ -190,3 +190,6 @@ admin_anulacion_negar:
     path:     /anulacion_negar
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:anulacion_negar }
 
+admin_accesos_secretaria:
+    path:     /secretariado
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:accesos_secretaria }
