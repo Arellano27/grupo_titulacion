@@ -329,19 +329,7 @@ class HomeController extends Controller
 
             if ($session->has("perfil")) {
                 if($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilDocAdm){#docente
-                     $idDocente     = 1;
-                     $datosCarreras =  array(
-                                          array( 'idCarrera' => '135', 'nombreCarrera'=>'Ingeniería en Sistemas Computaciones', 'order'=>'One' ),
-                                          array( 'idCarrera' => '246', 'nombreCarrera'=>'Ingeniería Química', 'order'=>'Two' ),
-                                          array( 'idCarrera' => '789', 'nombreCarrera'=>'Ingeniería Civil', 'order'=>'Three' )
-                                       );
-                     $datosDocente  = array( 'idDocente' => $idDocente );
-
-                     return $this->render('SisAcademicoBundle:Docentes:listadoCarreras.html.twig',
-                                                array(
-                                                        'data' => array('datosDocente' => $datosDocente,  'datosCarreras' => $datosCarreras)
-                                                     )
-                                            );
+                     return $this->redirect($this->generateUrl('SisAcademico_Docentes_home'));
                   }elseif ($session->get('perfil') == $perfilEst || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilEstAdm) {
                       return $this->redirect($this->generateUrl('estudiantes_notas_actuales'));
                   }
@@ -377,7 +365,7 @@ class HomeController extends Controller
 
         $this->get('session')->getFlashBag()->add(
                                 'mensaje',
-                                'Se ha cerrado sessión exitosamente, gracias por visitarnos'
+                                'Se ha cerrado sesión exitosamente, gracias por visitarnos'
                             );
          $pagina = 1;
                 $services = '';
