@@ -186,5 +186,10 @@ admin_cargar_pagina:
 admin_pdf_ordenpago:
     pattern:  /pdfordenpago/{idEstudiante}/{idCarrera}/{ciclo}/{carrera}/{identificacion}
     defaults: { _controller: TitulacionSisAcademicoBundle:Admin:pdfordenpago}
-    
+admin_anulacion_negar:
+    path:     /anulacion_negar
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:anulacion_negar }
 
+admin_accesos_secretaria:
+    path:     /secretariado
+    defaults: { _controller: TitulacionSisAcademicoBundle:Admin:accesos_secretaria }

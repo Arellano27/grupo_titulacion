@@ -42,7 +42,7 @@
                             
                     <tr>
                             <td width='5%' colspan='6' align="right">
-                              <a class="btn btn-success " id='btnsolanula'>Legalizar</a>
+                              <a class="btn btn-success " id='btnnegarsol'>Rechazar Solicitud</a> <a class="btn btn-success " id='btnsolanula'>Legalizar</a>
                             </td>
                     </tr>
                
@@ -52,6 +52,7 @@
   <script>
          $("#btnsolanula").on("click",function(event){
                 $("#btnsolanula").attr("disabled", true);
+                $("#btnnegarsol").attr("disabled", true);
                 var idSolicitud = "";
                 var IdCurso = "";
                 var idMateria = "";
@@ -98,16 +99,22 @@
                             })
                                  var obj_data = {'arrMaterias': myArray,'idCarrera':idCarrera,'idCiclo':idCiclo,'idSolicitudCab':idSolicitudCab};
                                  var jumpAction = '{{path('admin_anulacion_detalle_2')}}';
+                                 var modelessSetanula;
                                   $.ajax({
                                      url:   jumpAction,
                                      data: obj_data,
                                      type:  'post',
                                      async: true,
                                      beforeSend: function () {
+                                      modelessSetanula= new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             buttons     : {}
+                                                          });
                               
                                      },
                                      success:  function (dataResponse) {
-                                        
+                                        modelessSetanula.close();
                                        var respuesta=jQuery.parseJSON(dataResponse);
                                         console.log(respuesta);
                                        if (respuesta.codigo_error!=1)
@@ -125,6 +132,7 @@
                                        else
                                        {
                                             $('#btnsolanula').remove();
+                                            $('#btnnegarsol').remove();
                                            modelessActualizadOrden2= new $.flavr({
                                                modal   : true,
                                                content : 'Proceso Exitoso',
@@ -137,6 +145,7 @@
                                      },
                                       error: function(dataResponse)
                                       {
+                                        modelessSetanula.close();
                                         form="accordion";
                                         msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
                                                         $( '#'+form ).append( msg_alert );
@@ -147,5 +156,112 @@
                               });
                             
 
-              });     
+              });   
+      $("#btnnegarsol").on("click",function(event){
+                $("#btnnegarsol").attr("disabled", true);
+                $("#btnsolanula").attr("disabled", true);
+                var idSolicitud = "";
+                var IdCurso = "";
+                var idMateria = "";
+                var Materia = "";
+                var idCiclo='{{idCiclo}}';
+                var idCarrera='{{idCarrera}}';
+                var idSolicitudCab='{{IdSolicitudCab}}';
+                var valida = 0;
+                var myArray = {};
+                var elementochk = document.getElementsByName("Sel_anula_materia"); 
+                        $("#Table_Anulacion_Materia tbody tr").each(function (index) 
+                            {
+                               
+                                if (elementochk[index].checked )
+                                {
+                                    valida=valida+1;
+
+                                    $(this).children("td").each(function (index2) 
+                                    {
+                                        Celda=$(this).attr("id");
+                                        Celda=Celda.split("_");
+                                        Celda=Celda[0];
+                                        //alert(Elemento);
+                                        switch (Celda) 
+                                        {
+                                            case "idSolicitud": idSolicitud = $(this).text()
+                                                    //alert(idMateria);
+                                                     //console.log(idSolicitud);
+                                                    break;   
+                                            case "idMateria": idMateria = $(this).text()
+                                                    //alert(idMateria);
+                                                    break;          
+                                        }
+                                         
+                                    })
+                                     
+                                        var arrValores = {};
+                                         arrValores["idSolicitud"]=idSolicitud;
+                                         arrValores["idMateria"]=idMateria;
+                                         myArray[index]=arrValores;
+                                    
+                                }
+                               
+                            })
+                                 var obj_data = {'arrMaterias': myArray,'idCarrera':idCarrera,'idCiclo':idCiclo,'idSolicitudCab':idSolicitudCab};
+                                 var jumpAction = '{{path('admin_anulacion_negar')}}';
+                                 var modelessSetnegaranula;
+                                  $.ajax({
+                                     url:   jumpAction,
+                                     data: obj_data,
+                                     type:  'post',
+                                     async: true,
+                                     beforeSend: function () {
+                                       modelessSetnegaranula= new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             buttons     : {}
+                                                          });
+                              
+                                     },
+                                     success:  function (dataResponse) {
+                                        modelessSetnegaranula.close();
+                                       var respuesta=jQuery.parseJSON(dataResponse);
+                                        console.log(respuesta);
+                                       if (respuesta.codigo_error!=1)
+                                       {
+                                            $("#btnsolanula").attr("disabled", false);
+                                            modelessActualizadOrden2= new $.flavr({
+                                                   modal   : true,
+                                                   content : 'No se ha podido realizar la operación',
+                                                   buttons     : {
+                                                      primary : { text: 'Aceptar', 
+                                                      style: 'primary' }
+                                                   }
+                                                });
+                                       }
+                                       else
+                                       {
+                                            $('#btnnegarsol').remove();
+                                            $('#btnsolanula').remove();
+                                           modelessActualizadOrden2= new $.flavr({
+                                               modal   : true,
+                                               content : 'Proceso Exitoso',
+                                               buttons     : {
+                                                  primary : { text: 'Aceptar', 
+                                                  style: 'primary' }
+                                               }
+                                            });
+                                       }
+                                     },
+                                      error: function(dataResponse)
+                                      {
+                                        modelessSetnegaranula.close();
+                                        form="accordion";
+                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                        $( '#'+form ).append( msg_alert );
+                                                        $('#modal-'+form).modal('show');
+                                      },
+
+                                 dataType:'text'
+                              });
+                            
+
+              });  
 </script>

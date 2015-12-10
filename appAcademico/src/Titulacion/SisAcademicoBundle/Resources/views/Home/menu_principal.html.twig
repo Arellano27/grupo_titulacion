@@ -52,6 +52,12 @@
 
               </p>
             </li>
+            <!-- Menu Body -->
+                  <li class="user-body">
+                    <div class="col-xs-12 text-center">
+                      <a href="{{path('admin_academico_cambio_pass_int')}}">Cambio Contraseña</a>
+                    </div>
+                  </li>
             <!-- Menu Footer-->
             <li class="user-footer">
                <div  id="editarPerfil" id="editarPerfil" class="pull-left" >
@@ -69,14 +75,17 @@
           <a href="{{path('estudiantes_notas_actuales')}}"><i class="fa fa-child"></i></a>
         </li>
          {% endif %}
-         {% if app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm %}
+         {% if app.session.get('perfil') == perfilDoc or app.session.get('perfil') == perfilDocAdm or  app.session.get('perfil') == perfilEstDoc %}
         <li>
           <a href="{{path('SisAcademico_Docentes_home')}}"><i class="fa fa-user-plus"></i></a>
         </li>
         {% endif %}
+        {% if app.session.get('perfil') == perfilAdmin or app.session.get('perfil') == perfilEstAdm or app.session.get('perfil') == perfilDocAdm %}
         <li>
-          <a href="{{path('admin_academico_cambio_pass_int')}}"><i class="fa fa-cog"></i></a>
+          <a href="{{path('admin_accesos_secretaria')}}"><i class="fa fa-pencil-square-o"></i></a>
         </li>
+        {% endif %}
+
       </ul>
     </div>
   </nav>
