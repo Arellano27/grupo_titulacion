@@ -971,17 +971,17 @@
           
           /* print_r($datosParciales);*/
               // $ingreanota='0';
-               if($ingreanota=='0'){
+               if($ingreanota=='1'){
                    if(count($arr_datos) > 0){
-//            $profesor=$datosParciales->registro->profesor;
-//            $materia=$datosParciales->registro->materia;
-//            $paralelo=$datosParciales->registro->paralelo;
-//            $parcial=$datosParciales->registro->periodos->periodo->parcial;
+            $profesor=$datosParciales->registro->profesor;
+            $materia=$datosParciales->registro->materia;
+            $paralelo=$datosParciales->registro->paralelo;
+            $parcial=$datosParciales->registro->periodos->periodo->parcial;
             
-            $profesor='CRUZ BONITO STEVEN ANDRES';
-            $materia='DESARROLLO DE APLICACIONES WEB';
-            $paralelo='S6A';
-            $parcial='1';
+         //   $profesor='CRUZ BONITO STEVEN ANDRES';
+          //  $materia='DESARROLLO DE APLICACIONES WEB';
+         //   $paralelo='S6A';
+         //   $parcial='1';
             
 //            $profesor = $session->get('nom_usuario'); 
 //            $materia= $session->get('nom_materia');
