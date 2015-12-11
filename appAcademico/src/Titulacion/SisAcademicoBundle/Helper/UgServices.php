@@ -924,8 +924,8 @@ XML;
     public function Docentes_ingresoAsistencia($trama) {
         $ws = new AcademicoSoap();
         $tipo = "16";
-        $usuario = "CapaVisual";
-        $clave = "123";
+        $usuario = $this->usuario;
+        $clave = $this->clave;
         $source = $this->source;
         $url = $this->url . $this->urlProcedim;
         $host = $this->host;
