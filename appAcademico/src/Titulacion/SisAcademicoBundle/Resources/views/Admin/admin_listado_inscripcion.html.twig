@@ -1,10 +1,13 @@
 
-<div class="col-lg-12 divordentemp">
+<div class="row">
         <div class="panel panel-default">
             <!-- /.panel-heading -->
             <div class="panel-body">
-
-                <div class="col-lg-12">
+                {% if (identificacion!='' and EstadoAlumno=='REGISTRADO' )%}
+                <div class="col-md-8">
+                 {% else  %}
+                 <div class="col-md-12">
+                 {%  endif %}
                     <div class="table-responsive">
                     
                     <table  align='center' class="table table-bordered table-hover" id="table-listarpago">
@@ -29,38 +32,48 @@
                                 </tr>
                             {% endfor %}  
                         </tbody>
-                        <tfoot>
-                           
-                                    <tr>
-                                      <td width='5%' colspan='3' align="center">
-                                           {% if (identificacion!='' and EstadoAlumno=='REGISTRADO' )%}
-                                              
-                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_cedula" onclick="Seleccion()"> <b>Cédula de Identidad</b>
-                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_votacion" onclick="Seleccion()"> <b>Papeleta de Votación</b>
-                                                   
-                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_foto" onclick="Seleccion()"> <b>Fotos</b>
-                                                   <input type="checkbox" name="matricular_select" value="" id="selchk_hoja" onclick="Seleccion()"> <b>Hoja de inscripción </b>
-
-                                              
-                                              {% endif %}
-                                              </td>
-                                            <td width='5%' colspan='2' align="right">
-                                              {% if (EstadoAlumno=='REGISTRADO')%}
-                                             
-                                              <a class="btn btn-primary" id='btnlegalorden'>Inscribir</a>
-                                              
-                                              {% endif %}
-                                              
-                                            </td>
-                                    </tr>
-                           
-                        </tfoot>
+                        <tfoot></tfoot>
                     
                     </table>
-                    <div class="col-lg-12" style="margin-top:10px;"><div class="col-lg-10"></div><div class="col-lg-2" style="right:-5px; padding-top: 6px; font-weight: bold;">
-                      <a class="btn btn-success" id='btnpdfordenpag' href="{{ path('admin_pdf_ordenpago',{ 'idEstudiante': idUsuarioEst,'idCarrera':idCarrera,'ciclo':idCiclo,'carrera':carrera,'identificacion':identificacion}) }}" target="_blank">Imprimir Orden de Pago</a>
-                    </div></div>
+                    <div class="col-lg-12" style="margin-top:10px;">
+                      <div class="col-lg-8"></div>
+                      <div class="col-lg-4" style="right:-5px; padding-top: 6px; font-weight: bold;">
+                      <a class="btn btn-success" id='btnpdfordenpag' href="{{ path('admin_pdf_ordenpago',{ 'idEstudiante': idUsuarioEst,'idCarrera':idCarrera,'ciclo':idCiclo,'carrera':carrera,'identificacion':identificacion}) }}" target="_blank">Imprimir Orden de Pago</a></div>
+                    </div>
                 </div>
+                </div>
+
+
+                  {% if (identificacion!='' and EstadoAlumno=='REGISTRADO' )%}
+                  <div class="col-md-4">
+                  <div><p>&nbsp;</p></div>
+                  <div class="box box-primary">
+                    <div class="box-header with-border"><i class="fa fa-pencil-square-o"></i><h3 class="box-title">Requisitos</h3></div>
+                    <div><p>&nbsp;</p></div>
+
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-9">
+                      <table>
+                        <tbody>
+                          
+                          <tr><td><input type="checkbox" name="matricular_select" value="" id="selchk_cedula" onclick="Seleccion()"> <b>Cédula de Identidad</b></td></tr>
+                          <tr><td><input type="checkbox" name="matricular_select" value="" id="selchk_votacion" onclick="Seleccion()"> <b>Papeleta de Votación</b></td></tr>
+                          <tr><td><input type="checkbox" name="matricular_select" value="" id="selchk_foto" onclick="Seleccion()"> <b>Fotos</b></td></tr>
+                          <tr><td><input type="checkbox" name="matricular_select" value="" id="selchk_hoja" onclick="Seleccion()"> <b>Hoja de inscripción </b></td></tr>
+                         
+                        </tbody>
+                      </table>
+                      </div>
+
+                      
+                      <div><p>&nbsp;</p></div>
+                      <div><p>{% if (EstadoAlumno=='REGISTRADO')%}<a class="btn btn-primary" id='btnlegalorden'>Inscribir</a>{% endif %}</p></div>
+                      
+
+                  </div><!-- /.box -->  
+                </div>
+
+                 {% endif %}
                 </div>
                 <!-- /.table-responsive -->
             </div>

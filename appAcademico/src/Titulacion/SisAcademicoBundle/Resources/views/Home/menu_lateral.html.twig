@@ -49,22 +49,22 @@
           
           {%for event in app.session.get('data_secretario').opcion %}
               {% if event.id_sg_opcion == ReporteInscritosMatriculados %}
-                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Inscritos & Matriculados </a></li>
+                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Inscritos & Matriculados </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ReporteMateriasAprobada %}
-                <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Reporte Materias Aprobadas </a></li>
+                <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Materias Aprobadas </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaEstudiantesMateriaParalelo %}
-                <li><a href="{{path('admin_listar_estudiantes')}}"><i class="fa fa-circle-o"></i> Reporte Estudiantes por Docentes </a></li>
+                <li><a href="{{path('admin_listar_estudiantes')}}"><i class="fa fa-circle-o"></i> Estudiantes por Docente </a></li>
               {% endif %}
               {% if event.id_sg_opcion == AprobacionInscripcion %}
-                <li><a href="{{path('admin_inscripcion')}}"><i class="fa fa-circle-o"></i> Proceso Registro de Inscripción </a></li>
+                <li><a href="{{path('admin_inscripcion')}}"><i class="fa fa-circle-o"></i> Registro de Inscripción </a></li>
               {% endif %}
               {% if event.id_sg_opcion == LegalizacionOrdenPago %}
-                <li><a href="{{path('admin_carreras_ordenpago')}}"><i class="fa fa-circle-o"></i> Proceso Legalización Ordenes </a></li>
+                <li><a href="{{path('admin_carreras_ordenpago')}}"><i class="fa fa-circle-o"></i> Legalización de Órdenes </a></li>
               {% endif %}
               {% if event.id_sg_opcion == AnulacionMateria %}
-                <li><a href="{{path('admin_anulacion')}}"><i class="fa fa-circle-o"></i> Proceso Registros de Anulación </a></li>
+                <li><a href="{{path('admin_anulacion')}}"><i class="fa fa-circle-o"></i> Registros de Anulación </a></li>
               {% endif %}
           {% endfor %}
         </ul>

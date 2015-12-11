@@ -83,6 +83,8 @@
 }
 
   $(document).ready(function() { 
+
+  
     $('.tabscarrera').click(function() {
 
     var splitCarrera =$(this).attr('id').split('_'); 
@@ -90,11 +92,12 @@
     var ciclo  = splitCarrera[2];
     var materiasAprobadasEstudiantes;
     var materiasAprobadasEstudiantesChange;
+    $('#ident_'+carrera).val('');
+    $("#bar-chart").empty();
 
-    $("#txt_nombre_"+carrera).html('Debe buscar un estudiante.');
     if($('#valida_'+carrera).val() == "0")
     {
-      $('#valida_'+carrera).val("1");
+
       $('#tblEstudiantes_'+carrera).DataTable({
         "paging": true,
         "lengthChange": false,
@@ -122,6 +125,22 @@
           }
         }
       });
+
+    }else{
+
+         var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+              oTable.fnClearTable();
+
+    }
+
+    $("#txt_nombre_"+carrera).html('Debe buscar un estudiante.');
+
+    if($('#valida_'+carrera).val() == "0")
+    {
+      
+                  
+      $('#valida_'+carrera).val("1");
+      
       $('#btn_buscar_'+carrera).click(function() {
         var identificacion = $('#ident_'+carrera).val();
 
@@ -181,6 +200,8 @@
                 addData.push($(this).attr('promedio')[0]); 
                 oTable.fnAddData(addData);
               });
+
+              $("#bar-chart").empty();
               var obj = [];
               $(dataResponse.porcentajes).each(function(index){
                 obj.push([$(this).attr('descripcion')[0],$(this).attr('valor')[0]]);
@@ -236,6 +257,7 @@
             }else{
               var oTable = $('#tblEstudiantes_'+carrera).dataTable();
               oTable.fnClearTable();
+              $("#bar-chart").empty();
             }
           },
         });

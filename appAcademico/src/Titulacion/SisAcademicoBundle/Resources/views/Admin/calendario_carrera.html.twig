@@ -68,7 +68,7 @@
               </div><!-- /. box -->
               <div class="box box-solid">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Create Event</h3>
+                  <h3 class="box-title">Crear Evento</h3>
                 </div>
                 <div class="box-body">
                   <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
@@ -90,9 +90,9 @@
                     </ul>
                   </div><!-- /btn-group -->
                   <div class="input-group">
-                    <input id="new-event" type="text" class="form-control" placeholder="Event Title">
+                    <input id="new-event" type="text" class="form-control" placeholder="Título del Evento">
                     <div class="input-group-btn">
-                      <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Add</button>
+                      <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Agregar</button>
                     </div><!-- /btn-group -->
                   </div><!-- /input-group -->
                 </div>
@@ -118,8 +118,39 @@
     <script type="text/javascript">
       jQuery(document).ready(function() {
 
-          
-          $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+        
+          $('#reservationtime').daterangepicker({ 
+            locale :{
+              fromLabel: "Desde",
+              applyLabel: "Aplicar",
+              cancelLabel: "Cancelar",
+              fromLabel: "Desde",
+              toLabel: "Hasta",
+              daysOfWeek: [
+                  "Do",
+                  "Lu",
+                  "Ma",
+                  "Mi",
+                  "Ju",
+                  "Vi",
+                  "Sa"
+              ],
+              monthNames: [
+                  "Enero",
+                  "Febrero",
+                  "Marzo",
+                  "Abril",
+                  "Mayo",
+                  "Junio",
+                  "Julio",
+                  "Agosto",
+                  "Septiembre",
+                  "Octubre",
+                  "Noviembre",
+                  "Diciembre"
+              ]
+            },
+            timePicker: true, timePickerIncrement: 30,format: 'MM/DD/YYYY h:mm A'});
           function drop(ev) {
               ev.preventDefault();
               var data = ev.dataTransfer.getData("text");
@@ -182,16 +213,17 @@
 
         $('#calendar').fullCalendar({
           utc: true,
-          header: {
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: 'month,agendaWeek,agendaDay'
+           lang: 'es',
+           header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
           },
           buttonText: {
-                  today: 'today',
-                  month: 'month',
-                  week: 'week',
-                  day: 'day'
+            today: 'Hoy',
+            month: 'Mes',
+            week: 'Semana',
+            day: 'Día'
           },
           editable: true,
           droppable: true,
@@ -250,7 +282,7 @@
                 '       </select>' +
                 '   </div>' +
                 '   <div class="form-group">' +
-                '       <label>Date and time range:</label>' +
+                '       <label>Rango de Fechas:</label>' +
                 '       <div class="input-group">' +
                 '       <div class="input-group-addon">' +
                 '       <i class="fa fa-clock-o"></i>' +
@@ -271,6 +303,9 @@
                     position :  'top-mid',
                     content     : '',
                     dialog      : 'form',
+                    buttons : {
+                    submit  :   { text: 'Aceptar'},
+                    cancel   :   { text: 'Cancelar'}},
                     form        : { content: html, method: 'post' },
                     onSubmit    : function( $container, $form ){
 
@@ -293,7 +328,42 @@
                         return false;
                     }
                 });
-          $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+
+             $('#reservationtime').daterangepicker({ 
+            locale :{
+              fromLabel: "Desde",
+              applyLabel: "Aplicar",
+              cancelLabel: "Cancelar",
+              fromLabel: "Desde",
+              toLabel: "Hasta",
+              daysOfWeek: [
+                  "Do",
+                  "Lu",
+                  "Ma",
+                  "Mi",
+                  "Ju",
+                  "Vi",
+                  "Sa"
+              ],
+              monthNames: [
+                  "Enero",
+                  "Febrero",
+                  "Marzo",
+                  "Abril",
+                  "Mayo",
+                  "Junio",
+                  "Julio",
+                  "Agosto",
+                  "Septiembre",
+                  "Octubre",
+                  "Noviembre",
+                  "Diciembre"
+              ]
+            },
+            timePicker: true, timePickerIncrement: 30,format: 'MM/DD/YYYY h:mm A'});
+
+
+
           $("#titulo").val(calEvent.title);
           // $("#reservationtime").val(calEvent.start +'-'+calEvent.end);
           },
