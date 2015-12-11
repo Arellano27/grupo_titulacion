@@ -87,7 +87,7 @@
                                        {% endfor %}
                                        {% set estadoCiclo = '' %}
                                        {% set classEstadoCiclo = '' %}
-                                       {% if dataEstudiante.estadoCiclo == "A"%}
+                                       {#{% if dataEstudiante.estadoCiclo == "A"%}
                                           {% set estadoCiclo = 'APROBADO' %}
                                           {% set classEstadoCiclo = 'label-success' %}
                                        {% elseif dataEstudiante.estadoCiclo == "R" %}
@@ -96,9 +96,10 @@
                                        {% elseif dataEstudiante.estadoCiclo == "NF" %}
                                           {% set estadoCiclo = 'NO FINALIZA' %}
                                           {% set classEstadoCiclo = 'label-info' %}
-                                       {% endif %}   
+                                       {% endif %} #}  
                                        {% if parcialActual|lower == 'todos' %}
-                                          <td style="text-align: center;"><span class="label label-sm {{classEstadoCiclo}}" type="button" style="cursor:default;">{{estadoCiclo}}</span></td>
+                                          {% set classEstadoCiclo = 'label-info' %}
+                                          <td style="text-align: center;"><span class="label label-sm {{classEstadoCiclo}}" type="button" style="cursor:default;">{{dataEstudiante.estadoCiclo}}</span></td>
                                        {% endif %}
                                        
                                     </tr>
