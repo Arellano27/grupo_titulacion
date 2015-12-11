@@ -59,7 +59,9 @@
    });
    
    function mostrarInfoTabsNotas(idContenedor,urlConsulta, parametros){
+      var modelessDocentesTabsNotas;
       var obj_data = parametros;
+      
       $.ajax({
          type: 'post',
          url: urlConsulta,
@@ -68,9 +70,15 @@
          beforeSend: function() { 
             $( "#"+idContenedor ).html("Cargando, espere por favor...");
             $( "#"+idContenedor ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+            modelessDocentesTabsNotas = new $.flavr({
+                                                      modal   : true,
+                                                      content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                      buttons     : {}
+                                                   });
          },
          error: function(){
             //console.log("hay un error");
+            modelessDocentesTabsNotas.close();
             var mensajeErrorNotas   = "Lo sentimos. Se  presentó un error para cargar la consulta de las Notas."
             $( "#"+idContenedor ).html(mensajeErrorNotas);
          },
@@ -83,7 +91,8 @@
             }else{
                $( "#content-"+id ).html(data.html);
             }#}
-            $("#menu-toggle").click();
+            //$("#menu-toggle").click();
+            modelessDocentesTabsNotas.close();
             $( "#"+idContenedor ).html(data);
          }
       });

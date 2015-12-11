@@ -48,44 +48,25 @@
 
           
           {%for event in app.session.get('data_secretario').opcion %}
-              {#{dump(event.id_sg_opcion)}#}
-              {#% if event.id_sg_opcion == ReporteEstudiantePorCarrera %}
-                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Estudiante Por Carrera </a></li>
-              {% endif %#}
               {% if event.id_sg_opcion == ReporteInscritosMatriculados %}
-                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Inscritos Matriculados </a></li>
+                <li><a href="{{path('admin_academico_estudiante_carrera')}}"><i class="fa fa-circle-o"></i> Reporte Inscritos & Matriculados </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ReporteMateriasAprobada %}
-                <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Reporte Materias Aprobada </a></li>
+                <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i> Reporte Materias Aprobadas </a></li>
               {% endif %}
               {% if event.id_sg_opcion == ConsultaEstudiantesMateriaParalelo %}
-                <li><a href="{{path('admin_listar_estudiantes')}}"><i class="fa fa-circle-o"></i> Consult Estud. Materia Paralelo </a></li>
+                <li><a href="{{path('admin_listar_estudiantes')}}"><i class="fa fa-circle-o"></i> Reporte Estudiantes por Docentes </a></li>
               {% endif %}
               {% if event.id_sg_opcion == AprobacionInscripcion %}
-                <li><a href="{{path('admin_inscripcion')}}"><i class="fa fa-circle-o"></i> Aprobacion Inscripcion </a></li>
+                <li><a href="{{path('admin_inscripcion')}}"><i class="fa fa-circle-o"></i> Proceso Registro de Inscripción </a></li>
               {% endif %}
               {% if event.id_sg_opcion == LegalizacionOrdenPago %}
-                <li><a href="{{path('admin_carreras_ordenpago')}}"><i class="fa fa-circle-o"></i> Legalizacion Orden Pago </a></li>
+                <li><a href="{{path('admin_carreras_ordenpago')}}"><i class="fa fa-circle-o"></i> Proceso Legalización Ordenes </a></li>
               {% endif %}
               {% if event.id_sg_opcion == AnulacionMateria %}
-                <li><a href="{{path('admin_anulacion')}}"><i class="fa fa-circle-o"></i> Anulacion Materia </a></li>
-              {% endif %}  
-              {% if event.id_sg_opcion == AnulacionMateria %}
-                <li><a href="{{path('admin_generacion_horario_docente')}}"><i class="fa fa-circle-o"></i> Generacion Horario Docente </a></li>
-                {% endif %}  
-              {% if event.id_sg_opcion == AnulacionMateria %} 
-               <li><a href="{{path('admin_generacion_horarios_examenes')}}"><i class="fa fa-circle-o"></i> Generacion Horario Examen </a></li>
-               {% endif %}  
-               {#{% if event.id_sg_opcion == AnulacionMateria %}
-                <li><a href="{{path('admin_generacion_horario_examen')}}"><i class="fa fa-circle-o"></i> Generacion Horario Examen </a></li>
-              {% endif %}#}
+                <li><a href="{{path('admin_anulacion')}}"><i class="fa fa-circle-o"></i> Proceso Registros de Anulación </a></li>
+              {% endif %}
           {% endfor %}
-          <!-- <li><a href="{#{path('admin_academico_home')}#}"><i class="fa fa-circle-o"></i> Calendario Academico </a></li> -->
-          <!-- <li><a href="{#{path('admin_carreras_ordenpago')}#}"><i class="fa fa-circle-o"></i> Orden de Pago </a></li> -->
-          <!-- <li><a href="{#{path('admin_inscripcion')}#}"><i class="fa fa-circle-o"></i> Inscripcion </a></li> -->
-          <!-- <li><a href="{#{path('admin_anulacion')}#}"><i class="fa fa-circle-o"></i> Anulaciones </a></li> -->
-          <!-- <li><a href="{#{path('admin_academico_estudiante_carrera')}#}"><i class="fa fa-circle-o"></i> Estudiantes por Carrera</a></li> -->
-          {# <li><a href="{{path('admin_academico_estudiante_materias')}}"><i class="fa fa-circle-o"></i>Materias Aprobadas por Estudiante</a></li> #}
         </ul>
       </li>
      
