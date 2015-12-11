@@ -982,7 +982,7 @@ XML;
 </soap:Envelope>
 XML;
 
-      // $XML =null;
+       $XML =null;
 
         $response = $ws->doRequestConsultaFechas($trama, $source, $tipo, $usuario, $clave, $url, $host, $XML);
 
