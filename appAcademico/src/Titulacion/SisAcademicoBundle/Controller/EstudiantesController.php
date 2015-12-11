@@ -1042,7 +1042,7 @@
                          $UgServices = new UgServices;
 
                           $xml1 = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idCarrera,$Idciclo);
-                          //var_dump($xml1);
+
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {

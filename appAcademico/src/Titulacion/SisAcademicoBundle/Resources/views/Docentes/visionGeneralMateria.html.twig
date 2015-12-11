@@ -28,92 +28,97 @@
       $(function () {     
          //Chart de Asistencias - Ciclo completo - INICIO
          $('#hc-bar-asistenciaCiclo').highcharts({
-             chart: {
-                 type: 'column'
-             },
-             title: {
-                 text: 'Porcentaje de asistencias - Ciclo Completo'
-             },
-             subtitle: {
-                 text: '{% if datosAsistenciasGraph.todos is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
-             },
-             xAxis: {
-                 type: 'category'
-             },
-             yAxis: {
-                 title: {
-                     text: 'Cantidad de Estudiantes - Asistencias'
-                 }
+            chart: {
+                type: 'column'
+            },
+            exporting: {
+               enabled : false
+            },
+            title: {
+                text: 'Porcentaje de asistencias - Ciclo Completo'
+            },
+            subtitle: {
+                text: '{% if datosAsistenciasGraph.todos is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Cantidad de Estudiantes - Asistencias'
+                }
 
-             },
-             legend: {
-                 enabled: false
-             },
-             plotOptions: {
-                 series: {
-                     borderWidth: 0,
-                     dataLabels: {
-                         enabled: true,
-                         format: '{point.y:.0f}'
-                     }
-                 }
-             },
-             tooltip: {
-                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                 pointFormat: '<br><span style="color:{point.color}">Rango de {point.name}</span>: <b>{point.y:.0f}</b><br/>'
-             },
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.0f}'
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<br><span style="color:{point.color}">Rango de {point.name}</span>: <b>{point.y:.0f}</b><br/>'
+            },
 
-             series: [{
-               name: 'Estudiantes',
-               colorByPoint: true,
-               data: [{% if datosAsistenciasGraph.todos is not empty %} {{datosAsistenciasGraph.todos|raw}} {%endif%}]
-             }]
+            series: [{
+              name: 'Estudiantes',
+              colorByPoint: true,
+              data: [{% if datosAsistenciasGraph.todos is not empty %} {{datosAsistenciasGraph.todos|raw}} {%endif%}]
+            }]
          });
          //Chart de Asistencias - Ciclo completo - FIN
          
          
          //Chart de Asistencias - Parcial 1 - INICIO
          $('#hc-bar-asistenciaParcial1').highcharts({
-             chart: {
-                 type: 'column'
-             },
-             title: {
-                 text: 'Porcentaje de asistencias - Parcial 1'
-             },
-             subtitle: {
-                 text: '{% if datosAsistenciasGraph.PARCIAL_1 is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
-             },
-             xAxis: {
-                 type: 'category'
-             },
-             yAxis: {
-                 title: {
-                     text: 'Cantidad de Estudiantes - Asistencias'
-                 }
+            chart: {
+                type: 'column'
+            },
+            exporting: {
+               enabled : false
+            },
+            title: {
+                text: 'Porcentaje de asistencias - Parcial 1'
+            },
+            subtitle: {
+                text: '{% if datosAsistenciasGraph.PARCIAL_1 is empty %} No existen datos para mostrar en esta gráfica{%endif%}'
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Cantidad de Estudiantes - Asistencias'
+                }
 
-             },
-             legend: {
-                 enabled: false
-             },
-             plotOptions: {
-                 series: {
-                     borderWidth: 0,
-                     dataLabels: {
-                         enabled: true,
-                         format: '{point.y:.0f}'
-                     }
-                 }
-             },
-             tooltip: {
-                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                 pointFormat: '<br><span style="color:{point.color}">Rango de {point.name}</span>: <b>{point.y:.0f}%</b><br/>'
-             },
-
-             series: [{
-               name: 'Estudiantes',
-               colorByPoint: true,
-               data: [{% if datosAsistenciasGraph.PARCIAL_1 is not empty %} {{datosAsistenciasGraph.PARCIAL_1|raw}} {%endif%}]
-             }]
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.0f}'
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<br><span style="color:{point.color}">Rango de {point.name}</span>: <b>{point.y:.0f}%</b><br/>'
+            },
+            series: [{
+              name: 'Estudiantes',
+              colorByPoint: true,
+              data: [{% if datosAsistenciasGraph.PARCIAL_1 is not empty %} {{datosAsistenciasGraph.PARCIAL_1|raw}} {%endif%}]
+            }]
          });
          //Chart de Asistencias - Ciclo completo - FIN
          
@@ -126,6 +131,9 @@
                     plotBorderWidth: null,
                     plotShadow: false,
                     type: 'pie'
+                },
+                exporting: {
+                   enabled : false
                 },
                 title: {
                     text: 'Estudiantes Aprobados - Ciclo Actual'
@@ -167,6 +175,9 @@
                     plotBorderWidth: null,
                     plotShadow: false,
                     type: 'pie'
+                },
+                exporting: {
+                   enabled : false
                 },
                 title: {
                     text: 'Notas de Estudiantes (%)  - Ciclo Actual'
