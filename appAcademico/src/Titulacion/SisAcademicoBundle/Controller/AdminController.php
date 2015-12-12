@@ -16,8 +16,9 @@ class AdminController extends Controller
 
     public function calendario_carreraAction(Request $request){
 
-
-
+      $session=$request->getSession();
+      if ($session->has("id_user"))
+       {
         $UgServices   = new UgServices;
         $session=$request->getSession();
         $id_usuario = $session->get("id_user");
@@ -29,6 +30,14 @@ class AdminController extends Controller
 
 
         return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array('data' => $rsEventos));
+        }else
+         {
+            $this->get('session')->getFlashBag()->add(
+                                  'mensaje',
+                                  'Los datos ingresados no son válidos'
+                              );
+                return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+          }
     }
 
     public function cambio_passwordAction(){
@@ -116,7 +125,7 @@ class AdminController extends Controller
         #obtenemos los datos enviados por get
 
             $session=$request->getSession();
-              if ($session->has("id_user"))
+          if ($session->has("id_user"))
            {
             $Email= $session->get('mail');
             $Nombre = $session->get('nom_usuario');
