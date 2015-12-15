@@ -54,6 +54,4 @@ class XmlParsero{
 		array_pop( $this->arrOutput );
 	}
 }
-
-
 ?>
