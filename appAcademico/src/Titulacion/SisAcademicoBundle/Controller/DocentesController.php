@@ -59,14 +59,14 @@
             }else{
                $this->get('session')->getFlashBag()->add(
                                 'mensaje',
-                                'Los datos ingresados no son vÃ¡lidos'
+                                'Los datos ingresados no son válidos'
                             );
                return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
             }
          }else{
             $this->get('session')->getFlashBag()->add(
                                 'mensaje',
-                                'Los datos ingresados no son vÃ¡lidos'
+                                'Los datos ingresados no son válidos'
                             );
             return $this->render('TitulacionSisAcademicoBundle:Home:login.html.twig');
         }
@@ -265,13 +265,13 @@
          }
          $UgServices       = new UgServices;
          
-         /*Consulta de la informaciÃ³n de los parciales - INICIO*/
+         /*Consulta de la informacion de los parciales - INICIO*/
          $datosConsultaParciales    = array( 'idCarrera' => $idCarrera);
          $datosParcialesArray       = $UgServices->Docentes_getParcialesCarrera($datosConsultaParciales);
-         /*Consulta de la informaciÃ³n de los parciales - INICIO*/
+         /*Consulta de la informacin de los parciales - INICIO*/
          
          
-         /*Consulta de la informaciÃ³n de las notas - INICIO*/
+         /*Consulta de la informacion de las notas - INICIO*/
          //Consulta todos los parciales, es un WS diferente para consulta por parcial
          if($idParcial == 'todos'){
             $datosConsulta	= array( 'idMateria' => $idMateria,
@@ -291,7 +291,7 @@
          //print_r($datosNotasArray);
          
          $datosReturnArray = $this->procesarListadoNotasEstudiantes($datosNotasArray);
-         /*Consulta de la informaciÃ³n de las notas - FIN*/
+         /*Consulta de la informacion de las notas - FIN*/
 
             
          return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoNotasMateria.html.twig',
@@ -318,10 +318,10 @@
          
          $UgServices       = new UgServices;
          
-         /*Consulta de la informaciÃ³n de los parciales - INICIO*/
+         /*Consulta de la informacion de los parciales - INICIO*/
          $datosConsultaParciales = array( 'idCarrera' => $idCarrera);
          $datosParciales         = $UgServices->Docentes_getParcialesCarrera($datosConsultaParciales);
-         /*Consulta de la informaciÃ³n de los parciales - INICIO*/
+         /*Consulta de la informacion de los parciales - INICIO*/
          
          //$datosAsistencias["ID PARCIAL / TODOS"]
          $datosAsistencias    = array();
@@ -495,7 +495,7 @@
                                     'idParcial' => $idParcial);
 
             $UgServices       = new UgServices;
-            /*Consulta de la informaciÃ³n de las notas - INICIO*/
+            /*Consulta de la informacion de las notas - INICIO*/
             //Consulta todos los parciales, es un WS diferente para consulta por parcial
             if($idParcial == 'todos'){
                $datosConsulta	= array( 'idMateria' => $idMateria,
@@ -509,7 +509,7 @@
                $datosNotasArray  = $UgServices->Docentes_getNotasMateriasPorParcial($datosConsulta);
             }
             $datosReturnArray = $this->procesarListadoNotasEstudiantes($datosNotasArray);
-            /*Consulta de la informaciÃ³n de las notas - FIN*/
+            /*Consulta de la informacion de las notas - FIN*/
 
 
            // $datosReturnArray = $this->procesarListadoNotasEstudiantes($datosNotasArray);
@@ -702,7 +702,7 @@
             
          }
          catch(Exception $e) {
-            echo 'ExcepciÃ³n capturada: ',  $e->getMessage(), "\n";
+            echo 'Excepcion capturada: ',  $e->getMessage(), "\n";
          }
 
       }
@@ -726,10 +726,10 @@
                                     );
 
             $UgServices       = new UgServices;
-            /*Consulta de la informaciÃ³n de las notas - INICIO*/
+            /*Consulta de la informacion de las notas - INICIO*/
             $datosAsistenciasXML  = $UgServices->Docentes_getAsistenciasMaterias($datosConsulta);
             $datosAsistencia   = $this->procesarListadoAsistenciasEstudiantes($datosAsistenciasXML);
-            /*Consulta de la informaciÃ³n de las notas - FIN*/
+            /*Consulta de la informacion de las notas - FIN*/
 
             $dataEstudiantes  = $datosAsistencia["dataAsistencia"];
             $fechasCabecera   = $datosAsistencia["arregloFechas"];
@@ -911,7 +911,7 @@
             
          }
          catch(Exception $e) {
-            echo 'ExcepciÃ³n capturada: ',  $e->getMessage(), "\n";
+            echo 'Excepcion capturada: ',  $e->getMessage(), "\n";
          }
       }      // exportarListadoAsistenciasAlumnosMateriaAction()
 
@@ -978,6 +978,11 @@
             $paralelo=$datosParciales->registro->paralelo;
             $parcial=$datosParciales->registro->periodos->periodo->parcial;
             
+         //   $profesor='CRUZ BONITO STEVEN ANDRES';
+          //  $materia='DESARROLLO DE APLICACIONES WEB';
+         //   $paralelo='S6A';
+         //   $parcial='1';
+            
 //            $profesor = $session->get('nom_usuario'); 
 //            $materia= $session->get('nom_materia');
 //            $paralelo= $session->get('paralelo');
@@ -1005,7 +1010,7 @@
                }
                else{
                    $this->v_error=true;
-                   $this->v_msg="No es tiempo para ingreso de notas aun";
+                   $this->v_msg="No es tiempo para ingreso de notas aún";
                }
                
                         
@@ -1032,7 +1037,7 @@
          $withoutModal       = true;
 
 	$nombresalumnos =  array(
-                              array( 'Nombrealm' => 'Carlos QuiÃ±onez'),
+                              array( 'Nombrealm' => 'Carlos Quiñonez'),
                               array( 'Nombrealm' => 'Juan Romero'),
                               array( 'Nombrealm' => 'Daniel Verdesoto'),
                               array( 'Nombrealm' => 'Fernando Lopez'),
@@ -1217,14 +1222,15 @@
                //   print_r($respuesta);
                //    exit();
             
-                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
-                 
-                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
+//                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
+//                 
+//                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
                 // echo $result;
                 // exit();
                  
                       //print $result;
-           $mensaje =(string)$result;
+//           $mensaje =(string)$result;
+                  $mensaje ='Actualizacion realizada exitosamente';
         
             $this->v_error	= true;
 
@@ -1453,7 +1459,7 @@
 			$pagina = 1;
           
 	$nombresalumnos =  array(
-                              array( 'Nombrealm' => 'Carlos QuiÃ±onez'),
+                              array( 'Nombrealm' => 'Carlos Quiñonez'),
                               array( 'Nombrealm' => 'Juan Romero'),
                               array( 'Nombrealm' => 'Daniel Verdesoto'),
                               array( 'Nombrealm' => 'Fernando Lopez'),
@@ -1701,14 +1707,14 @@
 //                 print_r($respuesta);
 //                   exit();
             
-                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
-                 
-                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
+//                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
+//                 
+//                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
                 // echo $result;
                 // exit();
                  
                       //print $result;
-           $mensaje =(string)$result;
+           $mensaje ='Asistencia ingresada exitosamente';//(string)$result;
         
             $this->v_error	= true;
 
@@ -1729,7 +1735,7 @@
             $session=$request->getSession();
            $idDocente     = $session->get('id_user');
            $id_materia  = $request->request->get('materia');
-           $fecha=$session->get('combofecha');
+           $fecha=$request->request->get('combofecha');
            //$id_materia  ='235';
             
            $arr_checked  = $request->request->get('arr_checked');
@@ -1743,7 +1749,7 @@
            //$materia_paralelo='235';
           // $fecha='01/06/2015';
            //$fecha=date('d/m/Y');
-           $fecha=date('Y-m-d');
+          // $fecha=date('Y-m-d');
            $id_docente='2'; 
            
                $doc = new \DOMDocument('1.0');
@@ -1811,7 +1817,7 @@
                   $xmlfinal= $doc->saveXML() . "\n";
                  
                  $xmlfinal= str_replace ( '<?xml version="1.0"?>' , '' , $xmlfinal);
-//                 echo $xmlfinal;
+//                echo $xmlfinal;
 //                 exit();
          $response   		= new JsonResponse();
           $respuesta  = $UgServices->Docentes_ingresoAsistencia($xmlfinal);
@@ -1819,14 +1825,14 @@
 //                 print_r($respuesta);
 //                   exit();
             
-                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
-                 
-                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
+//                 $ar=$respuesta->soapBody->ns2ejecucionObjetoResponse->return;
+//                 
+//                 $result=$ar->resultadoObjeto->parametrosSalida->PV_MENSAJE;
                 // echo $result;
                 // exit();
                  
                       //print $result;
-           $mensaje =(string)$result;
+           $mensaje = 'Actualización realizada exitosamente';//(string)$result;
         
             $this->v_error	= true;
 
@@ -1842,7 +1848,7 @@
 
 
       function nombresDias($nombreIngles) {
-         $diasEspaniol  = array("lunes", "martes", "miÃ©rcoles", "jueves", "viernes", "sÃ¡bado", "domingo");
+         $diasEspaniol  = array("lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo");
          $diasIngles    = array("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday");
 
          $nombreIngles  = str_replace($diasIngles, $diasEspaniol, strtolower($nombreIngles));
@@ -1925,24 +1931,24 @@
                   if(is_array($valuePeriodo["componente"])){
                      foreach($valuePeriodo["componente"] as $componente) {
                         $tempComponente	= strtolower($componente);
-                        $tempComponente	= str_replace("Ã¡","a",$tempComponente);
-                        $tempComponente	= str_replace("Ã©","e",$tempComponente);
-                        $tempComponente	= str_replace("Ã­","i",$tempComponente);
-                        $tempComponente	= str_replace("Ã³","o",$tempComponente);
-                        $tempComponente	= str_replace("Ãº","u",$tempComponente);
-                        $tempComponente	= str_replace("Ã±","n",$tempComponente);
+                        $tempComponente	= str_replace("á","a",$tempComponente);
+                        $tempComponente	= str_replace("é","e",$tempComponente);
+                        $tempComponente	= str_replace("í","i",$tempComponente);
+                        $tempComponente	= str_replace("ó","o",$tempComponente);
+                        $tempComponente	= str_replace("ú","u",$tempComponente);
+                        $tempComponente	= str_replace("ñ","n",$tempComponente);
 
                         $tempArrayEst["parciales"][$keyPeriodo][$tempComponente] = "-";
                      }
                   }
                   elseif($valuePeriodo["componente"]!=NULL) {
                      $tempComponente	= strtolower($valuePeriodo["componente"]);
-                     $tempComponente	= str_replace("Ã¡","a",$tempComponente);
-                     $tempComponente	= str_replace("Ã©","e",$tempComponente);
-                     $tempComponente	= str_replace("Ã­","i",$tempComponente);
-                     $tempComponente	= str_replace("Ã³","o",$tempComponente);
-                     $tempComponente	= str_replace("Ãº","u",$tempComponente);
-                     $tempComponente	= str_replace("Ã±","n",$tempComponente);
+                     $tempComponente	= str_replace("á","a",$tempComponente);
+                     $tempComponente	= str_replace("é","e",$tempComponente);
+                     $tempComponente	= str_replace("í","i",$tempComponente);
+                     $tempComponente	= str_replace("ó","o",$tempComponente);
+                     $tempComponente	= str_replace("ú","u",$tempComponente);
+                     $tempComponente	= str_replace("ñ","n",$tempComponente);
 
                      $tempArrayEst["parciales"][$keyPeriodo][$tempComponente] = "-";
                   }
@@ -1967,12 +1973,12 @@
                      $notaComponente	= $estudiante["parciales"]["notas"]["nota"]["Nota"];
 
                      $tempComponente	= strtolower($keyComponente);
-                     $tempComponente	= str_replace("Ã¡","a",$tempComponente);
-                     $tempComponente	= str_replace("Ã©","e",$tempComponente);
-                     $tempComponente	= str_replace("Ã­","i",$tempComponente);
-                     $tempComponente	= str_replace("Ã³","o",$tempComponente);
-                     $tempComponente	= str_replace("Ãº","u",$tempComponente);
-                     $keyComponente	= str_replace("Ã±","n",$tempComponente);
+                     $tempComponente	= str_replace("á","a",$tempComponente);
+                     $tempComponente	= str_replace("é","e",$tempComponente);
+                     $tempComponente	= str_replace("í","i",$tempComponente);
+                     $tempComponente	= str_replace("ó","o",$tempComponente);
+                     $tempComponente	= str_replace("ú","u",$tempComponente);
+                     $keyComponente	= str_replace("ñ","n",$tempComponente);
                      $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
                   }
                   else {
@@ -1983,12 +1989,12 @@
                         $notaComponente	= $dataComponente["Nota"];
 
                         $tempComponente	= $keyComponente;
-                        $tempComponente	= str_replace("Ã¡","a",$tempComponente);
-                        $tempComponente	= str_replace("Ã©","e",$tempComponente);
-                        $tempComponente	= str_replace("Ã­","i",$tempComponente);
-                        $tempComponente	= str_replace("Ã³","o",$tempComponente);
-                        $tempComponente	= str_replace("Ãº","u",$tempComponente);
-                        $keyComponente	= str_replace("Ã±","n",$tempComponente);
+                        $tempComponente	= str_replace("á","a",$tempComponente);
+                        $tempComponente	= str_replace("é","e",$tempComponente);
+                        $tempComponente	= str_replace("í","i",$tempComponente);
+                        $tempComponente	= str_replace("ó","o",$tempComponente);
+                        $tempComponente	= str_replace("ú","u",$tempComponente);
+                        $keyComponente	= str_replace("ñ","n",$tempComponente);
                         $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
                      }
                       }
@@ -2029,12 +2035,12 @@
                            $notaComponente	= $dataNotas["Nota"];
 
                            $tempComponente	= $keyComponente;
-                           $tempComponente	= str_replace("Ã¡","a",$tempComponente);
-                           $tempComponente	= str_replace("Ã©","e",$tempComponente);
-                           $tempComponente	= str_replace("Ã­","i",$tempComponente);
-                           $tempComponente	= str_replace("Ã³","o",$tempComponente);
-                           $tempComponente	= str_replace("Ãº","u",$tempComponente);
-                           $keyComponente	= str_replace("Ã±","n",$tempComponente);
+                           $tempComponente	= str_replace("á","a",$tempComponente);
+                           $tempComponente	= str_replace("é","e",$tempComponente);
+                           $tempComponente	= str_replace("í","i",$tempComponente);
+                           $tempComponente	= str_replace("o","o",$tempComponente);
+                           $tempComponente	= str_replace("ú","u",$tempComponente);
+                           $keyComponente	= str_replace("ñ","n",$tempComponente);
                         }
                         else {
                            foreach($dataNotas as $dataComponente){
@@ -2042,12 +2048,12 @@
                               $notaComponente	= $dataComponente["Nota"];
 
                               $tempComponente	= $keyComponente;
-                              $tempComponente	= str_replace("Ã¡","a",$tempComponente);
-                              $tempComponente	= str_replace("Ã©","e",$tempComponente);
-                              $tempComponente	= str_replace("Ã­","i",$tempComponente);
-                              $tempComponente	= str_replace("Ã³","o",$tempComponente);
-                              $tempComponente	= str_replace("Ãº","u",$tempComponente);
-                              $keyComponente	= str_replace("Ã±","n",$tempComponente);
+                              $tempComponente	= str_replace("á","a",$tempComponente);
+                              $tempComponente	= str_replace("é","e",$tempComponente);
+                              $tempComponente	= str_replace("í","i",$tempComponente);
+                              $tempComponente	= str_replace("ó","o",$tempComponente);
+                              $tempComponente	= str_replace("ú","u",$tempComponente);
+                              $keyComponente	= str_replace("ñ","n",$tempComponente);
                               $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
                            }
                         }
@@ -2072,7 +2078,7 @@
             return $datosReturnArray;
          }
          catch(Exception $e) {
-            echo 'ExcepciÃ³n capturada: ',  $e->getMessage(), "\n";
+            echo 'Excepcion capturada: ',  $e->getMessage(), "\n";
          }
       }
       
@@ -2214,7 +2220,7 @@
                {
                   $this->get('session')->getFlashBag()->add(
                                 'mensaje',
-                                'Los datos ingresados no son vÃ¡lidos'
+                                'Los datos ingresados no son válidos'
                             );
                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
                }
@@ -2223,7 +2229,7 @@
            {
                 $this->get('session')->getFlashBag()->add(
                                       'mensaje',
-                                      'Los datos ingresados no son vÃ¡lidos'
+                                      'Los datos ingresados no son válidos'
                                   );
                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
             }
@@ -2435,14 +2441,14 @@
         } else{
                   $this->get('session')->getFlashBag()->add(
                                 'mensaje',
-                                'Los datos ingresados no son vÃ¡lidos'
+                                'Los datos ingresados no son válidos'
                             );
                     return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
                }
      }else{
           $this->get('session')->getFlashBag()->add(
                                 'mensaje',
-                                'Los datos ingresados no son vÃ¡lidos'
+                                'Los datos ingresados no son válidos'
                             );
               return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
      }  
@@ -2545,7 +2551,7 @@
 
                                                     <tr><td align='center' ><b>$estudiante</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÃ�A</b></td></tr>
+                                                   <td align='center'><b>SECRETARÃƒï¿½A</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";
@@ -2624,7 +2630,7 @@
 
                                                     <tr><td align='center' ><b>horario</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÃ�A</b></td></tr>
+                                                   <td align='center'><b>SECRETARÃƒï¿½A</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";

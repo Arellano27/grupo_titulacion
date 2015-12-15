@@ -36,33 +36,32 @@
    });
 
    $(".tabNotas").click(function(){
-     var tabs =$(this).attr('id'); 
-     
-        var idMateria     = '{{ idMateria }}';
-         var idCarrera     = '{{ idCarrera }}';
-
-     if(tabs === 'consulta' ) {
-         
+      var tabs          = $(this).attr('id');
+      var idMateria     = '{{ idMateria }}';
+      var idCarrera     = '{{ idCarrera }}';
+      
+      if(tabs === 'consulta' ) {
          var inicioCiclo    ='{{ inicioCiclo }}';
          var finCiclo      = '{{ finCiclo }}';
          var obj_data      = {'idMateria':idMateria,'idCarrera':idCarrera, 'inicioCiclo':inicioCiclo, 'finCiclo':finCiclo};
-       mostrarInfoTabsNotas('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_listado_alumnos_materia') }}', obj_data);
-     }
-     if(tabs ==='ingreso'){
-         
-       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_asistencia_alumnos') }}',idMateria,idCarrera);
-     }
-     if(tabs ==='actualiza'){
-       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_actualiza_asis') }}',idMateria,idCarrera);
-     }
-     if(tabs ==='ingreso2'){
+         mostrarInfoTabsNotas('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_listado_alumnos_materia') }}', obj_data);
+      }
+      if(tabs ==='ingreso'){
+         tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_asistencia_alumnos') }}',idMateria,idCarrera);
+      }
+      if(tabs ==='actualiza'){
+         tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('docentes_actualiza_asis') }}',idMateria,idCarrera);
+      }
+      if(tabs ==='ingreso2'){
          var idMateria     = '{{ idMateria }}';
-       tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('admin_lista_estudiantes') }}',idMateria,idCarrera);
-     }
+         tabdocentes('panelAsistenciasCarrera-{{idCarrera}}','{{ path('admin_lista_estudiantes') }}',idMateria,idCarrera);
+      }
      
    });
    
    function mostrarInfoTabsNotas(idContenedor,urlConsulta, parametros){
+      var modelessDocentesTabsNotas;
+   
       var obj_data = parametros;
       $.ajax({
          type: 'post',
@@ -72,9 +71,15 @@
          beforeSend: function() { 
             $( "#content-"+idContenedor ).html("Cargando, espere por favor...");
             $( "#content-"+idContenedor ).html( "<div id='loading-bar-spinner-relative'><div class='spinner-icon'></div></div>" );
+            modelessDocentesTabsNotas = new $.flavr({
+                                                      modal   : true,
+                                                      content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                                      buttons     : {}
+                                                   });
          },
          error: function(){
             //console.log("hay un error");
+            modelessDocentesTabsNotas.close();
             var mensajeErrorNotas   = "Lo sentimos. Se  presentó un error para cargar la consulta de las Notas."
             $( "#"+idContenedor ).html(mensajeErrorNotas);
          },
@@ -87,7 +92,8 @@
             }else{
                $( "#content-"+id ).html(data.html);
             }#}
-            $("#menu-toggle").click();
+            modelessDocentesTabsNotas.close();
+            //$("#menu-toggle").click();
             $( "#"+idContenedor ).html(data);
          }
       });

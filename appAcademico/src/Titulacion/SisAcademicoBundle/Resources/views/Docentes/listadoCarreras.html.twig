@@ -23,8 +23,7 @@
 			<!-- .panel-heading -->
 			<div class="panel-body">
 				<div class="panel-group" id="accordionCarreras">
-                                   
-               {% if data.datosCarreras=='error'%} Se presentó un problema para presentar las carreras. Por favor contacte e soporte técnico. {% endif %}
+               {% if data.datosCarreras=='error'%} Se presentó un problema para presentar las carreras. Por favor contacte a soporte técnico. {% endif %}
                {% for countCarreras, datosCarrera in data.datosCarreras %}
                   <input id="materiaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >
                   <input id="nombreMateriaSeleccionada-Carrera_{{datosCarrera.id_sa_carrera}}" value="" type="hidden" >
@@ -334,7 +333,7 @@
             var idSplit          = $(this).attr('id').split('-');
             var nombreElemento   = idSplit[0]; 
             var idCarrera        = idSplit[1]; 
-            var idDocente        = 1; 
+            var idDocente        = {{data.datosDocente.idDocente}}; 
             var tablaMaterias    = $('#panelCarrera-'+idCarrera);
 
             $("#carreraSeleccionada").val(idCarrera);

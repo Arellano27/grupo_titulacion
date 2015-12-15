@@ -1045,7 +1045,7 @@
                          $UgServices = new UgServices;
 
                           $xml1 = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idCarrera,$Idciclo);
-                          //var_dump($xml1);
+
                           //obtenet el ciclo de matriculacion del XML
                            if ( is_object($xml1))
                               {
@@ -1293,20 +1293,22 @@
             $arrayProceso['mensaje']=$Mensaje;
             $jarray=json_encode($arrayProceso);         
             $respuesta->setContent($jarray);
-                
-                        $session=$request->getSession();
-                        $Email= $session->get('mail');
-                        $Nombre = $session->get('nom_usuario');
-                        $mailer    = $this->container->get('mailer');
-                        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-                                 ->setUsername('titulacion.php@gmail.com')
-                                 ->setPassword('sc123456');
-                        $message = \Swift_Message::newInstance('test')
-                                 ->setSubject("Registro de Materias Exitosa")
-                                 ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
-                                 ->setTo($Email)
-                                 ->setBody("$Nombre usted a completado su registro de materias con exito");                  
-                       $this->get('mailer')->send($message);   
+              if($Estado==1)
+                {  
+                            $session=$request->getSession();
+                            $Email= $session->get('mail');
+                            $Nombre = $session->get('nom_usuario');
+                            $mailer    = $this->container->get('mailer');
+                            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                                     ->setUsername('titulacion.php@gmail.com')
+                                     ->setPassword('sc123456');
+                            $message = \Swift_Message::newInstance('test')
+                                     ->setSubject("Registro de Materias Exitosa")
+                                     ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                                     ->setTo($Email)
+                                     ->setBody("$Nombre usted a completado su registro de materias con exito");                  
+                           $this->get('mailer')->send($message);
+                  }   
             return $respuesta;
         }
 
@@ -1662,7 +1664,7 @@
                                                     </tr>
                                                     <tr>
                                                       <td align='left'>
-                                                        <b> Fecha Maxima de Pago </b>
+                                                        <b> Fecha Máxima de Pago </b>
                                                       </td>
                                                       <td>
                                                         $FecOrden
@@ -1860,7 +1862,7 @@
                                             <table align='center'>
                                             <tr>
                                               <td align='center'>
-                                                <b> Solicitud de Anulacion</b>
+                                                <b> Solicitud de Anulación</b>
                                               </td>
                                             <tr>
                                             <tr>
@@ -2620,11 +2622,11 @@ public function pdfHorarioGeneralAction(Request $request,$idEstudiante,$idCarrer
                                                                   <td align='left' ><b>Nombres :</b> $nombres</td>
                                                                   <td align='left' ><b>Apellidos :</b> $apellidos</td>
                                                       </tr><tr>
-                                                                  <td align='left' ><b>Numero de Identificacion :</b> $identificacion</td>
+                                                                  <td align='left' ><b>Numero de Identificación :</b> $identificacion</td>
                                                                   <td align='left' ><b>Fecha de Nacimiento :</b> $fechaNac</td>
                                                       </tr>
                                                       <tr rowspan=2>
-                                                              <td align='left' colspan=2 ><b>Direccion :</b> $direccion</td>
+                                                              <td align='left' colspan=2 ><b>Dirección :</b> $direccion</td>
                                                       </tr>
                                                       <tr>
                                                                   <td align='left' ><b>Telefono :</b> $telefono</td>

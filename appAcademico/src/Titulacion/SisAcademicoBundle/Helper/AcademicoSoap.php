@@ -276,7 +276,7 @@ $post_string="
                </ser:ejecucionObjeto>
             </soapenv:Body>
          </soapenv:Envelope>";
-   //echo var_dump($post_string); exit();
+
         $headers=array('Content-Length: '.strlen($post_string),'Content-Type: text/xml;charset=UTF-8','SOAPAction: "http://servicios.ug.edu.ec//ejecucionObjeto"','Host:'.$host,'Proxy-Connection: Keep-Alive','User-Agent: Apache-HttpClient/4.1.1 (java 1.5)' );
         $soap_do = curl_init();
         curl_setopt($soap_do, CURLOPT_VERBOSE ,       true );
@@ -1280,7 +1280,6 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
         curl_setopt($soap_do, CURLOPT_POSTFIELDS,$post_string); 
         curl_setopt($soap_do, CURLOPT_HTTPHEADER,$headers);
         $result = curl_exec($soap_do);
-      
 //        var_dump($result);
 //        exit();
    //      $result = $XML;
@@ -1432,7 +1431,7 @@ function doRequestSreReceptaTransacionRegistroMatricula($datosCuenta,$source,$ti
                      <dataSource>".$source."</dataSource>
                      <idServicio>".$tipo."</idServicio>
                      <usuario>".$usuario."</usuario>
-                     <clave>".$clave." </clave>
+                     <clave>".$clave."</clave>
                      <parametrosObjeto>
                         <parametros>
             				 ".$datosCuenta." 
@@ -2600,13 +2599,13 @@ $post_string="
 //                                     <materias>
 //                                       <materia>
 //                                         <id_materia>30</id_materia>
-//                                         <descripcion_materia>Investigación Operaciones</descripcion_materia>
+//                                         <descripcion_materia>InvestigaciÃ³n Operaciones</descripcion_materia>
 //                                         <id_hora>5</id_hora>
 //                                         <id_dia>5</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>39</id_materia>
-//                                         <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+//                                         <descripcion_materia>ProgramaciÃ³n de Microprocesadores</descripcion_materia>
 //                                         <id_hora>4</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
@@ -2624,13 +2623,13 @@ $post_string="
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>43</id_materia>
-//                                         <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+//                                         <descripcion_materia>MatemÃ¡ticas Financieras</descripcion_materia>
 //                                         <id_hora>1</id_hora>
 //                                         <id_dia>6</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>44</id_materia>
-//                                         <descripcion_materia>Legislación Informática</descripcion_materia>
+//                                         <descripcion_materia>LegislaciÃ³n InformÃ¡tica</descripcion_materia>
 //                                         <id_hora>2</id_hora>
 //                                         <id_dia>3</id_dia>
 //                                       </materia>
@@ -2643,17 +2642,17 @@ $post_string="
 //                                     </materias>
 //                                     <profesores>
 //                                       <profesor>
-//                                         <nombre_materia>Investigación Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
+//                                         <nombre_materia>InvestigaciÃ³n Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
+//                                         <nombre_materia>ProgramaciÃ³n de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Sistemas Operativos</nombre_materia><nombre>SANTOS FREILE  ROSA GRACIELA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Redes de Computadoras</nombre_materia><nombre>CHAVEZ ATOCHA  JUAN VICTOR</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
+//                                         <nombre_materia>MatemÃ¡ticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Legislación Informática</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
+//                                         <nombre_materia>LegislaciÃ³n InformÃ¡tica</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Electiva III</nombre_materia><nombre>CASTANIO MENDEZ  ADIEL</nombre></profesor>
 //                                     </profesores>
@@ -2723,13 +2722,13 @@ $post_string="
 //                                     <materias>
 //                                       <materia>
 //                                         <id_materia>38</id_materia>
-//                                         <descripcion_materia>Simulación de Sistemas</descripcion_materia>
+//                                         <descripcion_materia>SimulaciÃ³n de Sistemas</descripcion_materia>
 //                                         <id_hora>7</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>39</id_materia>
-//                                         <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+//                                         <descripcion_materia>ProgramaciÃ³n de Microprocesadores</descripcion_materia>
 //                                         <id_hora>7</id_hora>
 //                                         <id_dia>2</id_dia>
 //                                       </materia>
@@ -2753,13 +2752,13 @@ $post_string="
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>43</id_materia>
-//                                         <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+//                                         <descripcion_materia>MatemÃ¡ticas Financieras</descripcion_materia>
 //                                         <id_hora>8</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>44</id_materia>
-//                                         <descripcion_materia>Legislación Informática</descripcion_materia>
+//                                         <descripcion_materia>LegislaciÃ³n InformÃ¡tica</descripcion_materia>
 //                                         <id_hora>9</id_hora>
 //                                         <id_dia>3</id_dia>
 //                                       </materia>
@@ -2772,9 +2771,9 @@ $post_string="
 //                                     </materias>
 //                                     <profesores>
 //                                       <profesor>
-//                                         <nombre_materia>Simulación de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
+//                                         <nombre_materia>SimulaciÃ³n de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
+//                                         <nombre_materia>ProgramaciÃ³n de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Sistemas Operativos</nombre_materia><nombre>GAIBOR ESPIN  GENARO</nombre></profesor>
 //                                       <profesor>
@@ -2782,9 +2781,9 @@ $post_string="
 //                                       <profesor>
 //                                         <nombre_materia>Redes de Computadoras</nombre_materia><nombre>ESPINNOZA VILLAGOMEZ  LUISA EVANGELINA</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
+//                                         <nombre_materia>MatemÃ¡ticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Legislación Informática</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
+//                                         <nombre_materia>LegislaciÃ³n InformÃ¡tica</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Electiva III</nombre_materia><nombre>CERCADO BARRAGAN  DARWIN BOLIVAR</nombre></profesor>
 //                                     </profesores>
@@ -3470,13 +3469,13 @@ $post_string="
 //                                     <materias>
 //                                       <materia>
 //                                         <id_materia>30</id_materia>
-//                                         <descripcion_materia>Investigación Operaciones</descripcion_materia>
+//                                         <descripcion_materia>InvestigaciÃ³n Operaciones</descripcion_materia>
 //                                         <id_hora>5</id_hora>
 //                                         <id_dia>5</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>39</id_materia>
-//                                         <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+//                                         <descripcion_materia>ProgramaciÃ³n de Microprocesadores</descripcion_materia>
 //                                         <id_hora>4</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
@@ -3494,13 +3493,13 @@ $post_string="
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>43</id_materia>
-//                                         <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+//                                         <descripcion_materia>MatemÃ¡ticas Financieras</descripcion_materia>
 //                                         <id_hora>1</id_hora>
 //                                         <id_dia>6</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>44</id_materia>
-//                                         <descripcion_materia>Legislación Informática</descripcion_materia>
+//                                         <descripcion_materia>LegislaciÃ³n InformÃ¡tica</descripcion_materia>
 //                                         <id_hora>2</id_hora>
 //                                         <id_dia>3</id_dia>
 //                                       </materia>
@@ -3513,17 +3512,17 @@ $post_string="
 //                                     </materias>
 //                                     <profesores>
 //                                       <profesor>
-//                                         <nombre_materia>Investigación Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
+//                                         <nombre_materia>InvestigaciÃ³n Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
+//                                         <nombre_materia>ProgramaciÃ³n de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Sistemas Operativos</nombre_materia><nombre>SANTOS FREILE  ROSA GRACIELA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Redes de Computadoras</nombre_materia><nombre>CHAVEZ ATOCHA  JUAN VICTOR</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
+//                                         <nombre_materia>MatemÃ¡ticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Legislación Informática</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
+//                                         <nombre_materia>LegislaciÃ³n InformÃ¡tica</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Electiva III</nombre_materia><nombre>CASTANIO MENDEZ  ADIEL</nombre></profesor>
 //                                     </profesores>
@@ -3593,13 +3592,13 @@ $post_string="
 //                                     <materias>
 //                                       <materia>
 //                                         <id_materia>38</id_materia>
-//                                         <descripcion_materia>Simulación de Sistemas</descripcion_materia>
+//                                         <descripcion_materia>SimulaciÃ³n de Sistemas</descripcion_materia>
 //                                         <id_hora>7</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>39</id_materia>
-//                                         <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+//                                         <descripcion_materia>ProgramaciÃ³n de Microprocesadores</descripcion_materia>
 //                                         <id_hora>7</id_hora>
 //                                         <id_dia>2</id_dia>
 //                                       </materia>
@@ -3623,13 +3622,13 @@ $post_string="
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>43</id_materia>
-//                                         <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+//                                         <descripcion_materia>MatemÃ¡ticas Financieras</descripcion_materia>
 //                                         <id_hora>8</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>44</id_materia>
-//                                         <descripcion_materia>Legislación Informática</descripcion_materia>
+//                                         <descripcion_materia>LegislaciÃ³n InformÃ¡tica</descripcion_materia>
 //                                         <id_hora>9</id_hora>
 //                                         <id_dia>3</id_dia>
 //                                       </materia>
@@ -3642,9 +3641,9 @@ $post_string="
 //                                     </materias>
 //                                     <profesores>
 //                                       <profesor>
-//                                         <nombre_materia>Simulación de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
+//                                         <nombre_materia>SimulaciÃ³n de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
+//                                         <nombre_materia>ProgramaciÃ³n de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Sistemas Operativos</nombre_materia><nombre>GAIBOR ESPIN  GENARO</nombre></profesor>
 //                                       <profesor>
@@ -3652,9 +3651,9 @@ $post_string="
 //                                       <profesor>
 //                                         <nombre_materia>Redes de Computadoras</nombre_materia><nombre>ESPINNOZA VILLAGOMEZ  LUISA EVANGELINA</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
+//                                         <nombre_materia>MatemÃ¡ticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Legislación Informática</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
+//                                         <nombre_materia>LegislaciÃ³n InformÃ¡tica</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Electiva III</nombre_materia><nombre>CERCADO BARRAGAN  DARWIN BOLIVAR</nombre></profesor>
 //                                     </profesores>
@@ -3971,13 +3970,13 @@ $post_string="
 //                                     <materias>
 //                                       <materia>
 //                                         <id_materia>30</id_materia>
-//                                         <descripcion_materia>Investigación Operaciones</descripcion_materia>
+//                                         <descripcion_materia>InvestigaciÃ³n Operaciones</descripcion_materia>
 //                                         <id_hora>4</id_hora>
 //                                         <id_dia>5</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>39</id_materia>
-//                                         <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+//                                         <descripcion_materia>ProgramaciÃ³n de Microprocesadores</descripcion_materia>
 //                                         <id_hora>4</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
@@ -3995,13 +3994,13 @@ $post_string="
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>43</id_materia>
-//                                         <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+//                                         <descripcion_materia>MatemÃ¡ticas Financieras</descripcion_materia>
 //                                         <id_hora>1</id_hora>
 //                                         <id_dia>6</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>44</id_materia>
-//                                         <descripcion_materia>Legislación Informática</descripcion_materia>
+//                                         <descripcion_materia>LegislaciÃ³n InformÃ¡tica</descripcion_materia>
 //                                         <id_hora>2</id_hora>
 //                                         <id_dia>3</id_dia>
 //                                       </materia>
@@ -4014,17 +4013,17 @@ $post_string="
 //                                     </materias>
 //                                     <profesores>
 //                                       <profesor>
-//                                         <nombre_materia>Investigación Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
+//                                         <nombre_materia>InvestigaciÃ³n Operaciones</nombre_materia><nombre>ACOSTA ZAMBRANO NANCY LENIS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
+//                                         <nombre_materia>ProgramaciÃ³n de Microprocesadores</nombre_materia><nombre>BARRETO BARRETO KATIUSKA ELIZABETH </nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Sistemas Operativos</nombre_materia><nombre>SANTOS FREILE  ROSA GRACIELA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Redes de Computadoras</nombre_materia><nombre>CHAVEZ ATOCHA  JUAN VICTOR</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
+//                                         <nombre_materia>MatemÃ¡ticas Financieras</nombre_materia><nombre>YEPEZ HOLGUIN  JESSICA MALENA</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Legislación Informática</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
+//                                         <nombre_materia>LegislaciÃ³n InformÃ¡tica</nombre_materia><nombre>ORTIZ ZAMBRANO  MIRELLA CARMINA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Electiva III</nombre_materia><nombre>CASTANIO MENDEZ  ADIEL</nombre></profesor>
 //                                     </profesores>
@@ -4094,13 +4093,13 @@ $post_string="
 //                                     <materias>
 //                                       <materia>
 //                                         <id_materia>38</id_materia>
-//                                         <descripcion_materia>Simulación de Sistemas</descripcion_materia>
+//                                         <descripcion_materia>SimulaciÃ³n de Sistemas</descripcion_materia>
 //                                         <id_hora>7</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>39</id_materia>
-//                                         <descripcion_materia>Programación de Microprocesadores</descripcion_materia>
+//                                         <descripcion_materia>ProgramaciÃ³n de Microprocesadores</descripcion_materia>
 //                                         <id_hora>7</id_hora>
 //                                         <id_dia>2</id_dia>
 //                                       </materia>
@@ -4124,13 +4123,13 @@ $post_string="
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>43</id_materia>
-//                                         <descripcion_materia>Matemáticas Financieras</descripcion_materia>
+//                                         <descripcion_materia>MatemÃ¡ticas Financieras</descripcion_materia>
 //                                         <id_hora>8</id_hora>
 //                                         <id_dia>1</id_dia>
 //                                       </materia>
 //                                       <materia>
 //                                         <id_materia>44</id_materia>
-//                                         <descripcion_materia>Legislación Informática</descripcion_materia>
+//                                         <descripcion_materia>LegislaciÃ³n InformÃ¡tica</descripcion_materia>
 //                                         <id_hora>9</id_hora>
 //                                         <id_dia>3</id_dia>
 //                                       </materia>
@@ -4143,9 +4142,9 @@ $post_string="
 //                                     </materias>
 //                                     <profesores>
 //                                       <profesor>
-//                                         <nombre_materia>Simulación de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
+//                                         <nombre_materia>SimulaciÃ³n de Sistemas</nombre_materia><nombre>ROMO ANDRADE  JUAN CARLOS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Programación de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
+//                                         <nombre_materia>ProgramaciÃ³n de Microprocesadores</nombre_materia><nombre>DOMINGUEZ COLOMA  PATRICIA MARIA DE LOURDES</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Sistemas Operativos</nombre_materia><nombre>GAIBOR ESPIN  GENARO</nombre></profesor>
 //                                       <profesor>
@@ -4153,9 +4152,9 @@ $post_string="
 //                                       <profesor>
 //                                         <nombre_materia>Redes de Computadoras</nombre_materia><nombre>ESPINNOZA VILLAGOMEZ  LUISA EVANGELINA</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Matemáticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
+//                                         <nombre_materia>MatemÃ¡ticas Financieras</nombre_materia><nombre>CEDENIO RODRIGUEZ  JUAN CARLOS</nombre></profesor>
 //                                       <profesor>
-//                                         <nombre_materia>Legislación Informática</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
+//                                         <nombre_materia>LegislaciÃ³n InformÃ¡tica</nombre_materia><nombre>MARIDUENIA TORRES  RITA AZUCENA</nombre></profesor>
 //                                       <profesor>
 //                                         <nombre_materia>Electiva III</nombre_materia><nombre>CERCADO BARRAGAN  DARWIN BOLIVAR</nombre></profesor>
 //                                     </profesores>
@@ -4534,7 +4533,7 @@ function doGuardaHorariosDocentes($datosCuenta,$source,$tipo,$usuario,$clave,$ur
                         $respuestaConsulta = $xml->xpath('//resultadoObjeto')[0];
                          //echo var_dump($respuestaConsulta); exit();
                         return $respuestaConsulta;
-                        // echo var_dump($respuestaConsulta); exit();
+
                     }
 
 

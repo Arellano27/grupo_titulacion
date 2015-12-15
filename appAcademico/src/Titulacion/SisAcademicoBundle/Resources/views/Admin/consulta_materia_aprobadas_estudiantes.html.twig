@@ -6,7 +6,7 @@
 <div class="col-lg-12">
   <div class="panel  panel-primary">
     <div class="panel-body"><h2 align="center">
-      <b>REPORTE DE MATERIAS APROBADAS POR EL ESTUDIANTE</b></h2>
+      <b>Reportes de Materias aprobadas por el Estudiante</b></h2>
       <div class="panel-group" id="accordion">
         {% for  carrera in estudianteCarrera.carreras%} 
         <div class="panel panel-default">
@@ -21,7 +21,7 @@
                 <div class="col-lg-7" style="margin-bottom: 20px;">
                   <div class="col-lg-4" style="padding-top: 7px; font-weight: bold;" id="txt_nombre_{{ carrera.idCarrera }}">&nbsp;</div>
                   <div class="col-lg-1" style="padding-top: 7px;">Cédula:  </div>
-                  <div class="col-lg-3" style="padding-top: 5px;"><input type="text" id="ident_{{ carrera.idCarrera }}" onkeypress="return valideKey(event);" maxlength="10" ></div>
+                  <div class="col-lg-3" style="padding-top: 5px;"><input type="text" id="ident_{{ carrera.idCarrera }}" onkeypress="return SoloNumeros(event);" maxlength="10" ></div>
                   <div class="col-lg-1"><button type="button" id="btn_buscar_{{ carrera.idCarrera }}" class="btn btn-primary" >Buscar</button></div>
                 </div>
                 <div class="col-lg-5" style="margin-bottom: 20px;">
@@ -35,19 +35,19 @@
                       <option value="0" > -- Nivel -- </option>
                     </select>
                   </div>
-                  <div class="col-lg-1"><a class="btn btn-success" href="{{path('admin_academico_estudiante_materias_pdf', {'idCarrera':carrera.idCarrera,'ciclo':carrera.idCiclo,'carrera':carrera.nombre})}}" target="_blank">PDF</a></div>
+                  <div class="col-lg-1"><a class="btn btn-success" href="{{path('admin_academico_estudiante_materias_pdf', {'idCarrera':carrera.idCarrera,'ciclo':carrera.idCiclo,'carrera':carrera.nombre})}}" target="_blank">Exportar a PDF</a></div>
                 </div>
               </div> 
               <div class="row">
                 <div class="col-md-8">
                   <div id="tabla_{{ carrera.idCarrera }}"></div>
                   <table id="tblEstudiantes_{{ carrera.idCarrera }}" class="table table-bordered table-hover">
-                    <thead>
+                    <thead style="background-color: #3C8DBC;color:#fff;">
                       <tr>
-                        <th>Ciclo</th>
-                        <th>Nivel</th>
-                        <th>Materia</th>
-                        <th>Promedio</th>
+                        <th class="text-center">Ciclo</th>
+                        <th class="text-center">Nivel</th>
+                        <th class="text-center">Materia</th>
+                        <th class="text-center">Promedio</th>
                       </tr>
                     </thead>
                   </table> 
@@ -77,26 +77,14 @@
 
 <script type="text/javascript">
 
-  function valideKey(evt)
-      {
-      var code = (evt.which) ? evt.which : evt.keyCode;
-      if(code==8)
-      {
-          //backspace
-          return true;
-      }
-      else if(code>=48 && code<=57)
-      {
-          //is a number
-          return true;
-      }
-      else
-      {
-          return false;
-      }
-  }
+  function SoloNumeros(e) {
+    var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+    return ((tecla > 47 && tecla < 58) || (tecla >= 00 && tecla < 32) || tecla == 127);
+}
 
   $(document).ready(function() { 
+
+  
     $('.tabscarrera').click(function() {
 
     var splitCarrera =$(this).attr('id').split('_'); 
@@ -104,11 +92,12 @@
     var ciclo  = splitCarrera[2];
     var materiasAprobadasEstudiantes;
     var materiasAprobadasEstudiantesChange;
+    $('#ident_'+carrera).val('');
+    $("#bar-chart").empty();
 
-    $("#txt_nombre_"+carrera).html('Debe buscar un estudiante.');
     if($('#valida_'+carrera).val() == "0")
     {
-      $('#valida_'+carrera).val("1");
+
       $('#tblEstudiantes_'+carrera).DataTable({
         "paging": true,
         "lengthChange": false,
@@ -136,6 +125,22 @@
           }
         }
       });
+
+    }else{
+
+         var oTable = $('#tblEstudiantes_'+carrera).dataTable();
+              oTable.fnClearTable();
+
+    }
+
+    $("#txt_nombre_"+carrera).html('Debe buscar un estudiante.');
+
+    if($('#valida_'+carrera).val() == "0")
+    {
+      
+                  
+      $('#valida_'+carrera).val("1");
+      
       $('#btn_buscar_'+carrera).click(function() {
         var identificacion = $('#ident_'+carrera).val();
 
@@ -195,6 +200,8 @@
                 addData.push($(this).attr('promedio')[0]); 
                 oTable.fnAddData(addData);
               });
+
+              $("#bar-chart").empty();
               var obj = [];
               $(dataResponse.porcentajes).each(function(index){
                 obj.push([$(this).attr('descripcion')[0],$(this).attr('valor')[0]]);
@@ -250,6 +257,7 @@
             }else{
               var oTable = $('#tblEstudiantes_'+carrera).dataTable();
               oTable.fnClearTable();
+              $("#bar-chart").empty();
             }
           },
         });
