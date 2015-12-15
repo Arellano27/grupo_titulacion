@@ -197,6 +197,7 @@
           droppable: true,
           slotDuration: '00:30:00',
            events: function (start, end, timezone, callback) {
+
                   $.ajax({
                     url: '{{path('admin_academico_cargar_eventos')}}',
                     type: 'POST',
@@ -217,6 +218,7 @@
                       // this.end = data[i]['fecha_hasta'];
                       // this.color = arnombre[1];
                       // events.push(this);
+
                       events.push({
                         id:  data[i]['id_sa_eventos_calendario_academico'],
                         idc: data[i]['id_sa_calendario_academico'],
@@ -298,8 +300,7 @@
           // $("#reservationtime").val(calEvent.start +'-'+calEvent.end);
           },
           drop: function(date, allDay){
-
-              var start = date.format("YYYY-MM-DD");
+              var start = date.format("YYYY-MM-DD 00:00:00");
               var id_evento = $(this).attr("name");
               // alert(id_evento);
               insertar_eventos(start,id_evento);
@@ -308,15 +309,17 @@
 
           },
          eventDrop: function(event, delta, revertFunc) {
+          alert("1");
           console.debug("delta//"+delta);
           console.debug("event//"+event.end);
 
           var id_evento = event.id;
           var id_calendario = event.idc;
         // var end = event.end.format();
-        var start = event.start.format("YYYY-MM-DD");
+        var start = event.start.format("YYYY-MM-DD 00:00:00");
+        var end = event.start.format("YYYY-MM-DD 23:59:00");
         // alert(end);
-          modificar_eventos_calendario(start,"",id_evento,id_calendario,"A");
+          modificar_eventos_calendario(start,end,id_evento,id_calendario,"A");
 
           }
         });
@@ -366,8 +369,8 @@
     <script type="text/javascript">
         function insertar_eventos(date,id_evento){
           // alert(date);
-            // date = new Date(date);
-            $.post('{{path('admin_academico_insertar_eventos')}}', {start: date, end: date, id_evento: id_evento}, function(data) {
+            var end = date.format("YYYY-MM-DD 23:59:00");
+            $.post('{{path('admin_academico_insertar_eventos')}}', {start: date, end: end, id_evento: id_evento}, function(data) {
               if(data == 1){
                 mensaje_cisc( "notice", "EVENTO INSERTADO CON ÉXITO");
                 $('#calendar').fullCalendar( 'refetchEvents' );
@@ -434,9 +437,7 @@
 
         function modificar_eventos_calendario(date,end,id_evento,id_calendario,estado){
             // date = new Date(date);
-            if(end == ''){
-              end = date;
-            }
+
             $.post('{{path('admin_academico_modificar_eventos')}}', {start: date, end: end, id_evento: id_evento,id_calendario:id_calendario,estado:estado}, function(data) {
               if(data == 1){
                 mensaje_cisc( "notice", "EVENTO ACTUALIZADO CON ÉXITO");
