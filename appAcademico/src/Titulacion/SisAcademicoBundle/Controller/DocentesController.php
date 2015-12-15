@@ -1368,7 +1368,7 @@
             // $materia="2269";
        //Menu de Notas por Materia para Profesor
                
-                    $trama = "<materia>".$id_Materia."</materia>";
+                    $trama = "<materia>".$id_Materia."</materia><materia>".$id_Materia."</materia>";
                 
           $arr_fechas  = $UgServices->Docentes_getfechasparcial($trama);
 //          print_r($arr_fechas);
