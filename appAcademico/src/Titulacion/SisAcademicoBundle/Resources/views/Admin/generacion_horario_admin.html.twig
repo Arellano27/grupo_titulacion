@@ -122,7 +122,7 @@
                 tds += '</td>';   
                 }
                 tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
-                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += "<a  onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
                 tds += '</td>'; 
                 tds += '</tr>';
                 $("#Horario").append(tds);
@@ -222,7 +222,7 @@
                 tds += '</td>';   
                 }
                 tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
-                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += "<a onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
                 tds += '</td>';          
 
                 tds += '</tr>';
@@ -392,7 +392,7 @@
                 tds += '</td>';   
                 }
                 tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
-                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += "<a  onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
                 tds += '</td>'; 
                 tds += '</tr>';
                 $("#Horario").append(tds);
@@ -550,13 +550,19 @@
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
                                                         });
+                                                        
+                                            var Tabla_Horarios_filas = document.getElementById("Horario");           
+                                         var fila = 0;                                         
+                                         for(fila=0;fila<Tabla_Horarios_filas.rows.length;fila++){                                             
+                                             document.getElementById("Horario").rows[1].remove();                                            
+                                         }
                                            
                                        }
                                        else
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Se�or administrativo el horario fue creado exitosamente!',
+                                                           content : 'El horario fue creado exitosamente!',
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -565,7 +571,16 @@
                                         $('.botonMatriculaSig').removeClass('buttonDisabled');
                                         $("#btninscribe").remove();
                                         $(".botonMatriculaSig").show();
-
+                                        
+                                         var Tabla_Horarios_filas = document.getElementById("Horario");           
+                                         var fila = 0;                                         
+                                         for(fila=0;fila<Tabla_Horarios_filas.rows.length;fila++){                                             
+                                             document.getElementById("Horario").rows[1].remove();                                            
+                                         }
+                                          $("#Asignar").css("display","none");
+                                                                    
+                                          $("#Docentes option").remove();
+                                          $("#Docentes").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
                                        }
                                      },
                                       error: function(dataResponse)
@@ -585,10 +600,13 @@
                           }else
                           {
                                $( "#Guardar").css("display","none");
-                var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Agregue Materias y Profesores al Horario para Generarlo", 'sm', 'alert');
+                               
+                  
+                    var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Agregue Materias y Profesores al Horario para Generarlo", 'sm', 'alert');
                     $( "#content-enviar" ).append( msg_alert );
                     $('#modal-enviar').modal('show');
-                   
+                     //$("#Hora option:selected").text("Seleccione una Hora para ver docentes disponibles");
+                     
                                //alert("Agregue Materias y Profesores al Horario para Generarlo");
                           }
                 });
@@ -667,8 +685,18 @@
     
     });
              
-
-
+          $("#Materia").change(function () {
+              
+                //$("#Hora option:selected").text("Seleccione una Hora para ver docentes disponibles");
+               $("#Docentes option").remove();
+               $("#Docentes").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
+                $( "#Asignar").css("display","none");
+                {#$("#Docentes option:selected").text("Seleccione una Hora para ver docentes disponibles");
+                $("#Docentes option:selected").val("");#}
+              
+            });
+    
+  
    });
         
     </script>
@@ -680,7 +708,7 @@
              
               <div class="box box-solid">
                 <div class="box-header with-border">
-                  <h4 class="box-title">Generacion de Horarios a Profesores</h4>
+                  <h4 class="box-title">Generación de Horarios de Profesores</h4>
                 </div>
                 <div class="box-body">
                   <div id="external-events">
@@ -712,7 +740,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                      <label>Seleccione d�a:</label>
+                      <label>Seleccione día:</label>
                       <select class="form-control" Id="Dia">
                             <option value="1">Lunes</option>
                             <option value="2">Martes</option>
@@ -784,17 +812,17 @@
                   <div id="external-events">
 				        <table id="Horario" class="table table-bordered">
                  
-                    <thead>
+                    <thead style="background-color: #3C8DBC;color:#fff">
                         <tr>
-                      <th>Horas</th>
-                      <th>Lunes</th>
-                      <th>Martes</th>
-                      <th>Miercoles</th>
-                      <th>Jueves</th>
-                      <th>Viernes</th>
-                      <th>Sabado</th>
-                      <th>Horas</th>
-                      <th>Borrar</th>
+                      <th style="text-align: center">Horas</th>
+                      <th style="text-align: center">Lunes</th>
+                      <th style="text-align: center">Martes</th>
+                      <th style="text-align: center">Miercoles</th>
+                      <th style="text-align: center">Jueves</th>
+                      <th style="text-align: center">Viernes</th>
+                      <th style="text-align: center">Sabado</th>
+                      <th style="text-align: center">Horas</th>
+                      <th style="text-align: center">Borrar</th>
                     </tr> 
                   </thead>
                   <tbody>

@@ -913,7 +913,12 @@
                                   $Mensaje=(string) $datos->PV_MENSAJE;
                                   $Estado=(int) $datos->PI_ESTADO;
                                }
-                                $session=$request->getSession();
+                              
+                          }
+                          
+                             if (is_object($xml2)) {
+                            
+                              $session=$request->getSession();
                               $Email= $session->get('mail');
                               $Nombre = $session->get('nom_usuario');
                                                  $mailer    = $this->container->get('mailer');
@@ -927,19 +932,17 @@
                                                   ->setTo($Email)
                                                   ->setBody("$Nombre usted ha anulado con exito las Materias");
                                       // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
-                                      $this->get('mailer')->send($message);   
-                               
-                              
-                          }
-
-
+                                      $this->get('mailer')->send($message);  
+                              }
+                       
                         $arrayProceso=array();
                         $arrayProceso['codigo_error']=$Estado;
                         $arrayProceso['mensaje']=$Mensaje;
                         $jarray=json_encode($arrayProceso);
-                        
                         $respuesta->setContent($jarray);
                         return $respuesta;
+                        
+                   
                           
                     }catch (\Exception $e)
                         {

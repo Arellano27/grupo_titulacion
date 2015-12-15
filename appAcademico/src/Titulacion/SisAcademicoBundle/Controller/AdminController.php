@@ -2498,7 +2498,7 @@ public function generacion_horariosAction(Request $request){
                         <pt_hora_inicio>$hora_inicio</pt_hora_inicio>
                         <pt_hora_fin>$hora_fin</pt_hora_fin>
                         <pi_id_sg_usuario_registro>1</pi_id_sg_usuario_registro>
-                        <pc_opcion>A</pc_opcion>
+                        <pc_opcion>I</pc_opcion>
                         <pi_id_sa_materia_paralelo>2330</pi_id_sa_materia_paralelo>
                         <pi_id_sa_horario>1091</pi_id_sa_horario>
                         <pi_id_sa_profesor_materia_carrera>2115</pi_id_sa_profesor_materia_carrera>";
@@ -2798,9 +2798,9 @@ public function generacion_horariosAction(Request $request){
             $session=$request->getSession();
 
             $UgServices    = new UgServices;
-
+ //echo var_dump($id); exit();
             $datosHorarios  = $UgServices->Docentes_Horarios($id);
-
+           
                    $pdf= " <html>
                                             <body>
                                             <img width='5%' src='images/menu/ug_logo.png'/>
