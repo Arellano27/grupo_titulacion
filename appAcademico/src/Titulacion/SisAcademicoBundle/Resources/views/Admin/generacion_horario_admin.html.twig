@@ -578,7 +578,8 @@
                                              document.getElementById("Horario").rows[1].remove();                                            
                                          }
                                           $("#Asignar").css("display","none");
-                                                                    
+                                          $("#Materia option").remove();
+                                          $("#Materia").html("<option>Seleccione un paralelo para ver Materias disponibles</option>");                   
                                           $("#Docentes option").remove();
                                           $("#Docentes").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
                                        }
@@ -636,7 +637,7 @@
             success: function(data) 
             {
                     CargandoDocentes.close();
-                    $( "#Materia").html( data );
+                    $( "#Materia_").html( data );
                 
             }
         });
@@ -730,7 +731,7 @@
                           
                       </select>#}
                     </div>
-                      <div id="Materia" class="form-group">
+                      <div id="Materia_" class="form-group">
                       <label>Seleccione Materia:</label>
                         <select class="form-control" Id="Materia">
                             <option>Seleccione un paralelo para ver Materias disponibles</option>
