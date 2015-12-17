@@ -545,7 +545,7 @@
                                             $("#btninscribe").attr("disabled", false);
                                              modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : "Horario para ese dia ya fue creado",
+                                                           content : respuesta.mensaje,
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -562,7 +562,7 @@
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'El horario fue creado exitosamente!',
+                                                           content : respuesta.mensaje,
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
