@@ -2530,10 +2530,11 @@ public function generacion_horariosAction(Request $request){
                     foreach($xml->parametrosSalida as $datos)
                      {
                         $Estado=(int) $datos->PI_ESTADO;
-                        $Mensaje=(string) $datos->PV_MENSAJE;
+                        $Mensaje=(string) $datos->PV_MENSAJE_TECNICO;
                      }
 
                 }
+                //echo var_dump($xml); exit();
             $arrayProceso = array();
             $arrayProceso['codigo_error']=$Estado;
             $arrayProceso['mensaje']=$Mensaje;
