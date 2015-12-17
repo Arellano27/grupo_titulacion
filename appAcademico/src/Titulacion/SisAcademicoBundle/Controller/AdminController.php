@@ -2524,20 +2524,26 @@ public function generacion_horariosAction(Request $request){
                         }
                 }
              $Estado="";
-                $Mensaje="";
+             $Mensaje="";
+             $Mensaje_real="";
              if ( is_object($xml))
                 {
                     foreach($xml->parametrosSalida as $datos)
                      {
                         $Estado=(int) $datos->PI_ESTADO;
                         $Mensaje=(string) $datos->PV_MENSAJE_TECNICO;
+                        
+                        if($Mensaje == ""){
+                            $Mensaje_real =(string) $datos->PV_MENSAJE; 
+                        }else{
+                             $Mensaje_real = $Mensaje; 
+                        }
                      }
-
                 }
-                //echo var_dump($xml); exit();
+                //echo var_dump($Mensaje_real); exit();
             $arrayProceso = array();
             $arrayProceso['codigo_error']=$Estado;
-            $arrayProceso['mensaje']=$Mensaje;
+            $arrayProceso['mensaje']=$Mensaje_real;
             $jarray=json_encode($arrayProceso);
             $respuesta->setContent($jarray);
             return $respuesta;
