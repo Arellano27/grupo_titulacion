@@ -2526,9 +2526,9 @@
                                                         <tr>
                                                             <th style='text-align: center !important;'>Dia</th>
                                                             <th style='text-align: center !important;'>Materia</th>
+                                                            <th style='text-align: center !important;'>Curso</th>
                                                             <th style='text-align: center !important;'>Desde</th>
-                                                            <th style='text-align: center !important;'>Hasta</th>
-                                                            <th style='text-align: center !important;'>Curso</th> 
+                                                            <th style='text-align: center !important;'>Hasta</th> 
                                                         </tr>";
 
                                                    foreach($datosHorarios as $Horario) {
@@ -2551,7 +2551,7 @@
 
                                                     <tr><td align='center' ><b>$estudiante</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÃƒï¿½A</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";
@@ -2630,7 +2630,7 @@
 
                                                     <tr><td align='center' ><b>horario</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÃƒï¿½A</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";

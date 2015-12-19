@@ -3,20 +3,27 @@
 
 {% block contenido %}
     
-  <script type="text/javascript">
-   $(function () {
-          TableAdvanced.init();          
-     });  
-</script>
+      <script type="text/javascript">
+        $(function () {
+               TableAdvanced.init();          
+          });  
+      </script>
+     
+      <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
+    
+
  <script type="text/javascript">
     
          
-            
             function mensaje(id){                
                 $("#Texto").html(id);
                 $("#Modal").click();
             }
             
+        var modelessEnviarMensajes;
+               
           $(document).ready(function (){
                 
             $("#Limpiar").click(function (){
@@ -54,9 +61,15 @@
                                 $("#mensaje").focus();
                           return false;
                     }
-
-                  return true;
+                    
+                     modelessEnviarMensajes = new $.flavr({
+                        modal   : true,
+                        content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Enviando mensajes...</b>',
+                        buttons     : {}
+                     });
+                   
                });
+               
          });
     
      
@@ -87,7 +100,7 @@
   </div>
 </div>
     
-      <div class="page-content" style="height: 600px;">
+   <div class="page-content" style="height: 600px;">
    <div  class="col-xs-14">
      
        <form id="form-enviar" method="post" action="{{ path('notificaciones_index') }}">  

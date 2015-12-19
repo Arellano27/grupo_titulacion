@@ -929,8 +929,9 @@
                                       $message = \Swift_Message::newInstance('test')
                                                   ->setSubject("Anulación de Materia Exitosa")
                                                   ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
-                                                  ->setTo($Email)
-                                                  ->setBody("$Nombre usted ha anulado con exito las Materias");
+//                                                  ->setTo($Email)
+                                              ->setTo($Email)
+                                                  ->setBody("$Nombre su solicitud de anulación de materias fue grabada con exito");
                                       // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
                                       $this->get('mailer')->send($message);  
                               }
@@ -1302,12 +1303,14 @@
                             $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
                                      ->setUsername('titulacion.php@gmail.com')
                                      ->setPassword('sc123456');
-                            $message = \Swift_Message::newInstance('test')
+                            $message_matri = \Swift_Message::newInstance('test')
                                      ->setSubject("Registro de Materias Exitosa")
                                      ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
                                      ->setTo($Email)
                                      ->setBody("$Nombre usted a completado su registro de materias con exito");                  
-                           $this->get('mailer')->send($message);
+                           $this->get('mailer')->send($message_matri);
+                           
+                              
                   }   
             return $respuesta;
         }
