@@ -4,3 +4,16 @@
     <option value="{{ Materia.idmateria }}">{{ Materia.materia }}</option>                        
 {%endfor%} 
  </select>
+ 
+ <script>
+     
+         $(document).ready(function () {
+          $("#Materia").on('change',function () {
+               $("#Docente option").remove();
+               $("#Docente").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
+               $( "#Asignar").css("display","none");
+           });
+       });
+         
+     
+ </script>

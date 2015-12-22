@@ -7,15 +7,34 @@
     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
     
-      <script type="text/javascript">
-        $(function () {
-               TableAdvanced.init();          
-          });  
-      </script>
-     
+          <script type="text/javascript">
+            $(function () {
+                   TableAdvanced.init();          
+              });  
+          </script>
+  
+              <script type="text/javascript">
+             
+                    $(function () {
+                     
+                    var respuesta= $("#respuesta").val(); 
+                    if(respuesta == "exito"){
+                        var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Mensajes enviados correctamente", 'sm', 'alert');
+                               $("#content-enviar" ).append( msg_alert );
+                               $('#modal-enviar').modal('show');
+                            }
+                           if(respuesta == "fallo"){
+                                var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Problemas de envio de correos", 'sm', 'alert');
+                               $("#content-enviar" ).append( msg_alert );
+                               $('#modal-enviar').modal('show');
+                            }       
+                      });  
+             </script>
+
  <script type="text/javascript">
      
         var modelessEnviarMensajes;
+          
                     
           $(document).ready(function (){
                 
@@ -40,6 +59,7 @@
                           return false;
                        
                     }
+                   
                     if(Asunto == ""){
                            var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Escriba un Asunto", 'sm', 'alert');
                                 $( "#content-enviar" ).append( msg_alert );
@@ -60,7 +80,7 @@
                         content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Enviando mensajes...</b>',
                         buttons     : {}
                      });
-                   
+                     
                });
                
          });
@@ -73,12 +93,10 @@
             }
      
 </script>
- {#   <script src="{{ asset('js/EnviarMensajes.js') }}"></script>#}
-    {#<script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>#}
-<script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
      
 <section class="content">
-<button type="button" id="Modal" class="btn btn-info btn-lg" style="display: none" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    <input type="hidden"  value="{{app.session.get('respuesta_2')}}" id="respuesta">
+<button type="button" id="Modal" class="btn btn-info btn-lg" style="display: none" data-toggle="modal" data-target="#myModal"></button>
     <!-- Modal content-->
     <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
