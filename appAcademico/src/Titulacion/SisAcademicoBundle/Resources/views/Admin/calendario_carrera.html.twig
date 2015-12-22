@@ -301,15 +301,15 @@
           },
           drop: function(date, allDay){
               var start = date.format("YYYY-MM-DD 00:00:00");
+              var end = date.format("YYYY-MM-DD 23:59:00");
               var id_evento = $(this).attr("name");
               // alert(id_evento);
-              insertar_eventos(start,id_evento);
+              insertar_eventos(start,id_evento,end);
 
                 // $('#calendar').fullCalendar('updateEvent',this);
 
           },
          eventDrop: function(event, delta, revertFunc) {
-          alert("1");
           console.debug("delta//"+delta);
           console.debug("event//"+event.end);
 
@@ -367,9 +367,9 @@
 
     </script>
     <script type="text/javascript">
-        function insertar_eventos(date,id_evento){
+        function insertar_eventos(date,id_evento,end){
           // alert(date);
-            var end = date.format("YYYY-MM-DD 23:59:00");
+            
             $.post('{{path('admin_academico_insertar_eventos')}}', {start: date, end: end, id_evento: id_evento}, function(data) {
               if(data == 1){
                 mensaje_cisc( "notice", "EVENTO INSERTADO CON ÉXITO");
