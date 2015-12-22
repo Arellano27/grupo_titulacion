@@ -156,7 +156,7 @@
 					<tbody>
 					{% for dataAsist in dataMateria.datosAsistencia %}
 					  <tr>
-                  <td> <div style="float:left;">{{ dataAsist.apellidos|upper }} <br/> {{ dataAsist.nombres|capitalize }}</div><!-- <div style="float:right;"><a class="btn btn-primary btn-circle" href="/SisAcade<!-- mico/web/app_dev.php/home/materias/1/2" title="Notas del Semestre"><i class="fa fa-book"></i></a></div> --></td>
+                  <td> <div style="float:left;">{{ dataAsist.apellidos|upper }} <br/> {{ dataAsist.nombres|upper }}</div><!-- <div style="float:right;"><a class="btn btn-primary btn-circle" href="/SisAcade<!-- mico/web/app_dev.php/home/materias/1/2" title="Notas del Semestre"><i class="fa fa-book"></i></a></div> --></td>
 						{% for fechasAsistEstud in dataAsist.fechas %}
                      {% if fechasAsistEstud == 'V' %}
                         {% set classSignColor   = ' btn-success ' %}
@@ -253,6 +253,11 @@
             $("#nombreCarreraMostrar_{{dataMateria.idMateria}}").html(nombreCarreraSelecc);
             
             $("#consultaAsistencia").on('click', function(){
+               modelessListadoAlumnos = new $.flavr({
+                                             modal   : true,
+                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
+                                             buttons : {}
+                                          });
                var idCarreraConsulta   = $("#carreraSeleccionada").val();
                var idMateriaConsulta   = $("#materiaSeleccionada-Carrera_"+idCarreraConsulta).val();
                var fechaInicio         = $("#fechasAsistenciasDesde").val();
@@ -280,10 +285,7 @@
                                              });
                      },
                      success:  function (dataResponse) {
-                       //console.log(optionSelect.closest(".panel-body"));
-                       {#$("#materiaSeleccionada-Carrera_"+idCarrera).val(idMateria);
-                       $("#nombreMateriaSeleccionada-Carrera_"+idCarrera).val(tituloPanelMateria);
-                       optionSelect.closest(".panel-body").html(dataResponse);#}
+                       modelessListadoAlumnos.close();
                        $("#panelAsistenciasCarrera-"+idCarreraConsulta).html(dataResponse);
                      },
                      dataType:'html'

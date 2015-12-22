@@ -1920,7 +1920,7 @@
             foreach($dataProcesar["estudiantes"]["estudiante"] as $estudiante) {
                $tempArrayEst = NULL;
                $tempArrayEst["idEstudiante"]	= $estudiante["idEstudiante"];
-               $tempArrayEst["estudiante"]		= $estudiante["estudiante"];
+               $tempArrayEst["estudiante"]	= $estudiante["estudiante"];
                $tempArrayEst["ciclo"]			= $estudiante["ciclo"];
                $tempArrayEst["estadoCiclo"]	= $estudiante["estadoCiclo"];
                $tempArrayEst["parciales"]		= array();
@@ -1982,22 +1982,25 @@
                      $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
                   }
                   else {
-                      if(isset($estudiante["parciales"]["notas"]["nota"])) {
-                     foreach($estudiante["parciales"]["notas"]["nota"] as $dataComponente){
-                        
-                        $keyComponente	= strtolower($dataComponente["tipoNota"]);
-                        $notaComponente	= $dataComponente["Nota"];
+                     if(isset($estudiante["parciales"]["notas"]["nota"])) {
+                        foreach($estudiante["parciales"]["notas"]["nota"] as $dataComponente){
 
-                        $tempComponente	= $keyComponente;
-                        $tempComponente	= str_replace("á","a",$tempComponente);
-                        $tempComponente	= str_replace("é","e",$tempComponente);
-                        $tempComponente	= str_replace("í","i",$tempComponente);
-                        $tempComponente	= str_replace("ó","o",$tempComponente);
-                        $tempComponente	= str_replace("ú","u",$tempComponente);
-                        $keyComponente	= str_replace("ñ","n",$tempComponente);
-                        $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
+                           $keyComponente	= strtolower($dataComponente["tipoNota"]);
+                           $notaComponente	= $dataComponente["Nota"];
+
+                           $tempComponente	= $keyComponente;
+                           $tempComponente	= str_replace("á","a",$tempComponente);
+                           $tempComponente	= str_replace("é","e",$tempComponente);
+                           $tempComponente	= str_replace("í","i",$tempComponente);
+                           $tempComponente	= str_replace("ó","o",$tempComponente);
+                           $tempComponente	= str_replace("ú","u",$tempComponente);
+                           $keyComponente	= str_replace("ñ","n",$tempComponente);
+                           $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
+                        }
                      }
-                      }
+                  }
+                  if($periodosMostrar[$keyParcial]["totalizar"]=="SI"){
+                     $tempArrayEst["parciales"][$keyParcial]["total"]		= $estudiante["parciales"]["total"];
                   }
 
 
