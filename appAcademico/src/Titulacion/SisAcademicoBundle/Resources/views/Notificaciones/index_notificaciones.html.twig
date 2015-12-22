@@ -3,27 +3,20 @@
 
 {% block contenido %}
     
+     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
+    
       <script type="text/javascript">
         $(function () {
                TableAdvanced.init();          
           });  
       </script>
      
-      <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
-    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
-    <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
-    
-
  <script type="text/javascript">
-    
-         
-            function mensaje(id){                
-                $("#Texto").html(id);
-                $("#Modal").click();
-            }
-            
+     
         var modelessEnviarMensajes;
-               
+                    
           $(document).ready(function (){
                 
             $("#Limpiar").click(function (){
@@ -72,9 +65,15 @@
                
          });
     
+    
+    
+            function mensaje(id){                
+                $("#Texto").html(id);
+                $("#Modal").click();
+            }
      
 </script>
-    <script src="{{ asset('js/EnviarMensajes.js') }}"></script>
+ {#   <script src="{{ asset('js/EnviarMensajes.js') }}"></script>#}
     {#<script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>#}
 <script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
      
@@ -170,7 +169,7 @@
                         </div>
                     <div class="modal-body">
                         
-                        <button type="submit" class="btn btn btn-success" onclick="send_form ('enviar')" id="Enviar"> Enviar Mensajes </button>
+                        <button type="submit" class="btn btn-success" id="Enviar"> Enviar Mensajes </button>
                      <button type="button" id="Limpiar" class="btn btn btn-danger">Limpiar</button>
                       
                     </div>
