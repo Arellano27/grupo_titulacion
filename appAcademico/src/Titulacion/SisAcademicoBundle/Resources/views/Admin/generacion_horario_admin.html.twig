@@ -656,8 +656,7 @@
        HoraText = HoraText.replace(" ","");
         var datos = {'Paralelo':ParaleloId,'Materia':MateriaId,'Dia':DiaId,'Hora':HoraText};
         var path = '{{path('admin_consulta_docente_disponible')}}';
-        $.ajax
-        ({
+        $.ajax({
             type: 'post',
             url: path,
             data: datos,
@@ -679,25 +678,12 @@
                
                   $( "#Docente_").html( data );
                     $( "#Asignar").css("display","");
-                    
-                
+                   
             }
         });
     
     });
-             
-          $("#Materia").change(function () {
-              
-                //$("#Hora option:selected").text("Seleccione una Hora para ver docentes disponibles");
-               $("#Docentes option").remove();
-               $("#Docentes").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
-                $( "#Asignar").css("display","none");
-                {#$("#Docentes option:selected").text("Seleccione una Hora para ver docentes disponibles");
-                $("#Docentes option:selected").val("");#}
-              
-            });
-    
-  
+           
    });
         
     </script>

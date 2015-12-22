@@ -163,26 +163,22 @@
                             }
 
                             else
-                            {
-                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo};
-
+                            {    var modelessSetSolicitud;
+                                  modelessSetSolicitud = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             buttons     : {}
+                                                          });  
+                                var envio_correo = 0
+                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'envio_correo':envio_correo};
                                  var jumpAction = '{{path('estudiantes_anulacion_materias_2')}}';
-                                 var modelessSetSolicitud;
+                                                                      
                                   $.ajax({
                                      url:   jumpAction,
                                      data: obj_data,
                                      type:  'post',
                                      async: false,
                                      beforeSend: function () {
-                                      modelessSetSolicitud = new $.flavr({
-                                                             modal   : true,
-                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
-                                                             buttons     : {}
-                                                          });
-                                       // alert("dentro");
-                                       //tablaNotasa.html("Cargando, espere por favor...");
-                                     //notificacionIndex = cargandoSitio(null, null, null);
-                              
                                      },
                                      success:  function (dataResponse) {
                                         modelessSetSolicitud.close();
@@ -204,14 +200,63 @@
                                         $('#btnsolanula').remove();
                                         modelessAnulaMateriap= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Sr. Estudiante, Su solicitud de Anulación fue Enviada de Manera Exitosa ',
+                                                           content : 'Sr. Estudiante, Su solicitud de Anulación fue Enviada de Manera Exitosa <br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i> ',
                                                            buttons     : {
-                                                              primary : { text: 'Aceptar', style: 'primary',
-                                                                   action: function(){
-                                                                        location.reload();
-                                                                   } }
                                                            }
                                                         });
+                                          
+                                          //Inicio envio ce correo 
+                                         envio_correo = 1;
+                                        var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'envio_correo':envio_correo};
+                                        var jumpAction = '{{path('estudiantes_anulacion_materias_2')}}';
+                                                                      
+                                         $.ajax({
+                                            url:   jumpAction,
+                                            data: obj_data,
+                                            type:  'post',
+                                            async: false,
+                                            beforeSend: function () {
+                                            },
+                                            success:  function (dataResponse) {
+                                               modelessSetSolicitud.close();
+                                              var respuesta=jQuery.parseJSON(dataResponse);
+                                              if (respuesta.codigo_error!=1)
+                                              {
+                                                    modelessAnulaMateriap= new $.flavr({
+                                                                  modal   : true,
+                                                                  content : respuesta.mensaje,
+                                                                  buttons     : {
+                                                                     primary : { text: 'Aceptar', style: 'primary' }
+                                                                  }
+                                                               });
+                                                    $("#btnsolanula").attr("disabled", false);
+
+                                              }
+                                              else
+                                                {
+                                                   modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : 'Notificación enviada exitosamente.',
+                                                                      buttons     : {
+                                                                          primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+                                                  }
+                                            },
+                                             error: function(dataResponse)
+                                             {
+                                               modelessSetSolicitud.close();
+                                                 //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                                                 //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                               form="accordion";
+                                               msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "No se pudo envíar la notificación.", 'sm', 'alert');
+                                                               $( '#'+form ).append( msg_alert );
+                                                               $('#modal-'+form).modal('show');
+                                             },
+
+                                        dataType:'text'
+                                     });
+                                          // fin envio de correo 
 
                                        }
                                      },

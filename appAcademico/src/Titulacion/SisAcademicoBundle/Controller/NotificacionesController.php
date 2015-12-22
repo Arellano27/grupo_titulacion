@@ -20,10 +20,13 @@ class NotificacionesController extends Controller
       var $Correo_enivar = "";
         public function index_notificacionesAction(Request $request)
         {   
+            
+             
             $session=$request->getSession();
-              $perfilEst   = $this->container->getParameter('perfilEst');
-                $perfilDoc   = $this->container->getParameter('perfilDoc');
-                $perfilAdmin = $this->container->getParameter('perfilAdmin');
+             $session->set("respuesta_2","");
+            $perfilEst   = $this->container->getParameter('perfilEst');
+            $perfilDoc   = $this->container->getParameter('perfilDoc');
+            $perfilAdmin = $this->container->getParameter('perfilAdmin');
                 $perfilEstDoc = $this->container->getParameter('perfilEstDoc');
                 $perfilEstAdm = $this->container->getParameter('perfilEstAdm');
                 $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
@@ -40,9 +43,7 @@ class NotificacionesController extends Controller
              $Profesores = $request->request->get('Profesores');
              $Estudiantes = $request->request->get('Estudiantes');
              $Paralelo = $request->request->get('Paralelo');
-//              echo var_dump($Profesores); 
-//              echo var_dump($Estudiantes);
-//              echo var_dump($Paralelo);exit();
+
          if($session->has("perfil")) {
             if($mensaje == null){
            $lcFacultad="";
@@ -100,9 +101,16 @@ class NotificacionesController extends Controller
                         $message = \Swift_Message::newInstance('test')
                                     ->setSubject($Asunto)
                                     ->setFrom('titulacion.php@gmail.com',$Emisor)
-                                    ->setTo($Correo_enivar)
+                                    ->setTo($$Correo_enivar)
                                    ->setBody($mensaje);
                         $this->get('mailer')->send($message);
+                        
+                        
+                        if($this->get('mailer')->send($message)){
+                             $session->set("respuesta_2","exito");
+                        }else{
+                            $session->set("respuesta_2","fallo");
+                        }
                         
                            //sms mensajes sms  descomentar cuando se configure                        
 //                           $receptor =$Correos_Numeros_['celular'];

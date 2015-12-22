@@ -2642,7 +2642,7 @@
 
                                                     <tr><td align='center' ><b>$estudiante</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÃƒï¿½A</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";
@@ -2721,7 +2721,7 @@
 
                                                     <tr><td align='center' ><b>horario</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÃƒï¿½A</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";
