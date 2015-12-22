@@ -2465,8 +2465,96 @@
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
             $estudiante  = $session->get('nom_usuario'); 
 
+            if ($session->has("perfil")) 
+           {
+               if ($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilDocAdm) 
+               {
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          //$idEstudiante=3;
+                          $idDocente=$session->get("id_user");
+                          $idRol=$perfilDoc;
+                          
+                          //$idRol=$session->get("perfil");
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarreras($idDocente,$idRol);
+                             
+                            if ( is_object($xml))
+                            {
+                              foreach($xml->registros->registro as $lcCarreras) 
+                              {
+                                      $lcFacultad=$lcCarreras->id_sa_facultad;
+                                      $lcCarrera=$lcCarreras->id_sa_carrera;
+                                      $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                 'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                 'Carrera'=>$lcCarreras->id_sa_carrera,
+                                                                 'idCiclo'=>$lcCarreras->id_sa_ciclo_detalle
+                                                                );
+                                      array_push($Carreras, $materiaObject); 
+                              } 
+
+                              $bolCorrecto=1;
+                              $cuantos=count($Carreras);
+                              if ($cuantos==0)
+                              {
+                                $bolCorrecto=0;
+                              }
+                              return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig',array(
+                                                      'facultades' =>  $Carreras,
+                                                      'idDocente'=>$idDocente,
+                                                      'idFacultad'=>$lcFacultad,
+                                                      'idCarrera'=>$lcCarrera,
+                                                      'cuantos'=>$cuantos,
+                                                      'bolcorrecto'=>$bolCorrecto
+                                                   ));
+                            }
+                            else
+                            {
+                              throw new \Exception('Un error');
+                            }    
+                     }
+                     catch (\Exception $e)
+                     {
+                            $bolCorrecto=0;
+                            $cuantos=0;
+                            return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig',array(
+                                                      'facultades' =>  $Carreras,
+                                                      'idDocente'=>$idDocente,
+                                                      'idFacultad'=>$lcFacultad,
+                                                      'idCarrera'=>$lcCarrera,
+                                                      'cuantos'=>$cuantos,
+                                                      'bolcorrecto'=>$bolCorrecto
+                                                   ));
+
+                            //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                     }
+               }
+               else
+               {
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }
+           else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+
+
+
+
            
-          return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig');
+          //return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig');
            
     }#end function
     
@@ -2526,9 +2614,9 @@
                                                         <tr>
                                                             <th style='text-align: center !important;'>Dia</th>
                                                             <th style='text-align: center !important;'>Materia</th>
+                                                            <th style='text-align: center !important;'>Curso</th>
                                                             <th style='text-align: center !important;'>Desde</th>
-                                                            <th style='text-align: center !important;'>Hasta</th>
-                                                            <th style='text-align: center !important;'>Curso</th> 
+                                                            <th style='text-align: center !important;'>Hasta</th> 
                                                         </tr>";
 
                                                    foreach($datosHorarios as $Horario) {

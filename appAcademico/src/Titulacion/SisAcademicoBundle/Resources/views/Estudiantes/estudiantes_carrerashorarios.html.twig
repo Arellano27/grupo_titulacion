@@ -10,7 +10,7 @@
             </div>-->
             <!-- .panel-heading -->
             <div class="panel-body">
-                      <h2 align="center"><b>Horarios - Seleccion de Carreras</b></h2>
+                      <h2 align="center"><b>Horarios - Selección de Carreras</b></h2>
               <div class="panel-group" id="accordion">
                 
                   
@@ -44,17 +44,22 @@
                                                                               <i class="fa fa-file-pdf-o fa-5x"></i>
                                                                           </div>
                                                                           <div class="col-xs-9 text-right">
-                                                                              <div><h3>Horarios de Examen</h3></div>
+                                                                              <div><h3>Horarios de Exámenes</h3></div>
                                                                           </div>
                                                                       </div>
                                                                   </div>
+
+
                                                                   <a href="{{ path('estudiantes_pdf_horarioexamen',{ 'idEstudiante': idEstudiante,'idCarrera':facultad.Carrera,'ciclo':facultad.idCiclo,'carrera':facultad.Nombre }) }}" target="_blank">
                                                                       <div class="panel-footer">
-                                                                          <span class="pull-left">Exportar Horario de Examen </span>
+                                                                          <span class="pull-left">Exportar Horario de Exámenes </span>
                                                                           <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                                                           <div class="clearfix"></div>
                                                                       </div>
                                                                   </a>
+
+
+
                                                               </div>
                                                           </div>
                                                         </div>
