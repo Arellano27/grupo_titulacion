@@ -863,7 +863,8 @@
             $materias  = $request->request->get('arrMaterias');
             $idEstudiante  = $request->request->get('idEstudiante');
             $idCarrera  = $request->request->get('idCarrera');
-            $idCiclo  = $request->request->get('idciclo');
+            $enviar_correo  = $request->request->get('enviar_correo');
+            
 
 
            if ($session->has("perfil")) {
@@ -873,7 +874,7 @@
                  try
                 {
                     
-
+                   if($enviar_correo == 0){
                     $datosCuenta=""; 
                      foreach ($materias as $key => $value) {
                           $datosCuenta.= "<item>
@@ -916,7 +917,15 @@
                               
                           }
                           
-                             if (is_object($xml2)) {
+                            
+                        $arrayProceso=array();
+                        $arrayProceso['codigo_error']=$Estado;
+                        $arrayProceso['mensaje']=$Mensaje;
+                        $jarray=json_encode($arrayProceso);
+                        $respuesta->setContent($jarray);
+                        return $respuesta;
+                   }elseif($enviar_correo == 1) {
+                       
                             
                               $session=$request->getSession();
                               $Email= $session->get('mail');
@@ -933,16 +942,24 @@
                                               ->setTo($Email)
                                                   ->setBody("$Nombre su solicitud de anulación de materias fue grabada con exito");
                                       // ->setBody($this->renderView('TitulacionSisAcademicoBundle:Admin:Comtraseña.html.twig'),'text/html', 'utf8');
-                                      $this->get('mailer')->send($message);  
-                              }
+                         
+                                      if($this->get('mailer')->send($message)){
+                                           $arrayProceso=array();
+                                            $arrayProceso['codigo_error']=1;
+                                            $arrayProceso['mensaje']=$Mensaje;
+                                            $jarray=json_encode($arrayProceso);
+                                            $respuesta->setContent($jarray);
+                                            return $respuesta;
+                                      } else{
+                                           $arrayProceso=array();
+                                            $arrayProceso['codigo_error']=0;
+                                            $arrayProceso['mensaje']="No se pudo envíar la notificación.";
+                                            $jarray=json_encode($arrayProceso);
+                                            $respuesta->setContent($jarray);
+                                            return $respuesta;
+                                      }                             
                        
-                        $arrayProceso=array();
-                        $arrayProceso['codigo_error']=$Estado;
-                        $arrayProceso['mensaje']=$Mensaje;
-                        $jarray=json_encode($arrayProceso);
-                        $respuesta->setContent($jarray);
-                        return $respuesta;
-                        
+                   }
                    
                           
                     }catch (\Exception $e)
@@ -1193,15 +1210,16 @@
            
            $respuesta= new Response("",200);
            $materias  = $request->request->get('arrMaterias');
-
            $idEstudiante  = $request->request->get('idEstudiante');
            $idCarrera  = $request->request->get('idCarrera');
            $idCiclo  = $request->request->get('idciclo');
+           $enviar_correo  = $request->request->get('enviar_correo');
            $noPrimerasBase=0;
            $noPrimerasPantalla=0;
            $lnCuantassel=0;
            $maxmaterias=7;
-          $UgServices = new UgServices;
+           if($enviar_correo == 0){
+           $UgServices = new UgServices;
            $xmlPendientes = $UgServices->getConsultaDatos_Matricula($idEstudiante,$idCarrera,$idCiclo);
                           
             //obtenet el ciclo de matriculacion del XML
@@ -1293,26 +1311,38 @@
             $arrayProceso['codigo_error']=$Estado;
             $arrayProceso['mensaje']=$Mensaje;
             $jarray=json_encode($arrayProceso);         
-            $respuesta->setContent($jarray);
-              if($Estado==1)
-                {  
-                            $session=$request->getSession();
-                            $Email= $session->get('mail');
-                            $Nombre = $session->get('nom_usuario');
-                            $mailer    = $this->container->get('mailer');
-                            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
-                                     ->setUsername('titulacion.php@gmail.com')
-                                     ->setPassword('sc123456');
-                            $message_matri = \Swift_Message::newInstance('test')
-                                     ->setSubject("Registro de Materias Exitosa")
-                                     ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
-                                     ->setTo($Email)
-                                     ->setBody("$Nombre usted a completado su registro de materias con exito");                  
-                           $this->get('mailer')->send($message_matri);
-                           
-                              
-                  }   
+            $respuesta->setContent($jarray);             
             return $respuesta;
+           }elseif($enviar_correo==1){
+                $session=$request->getSession();
+                $Email= $session->get('mail');
+                $Nombre = $session->get('nom_usuario');
+                $mailer    = $this->container->get('mailer');
+                $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com',465,'ssl')
+                         ->setUsername('titulacion.php@gmail.com')
+                         ->setPassword('sc123456');
+                $message_matri = \Swift_Message::newInstance('test')
+                         ->setSubject("Registro de Materias Exitosa")
+                         ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
+                         ->setTo($Email)
+                         ->setBody("$Nombre usted a completado su registro de materias con exito");                  
+               
+                if($this->get('mailer')->send($message_matri)){
+                    $arrayProceso=array();
+                    $arrayProceso['codigo_error']=1;
+                    $arrayProceso['mensaje']=$Mensaje;
+                    $jarray=json_encode($arrayProceso);         
+                    $respuesta->setContent($jarray);             
+                    return $respuesta;
+                }else{
+                    $arrayProceso=array();
+                    $arrayProceso['codigo_error']=0;
+                    $arrayProceso['mensaje']="No se pudo envíar la notificación";
+                    $jarray=json_encode($arrayProceso);         
+                    $respuesta->setContent($jarray);             
+                    return $respuesta;
+                }
+           }
         }
 
   public function presenta_matriculaAction(Request $request)

@@ -142,35 +142,29 @@
                             }
 
                             else
-                            {
+                            { 
+                                var modelessSetMatricula;
+                                modelessSetMatricula = new $.flavr({
+                                    modal: true,
+                                    content: '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando Registro...</b>',
+                                    buttons: {}
+                                });
 
-                                //$('.botonMatriculaSig').removeClass('buttonDisabled');
-                                //alert("aqui estoy");
                                 var idEstudiante='{{idEstudiante}}';
                                 var idCarrera='{{idCarrera}}';
                                 var carrera = '{{carrera}}';
+                                var enviar_correo = 0;
                                 //alert(idCarrera);
 
-                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo};
-                                 //console.log(obj_data);
-
+                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'enviar_correo':enviar_correo};
                                  var jumpAction = '{{path('estudiantes_grabar_matricula')}}';
-                                 var modelessSetMatricula;
+             
                                   $.ajax({
                                      url:   jumpAction,
                                      data: obj_data,
                                      type:  'post',
-                                     async: true,
-                                     beforeSend: function () {
-                                        modelessSetMatricula = new $.flavr({
-                                                             modal   : true,
-                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando Registro...</b>',
-                                                             buttons     : {}
-                                                          });
-                                       // alert("dentro");
-                                       //tablaNotasa.html("Cargando, espere por favor...");
-                                     //notificacionIndex = cargandoSitio(null, null, null);
-                              
+                                     async: false,
+                                     beforeSend: function () {                                                              
                                      },
                                      success:  function (dataResponse) {
                                         modelessSetMatricula.close();
@@ -192,19 +186,76 @@
                                        }
                                        else
                                        {
-                                        modelessProcesoMat= new $.flavr({
+                                            $('.botonAnterior').addClass('buttonDisabled');
+                                            $('.botonMatriculaSig').removeClass('buttonDisabled');
+                                            $("#btninscribe").remove();
+                                            $(".botonMatriculaSig").show();
+                                            modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Sr. Estudiante, su  registro fue procesado correctamente',
+                                                           content : 'Sr. Estudiante, su  registro fue procesado correctamente <br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i>',
                                                            buttons     : {
-                                                              primary : { text: 'Aceptar', style: 'primary' }
                                                            }
                                                         });
-                                        $('.botonAnterior').addClass('buttonDisabled');
-                                        $('.botonMatriculaSig').removeClass('buttonDisabled');
-                                        $("#btninscribe").remove();
-                                        $(".botonMatriculaSig").show();
+                                                        
+                                            //nuevo ajax envia correo 
+                                            enviar_correo = 1;
+                                            var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'enviar_correo':enviar_correo};
+                                            //console.log(obj_data);
 
-                                       }
+                                            var jumpAction = '{{path('estudiantes_grabar_matricula')}}';
+
+                                                $.ajax({
+                                                url:   jumpAction,
+                                                data: obj_data,
+                                                type:  'post',
+                                                async: false,
+                                                beforeSend: function () {                                                              
+                                                },
+                                                success:  function (dataResponse) {
+                                                   modelessSetMatricula.close();
+                                                  var respuesta=jQuery.parseJSON(dataResponse);
+                                                  $("#div_respuesta").html(respuesta.mensaje);
+                                                  if (respuesta.codigo_error!=1)
+                                                  {
+                                                        modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : respuesta.mensaje,
+                                                                      buttons     : {
+                                                                         primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+
+                                                  }
+                                                  else
+                                                  {
+                                                   modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : 'Notificación enviada exitosamente.',
+                                                                      buttons     : {
+                                                                          primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+                                                  }
+                                                },
+                                                 error: function(dataResponse)
+                                                 {
+                                                   modelessSetMatricula.close();  
+                                                   modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : "No se pudo envíar la notificación.",
+                                                                      buttons     : {
+                                                                         primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+                                                   {#form="accordion";
+                                                   msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "No se pudo envíar la notificación.", 'sm', 'alert');
+                                                                   $( '#'+form ).append( msg_alert );
+                                                                   $('#modal-'+form).modal('show');#}
+                                                 },                                       
+                                                dataType:'text'
+                                            });
+                                            // fin envia correo 
+                                        }
                                      },
                                       error: function(dataResponse)
                                       {
