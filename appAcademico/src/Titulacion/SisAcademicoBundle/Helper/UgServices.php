@@ -124,6 +124,7 @@ class UgServices {
 
       $response=$this->ws->doRequestSreReceptaTransacionObjetos_Registros($trama,$this->source,$this->tipo,$this->usuario,$this->clave,$this->urlWS,$this->host, $xmlData);
 
+      if($response==NULL){$response["mensajeTecnico"] = $this->ws->mensajeTecnico;} 
       return $response;
    }#end function Docentes_getAsistenciasMaterias()
 

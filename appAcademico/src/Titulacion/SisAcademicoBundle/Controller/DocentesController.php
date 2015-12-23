@@ -150,12 +150,26 @@
          $UgServices    = new UgServices;
          $datosAsistenciasXML  = $UgServices->Docentes_getAsistenciasMaterias($datosConsulta);
 
+         if($datosAsistenciasXML!=NULL && !isset($datosAsistenciasXML["mensajeTecnico"])){  //MensajeTecnico solo llega cuando no hay datos
+            $estadoConsulta = 1;            
+         }
+         elseif(isset($datosAsistenciasXML["mensajeTecnico"])) {
+            $patron = '/ok/';
+            if(preg_match($patron, strtolower($datosAsistenciasXML["mensajeTecnico"]))){
+               $estadoConsulta = 2;
+            }
+            else {
+               $estadoConsulta = 0;
+            }
+            $datosAsistenciasXML = NULL;  //Para procesarlo igual y me genere el resto de los datos
+         }
+         else {
+            $estadoConsulta = 0;
+            
+         }
+         
          $datosAsistencia   = $this->procesarListadoAsistenciasEstudiantes($datosAsistenciasXML);
 
-            
-               
-               
- 
          return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria.html.twig',
                          array(
                                'dataMateria' => array('fechasAsistencia' => $datosAsistencia["arregloFechas"],
@@ -165,7 +179,8 @@
                                                       'idMateria' => $idMateria,
                                                       'inicioCiclo' => $inicioCiclo,
                                                       'finCiclo' => $finCiclo,
-                                                      'datosConsultaActual' => $datosConsulta
+                                                      'datosConsultaActual' => $datosConsulta,
+                                                      'estadoConsulta' => $estadoConsulta
                                                      )
                              )
                       );
