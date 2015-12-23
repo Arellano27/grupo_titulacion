@@ -2525,25 +2525,24 @@ public function generacion_horariosAction(Request $request){
                 }
              $Estado="";
              $Mensaje="";
-             $Mensaje_real="";
+           
              if ( is_object($xml))
                 {
                     foreach($xml->parametrosSalida as $datos)
                      {
-                        $Estado=(int) $datos->PI_ESTADO;
-                        $Mensaje=(string) $datos->PV_MENSAJE_TECNICO;
+                        $Estado=(int) $datos->PI_ESTADO;                      
                         
-                        if($Mensaje == ""){
-                            $Mensaje_real =(string) $datos->PV_MENSAJE; 
+                        if($Estado == 0 || $Estado == 1){
+                            $Mensaje =(string) $datos->PV_MENSAJE; 
                         }else{
-                             $Mensaje_real = $Mensaje; 
-                        }
-                     }
+                            $Mensaje = (string) $datos->PV_MENSAJE_TECNICO;
+                       }
+                    }
                 }
                 //echo var_dump($Mensaje_real); exit();
             $arrayProceso = array();
             $arrayProceso['codigo_error']=$Estado;
-            $arrayProceso['mensaje']=$Mensaje_real;
+            $arrayProceso['mensaje']=$Mensaje;
             $jarray=json_encode($arrayProceso);
             $respuesta->setContent($jarray);
             return $respuesta;
@@ -2850,9 +2849,9 @@ public function generacion_horariosAction(Request $request){
                                                         <tr>
                                                             <th style='text-align: center !important;'>Dia</th>
                                                             <th style='text-align: center !important;'>Materia</th>
+                                                            <th style='text-align: center !important;'>Curso</th>
                                                             <th style='text-align: center !important;'>Desde</th>
                                                             <th style='text-align: center !important;'>Hasta</th>
-                                                            <th style='text-align: center !important;'>Curso</th>
                                                         </tr>";
 
                                                    foreach($datosHorarios as $Horario) {
@@ -2875,7 +2874,7 @@ public function generacion_horariosAction(Request $request){
 
                                                     <tr><td align='center' ><b>$nombre</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";
@@ -2975,7 +2974,7 @@ public function generacion_horariosAction(Request $request){
 
                                                     <tr><td align='center' ><b>$nombre</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";
