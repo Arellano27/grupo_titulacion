@@ -183,6 +183,7 @@
                                      success:  function (dataResponse) {
                                         modelessSetSolicitud.close();
                                        var respuesta=jQuery.parseJSON(dataResponse);
+                                       var modelessAnulaMateriap;
                                        if (respuesta.codigo_error!=1)
                                        {
                                              modelessAnulaMateriap= new $.flavr({
@@ -218,7 +219,7 @@
                                             beforeSend: function () {
                                             },
                                             success:  function (dataResponse) {
-                                               modelessSetSolicitud.close();
+                                               modelessAnulaMateriap.close();
                                               var respuesta=jQuery.parseJSON(dataResponse);
                                               if (respuesta.codigo_error!=1)
                                               {
@@ -234,7 +235,7 @@
                                               }
                                               else
                                                 {
-                                                   modelessProcesoMat= new $.flavr({
+                                                   modelessAnulaMateriap= new $.flavr({
                                                                       modal   : true,
                                                                       content : 'Notificación enviada exitosamente.',
                                                                       buttons     : {
@@ -245,7 +246,7 @@
                                             },
                                              error: function(dataResponse)
                                              {
-                                               modelessSetSolicitud.close();
+                                               modelessAnulaMateriap.close();
                                                  //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
                                                  //tablaNotasa.html("No fue posible conectar con el Servidor");
                                                form="accordion";

@@ -7,7 +7,7 @@ class AcademicoSoap {
     private $host   =NULL;
     private $url    =NULL;
     private $v_axis =NULL;
-
+    public $mensajeTecnico = NULL;
 /**
  * [funcion que permite receptar el xml del webservice de los procedimientos]
  */
@@ -302,6 +302,12 @@ $post_string="
          $response  = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $result);
          $respuesta  = $this->eliminaCabecerasAcademico($response);
          $respuesta  = $this->Response("<".$xmlData["bloqueRegistros"].">".$respuesta."</".$xmlData["bloqueRegistros"].">");
+         
+         foreach($respuesta as $datosRespuesta) {
+            if(isset($datosRespuesta["pv_mensaje_tecnico"])){
+               $this->mensajeTecnico   = $datosRespuesta["pv_mensaje_tecnico"];
+            }
+         }
          $respuesta  = $this->ReemplazaCaracteres($respuesta[0][$xmlData["bloqueSalida"]]);
          //$respuesta  = $this->Response($respuesta);
          $xml              = simplexml_load_string($respuesta, "SimpleXMLElement", LIBXML_NOCDATA);

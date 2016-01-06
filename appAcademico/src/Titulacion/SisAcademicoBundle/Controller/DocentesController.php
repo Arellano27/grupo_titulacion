@@ -1489,8 +1489,9 @@
          
          $UgServices    = new UgServices;
        //Menu de Notas por Materia para Profesor
+         //Cambio para que traiga las 3 ultimas fechas 
                
-               $trama = "<materia>".$idMateria."</materia>";
+               $trama = "<materia>".$idMateria."</materia><materia>".$idMateria."</materia>";
                 
           $arr_fechas  = $UgServices->Docentes_getfechasparcial($trama);
 //          print_r($arr_fechas);
