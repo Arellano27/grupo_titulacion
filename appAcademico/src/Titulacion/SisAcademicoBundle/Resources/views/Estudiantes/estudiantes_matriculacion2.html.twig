@@ -84,28 +84,6 @@
                                      arrValores["Nivel"]=Nivel;
                                      myArray[index]=arrValores;
                                 }
-                                // else
-                                // {
-
-                                //     $(this).children("td").each(function (index2) 
-                                //     {
-                                //         Celda=$(this).attr("id");
-                                //         Celda=Celda.split('_');
-                                //         Celda=Celda[0];
-                                //         //alert(Elemento);
-                                //         switch (Celda) 
-                                //         {
-                                //             case "veces": Veces = $(this).text() 
-                                //                     //alert("ve"+Veces);
-                                //                      break;
-                                //         }
-                                         
-                                //     })
-                                //     if (Veces!=1) 
-                                //     {
-                                //        indicaVeces=indicaVeces+1; 
-                                //     }
-                                // }
                                
                             })
                         }
@@ -141,8 +119,7 @@
                                $("#btninscribe").attr("disabled", false);
                             }
 
-                            else
-                            { 
+                            else{ 
                                 var modelessSetMatricula;
                                 modelessSetMatricula = new $.flavr({
                                     modal: true,
@@ -164,7 +141,13 @@
                                      data: obj_data,
                                      type:  'post',
                                      async: false,
-                                     beforeSend: function () {                                                              
+                                     beforeSend: function () {  
+                                         modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Procesando, por favor espere <br> <i class="fa fa-refresh fa-spin"></i>',
+                                                           buttons     : {
+                                                           }
+                                                        });
                                      },
                                      success:  function (dataResponse) {
                                         modelessSetMatricula.close();
@@ -172,34 +155,52 @@
                                        $("#div_respuesta").html(respuesta.mensaje);
                                        if (respuesta.codigo_error!=1)
                                        {
-                                            $('.botonMatriculaSig').addClass('buttonDisabled');
-                                            $('.botonAnterior').removeClass('buttonDisabled');
-                                            $("#btninscribe").attr("disabled", false);
-                                             modelessProcesoMat= new $.flavr({
+                                            modelessProcesoMat= new $.flavr({
                                                            modal   : true,
                                                            content : respuesta.mensaje,
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
                                                         });
+                                            $('.botonMatriculaSig').addClass('buttonDisabled');
+                                            $('.botonAnterior').removeClass('buttonDisabled');
+                                            $("#btninscribe").attr("disabled", false);
+                                            
                                            
                                        }
-                                       else
-                                       {
-                                            $('.botonAnterior').addClass('buttonDisabled');
-                                            $('.botonMatriculaSig').removeClass('buttonDisabled');
-                                            $("#btninscribe").remove();
-                                            $(".botonMatriculaSig").show();
-                                            modelessProcesoMat= new $.flavr({
-                                                           modal   : true,
-                                                           content : 'Sr. Estudiante, su  registro fue procesado correctamente <br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i>',
-                                                           buttons     : {
-                                                           }
-                                                        });
-                                                        
-                                            //nuevo ajax envia correo 
+                                        else{
+                                                   modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : 'Matriculación realizada exitosamente.',
+                                                                      buttons     : {
+                                                                          primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+                                                                        $('.botonMatriculaSig').addClass('buttonDisabled');
+                                            $('.botonAnterior').removeClass('buttonDisabled');
+                                            $("#btninscribe").attr("disabled", false);
+                                                              
                                             enviar_correo = 1;
-                                            var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'enviar_correo':enviar_correo};
+                                            
+                                        }
+                                     },
+                                      error: function(dataResponse)
+                                      {
+                                        modelessSetMatricula.close();
+                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                        form="accordion";
+                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                        $( '#'+form ).append( msg_alert );
+                                                        $('#modal-'+form).modal('show');
+                                      },
+                             //         timeout: 50000
+
+                                 dataType:'text'
+                              });
+                                //alert(estado);
+                                
+                               var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'enviar_correo':enviar_correo};
                                             //console.log(obj_data);
 
                                             var jumpAction = '{{path('estudiantes_grabar_matricula')}}';
@@ -208,8 +209,14 @@
                                                 url:   jumpAction,
                                                 data: obj_data,
                                                 type:  'post',
-                                                async: false,
-                                                beforeSend: function () {                                                              
+                                                async: true,
+                                                beforeSend: function () {      
+                                                    modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i>',
+                                                           buttons     : {
+                                                           }
+                                                        });
                                                 },
                                                 success:  function (dataResponse) {
                                                    modelessSetMatricula.close();
@@ -247,31 +254,11 @@
                                                                          primary : { text: 'Aceptar', style: 'primary' }
                                                                       }
                                                                    });
-                                                   {#form="accordion";
-                                                   msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "No se pudo envíar la notificación.", 'sm', 'alert');
-                                                                   $( '#'+form ).append( msg_alert );
-                                                                   $('#modal-'+form).modal('show');#}
+                                                  
                                                  },                                       
                                                 dataType:'text'
                                             });
-                                            // fin envia correo 
-                                        }
-                                     },
-                                      error: function(dataResponse)
-                                      {
-                                        modelessSetMatricula.close();
-                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
-                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
-                                        form="accordion";
-                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
-                                                        $( '#'+form ).append( msg_alert );
-                                                        $('#modal-'+form).modal('show');
-                                      },
-                             //         timeout: 50000
-
-                                 dataType:'text'
-                              });
-                                //alert(estado);
+                                            // in envia correo #}
                             }
             });
 

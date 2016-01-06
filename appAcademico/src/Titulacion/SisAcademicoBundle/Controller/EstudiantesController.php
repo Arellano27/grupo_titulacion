@@ -946,7 +946,7 @@
                                       if($this->get('mailer')->send($message)){
                                            $arrayProceso=array();
                                             $arrayProceso['codigo_error']=1;
-                                            $arrayProceso['mensaje']=$Mensaje;
+                                            $arrayProceso['mensaje']="Notificación enviada correctamente";
                                             $jarray=json_encode($arrayProceso);
                                             $respuesta->setContent($jarray);
                                             return $respuesta;
@@ -1280,7 +1280,7 @@
                              </matricula>";
 
                  
-                  $xml = $UgServices->setMatricula_Estudiante($xmlFinal);
+                 $xml = $UgServices->setMatricula_Estudiante($xmlFinal);
 
                   $Estado="";
                   $Mensaje="";
@@ -1293,6 +1293,9 @@
                            }
                           
                       }
+                  
+                  $Estado=(int) 1;
+                  $Mensaje=(string)"hola";
             }
             if($BanderaGrabar==2)
             {
@@ -1324,17 +1327,17 @@
                 $message_matri = \Swift_Message::newInstance('test')
                          ->setSubject("Registro de Materias Exitosa")
                          ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
-                         ->setTo($Email)
+                         ->setTo("ghuayamabe89@gmail.com")
                          ->setBody("$Nombre usted a completado su registro de materias con exito");                  
                
-                if($this->get('mailer')->send($message_matri)){
+               if($this->get('mailer')->send($message_matri)){                
                     $arrayProceso=array();
                     $arrayProceso['codigo_error']=1;
-                    $arrayProceso['mensaje']=$Mensaje;
+                    $arrayProceso['mensaje']="Mail enviado correctamente";
                     $jarray=json_encode($arrayProceso);         
                     $respuesta->setContent($jarray);             
                     return $respuesta;
-                }else{
+                }else{                   
                     $arrayProceso=array();
                     $arrayProceso['codigo_error']=0;
                     $arrayProceso['mensaje']="No se pudo envíar la notificación";

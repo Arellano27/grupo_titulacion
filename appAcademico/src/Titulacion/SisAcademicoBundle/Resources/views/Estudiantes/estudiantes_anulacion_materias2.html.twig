@@ -179,6 +179,13 @@
                                      type:  'post',
                                      async: false,
                                      beforeSend: function () {
+                                          $('#btnsolanula').remove();
+                                        modelessAnulaMateriap= new $.flavr({
+                                                           modal   : true,
+                                                           content : ' Procesando uulación <br> <i class="fa fa-refresh fa-spin"></i> ',
+                                                           buttons     : {
+                                                           }
+                                                        });
                                      },
                                      success:  function (dataResponse) {
                                         modelessSetSolicitud.close();
@@ -207,7 +214,24 @@
                                           
                                           //Inicio envio ce correo 
                                          envio_correo = 1;
-                                        var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'envio_correo':envio_correo};
+                                      
+                                     },
+                                      error: function(dataResponse)
+                                      {
+                                        modelessSetSolicitud.close();
+                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                        form="accordion";
+                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                        $( '#'+form ).append( msg_alert );
+                                                        $('#modal-'+form).modal('show');
+                                      },
+
+                                 dataType:'text'
+                              });
+                            }
+                            
+                              var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'envio_correo':envio_correo};
                                         var jumpAction = '{{path('estudiantes_anulacion_materias_2')}}';
                                                                       
                                          $.ajax({
@@ -216,6 +240,13 @@
                                             type:  'post',
                                             async: false,
                                             beforeSend: function () {
+                                                 modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : 'Enviando nptoficación.',
+                                                                      buttons     : {
+                                                                          primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
                                             },
                                             success:  function (dataResponse) {
                                                modelessSetSolicitud.close();
@@ -259,21 +290,6 @@
                                           // fin envio de correo 
 
                                        }
-                                     },
-                                      error: function(dataResponse)
-                                      {
-                                        modelessSetSolicitud.close();
-                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
-                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
-                                        form="accordion";
-                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
-                                                        $( '#'+form ).append( msg_alert );
-                                                        $('#modal-'+form).modal('show');
-                                      },
-
-                                 dataType:'text'
-                              });
-                            }
 
               }); 
 
