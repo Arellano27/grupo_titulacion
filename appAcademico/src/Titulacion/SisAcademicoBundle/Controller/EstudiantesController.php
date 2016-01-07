@@ -1327,6 +1327,8 @@
                          ->setTo($Email)
                          ->setBody("$Nombre usted a completado su registro de materias con exito");                  
                
+                
+                
                if($this->get('mailer')->send($message_matri)){                
                     $arrayProceso=array();
                     $arrayProceso['codigo_error']=1;
