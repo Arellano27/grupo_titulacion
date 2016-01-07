@@ -3,7 +3,7 @@
 {% if (banderaMatricula==1) %}
 
         <script>
-            
+
             var modelessSetMatricula;
             function onFinishCallback() {
                 alert('Finish Clicked');
@@ -13,17 +13,17 @@
             $("#btninscribe").on("click",function(event){
                 $("#btninscribe").attr("disabled", true);
                     var elemento = document.getElementById("seleccion");
-                    if (elemento.className == "selected") 
+                    if (elemento.className == "selected")
                     {
-                        var idCiclo = '{{idciclo}}'; 
-                        var elementochk = document.getElementsByName("matricular_select"); 
-                        var elecmentocombo = document.getElementsByName("cursos_select"); 
+                        var idCiclo = '{{idciclo}}';
+                        var elementochk = document.getElementsByName("matricular_select");
+                        var elecmentocombo = document.getElementsByName("cursos_select");
                         var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso,Nivel;
                         var myArray = {};
                         var indicasel=0;
                         var materiassel=0;
                         var indicaVeces=0;
-                            $("#table-matricula tbody tr").each(function (index) 
+                            $("#table-matricula tbody tr").each(function (index)
                             {
                                 //console.log(elecmentocombo[index].options[elecmentocombo[index].selectedIndex].text);
 
@@ -49,13 +49,13 @@
                                     materiassel=materiassel+1;
                                     valida=0;
 
-                                    $(this).children("td").each(function (index2) 
+                                    $(this).children("td").each(function (index2)
                                     {
                                         Celda=$(this).attr("id");
                                         Celda=Celda.split('_');
                                         Celda=Celda[0];
                                         //alert(Elemento);
-                                        switch (Celda) 
+                                        switch (Celda)
                                         {
                                             case "id": idMateria = $(this).text()
                                                     //alert(idMateria);
@@ -66,14 +66,14 @@
                                             //case "curso": Curso = $(this).text();
                                                     //alert(Curso);
                                             //        break;
-                                            case "veces": Veces = $(this).text() 
+                                            case "veces": Veces = $(this).text()
                                                     //alert("ve"+Veces);
                                                      break;
-                                             case "nivel": Nivel = $(this).text() 
+                                             case "nivel": Nivel = $(this).text()
                                                     //alert("ve"+Veces);
                                                      break;
                                         }
-                                         
+
                                     })
                                     var arrValores = {};
                                      arrValores["idMateria"]=idMateria;
@@ -84,29 +84,7 @@
                                      arrValores["Nivel"]=Nivel;
                                      myArray[index]=arrValores;
                                 }
-                                // else
-                                // {
 
-                                //     $(this).children("td").each(function (index2) 
-                                //     {
-                                //         Celda=$(this).attr("id");
-                                //         Celda=Celda.split('_');
-                                //         Celda=Celda[0];
-                                //         //alert(Elemento);
-                                //         switch (Celda) 
-                                //         {
-                                //             case "veces": Veces = $(this).text() 
-                                //                     //alert("ve"+Veces);
-                                //                      break;
-                                //         }
-                                         
-                                //     })
-                                //     if (Veces!=1) 
-                                //     {
-                                //        indicaVeces=indicaVeces+1; 
-                                //     }
-                                // }
-                               
                             })
                         }
 
@@ -141,10 +119,15 @@
                                $("#btninscribe").attr("disabled", false);
                             }
 
-                            else
-                            { 
 
-                               
+                            else{
+                                //var modelessSetMatricula;
+                                modelessProcesoMat = new $.flavr({
+                                    modal: true,
+                                    content: '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando Registro...</b>',
+                                    buttons: {}
+                                });
+
 
                                 var idEstudiante='{{idEstudiante}}';
                                 var idCarrera='{{idCarrera}}';
@@ -154,55 +137,81 @@
 
                                  var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'enviar_correo':enviar_correo};
                                  var jumpAction = '{{path('estudiantes_grabar_matricula')}}';
-             
+
                                   $.ajax({
                                      url:   jumpAction,
                                      data: obj_data,
                                      type:  'post',
                                      async: false,
+
                                      beforeSend: function () {
-                                         modelessSetMatricula = new $.flavr({
-                                          modal: true,
-                                          content: '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando Registro...</b>',
-                                          buttons: {}
-                                      });  
+                                         modelessProcesoMat.close();
+                                         modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Procesando, por favor espere <br> <i class="fa fa-refresh fa-spin"></i>',
+                                                           buttons     : {
+                                                           }
+                                                        });
 
                                      },
                                      success:  function (dataResponse) {
-                                        modelessSetMatricula.close();
+                                        // modelessSetMatricula.close();
+                                        modelessProcesoMat.close();
                                        var respuesta=jQuery.parseJSON(dataResponse);
                                        //var modelessProcesoMat;
                                        $("#div_respuesta").html(respuesta.mensaje);
                                        if (respuesta.codigo_error!=1)
                                        {
-                                            $('.botonMatriculaSig').addClass('buttonDisabled');
-                                            $('.botonAnterior').removeClass('buttonDisabled');
-                                            $("#btninscribe").attr("disabled", false);
-                                             modelessSetMatricula= new $.flavr({
+
+                                            modelessProcesoMat= new $.flavr({
+
                                                            modal   : true,
                                                            content : respuesta.mensaje,
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
                                                         });
-                                           
+                                            $('.botonMatriculaSig').addClass('buttonDisabled');
+                                            $('.botonAnterior').removeClass('buttonDisabled');
+                                            $("#btninscribe").attr("disabled", false);
+
+
                                        }
-                                       else
-                                       {
-                                            $('.botonAnterior').addClass('buttonDisabled');
-                                            $('.botonMatriculaSig').removeClass('buttonDisabled');
-                                            $("#btninscribe").remove();
-                                            $(".botonMatriculaSig").show();
-                                            modelessSetMatricula = new $.flavr({
-                                                           modal   : true,
-                                                           content : 'Sr. Estudiante, su  registro fue procesado correctamente <br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i>',
-                                                           buttons     : {
-                                                           }
-                                                        });
-                                                        
-                                            //nuevo ajax envia correo 
+
+                                        else{
+
+                                           {# modelessProcesoMat= new $.flavr({
+                                                 modal   : true,
+                                                 content : 'Matriculación realizada exitosamente.',
+                                                 buttons     : {
+                                                     primary : { text: 'Aceptar', style: 'primary' }
+                                                 }
+                                              });#}
+                                            $('.botonMatriculaSig').addClass('buttonDisabled');
+                                            $('.botonAnterior').removeClass('buttonDisabled');
+                                            $("#btninscribe").attr("disabled", false);
+
                                             enviar_correo = 1;
-                                            var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'enviar_correo':enviar_correo};
+                                        }
+                                     },
+                                      error: function(dataResponse)
+                                      {
+                                        modelessProcesoMat.close();
+                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
+                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
+                                        form="accordion";
+                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
+                                                        $( '#'+form ).append( msg_alert );
+                                                        $('#modal-'+form).modal('show');
+                                      },
+                             //         timeout: 50000
+
+                                 dataType:'text'
+                              });
+                                //alert(estado);
+
+                               var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'enviar_correo':enviar_correo};
+
                                             //console.log(obj_data);
 
                                             var jumpAction = '{{path('estudiantes_grabar_matricula')}}';
@@ -212,15 +221,25 @@
                                                 data: obj_data,
                                                 type:  'post',
                                                 async: false,
-                                                beforeSend: function () {                                                              
+                                                beforeSend: function () {
+                                                    modelessProcesoMat= new $.flavr({
+                                                           modal   : true,
+                                                           content : 'Matriculación realizada exitosamente <br> <br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i>',
+                                                           buttons     : {
+                                                           }
+                                                        });
                                                 },
                                                 success:  function (dataResponse) {
-                                                   modelessSetMatricula.close();
+                                                   // modelessSetMatricula.close();
+                                                  modelessProcesoMat.close();
                                                   var respuesta=jQuery.parseJSON(dataResponse);
                                                   $("#div_respuesta").html(respuesta.mensaje);
                                                   if (respuesta.codigo_error!=1)
                                                   {
-                                                        modelessSetMatricula= new $.flavr({
+
+                                                        modelessProcesoMat.close();
+                                                        modelessProcesoMat= new $.flavr({
+
                                                                       modal   : true,
                                                                       content : respuesta.mensaje,
                                                                       buttons     : {
@@ -242,41 +261,23 @@
                                                 },
                                                  error: function(dataResponse)
                                                  {
-                                                   modelessSetMatricula.close();  
-                                                   modelessSetMatricula= new $.flavr({
+
+                                                   modelessProcesoMat.close();
+                                                   modelessProcesoMat= new $.flavr({
+
                                                                       modal   : true,
-                                                                      content : "No se pudo envíar la notificación.",
+                                                                      content : "Su matriculación fue exitosa. <br><br> No se pudo envíar el mensaje",
                                                                       buttons     : {
                                                                          primary : { text: 'Aceptar', style: 'primary' }
                                                                       }
                                                                    });
-                                                
-                                                 },                                       
+
+                                                 },
                                                 dataType:'text'
                                             });
-                                            // fin envia correo 
-                                        }
-                                     },
-                                      error: function(dataResponse)
-                                      {
-                                        modelessSetMatricula.close();
-                                          //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
-                                          //tablaNotasa.html("No fue posible conectar con el Servidor");
-                                        form="accordion";
-                                        msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "Nos encontramos en mantenimiento de nuestros servidores, por favor intenta nuevamente m&aacute;s tarde.", 'sm', 'alert');
-                                                        $( '#'+form ).append( msg_alert );
-                                                        $('#modal-'+form).modal('show');
-                                      },
-                             //         timeout: 50000
-
-                                 dataType:'text'
-                              });
-                                //alert(estado);
-                            }
-            });
-
-
-
+                                            // in envia correo #}
+                                         }
+                                     });
 
                function siguiente(){
                 $(".botonMatriculaSig").on("click",function(event){
@@ -284,35 +285,35 @@
                     if( $("#seleccion").hasClass("selected") )
                         {
                             var elemento = document.getElementById("seleccion");
-                            if (elemento.className == "selected") 
+                            if (elemento.className == "selected")
                             {
-                                    var elementochk = document.getElementsByName("matricular_select"); 
-                                    var elecmentocombo = document.getElementsByName("cursos_select"); 
+                                    var elementochk = document.getElementsByName("matricular_select");
+                                    var elecmentocombo = document.getElementsByName("cursos_select");
                                     var idMateria, Materia, Curso,valida,Celda,Veces,Seleccion,IdCurso,Nivel;
                                     var myArray = {};
 
-                                        $("#table-matricula tbody tr").each(function (index) 
+                                        $("#table-matricula tbody tr").each(function (index)
                                         {
                                              var indice=elecmentocombo[index].options.selectedIndex;
                                             Curso =elecmentocombo[index].options[indice].text;
                                             splitIdCurso =elecmentocombo[index].options[indice].value;
-                                            //cambio 
+                                            //cambio
                                             splitIdCurso=splitIdCurso.split("_");
                                             IdCurso=splitIdCurso[0];
                                             //splitIdCurso =elecmentocombo[index].options[indice].value;
-            
-            
+
+
                                             if (elementochk[index].checked)
                                             {
                                                 valida=0;
-            
-                                                $(this).children("td").each(function (index2) 
+
+                                                $(this).children("td").each(function (index2)
                                                 {
                                                     Celda=$(this).attr("id");
                                                     Celda=Celda.split('_');
                                                     Celda=Celda[0];
                                                     //alert(Elemento);
-                                                    switch (Celda) 
+                                                    switch (Celda)
                                                     {
                                                         case "id": idMateria = $(this).text()
                                                                 //alert(idMateria);
@@ -323,14 +324,14 @@
                                                         //case "curso": Curso = $(this).text();
                                                                 //alert(Curso);
                                                         //        break;
-                                                        case "veces": Veces = $(this).text() 
+                                                        case "veces": Veces = $(this).text()
                                                                 //alert("ve"+Veces);
                                                                  break;
-                                                         case "nivel": Nivel = $(this).text() 
+                                                         case "nivel": Nivel = $(this).text()
                                                                 //alert("ve"+Veces);
                                                                  break;
                                                     }
-                                                     
+
                                                 })
                                                 var arrValores = {};
                                                  arrValores["idMateria"]=idMateria;
@@ -341,7 +342,7 @@
                                                  arrValores["Nivel"]=Nivel;
                                                  myArray[index]=arrValores;
                                             }
-                                           
+
                                         })
                                }
                                 var idEstudiante='{{idEstudiante}}';
@@ -363,7 +364,7 @@
                                                              content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Cargando...</b>',
                                                              buttons     : {}
                                                           });
-                               
+
                                      },
                                      success:  function (dataResponse) {
                                         modelessPresentaMatricula.close();
@@ -383,22 +384,22 @@
                                  dataType:'text'
                               });
                         }
-                        
+
                 });
 
             }
 
 
-        </script>        
+        </script>
             <div class="col-lg-12">
             <div class="table-responsive">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_title">
-                    <h2 style="text-align:center;"><small> {{ estudiante }}</small></h2>                    
+                    <h2 style="text-align:center;"><small> {{ estudiante }}</small></h2>
                 </div>
                 <div class="panel panel-default">
                     <!-- Smart Wizard -->
-                    <div><p>&nbsp;</p></div> 
+                    <div><p>&nbsp;</p></div>
                     <div id="wizard" class="form_wizard wizard_horizontal">
 
 
@@ -436,18 +437,18 @@
                                                 <form method="post" id='frmdocumentos' action="{{ path('estudiantes_subir_archivos',{ 'idEstudiante': idEstudiante})}}" enctype="multipart/form-data">
                                                     <table>
                                                         <tr>
-                                                            <td> 
-                                                                <label> Foto del Estudiante</lable> 
+                                                            <td>
+                                                                <label> Foto del Estudiante</lable>
                                                             </td>
-                                                            <td> 
+                                                            <td>
                                                                     <input type="file" name="archivo[]" id="imgfoto"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <label> Papeleta de Votacion</lable> 
+                                                                <label> Papeleta de Votacion</lable>
                                                             </td>
-                                                             <td>   
+                                                             <td>
                                                                 <input type="file" name="archivo[]" id="imgVotacion" />
                                                             </td>
                                                         </tr>
@@ -457,7 +458,7 @@
                                                             </td>
                                                             <td>
                                                                 <input type="file" name="archivo[]" id="imgCedula"/>
-                                                                
+
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -465,38 +466,38 @@
                                                                     <input class='btn btn-success ' type="submit" value="Subir Documentos" />
                                                                 </td>
                                                         </tr>
-                                                        
+
                                                     </table>
                                                     <div id='divarchivos'>
 
                                                         </div>
                                                 </form>
                                         </div>   -->
-                                {% endif %}   
-                                <div><p>&nbsp;</p></div> 
+                                {% endif %}
+                                <div><p>&nbsp;</p></div>
                             <h4 align="center" ><b>Condiciones de Registro</b></h4>
-                            
-                              <p align="center">Sr. Estudiante una vez  registrado no es posible reversar el proceso. Presiones siguiente para iniciar el proceso </p>  
+
+                              <p align="center">Sr. Estudiante una vez  registrado no es posible reversar el proceso. Presione siguiente para iniciar el proceso </p>
 
                         </div>
                         <div id="step-2" class="tab2">
 
                             <h4 class="StepTitle" align="center" >Selección de Materias</h4>
                                         <div class="col-lg-12">
-                                            
+
                                             <div class="panel panel-default">
                                                 <!-- /.panel-heading -->
                                                 <div class="panel-body">
                                                     <div class="col-lg-8" STYLE="text-align:center;">
                                                         <label>Estudiante:  {{ estudiante }}</label></br>
                                                         <caption STYLE="text-align:center;font-size: 15px;font-weingh"><label></label></caption>
-                                                        
+
                                                     </div>
                                                     <div class="col-lg-4" STYLE="text-align:center;">
                                                         <label>Periodo:  {{ cicloencurso }}</label></br>
                                                         <caption STYLE="text-align:center;font-size: 15px;"><label></label></caption>
                                                     </div>
-                                                    
+
 
                                                     <div class="col-lg-12">
                                                         <div class="table-responsive">
@@ -513,7 +514,7 @@
                                                             </thead>
                                                             <tbody>
 
-                                                                    {% for disponibles in Materias_inscribir %}   
+                                                                    {% for disponibles in Materias_inscribir %}
                                                                      <tr class="odd gradeX">
                                                                         <td style="text-align:center" width='5%' id="nivel_{{ disponibles.Nivel }}">{{ disponibles.Nivel }}</td>
                                                                         <td style="text-align:center" width='10%' id="id_{{ disponibles.IdMateria }}">{{ disponibles.IdMateria }}</td>
@@ -522,10 +523,10 @@
                                                                         <td style="text-align:left" width="20%" id="curso_{{ disponibles.IdMateria }}">
                                                                         <select  name="cursos_select" index=1 onchange="lista(this.value,{{ disponibles.IdMateria }})" id="cbo_{{ disponibles.IdMateria }}">
                                                                           <option value=""  selected> Seleccione</option>
-                                                                            {% for cursos in disponibles.Cursos %} 
+                                                                            {% for cursos in disponibles.Cursos %}
                                                                                <option value="{{cursos.Idmatpar}}_{{disponibles.IdMateria}}_{{ cursos.Registrados }}_{{ cursos.Maximo }}"
                                                                                  > {{ cursos.Curso }} </option>
-                                                                             {% endfor %}  
+                                                                             {% endfor %}
                                                                            </select >
                                                                            <label style="float: right;" id="lbd_{{ disponibles.IdMateria }}"> </label>
                                                                          </td>
@@ -533,21 +534,21 @@
                                                                           </td>
                                                                     </tr>
 
-                                                                {% endfor %}  
-                                                               
+                                                                {% endfor %}
+
                                                             </tbody>
                                                             <tfoot>
                                                                     <tr>
                                                                             <td colspan=5 align="right">
                                                                                 <input class="btn btn-success" type="submit" name="inscribir" id="btninscribe" value="Inscribir"></td>
-                                                                                
+
                                                                             </td>
                                                                     </tr>
                                                             </tfoot>
-                                                        
+
                                                         </table>
                                                         <div class="panel panel-default" id="div_respuesta">
-                                                            
+
                                                         </div>
                                                     </div>
                                                     </div>
@@ -559,14 +560,14 @@
 
                                 </div>
 
-                               
+
                         </div>
-                        
+
                         <div id="step-3">
                             <div class="tabresumen" id="tabresumen_2">
-                                                                    
+
                             </div>
-                           
+
                         </div>
                     </div>
                     <!-- End SmartWizard Content -->
@@ -579,13 +580,13 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            // Smart Wizard    
+            // Smart Wizard
             $('#wizard').smartWizard();
-            
+
         });
 
         $(document).ready(function () {
-            // Smart Wizard 
+            // Smart Wizard
             $('#wizard_verticle').smartWizard({
                 transitionEffect: 'slide'
             });
@@ -600,7 +601,7 @@
                     var Registrado=splitDisponibles[2];
                     var Maximo=splitDisponibles[3];
                     $('#lbd_'+idLabel).text(Registrado + " de " + Maximo );
-                    //$("#selchk_"+indica+" :checkbox").attr('checked',false);  
+                    //$("#selchk_"+indica+" :checkbox").attr('checked',false);
                     $("#selchk_"+indica).prop('checked',false);
                     if (idCurso.length!=0)
                     {
@@ -623,18 +624,18 @@
                     <div><p>&nbsp;</p></div>
                     <p style="text-align: center;"><b>{{ estudiante }}</b><br> Usted se encuentra registrado en las siguientes materias:</p>
                     <table class="table table-striped table-bordered" id ="">
-                    
+
                              <thead style="background-color: #3C8DBC;color:#fff;">
                                 <tr>
                                     <th style="text-align: center;">Nivel</th>
                                     <th style="text-align: center;">Id Materias</th>
                                     <th style="text-align: center;">Nombre Materias</th>
                                     <th style="text-align: center;">Veces</th>
-                                    <th style="text-align: center;">Curso</th> 
+                                    <th style="text-align: center;">Curso</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for dato in Materias_inscribir %} 
+                                {% for dato in Materias_inscribir %}
                                     <tr>
                                         <td style="text-align: center;">{{ dato.Nivel }}</td>
                                         <td style="text-align: center;">{{ dato.IdMateria }}</td>
@@ -644,7 +645,7 @@
                                     </tr>
                                 {% endfor %}
                             </tbody>
-                                
+
                         <tfoot>
                             <tr>
                                 <td colspan=5 align="right">
@@ -652,17 +653,17 @@
                                      <a class="btn btn-success tip btn btn-success btn-circle btn-xl" href="{{ path('estudiantes_pdf_matricula',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera }) }}" target="_blank"> <span>Imprimir Documento de Registro</span>Hoja de Registro</a>
                                      <!-- <a class="btn btn-success" href="{{ path('estudiantes_pdf_ordenpago',{ 'idEstudiante': idEstudiante,'idCarrera':idCarrera,'ciclo':idciclo,'carrera':carrera}) }}" target="_blank">Imprimir Orden de Pago</a> -->
                                 </td>
-                               
+
                             </tr>
                         </tfoot>
-                       
+
                    </table>
                 </div>
-            
+
 
 
         <script>
-           
+
         </script>
 
 {% endif %}
@@ -674,7 +675,7 @@
                 <h2>{{Mensaje}} </h2>
             </td>
         </tr>
-            
+
                 {% if (banderaMatricula==3 )%}
                     <tr>
                         <td align='center'>
@@ -707,7 +708,7 @@
                         success: function(data) {
                             $('#divarchivos').html(data);
                         }
-                    })        
+                    })
                     return false;
                 });
             })
@@ -716,7 +717,7 @@
         <script language="javascript">// <![CDATA[
             $(document).ready(function() {
 
-               
+
                // Interceptamos el evento submit
                 $('.btngenerarturno').on("click",function(event){
                 $(".btngenerarturno").attr("disabled", true);
@@ -733,7 +734,7 @@
                          type:  'post',
                          async: true,
                          beforeSend: function () {
-                   
+
                          },
                         // Mostramos un mensaje con la respuesta de PHP
                         success: function(data) {
@@ -746,15 +747,15 @@
                                                    modal   : true,
                                                    content : respuesta.mensaje+"<br/><br/> POR FAVOR VERIFIQUE SU NUEVO TURNO",
                                                    buttons     : {
-                                                      primary : { text: 'Aceptar', 
+                                                      primary : { text: 'Aceptar',
                                                                    style: 'primary',
                                                                    action: function(){
                                                                         location.reload();
                                                                    } }
                                                    }
-                                                }); 
+                                                });
                                    $('.btngenerarturno').remove();
-                                   
+
                                 }
                                 else
                                 {
@@ -762,13 +763,13 @@
                                                    modal   : true,
                                                    content : respuesta.mensaje,
                                                    buttons     : {
-                                                      primary : { text: 'Aceptar', 
+                                                      primary : { text: 'Aceptar',
                                                                    style: 'primary'}
                                                    }
-                                                }); 
+                                                });
                                 }
 
-                                
+
 
                             //    if (respuesta.codigo_error!=1)
                             //    {
@@ -783,7 +784,7 @@
                             //    }
                             // tablamatricula.html(data);
                         }
-                    })        
+                    })
                     return false;
                 });
             })
@@ -791,7 +792,7 @@
         {% if (banderaMatricula==7 )%}
         <!-- <table align='center'>
             <tr>
-                    
+
                     <td align='center' valign='center'>
                         <label>Criterio de Consulta</label>
                         <br/>
@@ -805,9 +806,9 @@
                     <td align='center'>
                         <label>Dato a Consultar</label>
                         <br/>
-                           <input type="text" id="busquedaest" /> 
+                           <input type="text" id="busquedaest" />
                     </td>
-                    
+
             </tr>
             <tr>
                     <td align='center'>
@@ -823,7 +824,7 @@
             <script language="javascript">// <![CDATA[
                     $(document).ready(function() {
                         $('#btnconsultarest').on("click",function(event){
-                            var elecmentocombo = document.getElementsByName("selconsulta"); 
+                            var elecmentocombo = document.getElementsByName("selconsulta");
                             var indice=elecmentocombo[0].options.selectedIndex;
                             var criterio =elecmentocombo[0].options[indice].value;
                             var valorBuscado=$("#busquedaest").val();
@@ -837,13 +838,13 @@
                                  type:  'post',
                                  async: true,
                                  beforeSend: function () {
-                           
+
                                  },
                                 // Mostramos un mensaje con la respuesta de PHP
                                 success: function(data) {
                                     resultado.html(data);
                                 }
-                            })        
+                            })
                             return false;
                         });
                     })
@@ -853,5 +854,5 @@
 
 {% endif %}
 
-            
+
 

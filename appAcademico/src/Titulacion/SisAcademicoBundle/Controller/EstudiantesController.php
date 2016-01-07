@@ -911,13 +911,12 @@
                           {
                               foreach($xml2->parametrosSalida as $datos)
                                {  
-                                  $Mensaje=(string) $datos->PV_MENSAJE;
+                                 $Mensaje=(string) $datos->PV_MENSAJE;
                                   $Estado=(int) $datos->PI_ESTADO;
                                }
                               
-                          }
-                          
-                            
+                         }
+                 
                         $arrayProceso=array();
                         $arrayProceso['codigo_error']=$Estado;
                         $arrayProceso['mensaje']=$Mensaje;
@@ -946,7 +945,7 @@
                                       if($this->get('mailer')->send($message)){
                                            $arrayProceso=array();
                                             $arrayProceso['codigo_error']=1;
-                                            $arrayProceso['mensaje']=$Mensaje;
+                                            $arrayProceso['mensaje']="Notificación enviada correctamente";
                                             $jarray=json_encode($arrayProceso);
                                             $respuesta->setContent($jarray);
                                             return $respuesta;
@@ -1280,7 +1279,7 @@
                              </matricula>";
 
                  
-                  $xml = $UgServices->setMatricula_Estudiante($xmlFinal);
+                 $xml = $UgServices->setMatricula_Estudiante($xmlFinal);
 
                   $Estado="";
                   $Mensaje="";
@@ -1292,7 +1291,8 @@
                               $Mensaje=(string) $datos->PV_MENSAJE;
                            }
                           
-                      }
+                      }                  
+               
             }
             if($BanderaGrabar==2)
             {
@@ -1327,14 +1327,16 @@
                          ->setTo($Email)
                          ->setBody("$Nombre usted a completado su registro de materias con exito");                  
                
-                if($this->get('mailer')->send($message_matri)){
+                
+                
+               if($this->get('mailer')->send($message_matri)){                
                     $arrayProceso=array();
                     $arrayProceso['codigo_error']=1;
-                    $arrayProceso['mensaje']=$Mensaje;
+                    $arrayProceso['mensaje']="Mail enviado correctamente";
                     $jarray=json_encode($arrayProceso);         
                     $respuesta->setContent($jarray);             
                     return $respuesta;
-                }else{
+                }else{                   
                     $arrayProceso=array();
                     $arrayProceso['codigo_error']=0;
                     $arrayProceso['mensaje']="No se pudo envíar la notificación";
