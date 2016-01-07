@@ -182,7 +182,7 @@
                                           $('#btnsolanula').remove();
                                         modelessAnulaMateriap= new $.flavr({
                                                            modal   : true,
-                                                           content : ' Procesando uulación <br> <i class="fa fa-refresh fa-spin"></i> ',
+                                                           content : ' Procesando unulación <br> <i class="fa fa-refresh fa-spin"></i> ',
                                                            buttons     : {
                                                            }
                                                         });
@@ -204,14 +204,14 @@
                                        }
                                        else
                                        {
-                                        $('#btnsolanula').remove();
+                                        {#$('#btnsolanula').remove();
                                         modelessAnulaMateriap= new $.flavr({
                                                            modal   : true,
                                                            content : 'Sr. Estudiante, Su solicitud de Anulación fue Enviada de Manera Exitosa <br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i> ',
                                                            buttons     : {
                                                            }
                                                         });
-                                          
+                                          #}
                                           //Inicio envio ce correo 
                                          envio_correo = 1;
                                       
@@ -219,6 +219,7 @@
                                       error: function(dataResponse)
                                       {
                                         modelessSetSolicitud.close();
+                                        modelessAnulaMateriap.close();
                                           //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
                                           //tablaNotasa.html("No fue posible conectar con el Servidor");
                                         form="accordion";
@@ -240,20 +241,22 @@
                                             type:  'post',
                                             async: false,
                                             beforeSend: function () {
+                                                 modelessAnulaMateriap.close();
                                                  modelessProcesoMat= new $.flavr({
                                                                       modal   : true,
-                                                                      content : 'Enviando nptoficación.',
+                                                                      content : 'Sr. Estudiante, Su solicitud de Anulación fue Enviada de Manera Exitosa <br><br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i> ',
                                                                       buttons     : {
                                                                           primary : { text: 'Aceptar', style: 'primary' }
                                                                       }
                                                                    });
                                             },
                                             success:  function (dataResponse) {
-                                               modelessSetSolicitud.close();
+                                                modelessAnulaMateriap.close();
                                               var respuesta=jQuery.parseJSON(dataResponse);
                                               if (respuesta.codigo_error!=1)
                                               {
-                                                    modelessAnulaMateriap= new $.flavr({
+                                                    modelessProcesoMat.close();
+                                                    modelessProcesoMat= new $.flavr({
                                                                   modal   : true,
                                                                   content : respuesta.mensaje,
                                                                   buttons     : {
@@ -276,13 +279,15 @@
                                             },
                                              error: function(dataResponse)
                                              {
-                                               modelessSetSolicitud.close();
-                                                 //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
-                                                 //tablaNotasa.html("No fue posible conectar con el Servidor");
-                                               form="accordion";
-                                               msg_alert = alert_bootstrap( form, 'Atenci&oacute;n', "No se pudo envíar la notificación.", 'sm', 'alert');
-                                                               $( '#'+form ).append( msg_alert );
-                                                               $('#modal-'+form).modal('show');
+                                                modelessProcesoMat.close();  
+                                                   modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : "Su anulación fue realizada exitosamente. <br><br> No se pudo envíar el mensaje",
+                                                                      buttons     : {
+                                                                         primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+                                                  
                                              },
 
                                         dataType:'text'

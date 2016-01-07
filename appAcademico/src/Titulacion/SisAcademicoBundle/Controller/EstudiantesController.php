@@ -911,13 +911,12 @@
                           {
                               foreach($xml2->parametrosSalida as $datos)
                                {  
-                                  $Mensaje=(string) $datos->PV_MENSAJE;
+                                 $Mensaje=(string) $datos->PV_MENSAJE;
                                   $Estado=(int) $datos->PI_ESTADO;
                                }
                               
-                          }
-                          
-                            
+                         }
+                 
                         $arrayProceso=array();
                         $arrayProceso['codigo_error']=$Estado;
                         $arrayProceso['mensaje']=$Mensaje;
@@ -1292,10 +1291,8 @@
                               $Mensaje=(string) $datos->PV_MENSAJE;
                            }
                           
-                      }
-                  
-                  $Estado=(int) 1;
-                  $Mensaje=(string)"hola";
+                      }                  
+               
             }
             if($BanderaGrabar==2)
             {
@@ -1327,7 +1324,7 @@
                 $message_matri = \Swift_Message::newInstance('test')
                          ->setSubject("Registro de Materias Exitosa")
                          ->setFrom('titulacion.php@gmail.com','Universidad de Guayaquil')
-                         ->setTo("ghuayamabe89@gmail.com")
+                         ->setTo($Email)
                          ->setBody("$Nombre usted a completado su registro de materias con exito");                  
                
                if($this->get('mailer')->send($message_matri)){                
