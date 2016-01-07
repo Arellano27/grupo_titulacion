@@ -13,7 +13,7 @@
         $(document).ready(function () {
          
             $("#Asignar").click(function () {
-                var docente = $( "#Docentes option:selected").val();
+                var docente = $( "#Docente option:selected").val();
            
                 if(docente != 0){
                $( "#Guardar").css("display","");
@@ -25,8 +25,8 @@
                var DiaId = $("#Dia option:selected").val();
                var HoraText = $("#Hora option:selected").text();
                var HoraloId = $("#Hora option:selected").val();
-               var DocenteText = $("#Docentes option:selected").text();
-               var DocenteId = $("#Docentes option:selected").val();
+               var DocenteText = $("#Docente option:selected").text();
+               var DocenteId = $("#Docente option:selected").val();
             
                var Tabla_Horarios = document.getElementById("Horario");           
                var i = Tabla_Horarios.rows.length;
@@ -562,7 +562,7 @@
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : respuesta.mensaje,
+                                                           content : "Horario generado correctamente",
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -577,11 +577,13 @@
                                          for(fila=0;fila<Tabla_Horarios_filas.rows.length;fila++){                                             
                                              document.getElementById("Horario").rows[1].remove();                                            
                                          }
+                                         
+                                         
                                           $("#Asignar").css("display","none");
                                           $("#Materia option").remove();
                                           $("#Materia").html("<option>Seleccione un paralelo para ver Materias disponibles</option>");                   
-                                          $("#Docentes option").remove();
-                                          $("#Docentes").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
+                                          $("#Docente option").remove();
+                                          $("#Docente").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
                                        }
                                      },
                                       error: function(dataResponse)
