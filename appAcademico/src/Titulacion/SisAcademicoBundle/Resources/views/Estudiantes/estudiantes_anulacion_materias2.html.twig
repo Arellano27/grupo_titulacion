@@ -241,6 +241,7 @@
                                             type:  'post',
                                             async: false,
                                             beforeSend: function () {
+                                                
                                                  modelessAnulaMateriap.close();
                                                  modelessProcesoMat= new $.flavr({
                                                                       modal   : true,
@@ -251,6 +252,7 @@
                                                                    });
                                             },
                                             success:  function (dataResponse) {
+                                                
                                                 modelessAnulaMateriap.close();
                                               var respuesta=jQuery.parseJSON(dataResponse);
                                               if (respuesta.codigo_error!=1)
