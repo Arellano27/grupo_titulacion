@@ -1,5 +1,19 @@
- <select class="form-control" id="Materia">
+ <label class="control-label" >Seleccione Materia :</label>
+<select class="form-control" id="Materia">
 {% for Materia in Materia %} 
     <option value="{{ Materia.idmateria }}">{{ Materia.materia }}</option>                        
 {%endfor%} 
  </select>
+ 
+ <script>
+     
+         $(document).ready(function () {
+          $("#Materia").on('change',function () {
+               $("#Docente option").remove();
+               $("#Docente").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
+               $( "#Asignar").css("display","none");
+           });
+       });
+         
+     
+ </script>

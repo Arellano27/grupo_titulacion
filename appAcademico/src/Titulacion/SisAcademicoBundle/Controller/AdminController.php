@@ -16,8 +16,9 @@ class AdminController extends Controller
 
     public function calendario_carreraAction(Request $request){
 
-
-
+      $session=$request->getSession();
+      if ($session->has("id_user"))
+       {
         $UgServices   = new UgServices;
         $session=$request->getSession();
         $id_usuario = $session->get("id_user");
@@ -29,6 +30,14 @@ class AdminController extends Controller
 
 
         return $this->render('TitulacionSisAcademicoBundle:Admin:calendario_carrera.html.twig', array('data' => $rsEventos));
+        }else
+         {
+            $this->get('session')->getFlashBag()->add(
+                                  'mensaje',
+                                  'Los datos ingresados no son válidos'
+                              );
+                return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+          }
     }
 
     public function cambio_passwordAction(){
@@ -116,7 +125,7 @@ class AdminController extends Controller
         #obtenemos los datos enviados por get
 
             $session=$request->getSession();
-              if ($session->has("id_user"))
+          if ($session->has("id_user"))
            {
             $Email= $session->get('mail');
             $Nombre = $session->get('nom_usuario');
@@ -2506,7 +2515,7 @@ public function generacion_horariosAction(Request $request){
                         <pt_hora_inicio>$hora_inicio</pt_hora_inicio>
                         <pt_hora_fin>$hora_fin</pt_hora_fin>
                         <pi_id_sg_usuario_registro>1</pi_id_sg_usuario_registro>
-                        <pc_opcion>A</pc_opcion>
+                        <pc_opcion>I</pc_opcion>
                         <pi_id_sa_materia_paralelo>2330</pi_id_sa_materia_paralelo>
                         <pi_id_sa_horario>1091</pi_id_sa_horario>
                         <pi_id_sa_profesor_materia_carrera>2115</pi_id_sa_profesor_materia_carrera>";
@@ -2515,16 +2524,22 @@ public function generacion_horariosAction(Request $request){
                         }
                 }
              $Estado="";
-                $Mensaje="";
+             $Mensaje="";
+           
              if ( is_object($xml))
                 {
                     foreach($xml->parametrosSalida as $datos)
                      {
-                        $Estado=(int) $datos->PI_ESTADO;
-                        $Mensaje=(string) $datos->PV_MENSAJE;
-                     }
-
+                        $Estado=(int) $datos->PI_ESTADO;                      
+                        
+                        if($Estado == 0 || $Estado == 1){
+                            $Mensaje =(string) $datos->PV_MENSAJE; 
+                        }else{
+                            $Mensaje = (string) $datos->PV_MENSAJE_TECNICO;
+                       }
+                    }
                 }
+                //echo var_dump($Mensaje_real); exit();
             $arrayProceso = array();
             $arrayProceso['codigo_error']=$Estado;
             $arrayProceso['mensaje']=$Mensaje;
@@ -2806,9 +2821,9 @@ public function generacion_horariosAction(Request $request){
             $session=$request->getSession();
 
             $UgServices    = new UgServices;
-
+ //echo var_dump($id); exit();
             $datosHorarios  = $UgServices->Docentes_Horarios($id);
-
+           
                    $pdf= " <html>
                                             <body>
                                             <img width='5%' src='images/menu/ug_logo.png'/>
@@ -2834,9 +2849,9 @@ public function generacion_horariosAction(Request $request){
                                                         <tr>
                                                             <th style='text-align: center !important;'>Dia</th>
                                                             <th style='text-align: center !important;'>Materia</th>
+                                                            <th style='text-align: center !important;'>Curso</th>
                                                             <th style='text-align: center !important;'>Desde</th>
                                                             <th style='text-align: center !important;'>Hasta</th>
-                                                            <th style='text-align: center !important;'>Curso</th>
                                                         </tr>";
 
                                                    foreach($datosHorarios as $Horario) {
@@ -2859,7 +2874,7 @@ public function generacion_horariosAction(Request $request){
 
                                                     <tr><td align='center' ><b>$nombre</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";
@@ -2959,7 +2974,7 @@ public function generacion_horariosAction(Request $request){
 
                                                     <tr><td align='center' ><b>$nombre</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÍA</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";

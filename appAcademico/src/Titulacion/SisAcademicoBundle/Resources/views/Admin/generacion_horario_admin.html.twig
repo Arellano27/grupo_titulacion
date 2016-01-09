@@ -13,7 +13,7 @@
         $(document).ready(function () {
          
             $("#Asignar").click(function () {
-                var docente = $( "#Docentes option:selected").val();
+                var docente = $( "#Docente option:selected").val();
            
                 if(docente != 0){
                $( "#Guardar").css("display","");
@@ -25,8 +25,8 @@
                var DiaId = $("#Dia option:selected").val();
                var HoraText = $("#Hora option:selected").text();
                var HoraloId = $("#Hora option:selected").val();
-               var DocenteText = $("#Docentes option:selected").text();
-               var DocenteId = $("#Docentes option:selected").val();
+               var DocenteText = $("#Docente option:selected").text();
+               var DocenteId = $("#Docente option:selected").val();
             
                var Tabla_Horarios = document.getElementById("Horario");           
                var i = Tabla_Horarios.rows.length;
@@ -122,7 +122,7 @@
                 tds += '</td>';   
                 }
                 tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
-                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += "<a  onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
                 tds += '</td>'; 
                 tds += '</tr>';
                 $("#Horario").append(tds);
@@ -222,7 +222,7 @@
                 tds += '</td>';   
                 }
                 tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
-                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += "<a onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
                 tds += '</td>';          
 
                 tds += '</tr>';
@@ -392,7 +392,7 @@
                 tds += '</td>';   
                 }
                 tds += '<td style="text-align: center"  id="Hora2_' + fila + '">';
-                tds += "<a href='#' onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
+                tds += "<a  onclick='borrar($(this))' ><i class='fa fa-trash-o'></i></a>";
                 tds += '</td>'; 
                 tds += '</tr>';
                 $("#Horario").append(tds);
@@ -545,18 +545,24 @@
                                             $("#btninscribe").attr("disabled", false);
                                              modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : "Horario para ese dia ya fue creado",
+                                                           content : respuesta.mensaje,
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
                                                         });
+                                                        
+                                            var Tabla_Horarios_filas = document.getElementById("Horario");           
+                                         var fila = 0;                                         
+                                         for(fila=0;fila<Tabla_Horarios_filas.rows.length;fila++){                                             
+                                             document.getElementById("Horario").rows[1].remove();                                            
+                                         }
                                            
                                        }
                                        else
                                        {
                                         modelessProcesoMat= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Se�or administrativo el horario fue creado exitosamente!',
+                                                           content : "Horario generado correctamente",
                                                            buttons     : {
                                                               primary : { text: 'Aceptar', style: 'primary' }
                                                            }
@@ -565,7 +571,19 @@
                                         $('.botonMatriculaSig').removeClass('buttonDisabled');
                                         $("#btninscribe").remove();
                                         $(".botonMatriculaSig").show();
-
+                                        
+                                         var Tabla_Horarios_filas = document.getElementById("Horario");           
+                                         var fila = 0;                                         
+                                         for(fila=0;fila<Tabla_Horarios_filas.rows.length;fila++){                                             
+                                             document.getElementById("Horario").rows[1].remove();                                            
+                                         }
+                                         
+                                         
+                                          $("#Asignar").css("display","none");
+                                          $("#Materia option").remove();
+                                          $("#Materia").html("<option>Seleccione un paralelo para ver Materias disponibles</option>");                   
+                                          $("#Docente option").remove();
+                                          $("#Docente").html("<option>Seleccione una Hora para ver docentes disponibles</option>");
                                        }
                                      },
                                       error: function(dataResponse)
@@ -585,10 +603,13 @@
                           }else
                           {
                                $( "#Guardar").css("display","none");
-                var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Agregue Materias y Profesores al Horario para Generarlo", 'sm', 'alert');
+                               
+                  
+                    var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Agregue Materias y Profesores al Horario para Generarlo", 'sm', 'alert');
                     $( "#content-enviar" ).append( msg_alert );
                     $('#modal-enviar').modal('show');
-                   
+                     //$("#Hora option:selected").text("Seleccione una Hora para ver docentes disponibles");
+                     
                                //alert("Agregue Materias y Profesores al Horario para Generarlo");
                           }
                 });
@@ -618,7 +639,7 @@
             success: function(data) 
             {
                     CargandoDocentes.close();
-                    $( "#Materia").html( data );
+                    $( "#Materia_").html( data );
                 
             }
         });
@@ -637,8 +658,7 @@
        HoraText = HoraText.replace(" ","");
         var datos = {'Paralelo':ParaleloId,'Materia':MateriaId,'Dia':DiaId,'Hora':HoraText};
         var path = '{{path('admin_consulta_docente_disponible')}}';
-        $.ajax
-        ({
+        $.ajax({
             type: 'post',
             url: path,
             data: datos,
@@ -660,15 +680,12 @@
                
                   $( "#Docente_").html( data );
                     $( "#Asignar").css("display","");
-                    
-                
+                   
             }
         });
     
     });
-             
-
-
+           
    });
         
     </script>
@@ -680,7 +697,7 @@
              
               <div class="box box-solid">
                 <div class="box-header with-border">
-                  <h4 class="box-title">Generacion de Horarios a Profesores</h4>
+                  <h4 class="box-title">Generación de Horarios de Profesores</h4>
                 </div>
                 <div class="box-body">
                   <div id="external-events">
@@ -702,7 +719,7 @@
                           
                       </select>#}
                     </div>
-                      <div id="Materia" class="form-group">
+                      <div id="Materia_" class="form-group">
                       <label>Seleccione Materia:</label>
                         <select class="form-control" Id="Materia">
                             <option>Seleccione un paralelo para ver Materias disponibles</option>
@@ -712,7 +729,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                      <label>Seleccione d�a:</label>
+                      <label>Seleccione día:</label>
                       <select class="form-control" Id="Dia">
                             <option value="1">Lunes</option>
                             <option value="2">Martes</option>
@@ -784,17 +801,17 @@
                   <div id="external-events">
 				        <table id="Horario" class="table table-bordered">
                  
-                    <thead>
+                    <thead style="background-color: #3C8DBC;color:#fff">
                         <tr>
-                      <th>Horas</th>
-                      <th>Lunes</th>
-                      <th>Martes</th>
-                      <th>Miercoles</th>
-                      <th>Jueves</th>
-                      <th>Viernes</th>
-                      <th>Sabado</th>
-                      <th>Horas</th>
-                      <th>Borrar</th>
+                      <th style="text-align: center">Horas</th>
+                      <th style="text-align: center">Lunes</th>
+                      <th style="text-align: center">Martes</th>
+                      <th style="text-align: center">Miercoles</th>
+                      <th style="text-align: center">Jueves</th>
+                      <th style="text-align: center">Viernes</th>
+                      <th style="text-align: center">Sabado</th>
+                      <th style="text-align: center">Horas</th>
+                      <th style="text-align: center">Borrar</th>
                     </tr> 
                   </thead>
                   <tbody>

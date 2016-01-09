@@ -150,12 +150,26 @@
          $UgServices    = new UgServices;
          $datosAsistenciasXML  = $UgServices->Docentes_getAsistenciasMaterias($datosConsulta);
 
+         if($datosAsistenciasXML!=NULL && !isset($datosAsistenciasXML["mensajeTecnico"])){  //MensajeTecnico solo llega cuando no hay datos
+            $estadoConsulta = 1;            
+         }
+         elseif(isset($datosAsistenciasXML["mensajeTecnico"])) {
+            $patron = '/ok/';
+            if(preg_match($patron, strtolower($datosAsistenciasXML["mensajeTecnico"]))){
+               $estadoConsulta = 2;
+            }
+            else {
+               $estadoConsulta = 0;
+            }
+            $datosAsistenciasXML = NULL;  //Para procesarlo igual y me genere el resto de los datos
+         }
+         else {
+            $estadoConsulta = 0;
+            
+         }
+         
          $datosAsistencia   = $this->procesarListadoAsistenciasEstudiantes($datosAsistenciasXML);
 
-            
-               
-               
- 
          return $this->render('TitulacionSisAcademicoBundle:Docentes:listadoAlumnosMateria.html.twig',
                          array(
                                'dataMateria' => array('fechasAsistencia' => $datosAsistencia["arregloFechas"],
@@ -165,7 +179,8 @@
                                                       'idMateria' => $idMateria,
                                                       'inicioCiclo' => $inicioCiclo,
                                                       'finCiclo' => $finCiclo,
-                                                      'datosConsultaActual' => $datosConsulta
+                                                      'datosConsultaActual' => $datosConsulta,
+                                                      'estadoConsulta' => $estadoConsulta
                                                      )
                              )
                       );
@@ -268,7 +283,7 @@
          /*Consulta de la informacion de los parciales - INICIO*/
          $datosConsultaParciales    = array( 'idCarrera' => $idCarrera);
          $datosParcialesArray       = $UgServices->Docentes_getParcialesCarrera($datosConsultaParciales);
-         /*Consulta de la informacin de los parciales - INICIO*/
+         /*Consulta de la informacion de los parciales - INICIO*/
          
          
          /*Consulta de la informacion de las notas - INICIO*/
@@ -279,7 +294,6 @@
                                     'idDocente' => $idDocente);
           
             $datosNotasArray  = $UgServices->Docentes_getNotasMaterias($datosConsulta);
-            
          }
          else {
             
@@ -290,6 +304,24 @@
          }
          //print_r($datosNotasArray);
          
+         if($datosNotasArray!=NULL && !isset($datosNotasArray["mensajeTecnico"])){  //MensajeTecnico solo llega cuando no hay datos
+            $estadoConsulta = 1;            
+         }
+         elseif(isset($datosNotasArray["mensajeTecnico"])) {
+            $patron = '/ok/';
+            if(preg_match($patron, strtolower($datosNotasArray["mensajeTecnico"]))){
+               $estadoConsulta = 2;
+            }
+            else {
+               $estadoConsulta = 0;
+            }
+            $datosNotasArray = NULL;  //Para procesarlo igual y me genere el resto de los datos
+         }
+         else {
+            $estadoConsulta = 0;
+
+         }
+
          $datosReturnArray = $this->procesarListadoNotasEstudiantes($datosNotasArray);
          /*Consulta de la informacion de las notas - FIN*/
 
@@ -301,6 +333,7 @@
                               'periodosMostrar' => $datosReturnArray["periodosMostrar"],
                               'datosEstudiantes' => $datosReturnArray["datosEstudiantes"],
                               'parcialActual' => $idParcial,
+                              'estadoConsulta' => $estadoConsulta
                              )
                       );
       }
@@ -1368,7 +1401,7 @@
             // $materia="2269";
        //Menu de Notas por Materia para Profesor
                
-                    $trama = "<materia>".$id_Materia."</materia>";
+                    $trama = "<materia>".$id_Materia."</materia><materia>".$id_Materia."</materia>";
                 
           $arr_fechas  = $UgServices->Docentes_getfechasparcial($trama);
 //          print_r($arr_fechas);
@@ -1489,8 +1522,9 @@
          
          $UgServices    = new UgServices;
        //Menu de Notas por Materia para Profesor
+         //Cambio para que traiga las 3 ultimas fechas 
                
-               $trama = "<materia>".$idMateria."</materia>";
+               $trama = "<materia>".$idMateria."</materia><materia>".$idMateria."</materia>";
                 
           $arr_fechas  = $UgServices->Docentes_getfechasparcial($trama);
 //          print_r($arr_fechas);
@@ -1880,57 +1914,70 @@
                unset($tempPeriodo);
             }
             
-            foreach($dataProcesar["periodos"]["periodo"] as $periodoCheck) {
+            if(isset($dataProcesar["periodos"]["periodo"]) && isset($dataProcesar["estudiantes"])){
+               foreach($dataProcesar["periodos"]["periodo"] as $periodoCheck) {
 
-               if(is_numeric($periodoCheck["parcial"])) {
-                  $nombreKey	= "Parcial_".strtolower(str_replace(" ","_",$periodoCheck["parcial"]));
-               }
-               else {
-                  $nombreKey	= strtolower(str_replace(" ","_",$periodoCheck["parcial"]));
-               }
-
-               $periodosMostrar[$nombreKey]           		= array();
-               $periodosMostrar[$nombreKey]["componente"]		= array();
-
-               $iComponente = 0;
-               foreach($periodoCheck["componentePeriodo"] as $keyComp => $componente) {
-                  if($keyComp=="idNota") {
-                     $periodosMostrar[$nombreKey]["idComponente"]	= $componente;
+                  if(is_numeric($periodoCheck["parcial"])) {
+                     $nombreKey	= "Parcial_".strtolower(str_replace(" ","_",$periodoCheck["parcial"]));
                   }
-                  if($keyComp=="componente") {
-                     $periodosMostrar[$nombreKey]["componente"]		= $componente;
+                  else {
+                     $nombreKey	= strtolower(str_replace(" ","_",$periodoCheck["parcial"]));
+                  }
+
+                  $periodosMostrar[$nombreKey]           		= array();
+                  $periodosMostrar[$nombreKey]["componente"]		= array();
+
+                  $iComponente = 0;
+                  foreach($periodoCheck["componentePeriodo"] as $keyComp => $componente) {
+                     if($keyComp=="idNota") {
+                        $periodosMostrar[$nombreKey]["idComponente"]	= $componente;
+                     }
+                     if($keyComp=="componente") {
+                        $periodosMostrar[$nombreKey]["componente"]		= $componente;
+                     }
+                  }
+                  $periodosMostrar[$nombreKey]["cantComponentes"] = count($periodosMostrar[$nombreKey]["componente"]);
+                  $periodosMostrar[$nombreKey]["totalizar"]		= $periodoCheck["totalizar"];
+                  if($periodosMostrar[$nombreKey]["totalizar"]=="SI") {
+                     $periodosMostrar[$nombreKey]["cantComponentes"]++;
+                     array_push($periodosMostrar[$nombreKey]["idComponente"], "99999999");
+                     array_push($periodosMostrar[$nombreKey]["componente"], "total");
                   }
                }
-               $periodosMostrar[$nombreKey]["cantComponentes"] = count($periodosMostrar[$nombreKey]["componente"]);
-               $periodosMostrar[$nombreKey]["totalizar"]		= $periodoCheck["totalizar"];
-               if($periodosMostrar[$nombreKey]["totalizar"]=="SI") {
-                  $periodosMostrar[$nombreKey]["cantComponentes"]++;
-                  array_push($periodosMostrar[$nombreKey]["idComponente"], "99999999");
-                  array_push($periodosMostrar[$nombreKey]["componente"], "total");
-               }
-            }
 
-            $datosEstudiantes	= array();
-            if(isset($dataProcesar["estudiantes"]["estudiante"]["idEstudiante"])) {  //Cuando llega un solo estudiante
-               $tempEstudiante = $dataProcesar["estudiantes"]["estudiante"];
-               $dataProcesar["estudiantes"]["estudiante"]      = NULL;
-               $dataProcesar["estudiantes"]["estudiante"][0]   = $tempEstudiante;
-               unset($tempEstudiante);
-            }
-            foreach($dataProcesar["estudiantes"]["estudiante"] as $estudiante) {
-               $tempArrayEst = NULL;
-               $tempArrayEst["idEstudiante"]	= $estudiante["idEstudiante"];
-               $tempArrayEst["estudiante"]		= $estudiante["estudiante"];
-               $tempArrayEst["ciclo"]			= $estudiante["ciclo"];
-               $tempArrayEst["estadoCiclo"]	= $estudiante["estadoCiclo"];
-               $tempArrayEst["parciales"]		= array();
-               //Creo el array para grabar las notas
-               foreach($periodosMostrar as $keyPeriodo => $valuePeriodo) {
-                  $tempArrayEst["parciales"][$keyPeriodo]		= array();
-                  $tempComponente	= NULL;
-                  if(is_array($valuePeriodo["componente"])){
-                     foreach($valuePeriodo["componente"] as $componente) {
-                        $tempComponente	= strtolower($componente);
+               $datosEstudiantes	= array();
+               if(isset($dataProcesar["estudiantes"]["estudiante"]["idEstudiante"])) {  //Cuando llega un solo estudiante
+                  $tempEstudiante = $dataProcesar["estudiantes"]["estudiante"];
+                  $dataProcesar["estudiantes"]["estudiante"]      = NULL;
+                  $dataProcesar["estudiantes"]["estudiante"][0]   = $tempEstudiante;
+                  unset($tempEstudiante);
+               }
+               foreach($dataProcesar["estudiantes"]["estudiante"] as $estudiante) {
+                  $tempArrayEst = NULL;
+                  $tempArrayEst["idEstudiante"]	= $estudiante["idEstudiante"];
+                  $tempArrayEst["estudiante"]	= $estudiante["estudiante"];
+                  $tempArrayEst["ciclo"]			= $estudiante["ciclo"];
+                  $tempArrayEst["estadoCiclo"]	= $estudiante["estadoCiclo"];
+                  $tempArrayEst["parciales"]		= array();
+                  //Creo el array para grabar las notas
+                  foreach($periodosMostrar as $keyPeriodo => $valuePeriodo) {
+                     $tempArrayEst["parciales"][$keyPeriodo]		= array();
+                     $tempComponente	= NULL;
+                     if(is_array($valuePeriodo["componente"])){
+                        foreach($valuePeriodo["componente"] as $componente) {
+                           $tempComponente	= strtolower($componente);
+                           $tempComponente	= str_replace("á","a",$tempComponente);
+                           $tempComponente	= str_replace("é","e",$tempComponente);
+                           $tempComponente	= str_replace("í","i",$tempComponente);
+                           $tempComponente	= str_replace("ó","o",$tempComponente);
+                           $tempComponente	= str_replace("ú","u",$tempComponente);
+                           $tempComponente	= str_replace("ñ","n",$tempComponente);
+
+                           $tempArrayEst["parciales"][$keyPeriodo][$tempComponente] = "-";
+                        }
+                     }
+                     elseif($valuePeriodo["componente"]!=NULL) {
+                        $tempComponente	= strtolower($valuePeriodo["componente"]);
                         $tempComponente	= str_replace("á","a",$tempComponente);
                         $tempComponente	= str_replace("é","e",$tempComponente);
                         $tempComponente	= str_replace("í","i",$tempComponente);
@@ -1941,54 +1988,26 @@
                         $tempArrayEst["parciales"][$keyPeriodo][$tempComponente] = "-";
                      }
                   }
-                  elseif($valuePeriodo["componente"]!=NULL) {
-                     $tempComponente	= strtolower($valuePeriodo["componente"]);
-                     $tempComponente	= str_replace("á","a",$tempComponente);
-                     $tempComponente	= str_replace("é","e",$tempComponente);
-                     $tempComponente	= str_replace("í","i",$tempComponente);
-                     $tempComponente	= str_replace("ó","o",$tempComponente);
-                     $tempComponente	= str_replace("ú","u",$tempComponente);
-                     $tempComponente	= str_replace("ñ","n",$tempComponente);
-
-                     $tempArrayEst["parciales"][$keyPeriodo][$tempComponente] = "-";
-                  }
-               }
 
 
-               //Para grabar las notas
-               if(isset($estudiante["parciales"]["Parcial"])) {
-                  //Si entra aqui quiere decir que tiene SOLO UN parcial
-                  $tempComponente = NULL;
-                  if(is_numeric($estudiante["parciales"]["Parcial"])) {
-                     $keyParcial	= "Parcial_".strtolower(str_replace(" ","_",$estudiante["parciales"]["Parcial"]));
-                  }
-                  else {
-                     $keyParcial	= strtolower(str_replace(" ","_",$estudiante["parciales"]["Parcial"]));
-                  }
-               
-                  if(isset($estudiante["parciales"]["notas"]["nota"]["Nota"])) {
-                      
-                     //Si entra aqui es porque solo trae una nota (ej.Mejoramiento)
-                     $keyComponente	= strtolower($estudiante["parciales"]["notas"]["nota"]["tipoNota"]);
-                     $notaComponente	= $estudiante["parciales"]["notas"]["nota"]["Nota"];
+                  //Para grabar las notas
+                  if(isset($estudiante["parciales"]["Parcial"])) {
+                     //Si entra aqui quiere decir que tiene SOLO UN parcial
+                     $tempComponente = NULL;
+                     if(is_numeric($estudiante["parciales"]["Parcial"])) {
+                        $keyParcial	= "Parcial_".strtolower(str_replace(" ","_",$estudiante["parciales"]["Parcial"]));
+                     }
+                     else {
+                        $keyParcial	= strtolower(str_replace(" ","_",$estudiante["parciales"]["Parcial"]));
+                     }
 
-                     $tempComponente	= strtolower($keyComponente);
-                     $tempComponente	= str_replace("á","a",$tempComponente);
-                     $tempComponente	= str_replace("é","e",$tempComponente);
-                     $tempComponente	= str_replace("í","i",$tempComponente);
-                     $tempComponente	= str_replace("ó","o",$tempComponente);
-                     $tempComponente	= str_replace("ú","u",$tempComponente);
-                     $keyComponente	= str_replace("ñ","n",$tempComponente);
-                     $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
-                  }
-                  else {
-                      if(isset($estudiante["parciales"]["notas"]["nota"])) {
-                     foreach($estudiante["parciales"]["notas"]["nota"] as $dataComponente){
-                        
-                        $keyComponente	= strtolower($dataComponente["tipoNota"]);
-                        $notaComponente	= $dataComponente["Nota"];
+                     if(isset($estudiante["parciales"]["notas"]["nota"]["Nota"])) {
 
-                        $tempComponente	= $keyComponente;
+                        //Si entra aqui es porque solo trae una nota (ej.Mejoramiento)
+                        $keyComponente	= strtolower($estudiante["parciales"]["notas"]["nota"]["tipoNota"]);
+                        $notaComponente	= $estudiante["parciales"]["notas"]["nota"]["Nota"];
+
+                        $tempComponente	= strtolower($keyComponente);
                         $tempComponente	= str_replace("á","a",$tempComponente);
                         $tempComponente	= str_replace("é","e",$tempComponente);
                         $tempComponente	= str_replace("í","i",$tempComponente);
@@ -1997,53 +2016,10 @@
                         $keyComponente	= str_replace("ñ","n",$tempComponente);
                         $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
                      }
-                      }
-                  }
-
-
-               }
-               else {
-                  //Si entra aqui quiere decir que tiene mas de un parcial
-                  foreach($estudiante["parciales"] as $keyParcial => $dataParcial) {
-                     if(is_numeric($dataParcial["Parcial"])) {
-                        $keyParcial	= "Parcial_".strtolower(str_replace(" ","_",$dataParcial["Parcial"]));
-                     }
                      else {
-                        $keyParcial	= strtolower(str_replace(" ","_",$dataParcial["Parcial"]));
-                     }
-                   if(isset($dataParcial["notas"]))
-                     {
-                     if(isset($dataParcial["notas"]["nota"]["tipoNota"])) {  //Cuando llega solo una nota
-                        $tempParcial = $dataParcial["notas"]["nota"];
-                        $dataParcial["notas"]["nota"]      = NULL;
-                        $dataParcial["notas"]["nota"][0]   = $tempParcial;
-                        unset($tempParcial);
-                     }
-                     }
-                            $i=0;
-                    // print_r($dataParcial["notas"]);
-                     if(isset($dataParcial["notas"]))
-                     {
-                     foreach($dataParcial["notas"] as $keyNotas => $dataNotas) {
+                        if(isset($estudiante["parciales"]["notas"]["nota"])) {
+                           foreach($estudiante["parciales"]["notas"]["nota"] as $dataComponente){
 
-                         
-                         $i++;
-                        if(isset($dataNotas["tipoNota"])){
-                            
-                           //Si entra aqui es porque llega solo una nota
-                           $keyComponente	= strtolower($dataNotas["tipoNota"]);
-                           $notaComponente	= $dataNotas["Nota"];
-
-                           $tempComponente	= $keyComponente;
-                           $tempComponente	= str_replace("á","a",$tempComponente);
-                           $tempComponente	= str_replace("é","e",$tempComponente);
-                           $tempComponente	= str_replace("í","i",$tempComponente);
-                           $tempComponente	= str_replace("o","o",$tempComponente);
-                           $tempComponente	= str_replace("ú","u",$tempComponente);
-                           $keyComponente	= str_replace("ñ","n",$tempComponente);
-                        }
-                        else {
-                           foreach($dataNotas as $dataComponente){
                               $keyComponente	= strtolower($dataComponente["tipoNota"]);
                               $notaComponente	= $dataComponente["Nota"];
 
@@ -2057,20 +2033,87 @@
                               $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
                            }
                         }
-
-                        $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
-                        if($periodosMostrar[$keyParcial]["totalizar"]=="SI"){
-                           $tempArrayEst["parciales"][$keyParcial]["total"]		= $dataParcial["total"];
-                        }
-                     }	
                      }
+                     if($periodosMostrar[$keyParcial]["totalizar"]=="SI"){
+                        $tempArrayEst["parciales"][$keyParcial]["total"]		= $estudiante["parciales"]["total"];
+                     }
+
+
+                  }
+                  else {
+                     //Si entra aqui quiere decir que tiene mas de un parcial
+                     foreach($estudiante["parciales"] as $keyParcial => $dataParcial) {
+                        if(is_numeric($dataParcial["Parcial"])) {
+                           $keyParcial	= "Parcial_".strtolower(str_replace(" ","_",$dataParcial["Parcial"]));
+                        }
+                        else {
+                           $keyParcial	= strtolower(str_replace(" ","_",$dataParcial["Parcial"]));
+                        }
+                      if(isset($dataParcial["notas"]))
+                        {
+                        if(isset($dataParcial["notas"]["nota"]["tipoNota"])) {  //Cuando llega solo una nota
+                           $tempParcial = $dataParcial["notas"]["nota"];
+                           $dataParcial["notas"]["nota"]      = NULL;
+                           $dataParcial["notas"]["nota"][0]   = $tempParcial;
+                           unset($tempParcial);
+                        }
+                        }
+                               $i=0;
+                       // print_r($dataParcial["notas"]);
+                        if(isset($dataParcial["notas"]))
+                        {
+                        foreach($dataParcial["notas"] as $keyNotas => $dataNotas) {
+
+
+                            $i++;
+                           if(isset($dataNotas["tipoNota"])){
+
+                              //Si entra aqui es porque llega solo una nota
+                              $keyComponente	= strtolower($dataNotas["tipoNota"]);
+                              $notaComponente	= $dataNotas["Nota"];
+
+                              $tempComponente	= $keyComponente;
+                              $tempComponente	= str_replace("á","a",$tempComponente);
+                              $tempComponente	= str_replace("é","e",$tempComponente);
+                              $tempComponente	= str_replace("í","i",$tempComponente);
+                              $tempComponente	= str_replace("o","o",$tempComponente);
+                              $tempComponente	= str_replace("ú","u",$tempComponente);
+                              $keyComponente	= str_replace("ñ","n",$tempComponente);
+                           }
+                           else {
+                              foreach($dataNotas as $dataComponente){
+                                 $keyComponente	= strtolower($dataComponente["tipoNota"]);
+                                 $notaComponente	= $dataComponente["Nota"];
+
+                                 $tempComponente	= $keyComponente;
+                                 $tempComponente	= str_replace("á","a",$tempComponente);
+                                 $tempComponente	= str_replace("é","e",$tempComponente);
+                                 $tempComponente	= str_replace("í","i",$tempComponente);
+                                 $tempComponente	= str_replace("ó","o",$tempComponente);
+                                 $tempComponente	= str_replace("ú","u",$tempComponente);
+                                 $keyComponente	= str_replace("ñ","n",$tempComponente);
+                                 $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
+                              }
+                           }
+
+                           $tempArrayEst["parciales"][$keyParcial][$keyComponente] = $notaComponente;
+                           if($periodosMostrar[$keyParcial]["totalizar"]=="SI"){
+                              $tempArrayEst["parciales"][$keyParcial]["total"]		= $dataParcial["total"];
+                           }
+                        }	
+                        }
+                     }
+
                   }
 
+                  array_push($datosEstudiantes, $tempArrayEst);
                }
-
-               array_push($datosEstudiantes, $tempArrayEst);
             }
-
+            else {
+               $periodosMostrar = NULL;
+               $datosEstudiantes= NULL;
+            }
+            
             $datosReturnArray["datosGenerales"]    = $datosGeneralesListado;
             $datosReturnArray["periodosMostrar"]   = $periodosMostrar;
             $datosReturnArray["datosEstudiantes"]  = $datosEstudiantes;
@@ -2465,8 +2508,96 @@
             $perfilDocAdm = $this->container->getParameter('perfilDocAdm');
             $estudiante  = $session->get('nom_usuario'); 
 
+            if ($session->has("perfil")) 
+           {
+               if ($session->get('perfil') == $perfilDoc || $session->get('perfil') == $perfilEstDoc || $session->get('perfil') == $perfilDocAdm) 
+               {
+                    try
+                    {
+                          $lcFacultad="";
+                          $lcCarrera="";
+                          //$idEstudiante=3;
+                          $idDocente=$session->get("id_user");
+                          $idRol=$perfilDoc;
+                          
+                          //$idRol=$session->get("perfil");
+                          $Carreras = array();
+                          $UgServices = new UgServices;
+                          $xml = $UgServices->getConsultaCarreras($idDocente,$idRol);
+                             
+                            if ( is_object($xml))
+                            {
+                              foreach($xml->registros->registro as $lcCarreras) 
+                              {
+                                      $lcFacultad=$lcCarreras->id_sa_facultad;
+                                      $lcCarrera=$lcCarreras->id_sa_carrera;
+                                      $materiaObject = array( 'Nombre' => $lcCarreras->nombre,
+                                                                 'Facultad'=>$lcCarreras->id_sa_facultad,
+                                                                 'Carrera'=>$lcCarreras->id_sa_carrera,
+                                                                 'idCiclo'=>$lcCarreras->id_sa_ciclo_detalle
+                                                                );
+                                      array_push($Carreras, $materiaObject); 
+                              } 
+
+                              $bolCorrecto=1;
+                              $cuantos=count($Carreras);
+                              if ($cuantos==0)
+                              {
+                                $bolCorrecto=0;
+                              }
+                              return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig',array(
+                                                      'facultades' =>  $Carreras,
+                                                      'idDocente'=>$idDocente,
+                                                      'idFacultad'=>$lcFacultad,
+                                                      'idCarrera'=>$lcCarrera,
+                                                      'cuantos'=>$cuantos,
+                                                      'bolcorrecto'=>$bolCorrecto
+                                                   ));
+                            }
+                            else
+                            {
+                              throw new \Exception('Un error');
+                            }    
+                     }
+                     catch (\Exception $e)
+                     {
+                            $bolCorrecto=0;
+                            $cuantos=0;
+                            return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig',array(
+                                                      'facultades' =>  $Carreras,
+                                                      'idDocente'=>$idDocente,
+                                                      'idFacultad'=>$lcFacultad,
+                                                      'idCarrera'=>$lcCarrera,
+                                                      'cuantos'=>$cuantos,
+                                                      'bolcorrecto'=>$bolCorrecto
+                                                   ));
+
+                            //return $this->render('TitulacionSisAcademicoBundle:Estudiantes:error.html.twig');
+                     }
+               }
+               else
+               {
+                  $this->get('session')->getFlashBag()->add(
+                                'mensaje',
+                                'Los datos ingresados no son válidos'
+                            );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+               }
+           }
+           else
+           {
+                $this->get('session')->getFlashBag()->add(
+                                      'mensaje',
+                                      'Los datos ingresados no son válidos'
+                                  );
+                    return $this->redirect($this->generateUrl('titulacion_sis_academico_homepage'));
+            }
+
+
+
+
            
-          return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig');
+          //return $this->render('TitulacionSisAcademicoBundle:Docentes:consultahorarios.html.twig');
            
     }#end function
     
@@ -2526,9 +2657,9 @@
                                                         <tr>
                                                             <th style='text-align: center !important;'>Dia</th>
                                                             <th style='text-align: center !important;'>Materia</th>
+                                                            <th style='text-align: center !important;'>Curso</th>
                                                             <th style='text-align: center !important;'>Desde</th>
-                                                            <th style='text-align: center !important;'>Hasta</th>
-                                                            <th style='text-align: center !important;'>Curso</th> 
+                                                            <th style='text-align: center !important;'>Hasta</th> 
                                                         </tr>";
 
                                                    foreach($datosHorarios as $Horario) {
@@ -2551,7 +2682,7 @@
 
                                                     <tr><td align='center' ><b>$estudiante</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÃƒï¿½A</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";
@@ -2630,7 +2761,7 @@
 
                                                     <tr><td align='center' ><b>horario</b></td>
                                                     <td >&nbsp;</td>
-                                                   <td align='center'><b>SECRETARÃƒï¿½A</b></td></tr>
+                                                   <td align='center'><b>SECRETARIA</b></td></tr>
                                                     </table>";
 
                                              $pdf.="</div></body></html>";

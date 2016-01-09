@@ -3,20 +3,39 @@
 
 {% block contenido %}
     
-  <script type="text/javascript">
-   $(function () {
-          TableAdvanced.init();          
-     });  
-</script>
- <script type="text/javascript">
+     <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/animate.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles/all.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/flavr/flavr.css') }}">
     
-         
-            
-            function mensaje(id){                
-                $("#Texto").html(id);
-                $("#Modal").click();
-            }
-            
+          <script type="text/javascript">
+            $(function () {
+                   TableAdvanced.init();          
+              });  
+          </script>
+  
+              <script type="text/javascript">
+             
+                    $(function () {
+                     
+                    var respuesta= $("#respuesta").val(); 
+                    if(respuesta == "exito"){
+                        var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Mensajes enviados correctamente", 'sm', 'alert');
+                               $("#content-enviar" ).append( msg_alert );
+                               $('#modal-enviar').modal('show');
+                            }
+                           if(respuesta == "fallo"){
+                                var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Problemas de envio de correos", 'sm', 'alert');
+                               $("#content-enviar" ).append( msg_alert );
+                               $('#modal-enviar').modal('show');
+                            }       
+                      });  
+             </script>
+
+ <script type="text/javascript">
+     
+        var modelessEnviarMensajes;
+          
+                    
           $(document).ready(function (){
                 
             $("#Limpiar").click(function (){
@@ -40,6 +59,7 @@
                           return false;
                        
                     }
+                   
                     if(Asunto == ""){
                            var  msg_alert = alert_bootstrap( 'enviar', 'Atenci&oacute;n', "Escriba un Asunto", 'sm', 'alert');
                                 $( "#content-enviar" ).append( msg_alert );
@@ -54,19 +74,29 @@
                                 $("#mensaje").focus();
                           return false;
                     }
-
-                  return true;
+                    
+                     modelessEnviarMensajes = new $.flavr({
+                        modal   : true,
+                        content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Enviando mensajes...</b>',
+                        buttons     : {}
+                     });
+                     
                });
+               
          });
     
+    
+    
+            function mensaje(id){                
+                $("#Texto").html(id);
+                $("#Modal").click();
+            }
      
 </script>
-    <script src="{{ asset('js/EnviarMensajes.js') }}"></script>
-    {#<script src="{{ asset('js/ValidacionesNotificaciones.js') }}"></script>#}
-<script src="{{ asset('theme/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
      
 <section class="content">
-<button type="button" id="Modal" class="btn btn-info btn-lg" style="display: none" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    <input type="hidden"  value="{{app.session.get('respuesta_2')}}" id="respuesta">
+<button type="button" id="Modal" class="btn btn-info btn-lg" style="display: none" data-toggle="modal" data-target="#myModal"></button>
     <!-- Modal content-->
     <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -80,14 +110,14 @@
         <p id="Texto"></p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
 
   </div>
 </div>
     
-      <div class="page-content" style="height: 600px;">
+   <div class="page-content" style="height: 600px;">
    <div  class="col-xs-14">
      
        <form id="form-enviar" method="post" action="{{ path('notificaciones_index') }}">  
@@ -157,7 +187,7 @@
                         </div>
                     <div class="modal-body">
                         
-                        <button type="submit" class="btn btn btn-success" onclick="send_form ('enviar')" id="Enviar"> Enviar Mensajes </button>
+                        <button type="submit" class="btn btn-success" id="Enviar"> Enviar Mensajes </button>
                      <button type="button" id="Limpiar" class="btn btn btn-danger">Limpiar</button>
                       
                     </div>
@@ -184,7 +214,7 @@
 			         <div class="form-wizard">
                                     <div class="form-body">
 				        <table class="table table-striped table-bordered table-hover" id="sample_1">
-				        <thead>
+				        <thead style="background-color: #3C8DBC;color:#fff">
 				        <tr>
 					        <th style="text-align: center"> Tipo </th>					       
 					        <th style="text-align: center"> Asunto   </th>

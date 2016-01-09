@@ -10,26 +10,26 @@
                             <th style="text-align: center;" >Id Materias</th>
                             <th style="text-align: center;" >Nombre Materias</th>
                             <th style="text-align: center;" >Veces</th>
-                            <th style="text-align: center;" >Curso</th> 
+                            <th style="text-align: center;" >Curso</th>
                             {% if (solicitudenProceso==0) %}
-                                <th style="text-align: center;" >Sel.</th> 
+                                <th style="text-align: center;" >Sel.</th>
                              {% endif %}
                              {% if (solicitudenProceso==1) %}
-                                <th style="text-align: center;" >Mensaje</th> 
+                                <th style="text-align: center;" >Mensaje</th>
                             {% endif %}
-                            
-                            
+
+
                         </tr>
                     </thead>
                     <tbody>
-                        {% for dato in Materias_inscribir %} 
+                        {% for dato in Materias_inscribir %}
                             <tr>
                                 <td align="center" id="Nivel_{{ dato.IdMateria }}">{{ dato.Nivel }}</td>
                                 <td align="center" id="idMateria_{{ dato.IdMateria }}">{{ dato.IdMateria }}</td>
                                 <td align="center" id="Nombre_{{ dato.IdMateria }}">{{ dato.Nombre }}</td>
                                 <td align="center" id="Veces_{{ dato.IdMateria }}">{{ dato.Veces }}</td>
                                 <td align="center" id="Curso_{{ dato.IdMateria }}">{{ dato.Curso }}</td>
-                                <td align="center" width='5%' id="sel_{{ dato.IdMateria }}"> 
+                                <td align="center" width='5%' id="sel_{{ dato.IdMateria }}">
                                     {% if (solicitudenProceso==0) %}
                                         <input type="checkbox" name="Sel_anula_materia" id="selid_{{ dato.IdMateria }}" value="" onclick="Valida_anulacion({{ dato.IdMateria}},{{dato.Veces}})">
                                      {% endif %}
@@ -56,7 +56,7 @@
                         </td>
                     </tr>
                 </tfoot>
-               
+
            </table>
         </div>
 
@@ -68,7 +68,7 @@
                     parveces=parseInt(parveces);
                     if (Veces>parveces)
                     {
-                        
+
 
                         modelessAnulaMateria= new $.flavr({
                                                            modal   : true,
@@ -78,7 +78,7 @@
                                                            }
                                                         });
 
-                        
+
                         $("#selid_"+idMateria).prop('checked',false);
                     }
          }
@@ -97,25 +97,25 @@
                 var parveces='{{parveces}}';
                 parveces=parseInt(parveces);
 
-                var elementochk = document.getElementsByName("Sel_anula_materia"); 
-                        $("#Table_Anulacion_Materia tbody tr").each(function (index) 
+                var elementochk = document.getElementsByName("Sel_anula_materia");
+                        $("#Table_Anulacion_Materia tbody tr").each(function (index)
                             {
                                 //console.log(elecmentocombo[index].options[elecmentocombo[index].selectedIndex].text);
 
                                 //console.log(elecmentocombo[index].options.selectedIndex);
-                               
+
 
                                 if (elementochk[index].checked )
                                 {
                                     valida=valida+1;
 
-                                    $(this).children("td").each(function (index2) 
+                                    $(this).children("td").each(function (index2)
                                     {
                                         Celda=$(this).attr("id");
                                         Celda=Celda.split('_');
                                         Celda=Celda[0];
                                         //alert(Elemento);
-                                        switch (Celda) 
+                                        switch (Celda)
                                         {
                                             case "idMateria": idMateria = $(this).text()
                                                     //alert(idMateria);
@@ -130,11 +130,11 @@
                                             case "Veces": Veces = $(this).text();
                                                     //alert(Materia);
                                                     break;
-                                                    
+
                                         }
-                                         
+
                                     })
-                                     
+
                                     if (Veces<=parveces)
                                     {
                                         var arrValores = {};
@@ -147,7 +147,7 @@
                                          myArray[index]=arrValores;
                                     }
                                 }
-                               
+
                             })
 
                             if(Object.keys(myArray).length==0 || valida<=0 )
@@ -163,30 +163,34 @@
                             }
 
                             else
-                            {
-                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo};
-
+                            {    var modelessSetSolicitud;
+                                  modelessSetSolicitud = new $.flavr({
+                                                             modal   : true,
+                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
+                                                             buttons     : {}
+                                                          });
+                                var envio_correo = 0
+                                 var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'envio_correo':envio_correo};
                                  var jumpAction = '{{path('estudiantes_anulacion_materias_2')}}';
-                                 var modelessSetSolicitud;
+
                                   $.ajax({
                                      url:   jumpAction,
                                      data: obj_data,
                                      type:  'post',
                                      async: false,
                                      beforeSend: function () {
-                                      modelessSetSolicitud = new $.flavr({
-                                                             modal   : true,
-                                                             content : '<i class="fa fa-refresh fa-spin"></i> &nbsp;<b>Procesando...</b>',
-                                                             buttons     : {}
-                                                          });
-                                       // alert("dentro");
-                                       //tablaNotasa.html("Cargando, espere por favor...");
-                                     //notificacionIndex = cargandoSitio(null, null, null);
-                              
+                                          $('#btnsolanula').remove();
+                                        modelessAnulaMateriap= new $.flavr({
+                                                           modal   : true,
+                                                           content : ' Procesando unulación <br> <i class="fa fa-refresh fa-spin"></i> ',
+                                                           buttons     : {
+                                                           }
+                                                        });
                                      },
                                      success:  function (dataResponse) {
                                         modelessSetSolicitud.close();
                                        var respuesta=jQuery.parseJSON(dataResponse);
+                                       var modelessAnulaMateriap;
                                        if (respuesta.codigo_error!=1)
                                        {
                                              modelessAnulaMateriap= new $.flavr({
@@ -197,27 +201,26 @@
                                                            }
                                                         });
                                              $("#btnsolanula").attr("disabled", false);
-                                           
+
                                        }
                                        else
                                        {
-                                        $('#btnsolanula').remove();
+                                        {#$('#btnsolanula').remove();
                                         modelessAnulaMateriap= new $.flavr({
                                                            modal   : true,
-                                                           content : 'Sr. Estudiante, Su solicitud de Anulación fue Enviada de Manera Exitosa ',
+                                                           content : 'Sr. Estudiante, Su solicitud de Anulación fue Enviada de Manera Exitosa <br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i> ',
                                                            buttons     : {
-                                                              primary : { text: 'Aceptar', style: 'primary',
-                                                                   action: function(){
-                                                                        location.reload();
-                                                                   } }
                                                            }
                                                         });
+                                          #}
+                                          //Inicio envio ce correo
+                                         envio_correo = 1;
 
-                                       }
                                      },
                                       error: function(dataResponse)
                                       {
                                         modelessSetSolicitud.close();
+                                        modelessAnulaMateriap.close();
                                           //nlanzarModal('Cargado', 'fue cargado', 'cerrar');
                                           //tablaNotasa.html("No fue posible conectar con el Servidor");
                                         form="accordion";
@@ -230,9 +233,78 @@
                               });
                             }
 
-              }); 
+                              var obj_data = {'arrMaterias': myArray,'idEstudiante': idEstudiante,'idCarrera':idCarrera,'idciclo':idCiclo,'envio_correo':envio_correo};
+                                        var jumpAction = '{{path('estudiantes_anulacion_materias_2')}}';
 
-            
+                                         $.ajax({
+                                            url:   jumpAction,
+                                            data: obj_data,
+                                            type:  'post',
+                                            async: false,
+                                            beforeSend: function () {
+
+                                                 modelessAnulaMateriap.close();
+                                                 modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : 'Sr. Estudiante, Su solicitud de Anulación fue Enviada de Manera Exitosa <br><br> Enviando notificación, por favor espere <br> <i class="fa fa-refresh fa-spin"></i> ',
+                                                                      buttons     : {
+                                                                          primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+                                            },
+                                            success:  function (dataResponse) {
+
+                                               modelessAnulaMateriap.close();
+
+                                              var respuesta=jQuery.parseJSON(dataResponse);
+                                              if (respuesta.codigo_error!=1)
+                                              {
+                                                    modelessProcesoMat.close();
+                                                    modelessProcesoMat= new $.flavr({
+                                                                  modal   : true,
+                                                                  content : respuesta.mensaje,
+                                                                  buttons     : {
+                                                                     primary : { text: 'Aceptar', style: 'primary' }
+                                                                  }
+                                                               });
+                                                    $("#btnsolanula").attr("disabled", false);
+
+                                              }
+                                              else
+                                                {
+                                                   modelessAnulaMateriap= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : 'Notificación enviada exitosamente.',
+                                                                      buttons     : {
+                                                                          primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+                                                  }
+                                            },
+                                             error: function(dataResponse)
+                                             {
+
+                                                modelessProcesoMat.close();
+                                                   modelessProcesoMat= new $.flavr({
+                                                                      modal   : true,
+                                                                      content : "Su anulación fue realizada exitosamente. <br><br> No se pudo envíar el mensaje",
+                                                                      buttons     : {
+                                                                         primary : { text: 'Aceptar', style: 'primary' }
+                                                                      }
+                                                                   });
+
+
+                                             },
+
+                                        dataType:'text'
+                                     });
+                                          // fin envio de correo
+
+                                       }
+
+              });
+
+
         </script>
 {% endif %}
 {% if (banderaMatricula!=4 )%}
@@ -241,5 +313,5 @@
     </div>
 {% endif %}
 
-            
+
 
